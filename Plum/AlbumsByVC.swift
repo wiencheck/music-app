@@ -1,0 +1,77 @@
+//
+//  ArtistAlbumsVC.swift
+//  wiencheck
+//
+//  Created by Adam Wienconek on 18.09.2017.
+//  Copyright © 2017 Adam Wienconek. All rights reserved.
+//
+
+import UIKit
+import MediaPlayer
+
+class AlbumsByVC: UITableViewController {
+    
+    var receivedID: MPMediaEntityPersistentID!
+    var als: [AlbumB]!
+    var pickedID: MPMediaEntityPersistentID!
+
+    @IBOutlet weak var upperBar: UINavigationItem!
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        print(self.navigationController)
+        tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
+        als = musicQuery.shared.artistAlbumsID(artist: receivedID)
+        als = als.sorted(by:{ ($0.name! > $1.name!)})
+        als.reverse()
+        upperBar.title = als.first?.artist
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return als.count + 1
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if (indexPath.row == 0){
+            let cell = tableView.dequeueReusableCell(withIdentifier: "allSongsCell", for: indexPath)
+            cell.textLabel?.text = "All songs"
+            cell.backgroundColor = .clear
+            return cell
+        }else{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "albumCell", for: indexPath) as? artistAlbumCell
+            cell?.setupA(als[indexPath.row - 1])
+            cell?.backgroundColor = .clear
+            return cell!
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let v = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 1))
+        v.backgroundColor = tableView.separatorColor
+        return v
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if(indexPath.row == 0){
+            performSegue(withIdentifier: "allSongs", sender: nil)
+        }else{
+            pickedID = als[indexPath.row - 1].ID
+            performSegue(withIdentifier: "album", sender: nil)
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let destination = segue.destination as? AlbumVC{
+            destination.receivedID = pickedID
+        }else if let destination = segue.destination as? SongsByVC{
+            destination.receivedID = receivedID
+        }
+    }
+    @IBAction func NPBtnPressed(_ sender: Any) {
+        performSegue(withIdentifier: "goToNP", sender: nil)
+    }
+
+}
