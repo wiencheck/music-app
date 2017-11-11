@@ -150,7 +150,8 @@ extension PlaylistsVC {
         for sect in 0 ..< indexes.count{
             if (result[indexes[sect]]?.count)! % 2 == 1{
                 if sect != indexes.count-1{
-                    result[indexes[sect + 1]]?.insert((result[indexes[sect]]?.last)!, at: 0)
+                    let tmp = result[indexes[sect]]?.last
+                    result[indexes[sect + 1]]?.insert(tmp!, at: 0)
                     result[indexes[sect]]?.removeLast()
                 }
             }
