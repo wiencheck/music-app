@@ -21,6 +21,7 @@ class AlbumsTableVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.tintColor = GlobalSettings.theme
         tableView.delegate = self
         tableView.dataSource = self
         self.setup()

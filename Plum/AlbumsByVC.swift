@@ -18,7 +18,7 @@ class AlbumsByVC: UITableViewController {
     @IBOutlet weak var upperBar: UINavigationItem!
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(self.navigationController)
+        self.navigationController?.navigationBar.tintColor = GlobalSettings.theme
         tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
         als = musicQuery.shared.artistAlbumsID(artist: receivedID)
         als = als.sorted(by:{ ($0.name! > $1.name!)})
@@ -41,8 +41,8 @@ class AlbumsByVC: UITableViewController {
             cell.backgroundColor = .clear
             return cell
         }else{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "albumCell", for: indexPath) as? artistAlbumCell
-            cell?.setupA(als[indexPath.row - 1])
+            let cell = tableView.dequeueReusableCell(withIdentifier: "albumCell", for: indexPath) as? AlbumCell
+            cell?.setup(album: als[indexPath.row - 1])
             cell?.backgroundColor = .clear
             return cell!
         }
@@ -56,6 +56,14 @@ class AlbumsByVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 0 {
+            return 44
+        }else {
+            return 94
+        }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

@@ -25,6 +25,7 @@ class AlbumsVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.tintColor = GlobalSettings.theme
         readSettings()
         if grid{
             setCollection()

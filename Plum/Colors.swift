@@ -255,6 +255,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.tintColor = GlobalSettings.theme
         
         // var timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: "magic", userInfo: nil, repeats: true)
         //  albumArt.image = images[currentIndex]

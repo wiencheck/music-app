@@ -31,6 +31,7 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.tintColor = GlobalSettings.theme
         alphabeticalSort = GlobalSettings.alphabeticalSort
         albums = musicQuery.shared.artistAlbumsID(artist: receivedID)
         songs = musicQuery.shared.songsByArtistID(artist: receivedID)

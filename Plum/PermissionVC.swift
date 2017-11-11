@@ -15,6 +15,7 @@ class PermissionVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.tintColor = GlobalSettings.theme
         self.view.backgroundColor = .red
         displayPermissionsError()
     }

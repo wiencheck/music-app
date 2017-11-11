@@ -36,6 +36,7 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.tintColor = GlobalSettings.theme
         timer = Timer(timeInterval: 1, target: self, selector: #selector(updateProgressBar), userInfo: nil, repeats: true)
         tabBarController?.delegate = self
         musicQuery.shared.delegate = self

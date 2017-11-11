@@ -20,6 +20,7 @@ class AlbumsCollectionVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.tintColor = GlobalSettings.theme
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         self.setup()

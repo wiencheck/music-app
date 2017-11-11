@@ -35,20 +35,6 @@ class AlbumCell: UITableViewCell {
         }
         titleLabel.text = album.name
     }
-    /*
-    func setup(artist: Artist){
-        let albumsCount = artist.albumsIn
-        let songsCount = artist.songsIn
-        self.artistLabel.text = artist.name
-        if(albumsCount == 1 && songsCount == 1){
-            self.detailLabel.text = "1 album 1 song"
-        }else if(albumsCount == 1 && songsCount > 1){
-            self.detailLabel.text = "1 album \(songsCount) songs"
-        }else if(albumsCount > 1 && songsCount > 1){
-            self.detailLabel.text = "\(albumsCount) albums \(songsCount) songs"
-        }
-        let image = artist.artwork
-        artistImage.image = image?.image(at: artistImage.bounds.size) ?? #imageLiteral(resourceName: "no_music")
-    }
-    */
+    
+    
 }

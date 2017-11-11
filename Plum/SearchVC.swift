@@ -31,6 +31,7 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.tintColor = GlobalSettings.theme
         searchHistory = UserDefaults.standard.array(forKey: "searchHistory") as! [String]
         loadArrays()
         configureSearchController()

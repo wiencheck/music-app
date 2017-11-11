@@ -9,7 +9,7 @@
 import UIKit
 import MediaPlayer
 
-class AlbumVC: UITableViewController {
+class AlbumVC: UITableViewController, QueueCellDelegate, MoreActionsCellDelegate, UIGestureRecognizerDelegate {
     
     var rating: Bool!
     var bigAssQuery = musicQuery.shared
@@ -17,11 +17,16 @@ class AlbumVC: UITableViewController {
     var album: AlbumB!
     var received: AlbumB!
     var receivedID: MPMediaEntityPersistentID!
+    var pickedArtistID: MPMediaEntityPersistentID!
     var indexes = [Int]()
+    var cellTypes = [Int]()
+    var absoluteIndex = 0
+    var activeIndexRow = 0
     @IBOutlet weak var upperBar: UINavigationItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.tintColor = GlobalSettings.theme
         tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
         readSettings()
         if receivedID != nil{
@@ -30,11 +35,15 @@ class AlbumVC: UITableViewController {
             album = received
         }
         songs = album.items
+        cellTypes = Array<Int>(repeating: 0, count: songs.count)
         for i in 0..<songs.count{
             songs[i].index = i
         }
         upperBar.title = album.name
-
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(PlaylistVC.longPress(_:)))
+        longPress.minimumPressDuration = 0.5
+        longPress.delegate = self
+        self.tableView.addGestureRecognizer(longPress)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,15 +66,55 @@ class AlbumVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if album.manyArtists{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "extendedSongCell", for: indexPath) as! SongInAlbumCell
-            cell.setupA(item: songs[indexPath.row])
-            cell.backgroundColor = .clear
-            return cell
+            absoluteIndex = indexPath.absoluteRow(tableView)
+            if(cellTypes[indexPath.row] == 0){
+                let cell = tableView.dequeueReusableCell(withIdentifier: "extendedSongCell", for: indexPath) as? SongInAlbumCell
+                let item = songs[indexPath.row]
+                if(item != Plum.shared.currentItem){
+                    cell?.setupA(item: item)
+                }else{
+                    cell?.setupA(item: item)
+                }
+                cell?.backgroundColor = .clear
+                return cell!
+            }else if cellTypes[indexPath.row] == 1{
+                let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as? QueueActionsCell
+                cell?.delegate = self
+                cell?.backgroundColor = .clear
+                return cell!
+            }else if cellTypes[indexPath.row] == 2{
+                let cell = tableView.dequeueReusableCell(withIdentifier: "moreCell", for: indexPath) as? MoreActionsCell
+                cell?.delegate = self
+                cell?.backgroundColor = .clear
+                return cell!
+            }else{
+                return UITableViewCell()
+            }
         }else{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "songInAlbumCell", for: indexPath) as! SongInAlbumCell
-            cell.setup(item: songs[indexPath.row])
-            cell.backgroundColor = .clear
-            return cell
+            absoluteIndex = indexPath.absoluteRow(tableView)
+            if(cellTypes[indexPath.row] == 0){
+                let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as? SongInAlbumCell
+                let item = songs[indexPath.row]
+                if(item != Plum.shared.currentItem){
+                    cell?.setup(item: item)
+                }else{
+                    cell?.setup(item: item)
+                }
+                cell?.backgroundColor = .clear
+                return cell!
+            }else if cellTypes[indexPath.row] == 1{
+                let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as? QueueActionsCell
+                cell?.delegate = self
+                cell?.backgroundColor = .clear
+                return cell!
+            }else if cellTypes[indexPath.row] == 2{
+                let cell = tableView.dequeueReusableCell(withIdentifier: "moreCell", for: indexPath) as? MoreActionsCell
+                cell?.delegate = self
+                cell?.backgroundColor = .clear
+                return cell!
+            }else{
+                return UITableViewCell()
+            }
         }
     }
     
@@ -89,18 +138,35 @@ class AlbumVC: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("songs = \(songs.count)")
-            if(Plum.shared.isShuffle){
-                Plum.shared.disableShuffle()
-                Plum.shared.createDefQueue(items: songs)
-                Plum.shared.defIndex = indexPath.row
-                Plum.shared.shuffleCurrent()
+        if(cellTypes[activeIndexRow] == 1 || cellTypes[activeIndexRow] == 2){
+            cellTypes[activeIndexRow] = 0
+            tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: 0)], with: .fade)
+        }
+        activeIndexRow = indexPath.row
+        absoluteIndex = indexPath.absoluteRow(tableView)
+        
+        if(cellTypes[indexPath.row] == 0){
+            if(Plum.shared.isPlayin()){
+                cellTypes[indexPath.row] = 1
+                tableView.reloadRows(at: [indexPath], with: .fade)
             }else{
-                Plum.shared.createDefQueue(items: songs)
+                if(Plum.shared.isShuffle){
+                    Plum.shared.disableShuffle()
+                    Plum.shared.createDefQueue(items: songs)
+                    Plum.shared.defIndex = absoluteIndex
+                    Plum.shared.shuffleCurrent()
+                    Plum.shared.playFromShufQueue(index: 0, new: true)
+                }else{
+                    Plum.shared.createDefQueue(items: songs)
+                    Plum.shared.playFromDefQueue(index: absoluteIndex, new: true)
+                }
+                Plum.shared.play()
             }
-            Plum.shared.playFromDefQueue(index: indexPath.row, new: true)
-            Plum.shared.play()
-            tableView.deselectRow(at: indexPath, animated: true)
+        }else{
+            cellTypes[indexPath.row] = 0
+            tableView.reloadRows(at: [indexPath], with: .right)
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -124,6 +190,77 @@ class AlbumVC: UITableViewController {
         Plum.shared.shuffleCurrent()
         Plum.shared.playFromShufQueue(index: 0, new: true)
         Plum.shared.play()
+    }
+    
+    func cell(_ cell: QueueActionsCell, action: SongAction) {
+        switch action {
+        case .playNow:
+            playNowBtn()
+        case .playNext:
+            playNextBtn()
+        case.playLast:
+            playLastBtn()
+        }
+    }
+    
+    func cell(_ cell: MoreActionsCell, action: MoreActions){
+        artistBtn()
+    }
+    
+    func playNextBtn() {
+        Plum.shared.addNext(item: songs[absoluteIndex])
+        cellTypes[activeIndexRow] = 0
+        tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: 0)], with: .right)
+    }
+    func playLastBtn() {
+        Plum.shared.addLast(item: songs[absoluteIndex])
+        cellTypes[activeIndexRow] = 0
+        tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: 0)], with: .right)
+    }
+    func playNowBtn() {
+        if(Plum.shared.isUsrQueue){
+            Plum.shared.clearQueue()
+        }
+        if(Plum.shared.isShuffle){
+            Plum.shared.disableShuffle()
+            Plum.shared.defIndex = absoluteIndex
+            Plum.shared.createDefQueue(items: songs)
+            Plum.shared.shuffleCurrent()
+            Plum.shared.playFromShufQueue(index: 0, new: true)
+        }else{
+            Plum.shared.createDefQueue(items: songs)
+            Plum.shared.playFromDefQueue(index: absoluteIndex, new: true)
+        }
+        Plum.shared.play()
+        cellTypes[activeIndexRow] = 0
+        tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: 0)], with: .right)
+    }
+    
+    func artistBtn(){
+        cellTypes[activeIndexRow] = 0
+        self.tableView.reloadRows(at: [IndexPath(row: self.activeIndexRow, section: 0)], with: .fade)
+        performSegue(withIdentifier: "artist", sender: nil)
+    }
+    @objc func longPress(_ longPress: UIGestureRecognizer){
+        if(cellTypes[activeIndexRow] == 1 || cellTypes[activeIndexRow] == 2){
+            cellTypes[activeIndexRow] = 0
+            tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: 0)], with: .left)
+        }
+        if longPress.state == .recognized{
+            let touchPoint = longPress.location(in: self.tableView)
+            if let indexPath = tableView.indexPathForRow(at: touchPoint){
+                pickedArtistID = songs[activeIndexRow].albumArtistPersistentID
+                self.cellTypes[activeIndexRow] = 2
+                self.tableView.reloadRows(at: [indexPath], with: .fade)
+            }
+        }
+    }
+    
+    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        cellTypes[activeIndexRow] = 0
+        let indexPath = IndexPath(row: activeIndexRow, section: 0)
+        self.tableView.deselectRow(at: indexPath, animated: true)
+        self.tableView.reloadRows(at: [indexPath], with: .fade)
     }
     
     func readSettings(){

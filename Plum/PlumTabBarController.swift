@@ -12,6 +12,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.tintColor = GlobalSettings.theme
         self.tabBar.tintColor = GlobalSettings.theme
         self.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: GlobalSettings.theme], for: UIControlState.normal)
         self.tabBar.unselectedItemTintColor = UIColor.gray
