@@ -17,7 +17,7 @@ extension Array{
         while (i < count) {
             let random = Int(arc4random_uniform(UInt32(i))) + 1
             if(random != i){
-                swap(&self[i], &self[random])
+                (self[i], self[random]) = (self[random], self[i])
             }
             i = i + 1
         }

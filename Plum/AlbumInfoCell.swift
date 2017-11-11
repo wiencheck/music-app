@@ -29,20 +29,9 @@ class AlbumInfoCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    func setup(album: AlbumB){
+    func setup(album: AlbumB, play: Bool){
         self.album = album
-        playBtn.isHidden = true
-        songs = album.items
-        titleLabel.text = album.name
-        yearLabel.text = album.year
-        artwork.image = album.artwork?.image(at: artwork.bounds.size) ?? #imageLiteral(resourceName: "no_music")
-        artwork.layer.cornerRadius = 6.0
-        songsLabel.text = "\(album.songsIn) songs, \(calcDuration(items: songs)) minutes"
-    }
-    
-    func setupA(album: AlbumB){
-        self.album = album
-        playBtn.isHidden = false
+        playBtn.isHidden = play
         songs = album.items
         titleLabel.text = album.name
         yearLabel.text = album.year

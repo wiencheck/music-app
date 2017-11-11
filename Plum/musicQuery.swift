@@ -24,7 +24,6 @@ class musicQuery{
     var playlists: [Playlist]!
     var spotlightIdentifiers = [String]()
     var currentIdentifiers = [String]()
-    var progress: Float = 0.0
     
     init(){
         mainQuery = MPMediaQuery()
@@ -246,11 +245,12 @@ class musicQuery{
         }
     }
     
-    func addToSpotlight(){
+    func addToSpotlight(completion: @escaping () -> Void){
         print("Indeksowanie rozpoczete...")
         let items = allSongs()
         var searchableItems = [CSSearchableItem]()
         var i: Float = 0.0
+        var progress: Float = 0
         let tmp = Float(currentSongsCount)
         DispatchQueue.global().async(execute: {
         for item in items{
@@ -261,14 +261,13 @@ class musicQuery{
             let artwork = item.artwork?.image(at: CGSize(width: 10, height: 10)) ?? #imageLiteral(resourceName: "no_music")
             let artworkData = UIImagePNGRepresentation(artwork)
             attributeSet.thumbnailData = artworkData
-            
-            //attributeSet.duration = 400 as NSNumber
             let searchableItem = CSSearchableItem(uniqueIdentifier: String(item.persistentID), domainIdentifier: "com.adw.plum", attributeSet: attributeSet)
             searchableItems.append(searchableItem)
-            //print("progress = \(progress)")
-            self.progress = i / tmp * 100
+            print("progress = \(progress)")
+            progress = i / tmp * 100
             i += 1.0
             self.spotlightIdentifiers.append(searchableItem.uniqueIdentifier)
+            //updateProgress(progress)
         }
         CSSearchableIndex.default().indexSearchableItems(searchableItems) { error in
             if let error = error {
@@ -278,6 +277,7 @@ class musicQuery{
             }
         }
         })
+        completion()
         print("Indeksowanie zakonczone!")
     }
     

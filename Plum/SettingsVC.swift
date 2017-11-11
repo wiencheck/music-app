@@ -131,30 +131,28 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     
     @IBAction func spotlightBtnPressed(_ sender: UIButton){
         musicQuery.shared.removeAllFromSpotlight()
-        UIView.animate(withDuration: 0.3, animations: {
+        /*UIView.animate(withDuration: 0.3, animations: {
             self.spotlightButton.alpha = 0.0
             self.progressBar.alpha = 1.0
-        })
-        timer.fire()
-        musicQuery.shared.addToSpotlight()
-        self.spotlightButton.setTitle("Done!", for: .disabled)
+        })*/
+        //timer.fire()
+        musicQuery.shared.addToSpotlight(completion: self.indexingEnded)
     }
     
-    @objc func updateProgressBar(){
-        print("set prog \(musicQuery.shared.progress)")
-        self.progressBar.setProgress(musicQuery.shared.progress, animated: false)
-        print(musicQuery.shared.progress)
+    @objc func updateProgressBar(progress: Float){
+        self.progressBar.setProgress(progress, animated: false)
         if self.progressBar.progress >= 100 {
             indexingEnded()
         }
     }
     
     func indexingEnded() {
-        timer.invalidate()
+        /*timer.invalidate()
         UIView.animate(withDuration: 0.3, animations: {
             self.progressBar.alpha = 0.0
             self.spotlightButton.alpha = 1.0
-        })
+        })*/
+        self.spotlightButton.setTitle("Done!", for: .disabled)
     }
     
     func readCurrentSettings(){

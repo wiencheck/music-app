@@ -28,16 +28,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //window?.makeKeyAndVisible()
         //s = UIStoryboard.init(name: "Main", bundle: Bundle.main)
         //authorized()
-        defaults = UserDefaults.standard
-        setInitialSettings()
-        readSettings()
         self.query = musicQuery.shared
         self.query.setArrays()
         self.remote = RemoteCommandManager()
+        GlobalSettings.remote = self.remote
+        defaults = UserDefaults.standard
+        setInitialSettings()
+        readSettings()
         UITabBar.appearance().tintColor = .gray
-        UITabBarItem.appearance().setTitleTextAttributes([NSForegroundColorAttributeName: UIColor.gray], for: .normal)
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.gray], for: .normal)
         UIBarButtonItem.appearance().tintColor = GlobalSettings.theme
-        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.black]
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
 
         // Getting access to your tabBarController
         let tabBar: UITabBarController = self.window?.rootViewController as! UITabBarController

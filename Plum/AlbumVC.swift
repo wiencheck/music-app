@@ -71,7 +71,7 @@ class AlbumVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableCell(withIdentifier: "infoCell") as! AlbumInfoCell
-        header.setupA(album: album)
+        header.setup(album: album, play: true)
         header.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
         header.layer.borderWidth = 0.7
         header.layer.borderColor = tableView.separatorColor?.cgColor
@@ -79,9 +79,13 @@ class AlbumVC: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let v = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 1))
-        v.backgroundColor = tableView.separatorColor
+        let v = UIView(frame: CGRect(x: 5, y: 0, width: 40, height: 1))
+        v.backgroundColor = tableView.separatorColor?.withAlphaComponent(0.6)
         return v
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

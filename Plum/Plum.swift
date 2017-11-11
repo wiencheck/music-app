@@ -385,7 +385,6 @@ class Plum: NSObject, AVAudioPlayerDelegate{
         shufQueue = defQueue
         print("shufcount = \(shufQueue.count) a defIndex jest = \(defIndex)")
         if(defIndex != 0){
-            //swap(&shufQueue[0], &shufQueue[defIndex])
             (shufQueue[0], shufQueue[defIndex]) = (shufQueue[defIndex], shufQueue[0])
         }
         print("shufQueue.count = \(shufQueue.count)")

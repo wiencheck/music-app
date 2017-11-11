@@ -194,16 +194,20 @@ extension ArtistsVC{    //Other functions
     }
     
     func correctCollectionSections(){
-        for sect in 0 ..< indexes.count{
+        var tmp: Artist!
+        for sect in 0 ..< indexes.count - 1{
             if (result[indexes[sect]]?.count)! % 3 == 1{
                 if sect != indexes.count-1{
-                    result[indexes[sect + 1]]?.insert((result[indexes[sect]]?.last)!, at: 0)
+                    tmp = result[indexes[sect]]?.last
+                    result[indexes[sect + 1]]?.insert(tmp!, at: 0)
                     result[indexes[sect]]?.removeLast()
                 }
             }else if (result[indexes[sect]]?.count)! % 3 == 2{
-                result[indexes[sect + 1]]?.insert((result[indexes[sect]]?.last)!, at: 0)
+                tmp = result[indexes[sect]]?.last
+                result[indexes[sect + 1]]?.insert(tmp!, at: 0)
                 result[indexes[sect]]?.removeLast()
-                result[indexes[sect + 1]]?.insert((result[indexes[sect]]?.last)!, at: 0)
+                tmp = result[indexes[sect]]?.last
+                result[indexes[sect + 1]]?.insert(tmp!, at: 0)
                 result[indexes[sect]]?.removeLast()
             }
         }

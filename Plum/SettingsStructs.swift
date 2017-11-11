@@ -17,11 +17,12 @@ struct UpNextSettings {
 }
 
 struct GlobalSettings{
+    static var remote: RemoteCommandManager!
     static let defaults = UserDefaults.standard
     static var ratingMode = false
     static func changeRatingMode(_ t: Bool){
         self.ratingMode = t
-        RemoteCommandManager.shared.switchRatingCommands(t)
+        self.remote.switchRatingCommands(t)
         print("Rating mode is \(ratingMode)")
         defaults.set(t, forKey: "ratingMode")
     }

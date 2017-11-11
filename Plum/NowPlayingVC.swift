@@ -12,9 +12,7 @@ import MediaPlayer
 
 class NowPlayingVC: UIViewController, UpNextProtocol, UIGestureRecognizerDelegate{
     
-    var scale = 16
-    
-    let kupa = "SSSSSSSSSSSSSSSSSS\nSSSSSSSSSSSSSSSSS\nSSSSSSSSSSSSSSSS"
+    var scale = 30
     
     let player = Plum.shared
     @IBOutlet weak var volView: UIView!
@@ -80,7 +78,7 @@ class NowPlayingVC: UIViewController, UpNextProtocol, UIGestureRecognizerDelegat
         nextBtn.setImage(templates[3], for: .normal)
         minVolImg.image = templates[8]
         maxVolImg.image = templates[9]
-        shufBtn.setImage(templates[13], for: .normal)
+        //shufBtn.setImage(templates[13], for: .normal)
         shufView.layer.cornerRadius = 6.0
         mpVolView.setVolumeThumbImage(templates[4], for: .normal)
         
@@ -138,7 +136,7 @@ class NowPlayingVC: UIViewController, UpNextProtocol, UIGestureRecognizerDelegat
             }
         }
         lyricsTextView.textColor = .white
-        lyricsTextView.scrollRangeToVisible(NSRange(location:0, length:1))
+        lyricsTextView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
     }
     @IBAction func playBackBtn(_ sender: Any) {
         if(player.isPlayin()){
@@ -233,10 +231,14 @@ class NowPlayingVC: UIViewController, UpNextProtocol, UIGestureRecognizerDelegat
             passStyle = viewLayout(prim: colors.primaryColor, sec: colors.detailColor, back: colors.backgroundColor, cell: .black, dark: false)
         }
         if(player.isShuffle){
-            shufBtn.tintColor = colors.detailColor
+            shufBtn.setTitle("Shuffle on", for: .normal)
+            shufBtn.setTitleColor(colors.detailColor, for: .normal)
+            //shufBtn.tintColor = colors.detailColor
             shufView.backgroundColor = colors.primaryColor.withAlphaComponent(0.3)
         }else{
-            shufBtn.tintColor = colors.primaryColor
+            shufBtn.setTitle("Shuffle off", for: .normal)
+            shufBtn.setTitleColor(colors.primaryColor, for: .normal)
+            //shufBtn.tintColor = colors.primaryColor
             shufView.backgroundColor = .clear
         }
     }
@@ -440,6 +442,7 @@ class NowPlayingVC: UIViewController, UpNextProtocol, UIGestureRecognizerDelegat
         doubleTapLyr.numberOfTapsRequired = 2
         doubleTapLyr.numberOfTouchesRequired = 1
         lyricsView.addGestureRecognizer(doubleTapLyr)
+        lyricsTextView.contentInset = UIEdgeInsetsMake(10, 0, 10, 0)
     }
     
     func setLyricsView(){
@@ -481,6 +484,7 @@ class NowPlayingVC: UIViewController, UpNextProtocol, UIGestureRecognizerDelegat
         UIView.animate(withDuration: 0.3, animations: {
             self.lyricsView.alpha = 1.0
         })
+        //lyricsTextView.scrollRangeToVisible(NSRange(location:0, length:1))
         lyricsView.isUserInteractionEnabled = true
     }
     

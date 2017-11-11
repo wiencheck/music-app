@@ -27,6 +27,7 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
     var indexes = [String]()
     var alphabeticalSort: Bool = false
     var chosenItem: MPMediaItem!
+    var headers = [AlbumInfoCell]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +42,12 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
         for album in 0 ..< albums.count{
             cellTypes[iterator] = []
             cellTypes[iterator] = Array<Int>(repeating: 0, count: albums[album].songsIn)
+            let header = tableView.dequeueReusableCell(withIdentifier: "infoCell") as! AlbumInfoCell
+            header.setup(album: albums[album], play: false)
+            header.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
+            header.layer.borderWidth = 0.5
+            header.layer.borderColor = tableView.separatorColor?.cgColor
+            headers.append(header)
             iterator += 1
         }
         iterator += 1
@@ -88,12 +95,13 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if !alphabeticalSort{
-            let header = tableView.dequeueReusableCell(withIdentifier: "infoCell") as! AlbumInfoCell
-            header.setup(album: albums[section])
-            header.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
-            header.layer.borderWidth = 0.7
-            header.layer.borderColor = tableView.separatorColor?.cgColor
-            return header
+//            let header = tableView.dequeueReusableCell(withIdentifier: "infoCell") as! AlbumInfoCell
+//            header.setup(album: albums[section], play: false)
+//            header.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
+//            header.layer.borderWidth = 0.7
+//            header.layer.borderColor = tableView.separatorColor?.cgColor
+//            return header
+            return headers[section]
         }else{
             /*let header = tableView.dequeueReusableCell(withIdentifier: "letterCell")
             header?.textLabel?.text = indexes[section]
@@ -185,10 +193,9 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
                 cellTypes[activeIndexSection]?[activeIndexRow] = 0
                 tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .fade)
             }
-            activeIndexRow = indexPath.row
             activeIndexSection = indexPath.section
             absoluteIndex = indexPath.absoluteRow(tableView)
-            
+            activeIndexRow = indexPath.row
             if(cellTypes[indexPath.section]?[indexPath.row] == 0){
                 if(Plum.shared.isPlayin()){
                     pickedID = songsByAlbums[absoluteIndex].albumPersistentID
@@ -220,6 +227,7 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
             activeIndexRow = indexPath.row
             activeIndexSection = 0
             absoluteIndex = indexPath.absoluteRow(tableView)
+            
             if(cellTypesAl[activeIndexRow] == 0){
                 if(Plum.shared.isPlayin()){
                     pickedID = songsByAlbums[absoluteIndex].albumPersistentID
@@ -272,7 +280,7 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
     
     func playNextBtn() {
         if !alphabeticalSort{
-            Plum.shared.addNext(item: songsByAlbums[activeIndexRow])
+            Plum.shared.addNext(item: songsByAlbums[absoluteIndex])
             cellTypes[activeIndexSection]?[activeIndexRow] = 0
         }else{
             Plum.shared.addNext(item: songs[absoluteIndex])
@@ -282,7 +290,7 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
     }
     func playLastBtn() {
         if !alphabeticalSort{
-            Plum.shared.addLast(item: songsByAlbums[activeIndexRow])
+            Plum.shared.addLast(item: songsByAlbums[absoluteIndex])
             cellTypes[activeIndexSection]?[activeIndexRow] = 0
         }else{
             Plum.shared.addLast(item: songs[absoluteIndex])
@@ -321,9 +329,13 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
     }
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let v = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 1))
-        v.backgroundColor = tableView.separatorColor
+        let v = UIView(frame: CGRect(x: 5, y: 0, width: 40, height: 1))
+        v.backgroundColor = tableView.separatorColor?.withAlphaComponent(0.6)
         return v
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 1
     }
 
     func albumBtn(){
