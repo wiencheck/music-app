@@ -49,7 +49,7 @@ class AlbumsByVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let v = UIView(frame: CGRect(x: 5, y: 0, width: 40, height: 1))
+        let v = UIView(frame: CGRect(x: 5, y: 0, width: 40, height: 0.2))
         v.backgroundColor = tableView.separatorColor?.withAlphaComponent(0.6)
         return v
     }

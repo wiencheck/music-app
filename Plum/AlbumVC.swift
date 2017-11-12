@@ -122,13 +122,15 @@ class AlbumVC: UITableViewController, QueueCellDelegate, MoreActionsCellDelegate
         let header = tableView.dequeueReusableCell(withIdentifier: "infoCell") as! AlbumInfoCell
         header.setup(album: album, play: true)
         header.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
-        header.layer.borderWidth = 0.7
-        header.layer.borderColor = tableView.separatorColor?.cgColor
-        return header
+        let v = UIView()
+        v.addSubview(header)
+        v.layer.borderWidth = 0.7
+        v.layer.borderColor = tableView.separatorColor?.cgColor
+        return v
     }
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let v = UIView(frame: CGRect(x: 5, y: 0, width: 40, height: 1))
+        let v = UIView(frame: CGRect(x: 5, y: 0, width: 40, height: 0.2))
         v.backgroundColor = tableView.separatorColor?.withAlphaComponent(0.6)
         return v
     }

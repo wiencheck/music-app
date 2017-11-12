@@ -27,7 +27,7 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
     var indexes = [String]()
     var alphabeticalSort: Bool = false
     var chosenItem: MPMediaItem!
-    var headers = [AlbumInfoCell]()
+    var headers = [UIView]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,9 +46,11 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
             let header = tableView.dequeueReusableCell(withIdentifier: "infoCell") as! AlbumInfoCell
             header.setup(album: albums[album], play: false)
             header.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
-            header.layer.borderWidth = 0.5
-            header.layer.borderColor = tableView.separatorColor?.cgColor
-            headers.append(header)
+            let v = UIView()
+            v.addSubview(header)
+            v.layer.borderWidth = 0.5
+            v.layer.borderColor = tableView.separatorColor?.cgColor
+            headers.append(v)
             iterator += 1
         }
         iterator += 1
@@ -330,7 +332,7 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
     }
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let v = UIView(frame: CGRect(x: 5, y: 0, width: 40, height: 1))
+        let v = UIView(frame: CGRect(x: 5, y: 0, width: 40, height: 0.2))
         v.backgroundColor = tableView.separatorColor?.withAlphaComponent(0.6)
         return v
     }

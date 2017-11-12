@@ -11,7 +11,8 @@ import MediaPlayer
 
 class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchResultsUpdating {
     
-    var titles = ["Artists", "Albums", "Songs"]
+    var titles = ["Artists", "Albums", "Songs", "Playlists"]
+    var sectionsActive: [Bool]!
     @IBOutlet weak var tableView: UITableView!
     var songs: [MPMediaItem]?
     var filteredSongs: [MPMediaItem]?
@@ -56,7 +57,11 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
 
     func numberOfSections(in tableView: UITableView) -> Int {
         if shouldShowResults{
-            return 3
+            var count = 0
+            for section in sectionsActive {
+                if section { count += 1}
+            }
+            return count
         }else{
             return 1
         }
@@ -64,7 +69,60 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if shouldShowResults{
-            if section == 2{
+            
+            if section == 0 {
+                if !sectionsActive[0] {
+                    if !sectionsActive[1] {
+                        if !sectionsActive[2] {
+                            if !sectionsActive[3] {
+                                return 0
+                            }else{
+                                return 0
+                            }
+                        }else{
+                            return (filteredSongs?.count)!
+                        }
+                    }else{
+                        return (filteredAlbums?.count)!
+                    }
+                }else{
+                    return (filteredArtists?.count)!
+                }
+            }else if section == 1 {
+                if !sectionsActive[1] {
+                    if !sectionsActive[2] {
+                        if !sectionsActive[3] {
+                            return 0
+                        }else{
+                            return 0
+                        }
+                    }else{
+                        return (filteredSongs?.count)!
+                    }
+                }else{
+                    return (filteredAlbums?.count)!
+                }
+            }else if section == 2 {
+                if !sectionsActive[2] {
+                    if !sectionsActive[3] {
+                        return 0
+                    }else{
+                        return 0
+                    }
+                }else{
+                    return (filteredSongs?.count)!
+                }
+            }else if section == 3 {
+                if !sectionsActive[3] {
+                    return 0
+                }else{
+                    return 0
+                }
+            }else{
+                return 0
+            }
+            
+            /*if section == 2{
                 if (filteredSongs?.count)! > 3 && shouldCompactSongs{
                     return 3
                 }else{
@@ -82,7 +140,7 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
                 }else{
                     return (filteredAlbums?.count)!
                 }
-            }
+            }*/
         }else{
             return searchHistory.count - 1
         }
@@ -99,15 +157,6 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        /*if shouldShowResults{
-            if tableView.numberOfRows(inSection: section) == 0{
-                return 26
-            }else{
-                return 26
-            }
-        }else{
-            return 26
-        }*/
         return 26
     }
     
@@ -117,13 +166,64 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             if tableView.numberOfRows(inSection: section) == 0{
                 return nil
             }
+            
             if section == 0 {
+                if !sectionsActive[0] {
+                    if !sectionsActive[1] {
+                        if !sectionsActive[2] {
+                            if !sectionsActive[3] {
+                                return nil
+                            }else{
+                                header.setup(title: "Playlists", count: 0)
+                            }
+                        }else{
+                            header.setup(title: "songs", count: (filteredSongs?.count)!)
+                        }
+                    }else{
+                        header.setup(title: "albums", count: (filteredAlbums?.count)!)
+                    }
+                }else{
+                    header.setup(title: "artists", count: (filteredArtists?.count)!)
+                }
+            }else if section == 1 {
+                if !sectionsActive[1] {
+                    if !sectionsActive[2] {
+                        if !sectionsActive[3] {
+                            return nil
+                        }else{
+                            header.setup(title: "Playlists", count: 0)
+                        }
+                    }else{
+                        header.setup(title: "songs", count: (filteredSongs?.count)!)
+                    }
+                }else{
+                    header.setup(title: "albums", count: (filteredAlbums?.count)!)
+                }
+            }else if section == 2 {
+                if !sectionsActive[2] {
+                    if !sectionsActive[3] {
+                        return nil
+                    }else{
+                        header.setup(title: "songs", count: (filteredSongs?.count)!)
+                    }
+                }else{
+                    header.setup(title: "songs", count: (filteredSongs?.count)!)
+                }
+            }else if section == 3 {
+                if !sectionsActive[3] {
+                    return nil
+                }else{
+                    header.setup(title: "Playlists", count: 0)
+                }
+            }
+            
+            /*if section == 0 {
                 header.setup(title: "artists", count: (filteredArtists?.count)!)
             }else if section == 1{
                 header.setup(title: "albums", count: (filteredAlbums?.count)!)
             }else{
                 header.setup(title: "songs", count: (filteredSongs?.count)!)
-            }
+            }*/
             header.callback = { theHeader in
                 if section == 0{
                     self.moreArtists()
@@ -232,16 +332,19 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             shouldShowResults = true
             self.tableView.separatorStyle = .singleLine
         }
-        let words = searchString?.components(separatedBy: " ")
-        filteredSongs = songs?.filter{
-            $0.title?.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "-", with: "").replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "$", with: "").replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: "'", with: "").replacingOccurrences(of: "_", with: "").lowercased().range(of: (searchString?.lowercased())!) != nil
-        }
+        //let words = searchString?.components(separatedBy: " ")
         filteredArtists = artists?.filter{
             $0.name.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "-", with: "").replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "$", with: "").replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: "'", with: "").replacingOccurrences(of: "_", with: "").lowercased().range(of: (searchString?.lowercased())!) != nil
         }
+        if filteredArtists?.count == 0 { sectionsActive[0] = false } else { sectionsActive[0] = true }
         filteredAlbums = albums?.filter{
             $0.name?.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "-", with: "").replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "$", with: "").replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: "'", with: "").replacingOccurrences(of: "_", with: "").lowercased().range(of: (searchString?.lowercased())!) != nil
         }
+        if filteredAlbums?.count == 0 { sectionsActive[1] = false } else { sectionsActive[1] = true }
+        filteredSongs = songs?.filter{
+            $0.title?.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "-", with: "").replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "$", with: "").replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: "'", with: "").replacingOccurrences(of: "_", with: "").lowercased().range(of: (searchString?.lowercased())!) != nil
+        }
+        if filteredSongs?.count == 0 { sectionsActive[2] = false } else { sectionsActive[2] = true }
         /*let filteredStrings : [String] = myArr.filter({ (aString) in
             
             let hasChars = findChrs.filter({(bString) in
@@ -298,6 +401,7 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         filteredSongs = [MPMediaItem]()
         filteredArtists = [Artist]()
         filteredAlbums = [AlbumB]()
+        sectionsActive = Array<Bool>(repeating: false, count: 3)
     }
     
     func delay(_ delay: Double, closure: @escaping ()->()) {

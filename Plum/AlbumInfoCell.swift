@@ -32,6 +32,7 @@ class AlbumInfoCell: UITableViewCell {
     func setup(album: AlbumB, play: Bool){
         self.album = album
         playBtn.isHidden = play
+        shufBtn.isHidden = false
         songs = album.items
         titleLabel.text = album.name
         yearLabel.text = album.year
