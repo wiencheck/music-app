@@ -8,6 +8,7 @@
 
 import UIKit
 import MediaPlayer
+import LNPopupController
 
 class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, QueueCellDelegate, MoreActionsCellDelegate {
     var cellTypes = [Int: [Int]]()
@@ -24,7 +25,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     let backround = #imageLiteral(resourceName: "background_se")
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var indexView: TableIndexView!
-    
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.tintColor = GlobalSettings.theme

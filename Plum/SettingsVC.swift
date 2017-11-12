@@ -24,6 +24,7 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     @IBOutlet weak var spotlightSwitch: UISwitch!
     @IBOutlet weak var ratingSwitch: UISwitch!
     @IBOutlet weak var currentStyle: UILabel!
+    @IBOutlet weak var currentMiniPlayer: UILabel!
     @IBOutlet weak var indexVisibleSwitch: UISwitch!
     @IBOutlet weak var progressBar: UIProgressView!
     var colorFlowStatus: Bool!
@@ -37,7 +38,7 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.tintColor = GlobalSettings.theme
-        timer = Timer(timeInterval: 1, target: self, selector: #selector(updateProgressBar), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateProgressBar), userInfo: nil, repeats: true)
         tabBarController?.delegate = self
         musicQuery.shared.delegate = self
         spotlightButton.alpha = 1.0
@@ -132,27 +133,28 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     
     @IBAction func spotlightBtnPressed(_ sender: UIButton){
         musicQuery.shared.removeAllFromSpotlight()
-        /*UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: 0.3, animations: {
             self.spotlightButton.alpha = 0.0
             self.progressBar.alpha = 1.0
-        })*/
-        //timer.fire()
-        musicQuery.shared.addToSpotlight(completion: self.indexingEnded)
+        })
+        timer.fire()
+        musicQuery.shared.addToSpotlight()
     }
     
-    @objc func updateProgressBar(progress: Float){
-        self.progressBar.setProgress(progress, animated: false)
-        if self.progressBar.progress >= 100 {
+    @objc func updateProgressBar(){
+        self.progressBar.setProgress(musicQuery.shared.spotlightProgress, animated: false)
+        if self.progressBar.progress >= 0.99 {
             indexingEnded()
         }
     }
     
     func indexingEnded() {
-        /*timer.invalidate()
+        timer.invalidate()
+        self.progressBar.setProgress(0, animated: false)
         UIView.animate(withDuration: 0.3, animations: {
             self.progressBar.alpha = 0.0
             self.spotlightButton.alpha = 1.0
-        })*/
+        })
         self.spotlightButton.setTitle("Done!", for: .disabled)
     }
     
@@ -191,6 +193,13 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
                 currentStyle.text = "Adaptive"
             }
         }
+        if let pop = defaults.value(forKey: "modernPopup") as? Bool{
+            if pop {
+                currentMiniPlayer.text = "Modern"
+            }else {
+                currentMiniPlayer.text = "Classic"
+            }
+        }
     }
     
     func tabBarController(_ tabBarController: UITabBarController, didEndCustomizing viewControllers: [UIViewController], changed: Bool) {
@@ -212,8 +221,10 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
             }else if indexPath.row == 1{
                 explainBlur()
             }
-            if indexPath.row == 2{
+            else if indexPath.row == 2{
                 explainStyle()
+            }else if indexPath.row == 3{
+                explainMiniPlayer()
             }
         }else if indexPath.section == 1{
             if indexPath.row == 0{
@@ -233,14 +244,20 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     
     func reload(){
         readCurrentSettings()
-        if musicQuery.shared.hasLibraryChanged(){
-            spotlightButton.isEnabled = true
-            spotlightButton.setTitle("Re-index content", for: .normal)
-        }else{
-            if spotlightStatus{
+        if spotlightSwitch.isOn {
+            if musicQuery.shared.hasLibraryChanged(){
                 spotlightButton.isEnabled = true
-                spotlightButton.setTitle("Begin indexing!", for: .normal)
+                spotlightButton.setTitle("Index content", for: .normal)
+                spotlightButton.setTitleColor(.blue, for: .normal)
+            }else{
+                if spotlightStatus && spotlightSwitch.isOn{
+                    spotlightButton.isEnabled = false
+                    spotlightButton.setTitle("Spotlight records are up-to-date", for: .disabled)
+                }
             }
+        }else{
+            spotlightButton.setTitle("Enable spotlight", for: .disabled)
+            spotlightButton.isEnabled = false
         }
     }
     
@@ -275,6 +292,21 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
         alert.addAction(light)
         alert.addAction(dark)
         alert.addAction(adaptive)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func explainMiniPlayer(){
+        let alert = UIAlertController(title: "Time for decision", message: "Modern: iOS 10 music app style\n\nClassic: iOS 9 music app style", preferredStyle: .actionSheet)
+        let dark = UIAlertAction(title: "Modern", style: .default, handler: {(action) in
+            GlobalSettings.changePopupStyle(.modern)
+            self.reload()
+        })
+        let light = UIAlertAction(title: "Classic", style: .default, handler: {(action) in
+            GlobalSettings.changePopupStyle(.classic)
+            self.reload()
+        })
+        alert.addAction(light)
+        alert.addAction(dark)
         present(alert, animated: true, completion: nil)
     }
     

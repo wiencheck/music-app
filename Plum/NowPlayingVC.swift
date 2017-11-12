@@ -9,10 +9,11 @@
 import UIKit
 import AVFoundation
 import MediaPlayer
+import LNPopupController
 
-class NowPlayingVC: UIViewController, UpNextProtocol, UIGestureRecognizerDelegate{
+class NowPlayingVC: UIViewController, UIGestureRecognizerDelegate{
     
-    var scale = 30
+    var scale = 18
     
     let player = Plum.shared
     @IBOutlet weak var volView: UIView!
@@ -57,7 +58,7 @@ class NowPlayingVC: UIViewController, UpNextProtocol, UIGestureRecognizerDelegat
     var templates = [UIImage]()
     
     deinit{
-        NotificationCenter.default.addObserver(self, selector: #selector(updateUI), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
         timer.invalidate()
     }
     
@@ -100,8 +101,8 @@ class NowPlayingVC: UIViewController, UpNextProtocol, UIGestureRecognizerDelegat
     
     override func viewWillDisappear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: false)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
-        timer.invalidate()
+        /*NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
+        timer.invalidate()*/
         UIApplication.shared.statusBarStyle = .default
     }
     
@@ -172,9 +173,6 @@ class NowPlayingVC: UIViewController, UpNextProtocol, UIGestureRecognizerDelegat
         }
         outOfLabel.text = player.labelString(type: "out of")
         magic(albumArt: image)
-    }
-    
-    @IBAction func modalBtn(_ sender: Any) {
     }
     
     @objc func updateTimes(){
@@ -254,18 +252,9 @@ class NowPlayingVC: UIViewController, UpNextProtocol, UIGestureRecognizerDelegat
         realPresent()
     }
     
-    @IBAction func doneBtnPressed(_ sender: Any){
-        _ = navigationController?.popViewController(animated: true)
-    }
     func statusBarStyle() {
         if(lightBar){
             UIApplication.shared.statusBarStyle = .lightContent
-        }
-    }
-    
-    func updateQueueInfo(_ ta: Bool) {
-        if ta{
-            print("Kurwa")
         }
     }
     
@@ -275,18 +264,15 @@ class NowPlayingVC: UIViewController, UpNextProtocol, UIGestureRecognizerDelegat
     
     func realPresent(){
         pickedID = player.currentItem?.albumPersistentID
-        let tbvc = storyboard?.instantiateViewController(withIdentifier: "GOGOGO") as! PlumTabBarController
+        let tbvc = storyboard?.instantiateViewController(withIdentifier: "GOGOGO") as! UITabBarController
         if let upvc = tbvc.viewControllers?[0] as? UpNextVC{
-            upvc.delegate = self
             upvc.style = passStyle
         }
         if let alvc = tbvc.viewControllers?[1] as? AlbumUpVC{
-            alvc.delegate = self
             alvc.receivedID = pickedID
             alvc.style = passStyle
         }
         if let arvc = tbvc.viewControllers?[2] as? ArtistUpVC{
-            arvc.delegate = self
             arvc.receivedID = pickedID
             arvc.style = passStyle
         }
@@ -408,6 +394,7 @@ class NowPlayingVC: UIViewController, UpNextProtocol, UIGestureRecognizerDelegat
         doubleTapArt.numberOfTouchesRequired = 1
         artworkImage.isUserInteractionEnabled = true
         artworkImage.addGestureRecognizer(doubleTapArt)
+        
     }
     
     func setLabelTap(){
@@ -457,7 +444,8 @@ class NowPlayingVC: UIViewController, UpNextProtocol, UIGestureRecognizerDelegat
         lyricsView.backgroundColor = UIColor.black.withAlphaComponent(0.4)
         lyricsTextView.backgroundColor = .clear
         lyricsTextView.isScrollEnabled = true
-        view.addSubview(lyricsView)
+        lyricsView.addSubview(lyricsTextView)
+        view.superview?.addSubview(lyricsView)
     }
     
     func setVolumeView(){

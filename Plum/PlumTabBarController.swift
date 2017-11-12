@@ -8,7 +8,17 @@
 
 import UIKit
 
+public var popupPresented = false
+
 class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
+    
+    var nowPlaying: NowPlayingVC!
+    let player = Plum.shared
+    var timer: Timer!
+    var playBackBtn: UIBarButtonItem!
+    var nextBtn: UIBarButtonItem!
+    var elapsed: Float!
+    var duration: Float!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,13 +27,22 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         self.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: GlobalSettings.theme], for: UIControlState.normal)
         self.tabBar.unselectedItemTintColor = UIColor.gray
         delegate = self
-        self.viewControllers?.forEach {
-            if let navController = $0 as? UINavigationController {
-                let _ = navController.topViewController?.view
-            } else {
-                let _ = $0.view.description
-            }
+        loadAllViews()
+        if GlobalSettings.popupStyle == .classic {
+            self.popupBar.barStyle = .compact
+            self.popupInteractionStyle = .drag
+            self.popupBar.progressViewStyle = .bottom
+            self.popupContentView.popupCloseButtonStyle = .none
+            self.popupBar.popupOpenGestureRecognizer.numberOfTapsRequired = 2
+        } else {
+            self.popupBar.barStyle = .prominent
+            self.popupInteractionStyle = .snap
+            self.popupBar.progressViewStyle = .bottom
+            self.popupContentView.popupCloseButtonStyle = .none
+            self.popupBar.popupOpenGestureRecognizer.numberOfTapsRequired = 2
         }
+        NotificationCenter.default.addObserver(self, selector: #selector(updatePopup), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
+        nextBtn = UIBarButtonItem(barButtonSystemItem: .fastForward, target: self, action: #selector(nextBtnPressed))
         /*if let firstNav = self.viewControllers?.first as? UINavigationController{
             if let first = firstNav.viewControllers.first as? SearchVC{
                 self.selectedIndex = 1
@@ -33,20 +52,55 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         }*/
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        let search = SearchVC()
-        let songs = SongsVC()
-        let artists = ArtistsVC()
-        let albums = AlbumsVC()
-        let controllers = [search, songs, artists, albums]
-        //self.viewControllers = controllers
-    }
-    
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         return true
     }
     
+    @objc func updateProgress() {
+        elapsed = Float(player.player.currentTime)
+        duration = Float(player.player.duration)
+        let procent = Float(player.player.currentTime / player.player.duration)
+        self.nowPlaying.popupItem.progress = procent
+    }
     
+    @objc func updatePopup() {
+        if !popupPresented {
+            let story = UIStoryboard.init(name: "Main", bundle: nil)
+            nowPlaying = story.instantiateViewController(withIdentifier: "nowPlayingVC") as! NowPlayingVC
+            self.presentPopupBar(withContentViewController: nowPlaying, animated: true, completion: nil)
+            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
+            timer.fire()
+            popupPresented = true
+        }
+        nowPlaying.popupItem.title = player.currentItem?.title ?? "Unknown title"
+        nowPlaying.popupItem.subtitle = player.currentItem?.artist ?? "Unknown artist"
+        if !player.isPlayin(){
+            playBackBtn = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(playback))
+        }else {
+            playBackBtn = UIBarButtonItem(barButtonSystemItem: .pause, target: self, action: #selector(playback))
+        }
+        nowPlaying.popupItem.leftBarButtonItems = [playBackBtn]
+        nowPlaying.popupItem.rightBarButtonItems = [nextBtn]
+        nowPlaying.popupItem.image = player.currentItem?.artwork?.image(at: CGSize(width: 30, height: 30))
+    }
+    
+    @objc func playback() {
+        player.togglePlayPause()
+    }
+    
+    @objc func nextBtnPressed() {
+        player.next()
+    }
+    
+    func loadAllViews() {
+        self.viewControllers?.forEach {
+            if let navController = $0 as? UINavigationController {
+                let _ = navController.topViewController?.view
+            } else {
+                let _ = $0.view.description
+            }
+        }
+    }
     
 
     /*

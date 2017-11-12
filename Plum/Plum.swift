@@ -34,7 +34,7 @@ class Plum: NSObject, AVAudioPlayerDelegate{
     var defQueueCount: Int!
     var defIndex: Int!
     var isUsrQueue: Bool!
-    @objc    var usrQueue = [MPMediaItem]()
+    var usrQueue = [MPMediaItem]()
     var usrQueueCount: Int!
     var userQueueIndex: Int!
     var isUserQueue: Bool!{

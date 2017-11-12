@@ -22,7 +22,6 @@ class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
     @IBOutlet weak var albumLabel: UILabel!
     @IBOutlet weak var artistLabel: UILabel!
     var receivedID: MPMediaEntityPersistentID!
-    var delegate: UpNextProtocol?
     var style: viewLayout!
     var statusBarStyle: UIStatusBarStyle!
     var separatorColor: UIColor!
@@ -49,9 +48,6 @@ class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
     }
     
     @IBAction func doneBtnPressed(_ sender: Any){
-        if let d = self.delegate{
-            d.updateQueueInfo(true)
-        }
         dismiss(animated: true, completion: nil)
     }
     
@@ -267,6 +263,8 @@ extension AlbumUpVC: UITableViewDelegate, UITableViewDataSource{
     }
     
     @objc func reload(){
+        cellTypes = Array<Int>(repeating: 0, count: cellTypes.count)
+        findCurrent()
         self.tableView.reloadData()
     }
     

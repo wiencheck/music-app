@@ -21,7 +21,6 @@ class ArtistUpVC: UIViewController {
     @IBOutlet weak var doneBtn: UIButton!
     @IBOutlet weak var artistLabel: UILabel!
     var receivedID: MPMediaEntityPersistentID!
-    var delegate: UpNextProtocol?
     var style: viewLayout!
     var statusBarStyle: UIStatusBarStyle!
     var separatorColor: UIColor!
@@ -39,6 +38,10 @@ class ArtistUpVC: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(reload), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
+    }
+    
     func setup(){
         songs = musicQuery.shared.songsByArtistID(artist: (Plum.shared.currentItem?.albumArtistPersistentID)!)
         cellTypes = Array<Int>(repeating: 0, count: songs.count)
@@ -47,9 +50,6 @@ class ArtistUpVC: UIViewController {
     }
     
     @IBAction func doneBtnPressed(_ sender: Any){
-        if let d = self.delegate{
-            d.updateQueueInfo(true)
-        }
         dismiss(animated: true, completion: nil)
     }
     
@@ -264,6 +264,8 @@ extension ArtistUpVC: UITableViewDelegate, UITableViewDataSource{
     }
     
     @objc func reload(){
+        cellTypes = Array<Int>(repeating: 0, count: cellTypes.count)
+        findCurrent()
         self.tableView.reloadData()
     }
     

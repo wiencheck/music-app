@@ -151,6 +151,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: "indexVisible") == nil{
             defaults.set(false, forKey: "indexVisible")
         }
+        if defaults.value(forKey: "modernPopup") == nil{
+            defaults.set(false, forKey: "modernPopup")
+        }
     }
     
     func readSettings(){
@@ -162,6 +165,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         if let ind = defaults.value(forKey: "indexVisible") as? Bool{
             GlobalSettings.changeIndexVisibility(ind)
+        }
+        if let pop = defaults.value(forKey: "modernPopup") as? Bool{
+            if pop {
+                GlobalSettings.changePopupStyle(.modern)
+            }else {
+                GlobalSettings.changePopupStyle(.classic)
+            }
         }
     }
 }

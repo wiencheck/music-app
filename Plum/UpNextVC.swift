@@ -29,13 +29,8 @@ struct viewLayout{
     }
 }
 
-protocol UpNextProtocol {
-    func updateQueueInfo(_ ta: Bool)
-}
-
 class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate{
     
-    var delegate: UpNextProtocol?
     var mediaPicker: MPMediaPickerController!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var upperBar: UIView!
@@ -189,9 +184,6 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
     }
 
     @IBAction func doneBtnPressed(_ sender: Any){
-        if let d = self.delegate{
-            d.updateQueueInfo(true)
-        }
         dismiss(animated: true, completion: nil)
     }
     

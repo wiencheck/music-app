@@ -42,4 +42,17 @@ struct GlobalSettings{
         self.indexVisible = t
         defaults.set(t, forKey: "indexVisible")
     }
+    enum styles {
+        case modern
+        case classic
+    }
+    static var popupStyle: styles = .classic
+    static func changePopupStyle(_ t: styles) {
+        self.popupStyle = t
+        if t == .classic {
+            defaults.set(false, forKey: "modernPopup")
+        }else {
+            defaults.set(true, forKey: "modernPopup")
+        }
+    }
 }

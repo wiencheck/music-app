@@ -44,6 +44,8 @@
 		38C4BCAA1F94BAF700DABE81 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C4BCA91F94BAF700DABE81 /* CollectionViewCell.swift */; };
 		38CC1A151F9CAEA500B2AA8D /* IndexViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38CC1A141F9CAEA500B2AA8D /* IndexViews.swift */; };
 		38D142571FB367CF003F08F5 /* SearchHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D142561FB367CF003F08F5 /* SearchHeader.swift */; };
+		38DB70381FB86B3100FC2235 /* LNPopupController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DB70371FB86B3100FC2235 /* LNPopupController.framework */; };
+		38DB70391FB86B3100FC2235 /* LNPopupController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 38DB70371FB86B3100FC2235 /* LNPopupController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		38E68AC11F28C17500BFF4E2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E68AC01F28C17500BFF4E2 /* AppDelegate.swift */; };
 		38E68AC31F28C17500BFF4E2 /* NowPlayingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E68AC21F28C17500BFF4E2 /* NowPlayingVC.swift */; };
 		38E68AC61F28C17500BFF4E2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 38E68AC41F28C17500BFF4E2 /* Main.storyboard */; };
@@ -60,6 +62,20 @@
 		38FFA1361F83DBE60079FF4B /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38FFA1351F83DBE60079FF4B /* NavigationController.swift */; };
 		38FFA1381F83DD950079FF4B /* ArtistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38FFA1371F83DD950079FF4B /* ArtistCell.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		38DB703A1FB86B3100FC2235 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				38DB70391FB86B3100FC2235 /* LNPopupController.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		380C2EB91FB1AE6400A6731B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -100,6 +116,7 @@
 		38C4BCA91F94BAF700DABE81 /* CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		38CC1A141F9CAEA500B2AA8D /* IndexViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexViews.swift; sourceTree = "<group>"; };
 		38D142561FB367CF003F08F5 /* SearchHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchHeader.swift; sourceTree = "<group>"; };
+		38DB70371FB86B3100FC2235 /* LNPopupController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = LNPopupController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		38E68ABD1F28C17500BFF4E2 /* Plum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plum.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		38E68AC01F28C17500BFF4E2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		38E68AC21F28C17500BFF4E2 /* NowPlayingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingVC.swift; sourceTree = "<group>"; };
@@ -125,6 +142,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				380C2EBA1FB1AE6400A6731B /* AudioToolbox.framework in Frameworks */,
+				38DB70381FB86B3100FC2235 /* LNPopupController.framework in Frameworks */,
 				38944CA51FA0F031005CB30C /* AVFoundation.framework in Frameworks */,
 				38944CA31FA0F024005CB30C /* MediaPlayer.framework in Frameworks */,
 			);
@@ -252,6 +270,7 @@
 		38E68AB41F28C17500BFF4E2 = {
 			isa = PBXGroup;
 			children = (
+				38DB70371FB86B3100FC2235 /* LNPopupController.framework */,
 				38E68ABF1F28C17500BFF4E2 /* Plum */,
 				38E68ABE1F28C17500BFF4E2 /* Products */,
 				38944CA11FA0F024005CB30C /* Frameworks */,
@@ -324,6 +343,7 @@
 				38E68AB91F28C17500BFF4E2 /* Sources */,
 				38E68ABA1F28C17500BFF4E2 /* Frameworks */,
 				38E68ABB1F28C17500BFF4E2 /* Resources */,
+				38DB703A1FB86B3100FC2235 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
