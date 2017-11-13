@@ -114,7 +114,6 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
             let alert = UIAlertController(title: "Confirm", message: "This will delete entries from Spotlight, you will have to index them again", preferredStyle: .alert)
             let yesAction = UIAlertAction(title: "Just do it!", style: .default, handler: {(action) in
                 self.spotlightStatus = false
-                self.spotlightButton.isEnabled = false
                 musicQuery.shared.removeAllFromSpotlight()
             })
             let noAction = UIAlertAction(title: "This was a mistake", style: .cancel, handler: {(action) in
@@ -125,6 +124,7 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
             present(alert, animated: true, completion: nil)
         }
         defaults.set(spotlightStatus, forKey: "spotlightActive")
+        reload()
     }
     
     @objc func indexVisible(_ sender: UISwitch){

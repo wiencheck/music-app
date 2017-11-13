@@ -154,6 +154,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: "modernPopup") == nil{
             defaults.set(false, forKey: "modernPopup")
         }
+        if defaults.value(forKey: "likeMessage") == nil{
+            defaults.set("Give 4★", forKey: "likeMessage")
+        }
+        if defaults.value(forKey: "dislikeMessage") == nil{
+            defaults.set("Give 1★", forKey: "dislikeMessage")
+        }
+        if defaults.value(forKey: "bookmarkMessage") == nil{
+            defaults.set("Give 5★", forKey: "bookmarkMessage")
+        }
+        if defaults.value(forKey: "likeValue") == nil{
+            defaults.set(4, forKey: "likeValue")
+        }
+        if defaults.value(forKey: "dislikeValue") == nil{
+            defaults.set(1, forKey: "dislikeValue")
+        }
+        if defaults.value(forKey: "bookmarkValue") == nil{
+            defaults.set(5, forKey: "bookmarkValue")
+        }
     }
     
     func readSettings(){
@@ -171,6 +189,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 GlobalSettings.changePopupStyle(.modern)
             }else {
                 GlobalSettings.changePopupStyle(.classic)
+            }
+        }
+        if let lik = defaults.value(forKey: "likeMessage") as? String{
+            if let licc = defaults.value(forKey: "likeValue") as? Int{
+                GlobalSettings.changeFeedbackContent(which: "Like", message: lik, value: licc)
+            }
+        }
+        if let dis = defaults.value(forKey: "dislikeMessage") as? String{
+            if let diss = defaults.value(forKey: "dislikeValue") as? Int{
+                GlobalSettings.changeFeedbackContent(which: "Dislike", message: dis, value: diss)
+            }
+        }
+        if let bok = defaults.value(forKey: "bookmarkMessage") as? String{
+            if let bokk = defaults.value(forKey: "bookmarkValue") as? Int{
+                GlobalSettings.changeFeedbackContent(which: "Bookmark", message: bok, value: bokk)
             }
         }
     }

@@ -20,6 +20,7 @@ struct GlobalSettings{
     static var remote: RemoteCommandManager!
     static let defaults = UserDefaults.standard
     static var ratingMode = false
+    static var bottomInset: CGFloat!
     static func changeRatingMode(_ t: Bool){
         self.ratingMode = t
         self.remote.switchRatingCommands(t)
@@ -50,9 +51,33 @@ struct GlobalSettings{
     static func changePopupStyle(_ t: styles) {
         self.popupStyle = t
         if t == .classic {
+            self.bottomInset = 40.0
             defaults.set(false, forKey: "modernPopup")
         }else {
+            self.bottomInset = 64.0
             defaults.set(true, forKey: "modernPopup")
         }
+    }
+    static func changeFeedbackContent(which: String, message: String, value: Int) {
+        switch which {
+        case "Like":
+            remote.feedbacks["Like"] = Feedback(message, value)
+            //remote.toggleLikeCommand(self.ratingMode)
+            defaults.set(message, forKey: "likeMessage")
+            defaults.set(value, forKey: "likeValue")
+        case "Dislike":
+            remote.feedbacks["Dislike"] = Feedback(message, value)
+            //remote.toggleDislikeCommand(self.ratingMode)
+            defaults.set(message, forKey: "dislikeMessage")
+            defaults.set(value, forKey: "dislikeValue")
+        case "Bookmark":
+            remote.feedbacks["Bookmark"] = Feedback(message, value)
+            //remote.toggleBookmarkCommand(self.ratingMode)
+            defaults.set(message, forKey: "bookmarkMessage")
+            defaults.set(value, forKey: "bookmarkValue")
+        default:
+            print("Zla nazwa feedbacku")
+        }
+        remote.switchRatingCommands(self.ratingMode)
     }
 }

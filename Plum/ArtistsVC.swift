@@ -54,6 +54,7 @@ class ArtistsVC: UIViewController {
         setup2()
         tableIndexView.indexes = self.indexes
         tableIndexView.tableView = self.tableView
+        
         tableIndexView.setup()
         self.view.addSubview(tableIndexView)
     }
@@ -68,6 +69,7 @@ class ArtistsVC: UIViewController {
         correctCollectionSections()
         collectionIndexView.indexes = self.indexes
         collectionIndexView.collectionView = self.collectionView
+        
         collectionIndexView.setup()
         self.view.addSubview(collectionIndexView)
     }
@@ -215,7 +217,7 @@ extension ArtistsVC{    //Other functions
     }
     
     @IBAction func NPBtnPressed(_ sender: Any) {
-        performSegue(withIdentifier: "nowplaying", sender: nil)
+        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

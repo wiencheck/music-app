@@ -27,7 +27,6 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         self.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: GlobalSettings.theme], for: UIControlState.normal)
         self.tabBar.unselectedItemTintColor = UIColor.gray
         delegate = self
-        loadAllViews()
         if GlobalSettings.popupStyle == .classic {
             self.popupBar.barStyle = .compact
             self.popupInteractionStyle = .drag
@@ -43,6 +42,8 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         }
         NotificationCenter.default.addObserver(self, selector: #selector(updatePopup), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
         nextBtn = UIBarButtonItem(barButtonSystemItem: .fastForward, target: self, action: #selector(nextBtnPressed))
+        updatePopup()
+        loadAllViews()
         /*if let firstNav = self.viewControllers?.first as? UINavigationController{
             if let first = firstNav.viewControllers.first as? SearchVC{
                 self.selectedIndex = 1
@@ -71,17 +72,22 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
             timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
             timer.fire()
             popupPresented = true
+            nowPlaying.popupItem.title = "Welcome to Plum"
+            nowPlaying.popupItem.subtitle = "Pick some music to play"
+            self.popupBar.isUserInteractionEnabled = false
+        }else{
+            nowPlaying.popupItem.title = player.currentItem?.title ?? "Unknown title"
+            nowPlaying.popupItem.subtitle = player.currentItem?.artist ?? "Unknown artist"
+            if !player.isPlayin(){
+                playBackBtn = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(playback))
+            }else {
+                playBackBtn = UIBarButtonItem(barButtonSystemItem: .pause, target: self, action: #selector(playback))
+            }
+            nowPlaying.popupItem.leftBarButtonItems = [playBackBtn]
+            nowPlaying.popupItem.rightBarButtonItems = [nextBtn]
+            nowPlaying.popupItem.image = player.currentItem?.artwork?.image(at: CGSize(width: 30, height: 30))
+            self.popupBar.isUserInteractionEnabled = true
         }
-        nowPlaying.popupItem.title = player.currentItem?.title ?? "Unknown title"
-        nowPlaying.popupItem.subtitle = player.currentItem?.artist ?? "Unknown artist"
-        if !player.isPlayin(){
-            playBackBtn = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(playback))
-        }else {
-            playBackBtn = UIBarButtonItem(barButtonSystemItem: .pause, target: self, action: #selector(playback))
-        }
-        nowPlaying.popupItem.leftBarButtonItems = [playBackBtn]
-        nowPlaying.popupItem.rightBarButtonItems = [nextBtn]
-        nowPlaying.popupItem.image = player.currentItem?.artwork?.image(at: CGSize(width: 30, height: 30))
     }
     
     @objc func playback() {
@@ -90,6 +96,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     @objc func nextBtnPressed() {
         player.next()
+        player.play()
     }
     
     func loadAllViews() {

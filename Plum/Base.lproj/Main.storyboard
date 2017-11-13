@@ -814,7 +814,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="WaN-8v-PFc" id="CVo-Yq-J5C"/>
-                        <segue destination="mhR-PN-ter" kind="show" identifier="nowPlaying" id="keq-OK-DlH"/>
                         <segue destination="O5b-aR-CcB" kind="show" identifier="album" id="YN1-uv-N46"/>
                         <segue destination="Y0c-SE-ysp" kind="show" identifier="artist" id="7Xq-dO-ndj"/>
                     </connections>
@@ -1053,7 +1052,6 @@
                         <outlet property="indexView" destination="alO-IS-L7N" id="Ce3-Lu-bRX"/>
                         <outlet property="tableView" destination="Aiz-RW-8Cf" id="e6b-8J-pU3"/>
                         <segue destination="O5b-aR-CcB" kind="show" identifier="album" id="SrT-cb-STQ"/>
-                        <segue destination="mhR-PN-ter" kind="show" identifier="goToNP" id="l4C-qI-W5K"/>
                         <segue destination="Y0c-SE-ysp" kind="show" identifier="artist" id="HhH-Hb-pcX"/>
                     </connections>
                 </viewController>
@@ -1149,7 +1147,6 @@
                     <connections>
                         <outlet property="upperBar" destination="Jr6-xk-5aV" id="H5W-F3-fQ0"/>
                         <segue destination="vky-YO-CkL" kind="show" identifier="allSongs" id="B6e-ae-KlN"/>
-                        <segue destination="mhR-PN-ter" kind="show" identifier="goToNP" id="WEz-af-99i"/>
                         <segue destination="O5b-aR-CcB" kind="show" identifier="album" id="nEJ-vd-Vba"/>
                     </connections>
                 </tableViewController>
@@ -1605,7 +1602,6 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="upperBar" destination="pqe-1t-y7M" id="Z3N-Fa-BFy"/>
-                        <segue destination="mhR-PN-ter" kind="show" identifier="goToNP" id="3gE-CY-lRY"/>
                         <segue destination="O5b-aR-CcB" kind="show" identifier="album" id="7ph-u4-5tD"/>
                     </connections>
                 </tableViewController>
@@ -1983,7 +1979,6 @@
                     </navigationItem>
                     <connections>
                         <outlet property="upperBar" destination="w0R-qv-uCC" id="cuE-7v-MYX"/>
-                        <segue destination="mhR-PN-ter" kind="show" identifier="goToNP" id="Uoy-sT-inr"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qDA-K4-kqz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3173,7 +3168,6 @@
                         <outlet property="collectionView" destination="XQM-35-a8d" id="gQN-Qw-WmK"/>
                         <outlet property="tableIndexView" destination="8ts-oL-rOf" id="nnn-65-b0h"/>
                         <outlet property="tableView" destination="A8o-Ym-83r" id="u6Y-8O-eSc"/>
-                        <segue destination="mhR-PN-ter" kind="show" identifier="nowplaying" id="1QG-Ab-Gnx"/>
                         <segue destination="O5b-aR-CcB" kind="show" identifier="album" id="rwj-QE-6F9"/>
                     </connections>
                 </viewController>
@@ -3354,7 +3348,6 @@
                         <outlet property="collectionView" destination="u4E-gz-Vk9" id="v8e-z4-kDg"/>
                         <outlet property="tableIndexView" destination="zMg-Tt-FlO" id="Pa4-PU-jz6"/>
                         <outlet property="tableView" destination="wyJ-xZ-gty" id="wnj-pZ-Xib"/>
-                        <segue destination="mhR-PN-ter" kind="show" identifier="nowplaying" id="GeU-tz-Ran"/>
                         <segue destination="O5b-aR-CcB" kind="show" identifier="album" id="g4J-C0-9Kx"/>
                         <segue destination="Y0c-SE-ysp" kind="show" identifier="artistAlbums" id="GRh-Pt-2wL"/>
                     </connections>
@@ -3574,7 +3567,6 @@
                         <outlet property="tableIndexView" destination="MJY-1m-vgY" id="iob-jY-FzB"/>
                         <outlet property="tableView" destination="zDc-at-bwM" id="Pnd-dx-Qqr"/>
                         <segue destination="3n3-F7-SRO" kind="show" identifier="playlist" id="hO0-6B-0g0"/>
-                        <segue destination="mhR-PN-ter" kind="show" identifier="nowPlaying" id="Ssl-it-UXg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O5j-Jx-dFN" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3813,13 +3805,13 @@
                         <outlet property="tableIndexView" destination="CJs-jX-kTO" id="WUL-XZ-lb0"/>
                         <outlet property="tableView" destination="wgF-PA-wdY" id="Ycl-t2-7rE"/>
                         <outlet property="upperBar" destination="uMd-5u-tgY" id="fL5-em-JsS"/>
-                        <segue destination="mhR-PN-ter" kind="show" identifier="nowPlaying" id="OOb-El-wJb"/>
                         <segue destination="O5b-aR-CcB" kind="show" identifier="album" id="LCY-3G-uHV"/>
+                        <segue destination="Y0c-SE-ysp" kind="show" identifier="artist" id="uGV-fK-q4R"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jc9-Sp-wLN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1231.875" y="2499.2957746478874"/>
+            <point key="canvasLocation" x="1311" y="2501"/>
         </scene>
         <!--Settings-->
         <scene sceneID="a3h-KY-HEe">
@@ -3872,8 +3864,7 @@
         <image name="zeroVol" width="175" height="298"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="l4C-qI-W5K"/>
-        <segue reference="SrT-cb-STQ"/>
-        <segue reference="HhH-Hb-pcX"/>
+        <segue reference="LCY-3G-uHV"/>
+        <segue reference="uGV-fK-q4R"/>
     </inferredMetricsTieBreakers>
 </document>

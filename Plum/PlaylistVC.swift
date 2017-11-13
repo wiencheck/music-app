@@ -53,6 +53,7 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
         }
         tableIndexView.indexes = self.indexes
         tableIndexView.tableView = self.tableView
+        
         tableIndexView.setup()
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(PlaylistVC.longPress(_:)))
         longPress.minimumPressDuration = 0.5
@@ -138,7 +139,7 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
     }
     
     @IBAction func NPBtnPressed(_ sender: Any) {
-        performSegue(withIdentifier: "nowPlaying", sender: nil)
+        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -205,7 +206,11 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
     func artistBtn(){
         cellTypes[activeIndexSection]?[activeIndexRow] = 0
         self.tableView.reloadRows(at: [IndexPath(row: self.activeIndexRow, section: activeIndexSection)], with: .fade)
-        performSegue(withIdentifier: "artist", sender: nil)
+        if musicQuery.shared.artistAlbumsID(artist: (result[indexes[activeIndexSection]]?[activeIndexRow].albumArtistPersistentID)!).count == 1 {
+            performSegue(withIdentifier: "album", sender: nil)
+        }else{
+            performSegue(withIdentifier: "artist", sender: nil)
+        }
     }
     @objc func longPress(_ longPress: UIGestureRecognizer){
         if(cellTypes[activeIndexSection]?[activeIndexRow] == 1 || cellTypes[activeIndexSection]?[activeIndexRow] == 2){

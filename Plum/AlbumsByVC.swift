@@ -20,6 +20,7 @@ class AlbumsByVC: UITableViewController {
         super.viewDidLoad()
         self.navigationController?.navigationBar.tintColor = GlobalSettings.theme
         tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
         als = musicQuery.shared.artistAlbumsID(artist: receivedID)
         als = als.sorted(by:{ ($0.name! > $1.name!)})
         als.reverse()
@@ -83,7 +84,7 @@ class AlbumsByVC: UITableViewController {
         }
     }
     @IBAction func NPBtnPressed(_ sender: Any) {
-        performSegue(withIdentifier: "goToNP", sender: nil)
+        
     }
 
 }

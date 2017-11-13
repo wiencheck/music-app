@@ -28,7 +28,11 @@ class SongInAlbumCell: UITableViewCell {
     }
     
     func setup(item: MPMediaItem){
-        trackNumberLabel.text = "\(item.albumTrackNumber)"
+        if item.albumTrackNumber < 1 {
+            trackNumberLabel.text = ""
+        }else{
+            trackNumberLabel.text = "\(item.albumTrackNumber)"
+        }
         titleLabel.text = item.title
         if GlobalSettings.ratingMode{
             durationLabel.textColor = GlobalSettings.theme
@@ -53,7 +57,11 @@ class SongInAlbumCell: UITableViewCell {
     }
     
     func setupA(item: MPMediaItem){
-        trackNumberLabel.text = "\(item.albumTrackNumber)"
+        if item.albumTrackNumber < 1 {
+            trackNumberLabel.text = ""
+        }else{
+            trackNumberLabel.text = "\(item.albumTrackNumber)"
+        }
         titleLabel.text = item.title
         artistLabel?.text = item.artist
         if GlobalSettings.ratingMode{

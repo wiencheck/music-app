@@ -52,6 +52,7 @@ class AlbumsVC: UIViewController {
         self.view.addSubview(tableView)
         tableIndexView.indexes = self.indexes
         tableIndexView.tableView = self.tableView
+        
         tableIndexView.setup()
         self.view.addSubview(tableIndexView)
     }
@@ -65,6 +66,7 @@ class AlbumsVC: UIViewController {
         self.view.addSubview(collectionView)
         self.collectionIndexView.indexes = self.indexes
         self.collectionIndexView.collectionView = self.collectionView
+        
         self.collectionIndexView.setup()
         self.view.addSubview(collectionIndexView)
     }
@@ -76,7 +78,7 @@ class AlbumsVC: UIViewController {
     }
     
     @IBAction func NPBtnPressed(_ sender: Any){
-        performSegue(withIdentifier: "nowplaying", sender: nil)
+        
     }
 
 }

@@ -58,6 +58,7 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
         cellTypesAl = Array<Int>(repeating: 0, count: songs.count)
         let backround = #imageLiteral(resourceName: "background_se")
         self.tableView.backgroundView = UIImageView(image: backround)
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
     }
     
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
@@ -258,7 +259,6 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
     }
     
     @IBAction func NPBtnPressed(_ sender: Any) {
-        performSegue(withIdentifier: "goToNP", sender: nil)
     }
     
     @IBAction func sortBtnPressed(_ sender: Any){

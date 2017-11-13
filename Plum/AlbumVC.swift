@@ -27,6 +27,7 @@ class AlbumVC: UITableViewController, QueueCellDelegate, MoreActionsCellDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.tintColor = GlobalSettings.theme
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
         tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
         readSettings()
         if receivedID != nil{
@@ -184,7 +185,6 @@ class AlbumVC: UITableViewController, QueueCellDelegate, MoreActionsCellDelegate
     }
     
     @IBAction func NPBtnPressed(_ sender: Any) {
-        performSegue(withIdentifier: "goToNP", sender: nil)
     }
     @IBAction func shufBtnPressed(_ sender: Any) {
         Plum.shared.defIndex = Int(arc4random_uniform(UInt32(songs.count)))

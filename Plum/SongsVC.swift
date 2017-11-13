@@ -48,6 +48,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         longPress.delegate = self
         self.tableView.addGestureRecognizer(longPress)
         self.tableView.backgroundView = UIImageView(image: backround)
+        
         self.view.addSubview(tableView)
         self.view.addSubview(indexView)
     }
@@ -141,7 +142,6 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     }
     
     @IBAction func NPBtnPressed(_ sender: Any) {
-        performSegue(withIdentifier: "goToNP", sender: nil)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

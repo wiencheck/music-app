@@ -54,6 +54,7 @@ class PlaylistsVC: UIViewController {
         setup()
         tableIndexView.indexes = self.indexes
         tableIndexView.tableView = self.tableView
+        
         tableIndexView.setup()
         self.view.addSubview(tableIndexView)
     }
@@ -68,6 +69,7 @@ class PlaylistsVC: UIViewController {
         correctCollectionSections()
         collectionIndexView.indexes = self.indexes
         collectionIndexView.collectionView = self.collectionView
+        
         collectionIndexView.setup()
         self.view.addSubview(collectionIndexView)
     }
@@ -79,7 +81,7 @@ class PlaylistsVC: UIViewController {
     }
     
     @IBAction func NPBtnPressed(_ sender: Any) {
-        performSegue(withIdentifier: "nowPlaying", sender: nil)
+        
     }
 
 }
