@@ -30,7 +30,7 @@ struct Artist{
         let item = Collection.representativeItem
         self.ID = item?.albumArtistPersistentID
         self.collection = Collection
-        self.name = item?.albumArtist
+        self.name = item?.albumArtist ?? "Unknown artist"
         self.artwork = item?.artwork
         self.songsIn = Collection.items.count
         albumsIn = musicQuery().artistAlbumsID(artist: self.ID).count
@@ -221,4 +221,21 @@ fileprivate func combineImages(images: [UIImage]) -> UIImage{
         result = images[0]
     }
     return result
+}
+
+public func labelFromRating(item: MPMediaItem) -> String {
+    switch item.rating{
+    case 1:
+        return "★☆☆☆☆"
+    case 2:
+        return "★★☆☆☆"
+    case 3:
+        return "★★★☆☆"
+    case 4:
+        return "★★★★☆"
+    case 5:
+        return "★★★★★"
+    default:
+        return "☆☆☆☆☆"
+    }
 }

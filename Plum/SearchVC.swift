@@ -12,7 +12,6 @@ import MediaPlayer
 class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchResultsUpdating {
     
     var titles = ["Artists", "Albums", "Songs", "Playlists"]
-    var sectionsActive: [Bool]!
     @IBOutlet weak var tableView: UITableView!
     var songs: [MPMediaItem]?
     var filteredSongs: [MPMediaItem]?
@@ -29,6 +28,7 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     var pickedArtistID: MPMediaEntityPersistentID!
     var pickedSong: MPMediaItem!
     var searchHistory: [String]!
+    var headers = [UIView]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,126 +39,73 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
-        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
         shouldShowResults = false
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        //self.tabBarController?.tabBar.tintColor = GlobalSettings.theme
     }
     
     override func viewDidAppear(_ animated: Bool) {
         searchHistory = UserDefaults.standard.array(forKey: "searchHistory") as! [String]
         searchController.isActive = true
-        delay(0.1) { self.searchController.searchBar.becomeFirstResponder() }
+        delay(0.1) {
+            self.searchController.searchBar.becomeFirstResponder()
+            UIApplication.shared.sendAction(#selector(self.selectAll(_:)), to: nil, from: nil, for: nil)
+        }
         if searchController.searchBar.text != ""{
-            searchController.searchBar.text = ""
+            //[[UIApplication sharedApplication] sendAction:@selector(selectAll:) to:nil from:nil forEvent:nil]
+            searchController.searchBar.becomeFirstResponder()
+            UIApplication.shared.sendAction(#selector(selectAll(_:)), to: nil, from: nil, for: nil)
         }
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
         if shouldShowResults{
-            var count = 0
-            for section in sectionsActive {
-                if section { count += 1}
-            }
-            return count
+            return 3
         }else{
             return 1
         }
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if shouldShowResults{
-            
-            if section == 0 {
-                if !sectionsActive[0] {
-                    if !sectionsActive[1] {
-                        if !sectionsActive[2] {
-                            if !sectionsActive[3] {
-                                return 0
-                            }else{
-                                return 0
-                            }
-                        }else{
-                            return (filteredSongs?.count)!
-                        }
-                    }else{
-                        return (filteredAlbums?.count)!
-                    }
-                }else{
-                    return (filteredArtists?.count)!
-                }
-            }else if section == 1 {
-                if !sectionsActive[1] {
-                    if !sectionsActive[2] {
-                        if !sectionsActive[3] {
-                            return 0
-                        }else{
-                            return 0
-                        }
-                    }else{
-                        return (filteredSongs?.count)!
-                    }
-                }else{
-                    return (filteredAlbums?.count)!
-                }
-            }else if section == 2 {
-                if !sectionsActive[2] {
-                    if !sectionsActive[3] {
-                        return 0
-                    }else{
-                        return 0
-                    }
-                }else{
-                    return (filteredSongs?.count)!
-                }
-            }else if section == 3 {
-                if !sectionsActive[3] {
-                    return 0
-                }else{
-                    return 0
-                }
+        if shouldShowResults {
+            if section == 0 && shouldCompactArtists && (filteredArtists?.count)! != 0{
+                return 3
+            }else if section == 0 && !shouldCompactArtists && (filteredArtists?.count)! != 0 {
+                return (filteredArtists?.count)!
+            }else if section == 1 && shouldCompactAlbums && (filteredAlbums?.count)! != 0 {
+                return 3
+            }else if section == 1 && !shouldCompactAlbums && (filteredAlbums?.count)! != 0 {
+                return (filteredAlbums?.count)!
+            }else if section == 2 && shouldCompactSongs && (filteredSongs?.count)! != 0{
+                return 3
+            }else if section == 2 && !shouldCompactSongs && (filteredSongs?.count)! != 0 {
+                return (filteredSongs?.count)!
             }else{
                 return 0
             }
-            
-            /*if section == 2{
-                if (filteredSongs?.count)! > 3 && shouldCompactSongs{
-                    return 3
-                }else{
-                    return (filteredSongs?.count)!
-                }
-            }else if section == 0{
-                if (filteredArtists?.count)! > 3 && shouldCompactArtists{
-                    return 3
-                }else{
-                    return (filteredArtists?.count)!
-                }
-            }else{
-                if (filteredAlbums?.count)! > 3 && shouldCompactAlbums{
-                    return 3
-                }else{
-                    return (filteredAlbums?.count)!
-                }
-            }*/
         }else{
             return searchHistory.count - 1
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0{
-            return 94
-        }else if indexPath.section == 1{
-            return 94
-        }else{
-            return 62
-        }
+        return 62
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 26
+        
+        if shouldShowResults {
+            if section == 0 && filteredArtists?.count != 0{
+                return 26
+            }else if section == 1 && filteredAlbums?.count != 0{
+                return 26
+            }else if section == 2 && filteredSongs?.count != 0{
+                return 26
+            }else{
+                return 0
+            }
+        }
+        else{
+            return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -167,71 +114,27 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             if tableView.numberOfRows(inSection: section) == 0{
                 return nil
             }
-            
-            if section == 0 {
-                if !sectionsActive[0] {
-                    if !sectionsActive[1] {
-                        if !sectionsActive[2] {
-                            if !sectionsActive[3] {
-                                return nil
-                            }else{
-                                header.setup(title: "Playlists", count: 0)
-                            }
-                        }else{
-                            header.setup(title: "songs", count: (filteredSongs?.count)!)
-                        }
-                    }else{
-                        header.setup(title: "albums", count: (filteredAlbums?.count)!)
-                    }
-                }else{
-                    header.setup(title: "artists", count: (filteredArtists?.count)!)
-                }
-            }else if section == 1 {
-                if !sectionsActive[1] {
-                    if !sectionsActive[2] {
-                        if !sectionsActive[3] {
-                            return nil
-                        }else{
-                            header.setup(title: "Playlists", count: 0)
-                        }
-                    }else{
-                        header.setup(title: "songs", count: (filteredSongs?.count)!)
-                    }
-                }else{
-                    header.setup(title: "albums", count: (filteredAlbums?.count)!)
-                }
-            }else if section == 2 {
-                if !sectionsActive[2] {
-                    if !sectionsActive[3] {
-                        return nil
-                    }else{
-                        header.setup(title: "songs", count: (filteredSongs?.count)!)
-                    }
-                }else{
-                    header.setup(title: "songs", count: (filteredSongs?.count)!)
-                }
-            }else if section == 3 {
-                if !sectionsActive[3] {
-                    return nil
-                }else{
-                    header.setup(title: "Playlists", count: 0)
-                }
+            if section == 0 && filteredArtists?.count != 0{
+                header.setup(title: "artists", count: (filteredArtists?.count)!)
+            }else if section == 1 && filteredAlbums?.count != 0{
+                header.setup(title: "albums", count: (filteredAlbums?.count)!)
+            }else if section == 2 && filteredSongs?.count != 0{
+                header.setup(title: "songs", count: (filteredSongs?.count)!)
+            }else{
+                print("viewForHeader else")
+                return UIView()
             }
             
-            /*if section == 0 {
-                header.setup(title: "artists", count: (filteredArtists?.count)!)
-            }else if section == 1{
-                header.setup(title: "albums", count: (filteredAlbums?.count)!)
-            }else{
-                header.setup(title: "songs", count: (filteredSongs?.count)!)
-            }*/
             header.callback = { theHeader in
                 if section == 0{
                     self.moreArtists()
+                    header.moreBtn.isHidden = true
                 }else if section == 1{
                     self.moreAlbums()
+                    header.moreBtn.isHidden = true
                 }else{
                     self.moreSongs()
+                    header.moreBtn.isHidden = true
                 }
             }
             header.backgroundColor = .white
@@ -243,28 +146,28 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var cell: SearchCell!
         if shouldShowResults{
-            if indexPath.section == 2{
-                let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! SongCell
-                cell.setup(item: (filteredSongs?[indexPath.row])!)
+            if indexPath.section == 0 && filteredArtists?.count != 0{
+                cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SearchCell
+                cell.setup(artist: filteredArtists![indexPath.row])
                 cell.backgroundColor = .clear
                 return cell
-            }else if indexPath.section == 0{
-                let cell = tableView.dequeueReusableCell(withIdentifier: "artistCell", for: indexPath) as! ArtistCell
-                cell.setup(artist: (filteredArtists?[indexPath.row])!)
+            }else if indexPath.section == 1 && filteredAlbums?.count != 0 {
+                cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SearchCell
+                cell.setup(album: filteredAlbums![indexPath.row])
                 cell.backgroundColor = .clear
                 return cell
-            }else{
-                let cell = tableView.dequeueReusableCell(withIdentifier: "albumCell", for: indexPath) as! AlbumCell
-                cell.setup(album: (filteredAlbums?[indexPath.row])!)
+            }else if indexPath.section == 2 && filteredSongs?.count != 0 {
+                cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SearchCell
+                cell.setup(song: filteredSongs![indexPath.row])
                 cell.backgroundColor = .clear
                 return cell
+            }else {
+                return UITableViewCell()
             }
         }else{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "historyCell", for: indexPath)
-            cell.textLabel?.text = searchHistory[indexPath.row]
-            cell.backgroundColor = .clear
-            return cell
+            return UITableViewCell()
         }
     }
  
@@ -272,19 +175,20 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         if indexPath.section == 0{
             let artist = filteredArtists?[indexPath.row]
             self.pickedArtistID = artist?.ID
-            searchHistory.insert((artist?.name)!, at: 0)
+            searchHistory.insert(searchController.searchBar.text!, at: 0)
             performSegue(withIdentifier: "artist", sender: nil)
         }else if indexPath.section == 2{
             let song = filteredSongs?[indexPath.row]
-            searchHistory.insert((song?.title)!, at: 0)
+            searchHistory.insert(searchController.searchBar.text!, at: 0)
             Plum.shared.landInAlbum(song!, new: true)
             Plum.shared.play()
         }else{
             let album = filteredAlbums?[indexPath.row]
-            searchHistory.insert((album?.name)!, at: 0)
+            searchHistory.insert(searchController.searchBar.text!, at: 0)
             self.pickedAlbum = album
             performSegue(withIdentifier: "album", sender: nil)
         }
+        
         if searchHistory.count > 20{
             //searchHistory.dropLast()
             UserDefaults.standard.set(searchHistory, forKey: "searchHistory")
@@ -335,17 +239,17 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         }
         //let words = searchString?.components(separatedBy: " ")
         filteredArtists = artists?.filter{
-            $0.name.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "-", with: "").replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "$", with: "").replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: "'", with: "").replacingOccurrences(of: "_", with: "").lowercased().range(of: (searchString?.lowercased())!) != nil
+//            $0.name.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "-", with: "").replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "$", with: "").replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: "'", with: "").replacingOccurrences(of: "_", with: "").lowercased().range(of: (searchString?.lowercased())!) != nil
+            $0.name.lowercased().range(of: (searchString?.lowercased())!) != nil
         }
-        if filteredArtists?.count == 0 { sectionsActive[0] = false } else { sectionsActive[0] = true }
         filteredAlbums = albums?.filter{
-            $0.name?.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "-", with: "").replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "$", with: "").replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: "'", with: "").replacingOccurrences(of: "_", with: "").lowercased().range(of: (searchString?.lowercased())!) != nil
+//            $0.name?.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "-", with: "").replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "$", with: "").replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: "'", with: "").replacingOccurrences(of: "_", with: "").lowercased().range(of: (searchString?.lowercased())!) != nil
+            $0.name?.lowercased().range(of: (searchString?.lowercased())!) != nil
         }
-        if filteredAlbums?.count == 0 { sectionsActive[1] = false } else { sectionsActive[1] = true }
         filteredSongs = songs?.filter{
-            $0.title?.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "-", with: "").replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "$", with: "").replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: "'", with: "").replacingOccurrences(of: "_", with: "").lowercased().range(of: (searchString?.lowercased())!) != nil
+//            $0.title?.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "-", with: "").replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "$", with: "").replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: "'", with: "").replacingOccurrences(of: "_", with: "").lowercased().range(of: (searchString?.lowercased())!) != nil
+            $0.title?.lowercased().range(of: (searchString?.lowercased())!) != nil
         }
-        if filteredSongs?.count == 0 { sectionsActive[2] = false } else { sectionsActive[2] = true }
         /*let filteredStrings : [String] = myArr.filter({ (aString) in
             
             let hasChars = findChrs.filter({(bString) in
@@ -402,7 +306,6 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         filteredSongs = [MPMediaItem]()
         filteredArtists = [Artist]()
         filteredAlbums = [AlbumB]()
-        sectionsActive = Array<Bool>(repeating: false, count: 3)
     }
     
     func delay(_ delay: Double, closure: @escaping ()->()) {
@@ -412,20 +315,34 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     
     func moreSongs(){
         shouldCompactSongs = false
-        tableView.reloadSections([2], with: .none)
+        tableView.reloadData()
         searchController.searchBar.resignFirstResponder()
+        tableView.scrollToRow(at: IndexPath(row: 0, section: 2) , at: .top, animated: true)
     }
     
     func moreArtists(){
         shouldCompactArtists = false
-        tableView.reloadSections([0], with: .none)
+        tableView.reloadData()
         searchController.searchBar.resignFirstResponder()
+        tableView.scrollToRow(at: IndexPath(row: 0, section: 0) , at: .top, animated: true)
     }
     
     func moreAlbums(){
         shouldCompactAlbums = false
-        tableView.reloadSections([2], with: .none)
+        tableView.reloadData()
         searchController.searchBar.resignFirstResponder()
+        tableView.scrollToRow(at: IndexPath(row: 0, section: 1) , at: .top, animated: true)
+    }
+    
+    func prepareHeaders() {
+        var header: SearchHeader!
+        header = tableView.dequeueReusableCell(withIdentifier: "header") as! SearchHeader
+        header.setup(title: "artists", count: (filteredArtists?.count)!)
+        headers.append(header)
+        header.setup(title: "albums", count: (filteredAlbums?.count)!)
+        headers.append(header)
+        header.setup(title: "songs", count: (filteredSongs?.count)!)
+        headers.append(header)
     }
     
 }

@@ -80,4 +80,9 @@ struct GlobalSettings{
         }
         remote.switchRatingCommands(self.ratingMode)
     }
+    static var compact = true
+    static func changeCompact(_ t: Bool){
+        self.compact = t
+        defaults.set(t, forKey: "compact")
+    }
 }

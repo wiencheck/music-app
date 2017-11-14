@@ -9,6 +9,10 @@
 import UIKit
 import MediaPlayer
 
+protocol UpNextDelegate {
+    func backFromUpNext()
+}
+
 struct Songs{
     let sectionName: String
     var songsIn: [MPMediaItem]
@@ -31,12 +35,14 @@ struct viewLayout{
 
 class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate{
     
-    var mediaPicker: MPMediaPickerController!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var upperBar: UIView!
     @IBOutlet weak var addBtn: UIButton!
     @IBOutlet weak var doneBtn: UIButton!
     @IBOutlet weak var mainLabel: UILabel!
+    
+    var delegate: UpNextDelegate?
+    var mediaPicker: MPMediaPickerController!
     var style: viewLayout!
     var previousStart: Int!
     var previousMeta: Int!
@@ -50,6 +56,7 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
     var statusBarStyle: UIStatusBarStyle!
     var separatorColor: UIColor!
     var settings = UpNextSettings()
+    var set: IndexSet!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,10 +70,6 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
         setColors()
         self.tableView.allowsSelectionDuringEditing = true
         self.tableView.setEditing(true, animated: false)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -90,7 +93,6 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //return songs.count
         return sungs[section].songsIn.count
     }
     
@@ -146,7 +148,8 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let set: IndexSet!
+        //if !player.usrIsAnyAfter { player.isUsrQueue = false }
+        //if !player.usrIsAnyAfter { player.clearQueue() }
         ////////////////// PREVIOUS
         if indexPath.section == 0{
             if player.isShuffle{
@@ -156,18 +159,26 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
             }
         }
         ////////////////// USER/NEXT
-        if player.isUsrQueue{
+        if player.isUsrQueue && player.usrIsAnyAfter{
             if indexPath.section == 2{
                 player.playFromUsrQueue(index: player.usrIndex + indexPath.row + 1)
             }else if indexPath.section == 3{
                 if player.isShuffle{
-                    player.playFromShufQueue(index: player.shufIndex + indexPath.row + 1, new: true)
+                    player.playFromShufQueue(index: player.shufIndex + indexPath.row + player.usrIndex + 1, new: true)
                 }else{
-                    player.playFromDefQueue(index: player.defIndex + indexPath.row + 1, new: true)
+                    player.playFromDefQueue(index: player.defIndex + indexPath.row + player.usrIndex + 1, new: true)
                 }
             }
-            set = [0, 1, 2, 3]
-        }else{
+        }else if player.isUsrQueue && !player.usrIsAnyAfter {
+            if indexPath.section == 2{
+                if player.isShuffle{
+                    player.playFromShufQueue(index: player.shufIndex + indexPath.row + player.usrIndex + 1, new: true)
+                }else{
+                    player.playFromDefQueue(index: player.defIndex + indexPath.row + player.usrIndex + 1, new: true)
+                }
+            }
+        }
+        else{
             if indexPath.section == 2{
                 if player.isShuffle{
                     player.playFromShufQueue(index: player.shufIndex + indexPath.row + 1, new: true)
@@ -175,15 +186,17 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
                     player.playFromDefQueue(index: player.defIndex + indexPath.row + 1, new: true)
                 }
             }
-            set = [0, 1, 2]
         }
         player.play()
+        //if !player.usrIsAnyAfter { player.clearQueue() }
         setupQueueArray()
-        tableView.reloadSections(set, with: .fade)
+        //if !player.usrIsAnyAfter { player.clearQueue() }
+        tableView.reloadData()
         tableView.scrollToRow(at: IndexPath(row: 0, section: 1), at: .top, animated: true)
     }
 
     @IBAction func doneBtnPressed(_ sender: Any){
+        self.delegate?.backFromUpNext()
         dismiss(animated: true, completion: nil)
     }
     
@@ -220,7 +233,7 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
     }
     
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        if indexPath.section == 1{
+        if indexPath.section < 2{
             return false
         }else{
             return true
@@ -244,6 +257,15 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
                     }else if destinationIndexPath.section == 3{
                         player.shufQueue.insert(toMove, at: player.shufIndex + destinationIndexPath.row + 1)
                     }
+                }else{
+                    toMove = player.defQueue[player.defIndex - (tableView.numberOfRows(inSection: 0) - sourceIndexPath.row)]
+                    player.defQueue.remove(at: player.defIndex - (tableView.numberOfRows(inSection: 0) - sourceIndexPath.row))
+                    if destinationIndexPath.section == 2{
+                        player.usrQueue.insert(toMove, at: destinationIndexPath.row + 1)
+                        player.usrQueueCount! += 1
+                    }else if destinationIndexPath.section == 3{
+                        player.defQueue.insert(toMove, at: player.defIndex + destinationIndexPath.row + 1)
+                    }
                 }
                 ///////////USER
             }else if sourceIndexPath.section == 2{
@@ -251,9 +273,9 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
                     player.usrQueue.remove(at: sourceIndexPath.row + 1)
                 if destinationIndexPath.section == 2{
                     player.usrQueue.insert(toMove, at: destinationIndexPath.row + 1)
-                    player.usrQueueCount! += 1
                 }else if destinationIndexPath.section == 3{
                     player.defQueue.insert(toMove, at: player.defIndex + destinationIndexPath.row + 1)
+                    player.defQueueCount! += 1
                 }
                 ///////////?NEXT
             }else if sourceIndexPath.section == 3{
@@ -265,6 +287,7 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
                     }else if destinationIndexPath.section == 2{
                         player.usrQueue.insert(toMove, at: destinationIndexPath.row + 1)
                         player.usrQueueCount! += 1
+                        player.defQueueCount! -= 1
                     }
                 }else{
                     toMove = player.defQueue[player.defIndex + sourceIndexPath.row + 1]
@@ -274,6 +297,7 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
                     }else if destinationIndexPath.section == 2{
                         player.usrQueue.insert(toMove, at: destinationIndexPath.row + 1)
                         player.usrQueueCount! += 1
+                        player.defQueueCount! -= 1
                     }
                 }
             }
@@ -312,7 +336,7 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
     
     func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
         var newIndexPath: IndexPath
-        if proposedDestinationIndexPath.section == 0 || proposedDestinationIndexPath.section == 1{
+        if proposedDestinationIndexPath.section == 0 || proposedDestinationIndexPath.section == 1 {
             newIndexPath = IndexPath(row: 0, section: 2)
             return newIndexPath
         }else{
@@ -406,6 +430,7 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
             player.usrQueue.remove(at: player.usrIndex + indexPath.row + 1)
             player.usrQueueCount! -= 1
             sungs[2].songsIn.remove(at: indexPath.row)
+            if !player.usrIsAnyAfter { player.isUsrQueue = false }
         }else{
             if player.isShuffle{
                 player.shufQueue.remove(at: player.shufIndex + indexPath.row + 1)
@@ -419,6 +444,7 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
         }
         let iPath = IndexPath(row: indexPath.row, section: 2)
         tableView.deleteRows(at: [iPath], with: .fade)
+        //tableView.reloadData()
     }
     
     func deleteByTap3(_ tableView: UITableView, indexPath: IndexPath){

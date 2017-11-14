@@ -11,7 +11,7 @@ import AVFoundation
 import MediaPlayer
 import LNPopupController
 
-class NowPlayingVC: UIViewController, UIGestureRecognizerDelegate{
+class NowPlayingVC: UIViewController, UIGestureRecognizerDelegate, UpNextDelegate{
     
     var scale = 18
     
@@ -101,8 +101,6 @@ class NowPlayingVC: UIViewController, UIGestureRecognizerDelegate{
     
     override func viewWillDisappear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: false)
-        /*NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
-        timer.invalidate()*/
         UIApplication.shared.statusBarStyle = .default
     }
     
@@ -267,18 +265,25 @@ class NowPlayingVC: UIViewController, UIGestureRecognizerDelegate{
         let tbvc = storyboard?.instantiateViewController(withIdentifier: "GOGOGO") as! UITabBarController
         if let upvc = tbvc.viewControllers?[0] as? UpNextVC{
             upvc.style = passStyle
+            upvc.delegate = self
         }
         if let alvc = tbvc.viewControllers?[1] as? AlbumUpVC{
             alvc.receivedID = pickedID
             alvc.style = passStyle
+            alvc.delegate = self
         }
         if let arvc = tbvc.viewControllers?[2] as? ArtistUpVC{
             arvc.receivedID = pickedID
             arvc.style = passStyle
+            arvc.delegate = self
         }
         tbvc.modalPresentationStyle = .overCurrentContext
         tbvc.modalTransitionStyle = .coverVertical
         self.present(tbvc, animated: true, completion: nil)
+    }
+    
+    func backFromUpNext() {
+        self.outOfLabel.text = player.labelString(type: "out of")
     }
     
     @objc func tapOnLabel(_ sender: UITapGestureRecognizer){

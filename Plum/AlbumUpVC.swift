@@ -11,16 +11,18 @@ import MediaPlayer
 
 class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
     
-    var cellTypes = [Int]()
-    var songs = [MPMediaItem]()
-    var index: Int = 0
-    var previousIndex = 0
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var upperBar: UIView!
     @IBOutlet weak var shufBtn: UIButton!
     @IBOutlet weak var doneBtn: UIButton!
     @IBOutlet weak var albumLabel: UILabel!
     @IBOutlet weak var artistLabel: UILabel!
+    
+    var delegate: UpNextDelegate?
+    var cellTypes = [Int]()
+    var songs = [MPMediaItem]()
+    var index: Int = 0
+    var previousIndex = 0
     var receivedID: MPMediaEntityPersistentID!
     var style: viewLayout!
     var statusBarStyle: UIStatusBarStyle!
@@ -48,6 +50,7 @@ class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
     }
     
     @IBAction func doneBtnPressed(_ sender: Any){
+        self.delegate?.backFromUpNext()
         dismiss(animated: true, completion: nil)
     }
     

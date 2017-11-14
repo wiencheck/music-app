@@ -28,7 +28,11 @@ class SongCell: UITableViewCell {
     
     func setup(item: MPMediaItem){
         titleLabel.text = item.title
-        artworkView.image = item.artwork?.image(at: artworkView.bounds.size)
+        if let art = item.artwork {
+            artworkView.image = art.image(at: CGSize(width: 30, height: 30))
+        }else{
+            artworkView.image = #imageLiteral(resourceName: "no_music")
+        }
         /*let artistLetters = (item.albumArtist?.characters.count)! + 1
         let albumLetters = item.albumTitle?.characters.count
         let artAl = "\(item.albumArtist ?? "Unknown artist") \(item.albumTitle ?? "Unknown album")"
@@ -38,7 +42,11 @@ class SongCell: UITableViewCell {
     
     func artSetup(item: MPMediaItem){
         titleLabel.text = item.title
-        artworkView.image = item.artwork?.image(at: CGSize(width: 10, height: 10))
+        if let art = item.artwork {
+            artworkView.image = art.image(at: CGSize(width: 30, height: 30))
+        }else{
+            artworkView.image = #imageLiteral(resourceName: "no_music")
+        }
         artAlLabel.textColor = .gray
         artAlLabel.text = item.albumTitle ?? "Unknown album"
     }

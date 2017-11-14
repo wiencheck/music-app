@@ -36,20 +36,7 @@ class SongInAlbumCell: UITableViewCell {
         titleLabel.text = item.title
         if GlobalSettings.ratingMode{
             durationLabel.textColor = GlobalSettings.theme
-            switch item.rating{
-            case 1:
-                durationLabel.text = "★☆☆☆☆"
-            case 2:
-                durationLabel.text = "★★☆☆☆"
-            case 3:
-                durationLabel.text = "★★★☆☆"
-            case 4:
-                durationLabel.text = "★★★★☆"
-            case 5:
-                durationLabel.text = "★★★★★"
-            default:
-                durationLabel.text = "☆☆☆☆☆"
-            }
+            durationLabel.text = labelFromRating(item: item)
         }else{
             durationLabel.text = "\(item.playbackDuration.calculateFromTimeInterval().minute):\(item.playbackDuration.calculateFromTimeInterval().second)"
         }

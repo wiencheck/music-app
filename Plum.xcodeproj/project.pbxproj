@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3803CD541FBB5B1A009F5EA8 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3803CD531FBB5B1A009F5EA8 /* SearchCell.swift */; };
 		380C2EBA1FB1AE6400A6731B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 380C2EB91FB1AE6400A6731B /* AudioToolbox.framework */; };
 		38121E9D1FA07A1700C2A3BD /* AlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38121E9C1FA07A1700C2A3BD /* AlbumCell.swift */; };
 		38121E9F1FA07CBE00C2A3BD /* AlbumVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38121E9E1FA07CBE00C2A3BD /* AlbumVC.swift */; };
@@ -76,6 +77,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3803CD531FBB5B1A009F5EA8 /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 		380C2EB91FB1AE6400A6731B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		38121E9C1FA07A1700C2A3BD /* AlbumCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumCell.swift; sourceTree = "<group>"; };
 		38121E9E1FA07CBE00C2A3BD /* AlbumVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumVC.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 				385825511FA33C8600697186 /* ArtistUpCell.swift */,
 				38FFA1371F83DD950079FF4B /* ArtistCell.swift */,
 				38D142561FB367CF003F08F5 /* SearchHeader.swift */,
+				3803CD531FBB5B1A009F5EA8 /* SearchCell.swift */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -411,6 +414,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				38E68AC31F28C17500BFF4E2 /* NowPlayingVC.swift in Sources */,
+				3803CD541FBB5B1A009F5EA8 /* SearchCell.swift in Sources */,
 				38121EA31FA0856400C2A3BD /* AlbumsCollectionCell.swift in Sources */,
 				38E729521F2F422900F35780 /* SongCell.swift in Sources */,
 				38FFA1381F83DD950079FF4B /* ArtistCell.swift in Sources */,
