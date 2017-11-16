@@ -18,7 +18,6 @@ class NowPlayingVC: UIViewController, UIGestureRecognizerDelegate, UpNextDelegat
     let player = Plum.shared
     @IBOutlet weak var volView: UIView!
     var mpVolView: MPVolumeView!
-    var passStyle: viewLayout!
     @IBOutlet weak var artworkImage: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var detailLabel: UILabel!
@@ -46,6 +45,7 @@ class NowPlayingVC: UIViewController, UIGestureRecognizerDelegate, UpNextDelegat
     var doubleTapArt: UITapGestureRecognizer!
     var doubleTapLyr: UITapGestureRecognizer!
     var colors: UIImageColors!
+    var lightStyle: Bool!
 
     var lightBar: Bool!
     let pauseB = #imageLiteral(resourceName: "pause-butt")
@@ -105,37 +105,39 @@ class NowPlayingVC: UIViewController, UIGestureRecognizerDelegate, UpNextDelegat
     }
     
     @objc func updateUI(){
-        if(player.currentItem != nil){
-            titleLabel.text = player.labelString(type: "title")
-            detailLabel.text = player.labelString(type: "detail")
-            image = player.currentItem?.artwork?.image(at: artworkImage.bounds.size) ?? #imageLiteral(resourceName: "no_music")
-        }else{
-            titleLabel.text = "Choose a song"
-            detailLabel.text = "to play"
-            image = #imageLiteral(resourceName: "no_music")
-        }
-        if(player.isPlayin()){
-            playbackBtn.setImage(templates[2], for: .normal)
-        }else{
-            playbackBtn.setImage(templates[1], for: .normal)
-        }
-        artworkImage.image = image
-        magic(albumArt: image)
-        outOfLabel.text = player.labelString(type: "out of")
-        timeSlider.setValue(0, animated: false)
-        timeSlider.maximumValue = Float(player.player.duration)
-        showRating()
-        if player.currentItem != nil{
-            let ass = AVAsset(url: (player.currentItem?.assetURL)!)
-            let lyr = ass.lyrics
-            if lyr?.characters.count == 0{
-                lyricsTextView.text = "\n\n\n\n\n\nNo lyrics available :(\n\nYou can add them in iTunes\non your Mac or PC\n"
+        DispatchQueue.main.async(){
+            if(self.player.currentItem != nil){
+                self.titleLabel.text = self.player.labelString(type: "title")
+                self.detailLabel.text = self.player.labelString(type: "detail")
+                self.image = self.player.currentItem?.artwork?.image(at: self.artworkImage.bounds.size) ?? #imageLiteral(resourceName: "no_music")
             }else{
-                lyricsTextView.text = lyr
+                self.titleLabel.text = "Choose a song"
+                self.detailLabel.text = "to play"
+                self.image = #imageLiteral(resourceName: "no_music")
             }
+            if(self.player.isPlayin()){
+                self.playbackBtn.setImage(self.templates[2], for: .normal)
+            }else{
+                self.playbackBtn.setImage(self.templates[1], for: .normal)
+            }
+            self.artworkImage.image = self.image
+            self.magic(albumArt: self.image)
+            self.outOfLabel.text = self.player.labelString(type: "out of")
+            self.timeSlider.setValue(0, animated: false)
+            self.timeSlider.maximumValue = Float(self.player.player.duration)
+            self.showRating()
+            if self.player.currentItem != nil{
+                let ass = AVAsset(url: (self.player.currentItem?.assetURL)!)
+                if let lyr = ass.lyrics {
+                    self.lyricsTextView.text = lyr
+                }else{
+                    self.lyricsTextView.text = "\n\n\n\n\n\nNo lyrics available :(\n\nYou can add them in iTunes\non your Mac or PC\n"
+                }
+            }
+            self.lyricsTextView.textColor = .white
+            self.lyricsTextView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
+            
         }
-        lyricsTextView.textColor = .white
-        lyricsTextView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
     }
     @IBAction func playBackBtn(_ sender: Any) {
         if(player.isPlayin()){
@@ -214,7 +216,6 @@ class NowPlayingVC: UIViewController, UIGestureRecognizerDelegate, UpNextDelegat
             minVolImg.tintColor = .white
             maxVolImg.tintColor = .white
             mpVolView.tintColor = colors.primaryColor
-            passStyle = viewLayout(prim: colors.primaryColor, sec: colors.detailColor, back: colors.backgroundColor, cell: .white, dark: true)
         }else{
             UIApplication.shared.statusBarStyle = .default
             lightBar = false
@@ -224,7 +225,6 @@ class NowPlayingVC: UIViewController, UIGestureRecognizerDelegate, UpNextDelegat
             minVolImg.tintColor = colors.primaryColor
             maxVolImg.tintColor = colors.primaryColor
             mpVolView.tintColor = colors.detailColor
-            passStyle = viewLayout(prim: colors.primaryColor, sec: colors.detailColor, back: colors.backgroundColor, cell: .black, dark: false)
         }
         if(player.isShuffle){
             shufBtn.setTitle("Shuffle on", for: .normal)
@@ -236,6 +236,11 @@ class NowPlayingVC: UIViewController, UIGestureRecognizerDelegate, UpNextDelegat
             shufBtn.setTitleColor(colors.primaryColor, for: .normal)
             //shufBtn.tintColor = colors.primaryColor
             shufView.backgroundColor = .clear
+        }
+        if colors.backgroundColor.isDarkColor {
+            lightStyle = false
+        }else{
+            lightStyle = true
         }
     }
     
@@ -264,17 +269,17 @@ class NowPlayingVC: UIViewController, UIGestureRecognizerDelegate, UpNextDelegat
         pickedID = player.currentItem?.albumPersistentID
         let tbvc = storyboard?.instantiateViewController(withIdentifier: "GOGOGO") as! UITabBarController
         if let upvc = tbvc.viewControllers?[0] as? UpNextVC{
-            upvc.style = passStyle
+            upvc.lightTheme = lightStyle
             upvc.delegate = self
         }
         if let alvc = tbvc.viewControllers?[1] as? AlbumUpVC{
             alvc.receivedID = pickedID
-            alvc.style = passStyle
+            alvc.lightTheme = lightStyle
             alvc.delegate = self
         }
         if let arvc = tbvc.viewControllers?[2] as? ArtistUpVC{
             arvc.receivedID = pickedID
-            arvc.style = passStyle
+            arvc.lightTheme = lightStyle
             arvc.delegate = self
         }
         tbvc.modalPresentationStyle = .overCurrentContext

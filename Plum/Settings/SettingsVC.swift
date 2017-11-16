@@ -8,6 +8,7 @@
 
 import UIKit
 import MediaPlayer
+import UserNotifications
 
 protocol SettingsDelegate {
     func enableRatingMode(enable: Bool)
@@ -27,17 +28,20 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     @IBOutlet weak var currentMiniPlayer: UILabel!
     @IBOutlet weak var indexVisibleSwitch: UISwitch!
     @IBOutlet weak var progressBar: UIProgressView!
+    @IBOutlet weak var lyricsSwitch: UISwitch!
+    @IBOutlet weak var colorView: UIView!
     var colorFlowStatus: Bool!
     var artistsGridStatus: Bool!
     var albumsGridStatus: Bool!
     var spotlightStatus: Bool!
     var playlistsGridStatus: Bool!
     var ratingStatus: Bool!
+    var lyricsStatus: Bool!
     var timer: Timer!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.tintColor = GlobalSettings.theme
+        self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateProgressBar), userInfo: nil, repeats: true)
         tabBarController?.delegate = self
         musicQuery.shared.delegate = self
@@ -48,7 +52,8 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.tabBarController?.tabBar.tintColor = GlobalSettings.theme
+        reload()
+        self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
     }
     
     func handleSwitches(){
@@ -58,6 +63,7 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
         playlistsGridSwitch.addTarget(self, action: #selector(playlistsGrid(_:)), for: .valueChanged)
         spotlightSwitch.addTarget(self, action: #selector(spotlight(_:)), for: .valueChanged)
         ratingSwitch.addTarget(self, action: #selector(rating(_:)), for: .valueChanged)
+        lyricsSwitch.addTarget(self, action: #selector(lyricsSwitched(_:)), for: .valueChanged)
     }
     
     @objc func colorSwitched(_ sender: UISwitch){
@@ -85,24 +91,46 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     }
     
     @objc func rating(_ sender: UISwitch){
-        /*if Plum.shared.isPlayin(){
-            let alert = UIAlertController(title: "Confirm", message: "You will have to restart the app for this feature to work. This will get fixed in near future.", preferredStyle: .alert)
-            let yesAction = UIAlertAction(title: "No prob!", style: .default, handler: {(action) in
-                self.ratingStatus = false
-            })
-            let noAction = UIAlertAction(title: "Let me finish the song first", style: .cancel, handler: {(action) in
-                self.ratingStatus = true
-            })
-            alert.addAction(yesAction)
-            alert.addAction(noAction)
-            present(alert, animated: true, completion: nil)
-        }else{
-            ratingStatus = sender.isOn
-        }*/
         ratingStatus = sender.isOn
         GlobalSettings.changeRatingMode(ratingStatus)
         ratingSwitch.isOn = ratingStatus
         defaults.set(ratingStatus, forKey: "ratingMode")
+        if ratingStatus {
+            lyricsStatus = false
+            lyricsSwitch.isOn = false
+            GlobalSettings.changeLyrics(false)
+        }
+    }
+    
+    @objc func lyricsSwitched(_ sender: UISwitch) {
+        if sender.isOn{
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert], completionHandler: { enabled, error in
+                if !enabled {
+                    self.notificationPermissionError(error)
+                }
+            })
+        }
+        self.lyricsStatus = sender.isOn
+        if lyricsStatus {
+            ratingStatus = false
+            ratingSwitch.isOn = false
+            GlobalSettings.changeRatingMode(false)
+        }
+        GlobalSettings.changeLyrics(sender.isOn)
+    }
+    
+    func notificationPermissionError(_ error: Error?) {
+        if error != nil {
+            print(error!)
+        }
+        let alert = UIAlertController(title: "Error", message: "You have to allow notifications for this feature to work. Fix in settings?", preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK Computer", style: .default, handler: nil)
+        alert.addAction(action)
+        present(alert, animated: true) {
+            self.lyricsStatus = false
+            self.lyricsSwitch.isOn = false
+            GlobalSettings.changeLyrics(false)
+        }
     }
     
     /////////////////////////////////////////
@@ -200,6 +228,10 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
                 currentMiniPlayer.text = "Classic"
             }
         }
+        if let lyr = defaults.value(forKey: "lyrics") as? Bool{
+            lyricsStatus = lyr
+            lyricsSwitch.isOn = lyr
+        }
     }
     
     func tabBarController(_ tabBarController: UITabBarController, didEndCustomizing viewControllers: [UIViewController], changed: Bool) {
@@ -225,6 +257,8 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
                 explainStyle()
             }else if indexPath.row == 3{
                 explainMiniPlayer()
+            }else if indexPath.row == 5{
+                performSegue(withIdentifier: "colors", sender: nil)
             }
         }else if indexPath.section == 1{
             if indexPath.row == 0{
@@ -248,7 +282,6 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
             if musicQuery.shared.hasLibraryChanged(){
                 spotlightButton.isEnabled = true
                 spotlightButton.setTitle("Index content", for: .normal)
-                spotlightButton.setTitleColor(.blue, for: .normal)
             }else{
                 if spotlightStatus && spotlightSwitch.isOn{
                     spotlightButton.isEnabled = false
@@ -259,6 +292,11 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
             spotlightButton.setTitle("Enable spotlight", for: .disabled)
             spotlightButton.isEnabled = false
         }
+        progressBar.tintColor = GlobalSettings.tint.color
+        colorView.backgroundColor = GlobalSettings.tint.color
+        UISwitch.appearance().tintColor = GlobalSettings.tint.color
+        UISwitch.appearance().onTintColor = GlobalSettings.tint.color
+        spotlightButton.setTitleColor(GlobalSettings.tint.color, for: .normal)
     }
     
     func explainColorFlow(){
@@ -299,10 +337,14 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
         let alert = UIAlertController(title: "Time for decision", message: "Modern: iOS 10 music app style\n\nClassic: iOS 9 music app style", preferredStyle: .actionSheet)
         let dark = UIAlertAction(title: "Modern", style: .default, handler: {(action) in
             GlobalSettings.changePopupStyle(.modern)
+            let tab = self.tabBarController as! PlumTabBarController
+            tab.reloadPopup(false)
             self.reload()
         })
         let light = UIAlertAction(title: "Classic", style: .default, handler: {(action) in
             GlobalSettings.changePopupStyle(.classic)
+            let tab = self.tabBarController as! PlumTabBarController
+            tab.reloadPopup(false)
             self.reload()
         })
         alert.addAction(light)

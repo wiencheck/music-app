@@ -14,7 +14,11 @@ class SearchHeader: UITableViewCell {
     @IBOutlet weak var label: UILabel!
     var callback: ((SearchHeader) -> ())?
     func setup(title: String, count: Int){
-        label.text = "\(count) \(title)"
+        if count > 0 {
+            label.text = "\(count) \(title)"
+        }else{
+            label.text = "\(title)"
+        }
         if count > 3{
             moreBtn.isHidden = false
             moreBtn.setTitle("show more", for: .normal)

@@ -28,7 +28,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.tintColor = GlobalSettings.theme
+        self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         tableView.delegate = self
         tableView.dataSource = self
         setup()
@@ -54,7 +54,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.tabBarController?.tabBar.tintColor = GlobalSettings.theme
+        self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

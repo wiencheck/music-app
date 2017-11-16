@@ -24,7 +24,7 @@ class TableIndexView: UIView {
         for i in 0..<indexes.count {
             let label = UILabel(frame: CGRect(x: 0, y: i * 20, width: 20, height: 20))
             label.text = indexes[i]
-            label.textColor = GlobalSettings.theme
+            label.textColor = GlobalSettings.tint.color
             label.font = UIFont.systemFont(ofSize: 12)
             label.textAlignment = .center
             label.translatesAutoresizingMaskIntoConstraints = false
@@ -118,7 +118,7 @@ class CollectionIndexView: UIView {
             label.font = UIFont.systemFont(ofSize: 12)
             label.textAlignment = .center
             label.translatesAutoresizingMaskIntoConstraints = false
-            label.textColor = GlobalSettings.theme
+            label.textColor = GlobalSettings.tint.color
             addSubview(label)
             views["label\(i)"] = label
             

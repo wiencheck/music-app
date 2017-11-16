@@ -11,10 +11,13 @@ import UIKit
 import MediaPlayer
 import AVFoundation
 import AVKit
+import UserNotifications
 
 class Plum: NSObject, AVAudioPlayerDelegate{
     static let shared = Plum()
     let infoCC = MPNowPlayingInfoCenter.default()
+    var inBackground = false
+    var lyricsPosted = false
     var initialized = false
     var session = false
     var delegated = false
@@ -286,6 +289,7 @@ class Plum: NSObject, AVAudioPlayerDelegate{
                 clearQueue()
                 }
             }
+        if inBackground && GlobalSettings.lyrics { postLyrics() }
         NotificationCenter.default.post(name: Plum.playBackStateChanged, object: nil, userInfo: ["Artist": "Title"])
         //print("nextnext")
     }
@@ -712,5 +716,79 @@ class Plum: NSObject, AVAudioPlayerDelegate{
             }
         }
         return (prev, next)
+    }
+    
+    /*func registerforDeviceLockNotification() {
+        //Screen lock notifications
+        CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),     //center
+            Unmanaged.passUnretained(self).toOpaque(),     // observer
+            displayStatusChangedCallback,     // callback
+            "com.apple.springboard.lockcomplete" as CFString,     // event name
+            nil,     // object
+            .deliverImmediately)
+        CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),     //center
+            Unmanaged.passUnretained(self).toOpaque(),     // observer
+            displayStatusChangedCallback,     // callback
+            "com.apple.springboard.lockstate" as CFString,    // event name
+            nil,     // object
+            .deliverImmediately)
+    }
+    
+    func unRegisterLockNotification() {
+        CFNotificationCenterRemoveObserver(CFNotificationCenterGetLocalCenter(),
+                                           Unmanaged.passUnretained(self).toOpaque(),
+                                           nil,
+                                           nil)
+    }
+    
+    private let displayStatusChangedCallback: CFNotificationCallback = { _, cfObserver, cfName, _, _ in
+        guard let lockState = cfName?.rawValue as String? else {
+            return
+        }
+        
+        let catcher = Unmanaged<Plum>.fromOpaque(UnsafeRawPointer(OpaquePointer(cfObserver)!)).takeUnretainedValue()
+        catcher.displayStatusChanged(lockState)
+    }
+    
+    private func displayStatusChanged(_ lockState: String) {
+        // the "com.apple.springboard.lockcomplete" notification will always come after the "com.apple.springboard.lockstate" notification
+        print("Darwin notification NAME = \(lockState)")
+        if (lockState == "com.apple.springboard.lockcomplete") {
+            deviceLocked = true
+            if deviceLocked && GlobalSettings.lyrics { postLyrics() }
+            postLyrics()
+        }else{
+            print("unlocked")
+        }
+    }*/
+    
+    func postLyrics() {
+        if currentItem != nil {
+            let content = UNMutableNotificationContent()
+            let ass = AVAsset(url: (currentItem?.assetURL)!)
+            if let lyr = ass.lyrics {
+                print(lyr.isEmpty)
+                if !lyr.isEmpty {
+                    content.title = currentItem?.title ?? "Unknown title"
+                    content.subtitle = currentItem?.artist ?? "Unknown artist"
+                    content.body = "\n" + lyr
+                    let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0.1, repeats: false)
+                    let request = UNNotificationRequest(identifier: "lyricsOnLS", content: content, trigger: trigger)
+                    UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
+                        if error != nil {
+                            print("Blad przy pokazywaniu tekstu")
+                        }else{
+                            self.lyricsPosted = true
+                        }
+                    })
+                }else{
+                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["lyricsOnLS"])
+                    lyricsPosted = false
+                }
+            }else{
+                UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: ["lyricsOnLS"])
+                lyricsPosted = false
+            }
+        }
     }
 }

@@ -22,27 +22,14 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.tintColor = GlobalSettings.theme
-        self.tabBar.tintColor = GlobalSettings.theme
-        self.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: GlobalSettings.theme], for: UIControlState.normal)
+        self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
+        self.tabBar.tintColor = GlobalSettings.tint.color
+        self.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color], for: UIControlState.normal)
         self.tabBar.unselectedItemTintColor = UIColor.gray
         delegate = self
-        if GlobalSettings.popupStyle == .classic {
-            self.popupBar.barStyle = .compact
-            self.popupInteractionStyle = .drag
-            self.popupBar.progressViewStyle = .bottom
-            self.popupContentView.popupCloseButtonStyle = .none
-            self.popupBar.popupOpenGestureRecognizer.numberOfTapsRequired = 2
-        } else {
-            self.popupBar.barStyle = .prominent
-            self.popupInteractionStyle = .snap
-            self.popupBar.progressViewStyle = .bottom
-            self.popupContentView.popupCloseButtonStyle = .none
-            self.popupBar.popupOpenGestureRecognizer.numberOfTapsRequired = 2
-        }
         NotificationCenter.default.addObserver(self, selector: #selector(updatePopup), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
         nextBtn = UIBarButtonItem(barButtonSystemItem: .fastForward, target: self, action: #selector(nextBtnPressed))
-        updatePopup()
+        reloadPopup(true)
         //loadAllViews()
         /*if let firstNav = self.viewControllers?.first as? UINavigationController{
             if let first = firstNav.viewControllers.first as? SearchVC{
@@ -106,6 +93,32 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
             } else {
                 let _ = $0.view.description
             }
+        }
+    }
+    
+    func reloadPopup(_ initial: Bool) {
+        if GlobalSettings.popupStyle == .classic {
+            self.popupBar.barStyle = .compact
+            self.popupInteractionStyle = .drag
+            self.popupBar.progressViewStyle = .bottom
+            self.popupContentView.popupCloseButtonStyle = .none
+            self.popupBar.popupOpenGestureRecognizer.numberOfTapsRequired = 2
+            print("classic")
+        } else {
+            self.popupBar.barStyle = .prominent
+            self.popupInteractionStyle = .snap
+            self.popupBar.progressViewStyle = .bottom
+            self.popupContentView.popupCloseButtonStyle = .none
+            self.popupBar.popupOpenGestureRecognizer.numberOfTapsRequired = 2
+            print("modern")
+        }
+        if !initial {
+            self.dismissPopupBar(animated: true, completion: {
+                self.updatePopup()
+            })
+        }else{
+            print("initial")
+            updatePopup()
         }
     }
     

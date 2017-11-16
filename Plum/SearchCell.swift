@@ -26,7 +26,7 @@ class SearchCell: UITableViewCell {
         }
         title.text = song.title ?? "Unknown title"
         if GlobalSettings.ratingMode {
-            detail.textColor = GlobalSettings.theme
+            detail.textColor = GlobalSettings.tint.color
             detail.text = "\(song.albumArtist ?? "Unknown artist") - \(labelFromRating(item: song))"
         }else{
             detail.text = "\(song.playbackDuration.calculateFromTimeInterval().minute):\(song.playbackDuration.calculateFromTimeInterval().second) - \(song.albumTitle ?? "Unknown album")"

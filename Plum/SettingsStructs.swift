@@ -16,6 +16,17 @@ struct UpNextSettings {
     var upperBarColored = false
 }
 
+enum styles {
+    case modern
+    case classic
+}
+
+enum Theme: String {
+    case light = "light"
+    case dark = "dark"
+    case adaptive = "adaptive"
+}
+
 struct GlobalSettings{
     static var remote: RemoteCommandManager!
     static let defaults = UserDefaults.standard
@@ -28,9 +39,26 @@ struct GlobalSettings{
         defaults.set(t, forKey: "ratingMode")
     }
     
-    static var theme = UIColor.appleRed
-    static func changeTheme(_ t: UIColor){
+    static var tint: Color!
+    static func changeTint(_ t: Color){
+        self.tint = t
+        defaults.set(t.color.components.red, forKey: "tintRed")
+        defaults.set(t.color.components.green, forKey: "tintGreen")
+        defaults.set(t.color.components.blue, forKey: "tintBlue")
+        defaults.set(t.color.components.alpha, forKey: "tintAlpha")
+        defaults.set(t.name, forKey: "tintName")
+    }
+    
+    static var theme: Theme = .adaptive
+    static func changeTheme(_ t: Theme) {
         self.theme = t
+        defaults.set(t.rawValue, forKey: "theme")
+    }
+    
+    static var blur: Bool = false
+    static func changeBlur(_ t: Bool) {
+        self.blur = t
+        defaults.set(t, forKey: "blur")
     }
     
     static var alphabeticalSort = false
@@ -43,10 +71,7 @@ struct GlobalSettings{
         self.indexVisible = t
         defaults.set(t, forKey: "indexVisible")
     }
-    enum styles {
-        case modern
-        case classic
-    }
+    
     static var popupStyle: styles = .classic
     static func changePopupStyle(_ t: styles) {
         self.popupStyle = t
@@ -84,5 +109,26 @@ struct GlobalSettings{
     static func changeCompact(_ t: Bool){
         self.compact = t
         defaults.set(t, forKey: "compact")
+    }
+    enum Land: String {
+        case artist = "artist"
+        case album = "album"
+        case songs = "songs"
+    }
+    static var landIn: Land = .album
+    static func changeLanding(_ t: Land) {
+        self.landIn = t
+        defaults.set(t.rawValue, forKey: "landing")
+    }
+    static var lyrics = false
+    static func changeLyrics(_ t: Bool) {
+        self.lyrics = t
+        self.remote.switchLyricsCommand(t)
+        /*if t {
+            Plum.shared.registerforDeviceLockNotification()
+        }else{
+            Plum.shared.unRegisterLockNotification()
+        }*/
+        defaults.set(t, forKey: "lyrics")
     }
 }

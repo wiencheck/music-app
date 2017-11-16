@@ -18,21 +18,6 @@ struct Songs{
     var songsIn: [MPMediaItem]
 }
 
-struct viewLayout{
-    let upperBar: UIColor
-    let mainLabel: UIColor
-    let accessories: UIColor
-    let cellText: UIColor
-    var dark: Bool
-    init(prim: UIColor, sec: UIColor, back: UIColor, cell: UIColor, dark: Bool){
-        upperBar = back
-        mainLabel = prim
-        accessories = sec
-        cellText = cell
-        self.dark = dark
-    }
-}
-
 class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MPMediaPickerControllerDelegate{
     
     @IBOutlet weak var tableView: UITableView!
@@ -43,7 +28,8 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
     
     var delegate: UpNextDelegate?
     var mediaPicker: MPMediaPickerController!
-    var style: viewLayout!
+    var lightTheme: Bool!
+    var fxView: UIVisualEffectView!
     var previousStart: Int!
     var previousMeta: Int!
     var nextStart: Int!
@@ -57,6 +43,7 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
     var separatorColor: UIColor!
     var settings = UpNextSettings()
     var set: IndexSet!
+    var headers = [UIView]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,7 +53,7 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
         separatorColor = tableView.separatorColor
         self.view.backgroundColor = .clear
         self.tableView.backgroundColor = .clear
-        loadSettings()
+        loadHeaders()
         setColors()
         self.tableView.allowsSelectionDuringEditing = true
         self.tableView.setEditing(true, animated: false)
@@ -100,17 +87,26 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
         return 58
     }
 
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sungs[section].sectionName
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if sungs.count == 4{
+            return headers[section]
+        }else{
+            (headers[2], headers[3]) = (headers[3], headers[2])
+            return headers[section]
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 27
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! QueueCell
         let item = sungs[indexPath.section].songsIn[indexPath.row]
         cell.setup(item: item)
-        if style.dark{
+        if GlobalSettings.theme == .dark || GlobalSettings.theme == .adaptive && !lightTheme{
             if indexPath.section == 1{
-                cell.backgroundColor = UIColor.purple.withAlphaComponent(0.5)
+                cell.backgroundColor = GlobalSettings.tint.color.withAlphaComponent(0.5)
                 cell.artist.textColor = .white
                 cell.title.textColor = .white
             }
@@ -121,7 +117,7 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
             }
         }else{
             if indexPath.section == 1{
-                cell.backgroundColor = UIColor.purple.withAlphaComponent(0.3)
+                cell.backgroundColor = GlobalSettings.tint.color.withAlphaComponent(0.3)
                 cell.artist.textColor = .white
                 cell.title.textColor = .white
             }
@@ -382,7 +378,6 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
             }
         }
         sungs[0] = Songs(sectionName: "Previous", songsIn: tmp)
-        tmp.removeAll()
         
         //////////////////////////////// NEXT
         
@@ -460,53 +455,39 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
     }
     
     func setColors(){
-        if settings.upperBarColored{
-            upperBar.backgroundColor = style.upperBar
-            mainLabel.textColor = style.mainLabel
-            doneBtn.setTitleColor(style.accessories, for: .normal)
-            addBtn.setTitleColor(style.accessories, for: .normal)
-        }else{
-            upperBar.backgroundColor = .white
-            mainLabel.textColor = .black
-            doneBtn.setTitleColor(GlobalSettings.theme, for: .normal)
-            addBtn.setTitleColor(GlobalSettings.theme, for: .normal)
-            UIApplication.shared.statusBarStyle = .default
-        }
-        var fxView: UIVisualEffectView!
-        if settings.adaptiveTableView{
-            if style.dark{
-                fxView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
-                UIApplication.shared.statusBarStyle = .lightContent
-                self.tableView.separatorColor = .black
-            }else{
-                fxView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
-                UIApplication.shared.statusBarStyle = .default
-                self.tableView.separatorColor = separatorColor
+        if GlobalSettings.theme == .dark {
+            dark()
+        }else if GlobalSettings.theme == .light {
+            light()
+        }else if GlobalSettings.theme == .adaptive {
+            if lightTheme {
+                light()
+            }else {
+                dark()
             }
-        }else if settings.alwaysBlack{
-            fxView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
-            self.tableView.separatorColor = .black
-            UIApplication.shared.statusBarStyle = .lightContent
-        }else if settings.alwaysLight{
-            fxView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
-            self.tableView.separatorColor = separatorColor
-            UIApplication.shared.statusBarStyle = .default
         }
         fxView.frame = self.view.frame
         self.tableView.backgroundView = fxView
     }
     
-    func loadSettings(){
-        settings.alwaysLight = true
-        if settings.alwaysLight{
-            style.dark = false
-        }
-        settings.upperBarColored = false
-        settings.alwaysBlack = false
-        if settings.alwaysBlack{
-            style.dark = true
-        }
-        settings.adaptiveTableView = false
+    func dark() {
+        upperBar.backgroundColor = UIColor(red: 0.0156862745098039, green: 0.0156862745098039, blue: 0.0156862745098039, alpha: 1.0)
+        mainLabel.textColor = .white
+        doneBtn.setTitleColor(.white, for: .normal)
+        addBtn.setTitleColor(.white, for: .normal)
+        UIApplication.shared.statusBarStyle = .lightContent
+        fxView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+        self.tableView.separatorColor = .black
+    }
+    
+    func light() {
+        upperBar.backgroundColor = .white
+        mainLabel.textColor = .black
+        doneBtn.setTitleColor(.black, for: .normal)
+        addBtn.setTitleColor(.black, for: .normal)
+        UIApplication.shared.statusBarStyle = .default
+        fxView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
+        self.tableView.separatorColor = separatorColor
     }
     
     func presentPicker() {
@@ -530,6 +511,54 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
     
     func mediaPickerDidCancel(_ mediaPicker: MPMediaPickerController) {
         mediaPicker.dismiss(animated: true, completion: nil)
+    }
+    
+    func loadHeaders() {
+        var cell = tableView.dequeueReusableCell(withIdentifier: "header") as! SearchHeader
+        var v = UIView(frame: (cell.frame))
+        cell.setup(title: "Previous", count: 0)
+        if lightTheme {
+            cell.backgroundColor = UIColor.white
+            cell.label.textColor = .black
+        }else{
+            cell.backgroundColor = UIColor.black
+            cell.label.textColor = .white
+        }
+        v = cell.contentView
+        headers.append(v)
+        cell = tableView.dequeueReusableCell(withIdentifier: "header") as! SearchHeader
+        cell.setup(title: "Now Playing", count: 0)
+        if lightTheme {
+            cell.backgroundColor = UIColor.white
+            cell.label.textColor = .black
+        }else{
+            cell.backgroundColor = UIColor.black
+            cell.label.textColor = .white
+        }
+        v = cell.contentView
+        headers.append(v)
+        cell = tableView.dequeueReusableCell(withIdentifier: "header") as! SearchHeader
+        cell.setup(title: "User Queue", count: 0)
+        if lightTheme {
+            cell.backgroundColor = UIColor.white
+            cell.label.textColor = .black
+        }else{
+            cell.backgroundColor = UIColor.black
+            cell.label.textColor = .white
+        }
+        v = cell.contentView
+        headers.append(v)
+        cell = tableView.dequeueReusableCell(withIdentifier: "header") as! SearchHeader
+        cell.setup(title: "Next", count: 0)
+        if lightTheme {
+            cell.backgroundColor = UIColor.white
+            cell.label.textColor = .black
+        }else{
+            cell.backgroundColor = UIColor.black
+            cell.label.textColor = .white
+        }
+        v = cell.contentView
+        headers.append(v)
     }
     
 }

@@ -10,6 +10,7 @@ import UIKit
 import AVFoundation
 import MediaPlayer
 import CoreSpotlight
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -37,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         readSettings()
         UITabBar.appearance().tintColor = .gray
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.gray], for: .normal)
-        UIBarButtonItem.appearance().tintColor = GlobalSettings.theme
+        UIBarButtonItem.appearance().tintColor = GlobalSettings.tint.color
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
 
         // Getting access to your tabBarController
@@ -68,7 +69,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if let uniqueIdentifier = userActivity.userInfo?[CSSearchableItemActivityIdentifier] as? String {
                 let id = MPMediaEntityPersistentID(uniqueIdentifier)
                 let item = musicQuery.shared.songForID(ID: id!)
-                Plum.shared.landInAlbum(item, new: true)
+                if let lan = defaults.value(forKey: "landing") as? String {
+                    switch lan{
+                    case "artist":
+                        Plum.shared.landInArtist(item, new: true)
+                    case "album":
+                        Plum.shared.landInAlbum(item, new: true)
+                    case "songs":
+                        print("Wyladuje w piosenkach")
+                    default:
+                        Plum.shared.landInAlbum(item, new: true)
+                    }
+                }else{
+                    Plum.shared.landInAlbum(item, new: true)
+                }
                 Plum.shared.play()
             }
         }
@@ -83,10 +97,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        if GlobalSettings.lyrics {
+            Plum.shared.postLyrics()
+        }
+        Plum.shared.inBackground = true
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        Plum.shared.inBackground = false
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -95,6 +114,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: ["lyricsOnLS"])
     }
     
     fileprivate func authorized() {
@@ -123,6 +143,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func setInitialSettings(){
         if defaults.value(forKey: "colorFlow") == nil{
             defaults.set(true, forKey: "colorFlow")
+        }
+        if defaults.value(forKey: "tintName") == nil{
+            defaults.set("Plum purple", forKey: "tintName")
+            defaults.set(0.21, forKey: "tintRed")
+            defaults.set(0.24, forKey: "tintGreen")
+            defaults.set(0.61, forKey: "tintBlue")
+            defaults.set(1.0, forKey: "tintAlpha")
         }
         if defaults.value(forKey: "artistsGrid") == nil{
             defaults.set(true, forKey: "artistsGrid")
@@ -172,6 +199,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: "bookmarkValue") == nil{
             defaults.set(5, forKey: "bookmarkValue")
         }
+        if defaults.value(forKey: "landing") == nil{
+            defaults.set("album", forKey: "landing")
+        }
+        if defaults.value(forKey: "lyrics") == nil{
+            defaults.set(false, forKey: "lyrics")
+        }
+        if defaults.value(forKey: "theme") == nil {
+            defaults.set("adaptive", forKey: "theme")
+        }
     }
     
     func readSettings(){
@@ -204,6 +240,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let bok = defaults.value(forKey: "bookmarkMessage") as? String{
             if let bokk = defaults.value(forKey: "bookmarkValue") as? Int{
                 GlobalSettings.changeFeedbackContent(which: "Bookmark", message: bok, value: bokk)
+            }
+        }
+        if let lan = defaults.value(forKey: "landing") as? String{
+            switch lan{
+            case "artist":
+                GlobalSettings.changeLanding(.artist)
+            case "album":
+                GlobalSettings.changeLanding(.album)
+            case "songs":
+                GlobalSettings.changeLanding(.songs)
+            default:
+                GlobalSettings.changeLanding(.album)
+            }
+        }
+        if let lyr = defaults.value(forKey: "lyrics") as? Bool {
+            GlobalSettings.changeLyrics(lyr)
+        }
+        if defaults.value(forKey: "tintName") == nil{
+            defaults.set("Plum purple", forKey: "tintName")
+            defaults.set(0.21, forKey: "tintRed")
+            defaults.set(0.24, forKey: "tintGreen")
+            defaults.set(0.61, forKey: "tintBlue")
+            defaults.set(1.0, forKey: "tintAlpha")
+        }
+        if let col = defaults.value(forKey: "tintName") as? String {
+            let red = defaults.value(forKey: "tintRed") as! CGFloat
+            let green = defaults.value(forKey: "tintGreen") as! CGFloat
+            let blue = defaults.value(forKey: "tintBlue") as! CGFloat
+            let alpha = defaults.value(forKey: "tintAlpha") as! CGFloat
+            GlobalSettings.changeTint(Color(n: col, c: UIColor(red:red, green:green, blue:blue, alpha:alpha), b: .white))
+        }
+        if let the = defaults.value(forKey: "theme") as? String {
+            switch the {
+            case "light":
+                GlobalSettings.changeTheme(.light)
+            case "dark":
+                GlobalSettings.changeTheme(.dark)
+            default:
+                GlobalSettings.changeTheme(.adaptive)
             }
         }
     }

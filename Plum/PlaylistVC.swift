@@ -31,7 +31,7 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.tintColor = GlobalSettings.theme
+        self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         upperBar.title = receivedList.name
         setTable()
     }

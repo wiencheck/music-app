@@ -26,7 +26,7 @@ class ArtistsVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.tintColor = GlobalSettings.theme
+        self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         readSettings()
         if grid{
             setCollection()
@@ -37,7 +37,7 @@ class ArtistsVC: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.tabBarController?.tabBar.tintColor = GlobalSettings.theme
+        self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
         readSettings()
         if initialGrid != grid{
             initialGrid = grid

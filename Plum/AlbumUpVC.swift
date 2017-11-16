@@ -24,7 +24,8 @@ class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
     var index: Int = 0
     var previousIndex = 0
     var receivedID: MPMediaEntityPersistentID!
-    var style: viewLayout!
+    var lightTheme: Bool!
+    var fxView: UIVisualEffectView!
     var statusBarStyle: UIStatusBarStyle!
     var separatorColor: UIColor!
     var settings = UpNextSettings()
@@ -35,7 +36,6 @@ class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
         tableView.delegate = self
         tableView.dataSource = self
         separatorColor = tableView.separatorColor
-        loadSettings()
         setColors()
         setup()
         NotificationCenter.default.addObserver(self, selector: #selector(reload), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
@@ -58,45 +58,7 @@ class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
         shuffleAlbum()
     }
     
-    func setColors(){
-        if settings.upperBarColored{
-            upperBar.backgroundColor = style.upperBar
-            albumLabel.textColor = style.mainLabel
-            artistLabel.textColor = style.mainLabel
-            doneBtn.setTitleColor(style.accessories, for: .normal)
-            shufBtn.setTitleColor(style.accessories, for: .normal)
-        }else{
-            upperBar.backgroundColor = .white
-            albumLabel.textColor = .black
-            artistLabel.textColor = .black
-            doneBtn.setTitleColor(GlobalSettings.theme, for: .normal)
-            shufBtn.setTitleColor(GlobalSettings.theme, for: .normal)
-        }
-        var fxView: UIVisualEffectView!
-        if settings.adaptiveTableView{
-            if style.dark{
-                fxView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
-                UIApplication.shared.statusBarStyle = .lightContent
-                self.tableView.separatorColor = .black
-            }else{
-                fxView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
-                UIApplication.shared.statusBarStyle = .default
-                self.tableView.separatorColor = separatorColor
-            }
-        }else if settings.alwaysBlack{
-            fxView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
-            self.tableView.separatorColor = .black
-            UIApplication.shared.statusBarStyle = .lightContent
-        }else if settings.alwaysLight{
-            fxView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
-            self.tableView.separatorColor = separatorColor
-            UIApplication.shared.statusBarStyle = .lightContent
-        }
-        self.view.backgroundColor = .clear
-        self.tableView.backgroundColor = .clear
-        fxView.frame = self.view.frame
-        self.tableView.backgroundView = fxView
-    }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         statusBarStyle = UIApplication.shared.statusBarStyle
@@ -142,13 +104,13 @@ extension AlbumUpVC: UITableViewDelegate, UITableViewDataSource{
             let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! SongInAlbumCell
             cell.setup(item: songs[indexPath.row])
             if indexPath == toScroll{
-                cell.backgroundColor = UIColor.purple.withAlphaComponent(0.5)
+                cell.backgroundColor = GlobalSettings.tint.color.withAlphaComponent(0.5)
                 cell.titleLabel.textColor = .white
                 cell.trackNumberLabel.textColor = .white
                 cell.durationLabel.textColor = .white
             }else{
                 cell.backgroundColor = .clear
-                if style.dark{
+                if GlobalSettings.theme == .dark || GlobalSettings.theme == .adaptive && !lightTheme{
                     cell.titleLabel.textColor = .white
                     cell.trackNumberLabel.textColor = .white
                     cell.durationLabel.textColor = .white
@@ -252,19 +214,6 @@ extension AlbumUpVC: UITableViewDelegate, UITableViewDataSource{
         tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .fade)
     }
     
-    func loadSettings(){
-        settings.alwaysLight = true
-        if settings.alwaysLight{
-            style.dark = false
-        }
-        settings.upperBarColored = false
-        settings.alwaysBlack = false
-        if settings.alwaysBlack{
-            style.dark = true
-        }
-        settings.adaptiveTableView = false
-    }
-    
     @objc func reload(){
         cellTypes = Array<Int>(repeating: 0, count: cellTypes.count)
         findCurrent()
@@ -279,5 +228,43 @@ extension AlbumUpVC: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 1
+    }
+    
+    func setColors(){
+        if GlobalSettings.theme == .dark {
+            dark()
+        }else if GlobalSettings.theme == .light {
+            light()
+        }else if GlobalSettings.theme == .adaptive {
+            if lightTheme {
+                light()
+            }else {
+                dark()
+            }
+        }
+        fxView.frame = self.view.frame
+        self.tableView.backgroundView = fxView
+    }
+    
+    func dark() {
+        upperBar.backgroundColor = UIColor(red:0.50, green:0.50, blue:0.50, alpha:1.0)
+        artistLabel.textColor = .white
+        albumLabel.textColor = .white
+        doneBtn.setTitleColor(.white, for: .normal)
+        shufBtn.setTitleColor(.white, for: .normal)
+        UIApplication.shared.statusBarStyle = .lightContent
+        fxView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+        self.tableView.separatorColor = .black
+    }
+    
+    func light() {
+        upperBar.backgroundColor = .white
+        artistLabel.textColor = .black
+        albumLabel.textColor = .black
+        doneBtn.setTitleColor(.black, for: .normal)
+        shufBtn.setTitleColor(.black, for: .normal)
+        UIApplication.shared.statusBarStyle = .default
+        fxView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
+        self.tableView.separatorColor = separatorColor
     }
 }

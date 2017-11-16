@@ -18,7 +18,7 @@ class AlbumsByVC: UITableViewController {
     @IBOutlet weak var upperBar: UINavigationItem!
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.tintColor = GlobalSettings.theme
+        self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
         als = musicQuery.shared.artistAlbumsID(artist: receivedID)

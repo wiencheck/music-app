@@ -32,7 +32,7 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.tintColor = GlobalSettings.theme
+        self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         searchHistory = UserDefaults.standard.array(forKey: "searchHistory") as! [String]
         loadArrays()
         configureSearchController()
@@ -49,11 +49,11 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             self.searchController.searchBar.becomeFirstResponder()
             UIApplication.shared.sendAction(#selector(self.selectAll(_:)), to: nil, from: nil, for: nil)
         }
-        if searchController.searchBar.text != ""{
+        /*if searchController.searchBar.text != ""{
             //[[UIApplication sharedApplication] sendAction:@selector(selectAll:) to:nil from:nil forEvent:nil]
             searchController.searchBar.becomeFirstResponder()
             UIApplication.shared.sendAction(#selector(selectAll(_:)), to: nil, from: nil, for: nil)
-        }
+        }*/
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -66,18 +66,24 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if shouldShowResults {
-            if section == 0 && shouldCompactArtists && (filteredArtists?.count)! != 0{
-                return 3
-            }else if section == 0 && !shouldCompactArtists && (filteredArtists?.count)! != 0 {
-                return (filteredArtists?.count)!
-            }else if section == 1 && shouldCompactAlbums && (filteredAlbums?.count)! != 0 {
-                return 3
-            }else if section == 1 && !shouldCompactAlbums && (filteredAlbums?.count)! != 0 {
-                return (filteredAlbums?.count)!
-            }else if section == 2 && shouldCompactSongs && (filteredSongs?.count)! != 0{
-                return 3
-            }else if section == 2 && !shouldCompactSongs && (filteredSongs?.count)! != 0 {
-                return (filteredSongs?.count)!
+            if section == 0 {
+                if (filteredArtists?.count)! > 3 && shouldCompactArtists {
+                    return 3
+                }else{
+                    return (filteredArtists?.count)!
+                }
+            }else if section == 1 {
+                if (filteredAlbums?.count)! > 3 && shouldCompactAlbums {
+                    return 3
+                }else{
+                    return (filteredAlbums?.count)!
+                }
+            }else if section == 2 {
+                if (filteredSongs?.count)! > 3 && shouldCompactSongs {
+                    return 3
+                }else{
+                    return (filteredSongs?.count)!
+                }
             }else{
                 return 0
             }
@@ -175,22 +181,19 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         if indexPath.section == 0{
             let artist = filteredArtists?[indexPath.row]
             self.pickedArtistID = artist?.ID
-            searchHistory.insert(searchController.searchBar.text!, at: 0)
             performSegue(withIdentifier: "artist", sender: nil)
         }else if indexPath.section == 2{
             let song = filteredSongs?[indexPath.row]
-            searchHistory.insert(searchController.searchBar.text!, at: 0)
             Plum.shared.landInAlbum(song!, new: true)
             Plum.shared.play()
         }else{
             let album = filteredAlbums?[indexPath.row]
-            searchHistory.insert(searchController.searchBar.text!, at: 0)
             self.pickedAlbum = album
             performSegue(withIdentifier: "album", sender: nil)
         }
-        
+        searchHistory.insert(searchController.searchBar.text!, at: 0)
         if searchHistory.count > 20{
-            //searchHistory.dropLast()
+            searchHistory.dropLast()
             UserDefaults.standard.set(searchHistory, forKey: "searchHistory")
         }
         tableView.deselectRow(at: indexPath, animated: true)
@@ -247,8 +250,7 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             $0.name?.lowercased().range(of: (searchString?.lowercased())!) != nil
         }
         filteredSongs = songs?.filter{
-//            $0.title?.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "-", with: "").replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "$", with: "").replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: "'", with: "").replacingOccurrences(of: "_", with: "").lowercased().range(of: (searchString?.lowercased())!) != nil
-            $0.title?.lowercased().range(of: (searchString?.lowercased())!) != nil
+            $0.title?.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "-", with: "").replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: "'", with: "").lowercased().range(of: (searchString?.lowercased())!) != nil
         }
         /*let filteredStrings : [String] = myArr.filter({ (aString) in
             
@@ -286,7 +288,7 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         searchController.searchBar.placeholder = "Szukaj"
         searchController.searchBar.delegate = self
         searchController.searchBar.sizeToFit()
-        searchController.searchBar.tintColor = GlobalSettings.theme
+        searchController.searchBar.tintColor = GlobalSettings.tint.color
         self.searchController.hidesNavigationBarDuringPresentation = false;
         if #available(iOS 11.0, *) {
             navigationItem.searchController = searchController
@@ -345,4 +347,9 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         headers.append(header)
     }
     
+    func removeSpecialCharsFromString(text: String) -> String {
+        let okayChars : Set<Character> =
+            Set("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLKMNOPQRSTUVWXYZ1234567890+-*=(),.:!_".characters)
+        return String(text.characters.filter {okayChars.contains($0) })
+    }
 }

@@ -28,7 +28,7 @@ class ArtistUpCell: UITableViewCell {
         self.artwork.image = item.artwork?.image(at: artwork.bounds.size) ?? #imageLiteral(resourceName: "no_music")
         self.item = item
         if GlobalSettings.ratingMode{
-            duration.textColor = GlobalSettings.theme
+            duration.textColor = GlobalSettings.tint.color
             switch item.rating{
             case 1:
                 duration.text = "★☆☆☆☆"
