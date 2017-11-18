@@ -173,8 +173,7 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
                     player.playFromDefQueue(index: player.defIndex + indexPath.row + player.usrIndex + 1, new: true)
                 }
             }
-        }
-        else{
+        }else{
             if indexPath.section == 2{
                 if player.isShuffle{
                     player.playFromShufQueue(index: player.shufIndex + indexPath.row + 1, new: true)
@@ -204,29 +203,29 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
         }
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete{
-            if player.isUsrQueue{
-                if indexPath.section == 2{
-                    player.usrQueue.remove(at: indexPath.row)
-                }else if indexPath.section == 3{
-                    if player.isShuffle{
-                        player.shufQueue.remove(at: indexPath.row)
-                    }else{
-                        player.defQueue.remove(at: indexPath.row)
-                    }
-                }
-            }else{
-                if indexPath.section == 2{
-                    if player.isShuffle{
-                        player.shufQueue.remove(at: indexPath.row)
-                    }else{
-                        player.defQueue.remove(at: indexPath.row)
-                    }
-                }
-            }
-        }
-    }
+//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+//        if editingStyle == .delete{
+//            if player.isUsrQueue{
+//                if indexPath.section == 2{
+//                    player.usrQueue.remove(at: indexPath.row)
+//                }else if indexPath.section == 3{
+//                    if player.isShuffle{
+//                        player.shufQueue.remove(at: indexPath.row)
+//                    }else{
+//                        player.defQueue.remove(at: indexPath.row)
+//                    }
+//                }
+//            }else{
+//                if indexPath.section == 2{
+//                    if player.isShuffle{
+//                        player.shufQueue.remove(at: indexPath.row)
+//                    }else{
+//                        player.defQueue.remove(at: indexPath.row)
+//                    }
+//                }
+//            }
+//        }
+//    }
     
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         if indexPath.section < 2{
@@ -249,7 +248,6 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
                     player.shufQueue.remove(at: player.shufIndex - (tableView.numberOfRows(inSection: 0) - sourceIndexPath.row))
                     if destinationIndexPath.section == 2{
                         player.usrQueue.insert(toMove, at: destinationIndexPath.row + 1)
-                        player.usrQueueCount! += 1
                     }else if destinationIndexPath.section == 3{
                         player.shufQueue.insert(toMove, at: player.shufIndex + destinationIndexPath.row + 1)
                     }
@@ -258,7 +256,6 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
                     player.defQueue.remove(at: player.defIndex - (tableView.numberOfRows(inSection: 0) - sourceIndexPath.row))
                     if destinationIndexPath.section == 2{
                         player.usrQueue.insert(toMove, at: destinationIndexPath.row + 1)
-                        player.usrQueueCount! += 1
                     }else if destinationIndexPath.section == 3{
                         player.defQueue.insert(toMove, at: player.defIndex + destinationIndexPath.row + 1)
                     }
@@ -282,7 +279,6 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
                         player.shufQueue.insert(toMove, at: player.shufIndex + destinationIndexPath.row + 1)
                     }else if destinationIndexPath.section == 2{
                         player.usrQueue.insert(toMove, at: destinationIndexPath.row + 1)
-                        player.usrQueueCount! += 1
                         player.defQueueCount! -= 1
                     }
                 }else{
@@ -292,7 +288,6 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
                         player.defQueue.insert(toMove, at: player.defIndex + destinationIndexPath.row + 1)
                     }else if destinationIndexPath.section == 2{
                         player.usrQueue.insert(toMove, at: destinationIndexPath.row + 1)
-                        player.usrQueueCount! += 1
                         player.defQueueCount! -= 1
                     }
                 }
@@ -406,7 +401,7 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
         
         if(player.isUsrQueue && player.usrIsAnyAfter){
             var j = player.usrIndex + 1
-            while(j < player.usrQueueCount){
+            while(j < player.usrQueue.count){
                 tmp.append(player.usrQueue[j])
                 j += 1
             }
@@ -423,7 +418,6 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
     func deleteByTap2(_ tableView: UITableView, indexPath: IndexPath){
         if player.isUsrQueue{
             player.usrQueue.remove(at: player.usrIndex + indexPath.row + 1)
-            player.usrQueueCount! -= 1
             sungs[2].songsIn.remove(at: indexPath.row)
             if !player.usrIsAnyAfter { player.isUsrQueue = false }
         }else{

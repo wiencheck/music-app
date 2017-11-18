@@ -16,7 +16,7 @@ import UserNotifications
 class Plum: NSObject, AVAudioPlayerDelegate{
     static let shared = Plum()
     let infoCC = MPNowPlayingInfoCenter.default()
-    var inBackground = false
+    var shouldPost = false
     var lyricsPosted = false
     var initialized = false
     var session = false
@@ -38,10 +38,9 @@ class Plum: NSObject, AVAudioPlayerDelegate{
     var defIndex: Int!
     var isUsrQueue: Bool!
     var usrQueue = [MPMediaItem]()
-    var usrQueueCount: Int!
     var userQueueIndex: Int!
     var isUserQueue: Bool!{
-        if usrQueueCount > 0{
+        if usrQueue.count > 0{
             return true
         }else{
             return false
@@ -69,7 +68,7 @@ class Plum: NSObject, AVAudioPlayerDelegate{
         }
     }
     var usrIsAnyAfter: Bool!{
-        if(usrIndex + 1 == usrQueueCount){
+        if(usrIndex + 1 == usrQueue.count){
             return false
         }else{
             return true
@@ -144,7 +143,6 @@ class Plum: NSObject, AVAudioPlayerDelegate{
         defIndex = 0
         defQueueCount = 1
         isUsrQueue = false
-        usrQueueCount = 0
         usrIndex = 0
         isShuffle = false
         shufIndex = 0
@@ -234,10 +232,8 @@ class Plum: NSObject, AVAudioPlayerDelegate{
             isUsrQueue = true
             usrQueue.append(currentItem!)
             usrQueue.append(item)
-            usrQueueCount = 2
         }else{
             usrQueue.insert(item, at: usrIndex + 1)
-            usrQueueCount = usrQueueCount + 1
         }
     }
     
@@ -246,10 +242,8 @@ class Plum: NSObject, AVAudioPlayerDelegate{
             isUsrQueue = true
             usrQueue.append(currentItem!)
             usrQueue.append(item)
-            usrQueueCount = 2
         }else{
             usrQueue.append(item)
-            usrQueueCount = usrQueueCount + 1
         }
     }
     
@@ -289,7 +283,7 @@ class Plum: NSObject, AVAudioPlayerDelegate{
                 clearQueue()
                 }
             }
-        if inBackground && GlobalSettings.lyrics { postLyrics() }
+        if shouldPost && GlobalSettings.lyrics { postLyrics() }
         NotificationCenter.default.post(name: Plum.playBackStateChanged, object: nil, userInfo: ["Artist": "Title"])
         //print("nextnext")
     }
@@ -376,7 +370,6 @@ class Plum: NSObject, AVAudioPlayerDelegate{
     func clearQueue(){
         usrQueue.removeAll()
         usrIndex = 0
-        usrQueueCount = 0
         isUsrQueue = false
     }
     
@@ -428,13 +421,13 @@ class Plum: NSObject, AVAudioPlayerDelegate{
                 if(!isUsrQueue){
                     return "\(defIndex + 1) of \(defQueueCount!)"
                 }else{
-                    return "\(usrIndex! + 1) of \(usrQueueCount!)"
+                    return "\(usrIndex! + 1) of \(usrQueue.count)"
                 }
             }else{
                 if(!isUsrQueue){
                 return "\(shufIndex + 1) of \(shufQueueCount!)"
             }else{
-                return "\(usrIndex! + 1) of \(usrQueueCount!)"
+                return "\(usrIndex! + 1) of \(usrQueue.count)"
                 }
             }
             
@@ -718,7 +711,7 @@ class Plum: NSObject, AVAudioPlayerDelegate{
         return (prev, next)
     }
     
-    /*func registerforDeviceLockNotification() {
+    func registerforDeviceLockNotification() {
         //Screen lock notifications
         CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),     //center
             Unmanaged.passUnretained(self).toOpaque(),     // observer
@@ -752,18 +745,19 @@ class Plum: NSObject, AVAudioPlayerDelegate{
     
     private func displayStatusChanged(_ lockState: String) {
         // the "com.apple.springboard.lockcomplete" notification will always come after the "com.apple.springboard.lockstate" notification
-        print("Darwin notification NAME = \(lockState)")
+        //print("Darwin notification NAME = \(lockState)")
         if (lockState == "com.apple.springboard.lockcomplete") {
-            deviceLocked = true
-            if deviceLocked && GlobalSettings.lyrics { postLyrics() }
-            postLyrics()
+            if GlobalSettings.lyrics {
+                shouldPost = true
+                postLyrics()
+            }
         }else{
-            print("unlocked")
+            //print("unlocked")
         }
-    }*/
+    }
     
     func postLyrics() {
-        if currentItem != nil {
+        if currentItem != nil && shouldPost{
             let content = UNMutableNotificationContent()
             let ass = AVAsset(url: (currentItem?.assetURL)!)
             if let lyr = ass.lyrics {
@@ -782,13 +776,16 @@ class Plum: NSObject, AVAudioPlayerDelegate{
                         }
                     })
                 }else{
-                    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: ["lyricsOnLS"])
-                    lyricsPosted = false
+                    removeLyrics()
                 }
             }else{
-                UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: ["lyricsOnLS"])
-                lyricsPosted = false
+                removeLyrics()
             }
         }
+    }
+    
+    func removeLyrics() {
+        UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: ["lyricsOnLS"])
+        lyricsPosted = false
     }
 }

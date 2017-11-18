@@ -58,8 +58,6 @@ class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
         shuffleAlbum()
     }
     
-    
-    
     override func viewWillAppear(_ animated: Bool) {
         statusBarStyle = UIApplication.shared.statusBarStyle
         setup()
@@ -104,10 +102,10 @@ extension AlbumUpVC: UITableViewDelegate, UITableViewDataSource{
             let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! SongInAlbumCell
             cell.setup(item: songs[indexPath.row])
             if indexPath == toScroll{
-                cell.backgroundColor = GlobalSettings.tint.color.withAlphaComponent(0.5)
-                cell.titleLabel.textColor = .white
-                cell.trackNumberLabel.textColor = .white
-                cell.durationLabel.textColor = .white
+                cell.backgroundColor = GlobalSettings.tint.color.withAlphaComponent(0.8)
+                cell.titleLabel.textColor = GlobalSettings.tint.bar
+                cell.trackNumberLabel.textColor = GlobalSettings.tint.bar
+                cell.durationLabel.textColor = GlobalSettings.tint.bar
             }else{
                 cell.backgroundColor = .clear
                 if GlobalSettings.theme == .dark || GlobalSettings.theme == .adaptive && !lightTheme{
@@ -243,11 +241,15 @@ extension AlbumUpVC: UITableViewDelegate, UITableViewDataSource{
             }
         }
         fxView.frame = self.view.frame
-        self.tableView.backgroundView = fxView
+        view.backgroundColor = .clear
+        view.addSubview(fxView)
+        tableView.backgroundColor = .clear
+        view.addSubview(tableView)
+        view.addSubview(upperBar)
     }
     
     func dark() {
-        upperBar.backgroundColor = UIColor(red:0.50, green:0.50, blue:0.50, alpha:1.0)
+        upperBar.backgroundColor = UIColor(red: 0.105882352941176, green: 0.105882352941176, blue: 0.105882352941176, alpha: 0.8)
         artistLabel.textColor = .white
         albumLabel.textColor = .white
         doneBtn.setTitleColor(.white, for: .normal)
@@ -255,16 +257,18 @@ extension AlbumUpVC: UITableViewDelegate, UITableViewDataSource{
         UIApplication.shared.statusBarStyle = .lightContent
         fxView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
         self.tableView.separatorColor = .black
+        tabBarController?.tabBar.barStyle = .blackOpaque
     }
     
     func light() {
-        upperBar.backgroundColor = .white
+        upperBar.backgroundColor = UIColor(red: 0.972549019607843, green: 0.972549019607843, blue: 0.972549019607843, alpha: 0.8)
         artistLabel.textColor = .black
         albumLabel.textColor = .black
         doneBtn.setTitleColor(.black, for: .normal)
         shufBtn.setTitleColor(.black, for: .normal)
         UIApplication.shared.statusBarStyle = .default
         fxView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
-        self.tableView.separatorColor = separatorColor
+        self.tableView.separatorColor = UIColor(red: 0.929411764705882, green: 0.929411764705882, blue: 0.933333333333333, alpha: 1.0)
+        tabBarController?.tabBar.barStyle = .default
     }
 }

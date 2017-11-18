@@ -105,38 +105,37 @@ class NowPlayingVC: UIViewController, UIGestureRecognizerDelegate, UpNextDelegat
     }
     
     @objc func updateUI(){
+        if(self.player.currentItem != nil){
+            self.titleLabel.text = self.player.labelString(type: "title")
+            self.detailLabel.text = self.player.labelString(type: "detail")
+            self.image = self.player.currentItem?.artwork?.image(at: self.artworkImage.bounds.size) ?? #imageLiteral(resourceName: "no_music")
+        }else{
+            self.titleLabel.text = "Choose a song"
+            self.detailLabel.text = "to play"
+            self.image = #imageLiteral(resourceName: "no_music")
+        }
+        if(self.player.isPlayin()){
+            self.playbackBtn.setImage(self.templates[2], for: .normal)
+        }else{
+            self.playbackBtn.setImage(self.templates[1], for: .normal)
+        }
+        self.artworkImage.image = self.image
+        self.magic(albumArt: self.image)
+        self.outOfLabel.text = self.player.labelString(type: "out of")
+        self.timeSlider.setValue(0, animated: false)
+        self.timeSlider.maximumValue = Float(self.player.player.duration)
+        self.showRating()
+        if self.player.currentItem != nil{
+            let ass = AVAsset(url: (self.player.currentItem?.assetURL)!)
+            if let lyr = ass.lyrics {
+                self.lyricsTextView.text = lyr
+            }else{
+                self.lyricsTextView.text = "\n\n\n\n\n\nNo lyrics available :(\n\nYou can add them in iTunes\non your Mac or PC\n"
+            }
+        }
+        self.lyricsTextView.textColor = .white
         DispatchQueue.main.async(){
-            if(self.player.currentItem != nil){
-                self.titleLabel.text = self.player.labelString(type: "title")
-                self.detailLabel.text = self.player.labelString(type: "detail")
-                self.image = self.player.currentItem?.artwork?.image(at: self.artworkImage.bounds.size) ?? #imageLiteral(resourceName: "no_music")
-            }else{
-                self.titleLabel.text = "Choose a song"
-                self.detailLabel.text = "to play"
-                self.image = #imageLiteral(resourceName: "no_music")
-            }
-            if(self.player.isPlayin()){
-                self.playbackBtn.setImage(self.templates[2], for: .normal)
-            }else{
-                self.playbackBtn.setImage(self.templates[1], for: .normal)
-            }
-            self.artworkImage.image = self.image
-            self.magic(albumArt: self.image)
-            self.outOfLabel.text = self.player.labelString(type: "out of")
-            self.timeSlider.setValue(0, animated: false)
-            self.timeSlider.maximumValue = Float(self.player.player.duration)
-            self.showRating()
-            if self.player.currentItem != nil{
-                let ass = AVAsset(url: (self.player.currentItem?.assetURL)!)
-                if let lyr = ass.lyrics {
-                    self.lyricsTextView.text = lyr
-                }else{
-                    self.lyricsTextView.text = "\n\n\n\n\n\nNo lyrics available :(\n\nYou can add them in iTunes\non your Mac or PC\n"
-                }
-            }
-            self.lyricsTextView.textColor = .white
             self.lyricsTextView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
-            
         }
     }
     @IBAction func playBackBtn(_ sender: Any) {
@@ -268,7 +267,7 @@ class NowPlayingVC: UIViewController, UIGestureRecognizerDelegate, UpNextDelegat
     func realPresent(){
         pickedID = player.currentItem?.albumPersistentID
         let tbvc = storyboard?.instantiateViewController(withIdentifier: "GOGOGO") as! UITabBarController
-        if let upvc = tbvc.viewControllers?[0] as? UpNextVC{
+        if let upvc = tbvc.viewControllers?[0] as? QueueVC{
             upvc.lightTheme = lightStyle
             upvc.delegate = self
         }

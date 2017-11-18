@@ -249,22 +249,22 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0{
             if indexPath.row == 0{
-                explainColorFlow()
+                performSegue(withIdentifier: "colorflow", sender: nil)
             }else if indexPath.row == 1{
                 explainBlur()
             }
             else if indexPath.row == 2{
                 explainStyle()
             }else if indexPath.row == 3{
-                explainMiniPlayer()
+                performSegue(withIdentifier: "miniplayer", sender: nil)
             }else if indexPath.row == 5{
                 performSegue(withIdentifier: "colors", sender: nil)
             }
         }else if indexPath.section == 1{
             if indexPath.row == 0{
-                explainRatingMode()
+                performSegue(withIdentifier: "rating", sender: nil)
             }else if indexPath.row == 1{
-                explainSpotlight()
+                performSegue(withIdentifier: "lyrics", sender: nil)
             }
         }else if indexPath.section == 2{
             if indexPath.row == 0{

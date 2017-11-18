@@ -61,6 +61,12 @@ struct GlobalSettings{
         defaults.set(t, forKey: "blur")
     }
     
+    static var color: Bool = false
+    static func changeColor(_ t: Bool) {
+        self.color = t
+        defaults.set(t, forKey: "color")
+    }
+    
     static var alphabeticalSort = false
     static func changeAlphabeticalSort(_ t: Bool){
         self.alphabeticalSort = t
@@ -83,6 +89,13 @@ struct GlobalSettings{
             defaults.set(true, forKey: "modernPopup")
         }
     }
+    
+    static var popupDrag = false
+    static func changePopupDrag(_ t: Bool) {
+        self.popupDrag = t
+        defaults.set(t, forKey: "popupDrag")
+    }
+    
     static func changeFeedbackContent(which: String, message: String, value: Int) {
         switch which {
         case "Like":
@@ -124,11 +137,11 @@ struct GlobalSettings{
     static func changeLyrics(_ t: Bool) {
         self.lyrics = t
         self.remote.switchLyricsCommand(t)
-        /*if t {
+        if t {
             Plum.shared.registerforDeviceLockNotification()
         }else{
             Plum.shared.unRegisterLockNotification()
-        }*/
+        }
         defaults.set(t, forKey: "lyrics")
     }
 }
