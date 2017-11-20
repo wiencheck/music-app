@@ -31,12 +31,31 @@ struct GlobalSettings{
     static var remote: RemoteCommandManager!
     static let defaults = UserDefaults.standard
     static var ratingMode = false
+    static var full = false
     static var bottomInset: CGFloat!
-    static func changeRatingMode(_ t: Bool){
+    static func changeRatingMode(_ t: Bool, full: Bool){
+        if lyrics && t {
+            changeLyrics(false)
+            updateRatings(ratings)
+        }
         self.ratingMode = t
-        self.remote.switchRatingCommands(t)
+        self.full = full
+        if full {
+            self.remote.switchRatingCommands(t)
+        }
         print("Rating mode is \(ratingMode)")
         defaults.set(t, forKey: "ratingMode")
+        defaults.set(full, forKey: "fullRating")
+    }
+    
+    static var ratings = [Rating]()
+    static func updateRatings(_ t: [Rating]) {
+        ratings = t
+        var raw = [String]()
+        for rating in ratings {
+            raw.append(rating.rawValue)
+        }
+        defaults.set(raw, forKey: "ratings")
     }
     
     static var tint: Color!
@@ -99,18 +118,15 @@ struct GlobalSettings{
     static func changeFeedbackContent(which: String, message: String, value: Int) {
         switch which {
         case "Like":
-            remote.feedbacks["Like"] = Feedback(message, value)
-            //remote.toggleLikeCommand(self.ratingMode)
+            remote.toggleLikeCommand(self.ratingMode)
             defaults.set(message, forKey: "likeMessage")
             defaults.set(value, forKey: "likeValue")
         case "Dislike":
-            remote.feedbacks["Dislike"] = Feedback(message, value)
-            //remote.toggleDislikeCommand(self.ratingMode)
+            remote.toggleDislikeCommand(self.ratingMode)
             defaults.set(message, forKey: "dislikeMessage")
             defaults.set(value, forKey: "dislikeValue")
         case "Bookmark":
-            remote.feedbacks["Bookmark"] = Feedback(message, value)
-            //remote.toggleBookmarkCommand(self.ratingMode)
+            remote.toggleBookmarkCommand(self.ratingMode)
             defaults.set(message, forKey: "bookmarkMessage")
             defaults.set(value, forKey: "bookmarkValue")
         default:
@@ -135,6 +151,9 @@ struct GlobalSettings{
     }
     static var lyrics = false
     static func changeLyrics(_ t: Bool) {
+        if ratingMode && t{
+            changeRatingMode(false, full: self.full)
+        }
         self.lyrics = t
         self.remote.switchLyricsCommand(t)
         if t {
@@ -144,4 +163,8 @@ struct GlobalSettings{
         }
         defaults.set(t, forKey: "lyrics")
     }
+}
+
+func ==(left: GlobalSettings, right: GlobalSettings) -> Bool {
+    return false
 }

@@ -1402,12 +1402,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../../Documents/Programowanko/Swift/CCMusic/CCMusic/RemoteCommandManager.swift"
-            timestampString = "532730654.435207"
+            timestampString = "532888534.36403"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "183"
-            endingLineNumber = "183"
-            landmarkName = "handlePlayCommandEvent(_:)"
+            startingLineNumber = "177"
+            endingLineNumber = "177"
+            landmarkName = "handlePauseCommandEvent(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

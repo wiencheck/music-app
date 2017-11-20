@@ -134,6 +134,7 @@ extension AlbumsVC: UICollectionViewDelegate, UICollectionViewDataSource{       
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let album = result[indexes[indexPath.section]]?[indexPath.row]
         picked = album
         performSegue(withIdentifier: "album", sender: nil)

@@ -31,7 +31,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(updatePopup), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
         nextBtn = UIBarButtonItem(barButtonSystemItem: .fastForward, target: self, action: #selector(nextBtnPressed))
         reloadPopup(true)
-        loadAllViews()
+        //loadAllViews()
         /*if let firstNav = self.viewControllers?.first as? UINavigationController{
             if let first = firstNav.viewControllers.first as? SearchVC{
                 self.selectedIndex = 1

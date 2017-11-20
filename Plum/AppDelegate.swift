@@ -97,7 +97,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        if GlobalSettings.lyrics {
+        if GlobalSettings.lyrics && Plum.shared.player.rate != 0.0 {
             Plum.shared.postLyrics()
         }
     }
@@ -172,6 +172,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: "ratingMode") == nil{
             defaults.set(false, forKey: "ratingMode")
         }
+        if defaults.value(forKey: "fullRating") == nil {
+            defaults.set(true, forKey: "fullRating")
+        }
         if defaults.array(forKey: "searchHistory") == nil{
             defaults.set([""], forKey: "searchHistory")
         }
@@ -181,23 +184,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: "modernPopup") == nil{
             defaults.set(false, forKey: "modernPopup")
         }
-        if defaults.value(forKey: "likeMessage") == nil{
-            defaults.set("Give 4★", forKey: "likeMessage")
-        }
-        if defaults.value(forKey: "dislikeMessage") == nil{
-            defaults.set("Give 1★", forKey: "dislikeMessage")
-        }
-        if defaults.value(forKey: "bookmarkMessage") == nil{
-            defaults.set("Give 5★", forKey: "bookmarkMessage")
-        }
-        if defaults.value(forKey: "likeValue") == nil{
-            defaults.set(4, forKey: "likeValue")
-        }
-        if defaults.value(forKey: "dislikeValue") == nil{
-            defaults.set(1, forKey: "dislikeValue")
-        }
-        if defaults.value(forKey: "bookmarkValue") == nil{
-            defaults.set(5, forKey: "bookmarkValue")
+        if defaults.stringArray(forKey: "ratings") == nil {
+            let arr = ["★★★★★", "★☆☆☆☆", "Disable rating mode"]
+            defaults.set(arr, forKey: "ratings")
         }
         if defaults.value(forKey: "landing") == nil{
             defaults.set("album", forKey: "landing")
@@ -211,8 +200,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func readSettings(){
+        if let rats = defaults.array(forKey: "ratings") as? [String] {
+            var en = [Rating]()
+            for rating in rats {
+                en.append(Rating(rawValue: rating)!)
+            }
+            GlobalSettings.updateRatings(en)
+        }
+        if let fu = defaults.value(forKey: "fullRating") as? Bool {
+            GlobalSettings.full = fu
+        }
         if let rat = defaults.value(forKey: "ratingMode") as? Bool{
-            GlobalSettings.changeRatingMode(rat)
+            GlobalSettings.changeRatingMode(rat, full: GlobalSettings.full)
         }
         if let alp = defaults.value(forKey: "alphabeticalSort") as? Bool{
             GlobalSettings.changeAlphabeticalSort(alp)
@@ -225,21 +224,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 GlobalSettings.changePopupStyle(.modern)
             }else {
                 GlobalSettings.changePopupStyle(.classic)
-            }
-        }
-        if let lik = defaults.value(forKey: "likeMessage") as? String{
-            if let licc = defaults.value(forKey: "likeValue") as? Int{
-                GlobalSettings.changeFeedbackContent(which: "Like", message: lik, value: licc)
-            }
-        }
-        if let dis = defaults.value(forKey: "dislikeMessage") as? String{
-            if let diss = defaults.value(forKey: "dislikeValue") as? Int{
-                GlobalSettings.changeFeedbackContent(which: "Dislike", message: dis, value: diss)
-            }
-        }
-        if let bok = defaults.value(forKey: "bookmarkMessage") as? String{
-            if let bokk = defaults.value(forKey: "bookmarkValue") as? Int{
-                GlobalSettings.changeFeedbackContent(which: "Bookmark", message: bok, value: bokk)
             }
         }
         if let lan = defaults.value(forKey: "landing") as? String{

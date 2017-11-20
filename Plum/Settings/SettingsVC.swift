@@ -92,7 +92,7 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     
     @objc func rating(_ sender: UISwitch){
         ratingStatus = sender.isOn
-        GlobalSettings.changeRatingMode(ratingStatus)
+        GlobalSettings.changeRatingMode(ratingStatus, full: GlobalSettings.full)
         ratingSwitch.isOn = ratingStatus
         defaults.set(ratingStatus, forKey: "ratingMode")
         if ratingStatus {
@@ -114,7 +114,7 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
         if lyricsStatus {
             ratingStatus = false
             ratingSwitch.isOn = false
-            GlobalSettings.changeRatingMode(false)
+            GlobalSettings.changeRatingMode(false, full: GlobalSettings.full)
         }
         GlobalSettings.changeLyrics(sender.isOn)
     }
@@ -143,23 +143,24 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
             let yesAction = UIAlertAction(title: "Just do it!", style: .default, handler: {(action) in
                 self.spotlightStatus = false
                 musicQuery.shared.removeAllFromSpotlight()
+                self.defaults.set(self.spotlightStatus, forKey: "spotlightActive")
+                self.reload()
             })
             let noAction = UIAlertAction(title: "This was a mistake", style: .cancel, handler: {(action) in
                 self.spotlightSwitch.isOn = true
+                self.spotlightButton.setTitle("Enable Spotlight", for: .normal)
             })
             alert.addAction(yesAction)
             alert.addAction(noAction)
             present(alert, animated: true, completion: nil)
         }
-        defaults.set(spotlightStatus, forKey: "spotlightActive")
-        reload()
     }
     
     @objc func indexVisible(_ sender: UISwitch){
         GlobalSettings.changeIndexVisibility(sender.isOn)
     }
     
-    @IBAction func spotlightBtnPressed(_ sender: UIButton){
+    @IBAction func spotlightBtnPressed(){
         musicQuery.shared.removeAllFromSpotlight()
         UIView.animate(withDuration: 0.3, animations: {
             self.spotlightButton.alpha = 0.0
@@ -247,31 +248,43 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     //0 - light, 1 - dark, 2 - adaptive
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 0{
-            if indexPath.row == 0{
-                performSegue(withIdentifier: "colorflow", sender: nil)
-            }else if indexPath.row == 1{
-                explainBlur()
-            }
-            else if indexPath.row == 2{
-                explainStyle()
-            }else if indexPath.row == 3{
-                performSegue(withIdentifier: "miniplayer", sender: nil)
-            }else if indexPath.row == 5{
-                performSegue(withIdentifier: "colors", sender: nil)
-            }
-        }else if indexPath.section == 1{
-            if indexPath.row == 0{
-                performSegue(withIdentifier: "rating", sender: nil)
-            }else if indexPath.row == 1{
-                performSegue(withIdentifier: "lyrics", sender: nil)
-            }
-        }else if indexPath.section == 2{
-            if indexPath.row == 0{
-                explainArtistsGrid()
-            }else if indexPath.row == 1{
-                explainAlbumsGrid()
-            }
+        guard let identifier = tableView.cellForRow(at: indexPath)?.reuseIdentifier
+            else { return }
+        switch identifier {
+        case "colorflow":
+            explainColorFlow()
+        case "theme":
+            explainStyle()
+        case "miniplayer":
+            explainMiniPlayer()
+        case "tint":
+            performSegue(withIdentifier: "colors", sender: nil)
+        case "skip":
+            explainSkip()
+        case "ratingmode":
+            explainRatingMode()
+        case "ratingset":
+            performSegue(withIdentifier: "setratings", sender: nil)
+        case "lyrics":
+            explainLyrics()
+        case "lyricset":
+            performSegue(withIdentifier: "lyricsSettings", sender: nil)
+        case "left":
+            explainLeft()
+        case "artist":
+            explainArtistsGrid()
+        case "album":
+            explainAlbumsGrid()
+        case "playlist":
+            explainPlaylistGrid()
+        case "deploy":
+            performSegue(withIdentifier: "deploy", sender: nil)
+        case "spotlight":
+            explainSpotlight()
+        case "indexing":
+            spotlightBtnPressed()
+        default:
+            selfExplanatory()
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -297,6 +310,61 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
         UISwitch.appearance().tintColor = GlobalSettings.tint.color
         UISwitch.appearance().onTintColor = GlobalSettings.tint.color
         spotlightButton.setTitleColor(GlobalSettings.tint.color, for: .normal)
+    }
+    
+    func selfExplanatory() {
+        let alert = UIAlertController(title: "🤔", message: "Well, this is really self-explanatory. Try it and see for yourself!", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "Okay, don't be mad!", style: .default, handler: nil)
+        alert.addAction(ok)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func explainSkip() {
+        let alert = UIAlertController(title: "Skip songs? Why?", message: "If enabled, Plum will not play songs automatically that have no rating, but you can still pick a song to play even if it doesn't have rating. It won't skip songs in user created queue", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "Understood, thanks!", style: .default, handler: nil)
+        alert.addAction(ok)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func explainLyrics() {
+        let alert = UIAlertController(title: "Lyrics mode? What?", message: "If enabled, you will get lyrics for now playing song delivered right to your lockscreen. And they will change automatically too. It only works with lyrics embedeed in song's tags, Plum does not download lyrics from the internet", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "Understood, thanks!", style: .default, handler: nil)
+        alert.addAction(ok)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func explainLeft() {
+        let alert = UIAlertController(title: "Oh now we're discriminating lefties, huh?", message: "Not really, it just changes few UI elements so it will be more comfortable to use the app and users won't be...left behind", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "This was the greatest pun in the history of mankind", style: .default, handler: nil)
+        alert.addAction(ok)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func explainPlaylistGrid() {
+        let alert = UIAlertController(title: "Playlists grid?", message: "If enabled, playlists view will become a grid instead of default table", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "Understood, thanks!", style: .default, handler: nil)
+        alert.addAction(ok)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func explainDeploy() {
+        let alert = UIAlertController(title: "Where do we land, general?", message: "You can choose whether you prefer to start playing an album, artist, or all songs, when starting playback from Spotlight or in-app search screen", preferredStyle: .actionSheet)
+        let album = UIAlertAction(title: "Album (default)", style: .default, handler: {(action) in
+            self.defaults.set("songs", forKey: "deploy")
+            self.reload()
+        })
+        let artist = UIAlertAction(title: "Artist", style: .default, handler: {(action) in
+            self.defaults.set("songs", forKey: "deploy")
+            self.reload()
+        })
+        let playlist = UIAlertAction(title: "Songs", style: .default, handler: {(action) in
+            self.defaults.set("songs", forKey: "deploy")
+            self.reload()
+        })
+        alert.addAction(album)
+        alert.addAction(artist)
+        alert.addAction(playlist)
+        present(alert, animated: true, completion: nil)
     }
     
     func explainColorFlow(){
