@@ -184,7 +184,14 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             performSegue(withIdentifier: "artist", sender: nil)
         }else if indexPath.section == 2{
             let song = filteredSongs?[indexPath.row]
-            Plum.shared.landInAlbum(song!, new: true)
+            switch GlobalSettings.deployIn {
+            case .artist:
+                Plum.shared.landInArtist(song!, new: true)
+            case .album:
+                Plum.shared.landInAlbum(song!, new: true)
+            default:
+                print("wyladuje w piosenkach")
+            }
             Plum.shared.play()
         }else{
             let album = filteredAlbums?[indexPath.row]

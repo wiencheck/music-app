@@ -41,6 +41,10 @@ class NowPlayingVC: UIViewController, UIGestureRecognizerDelegate, UpNextDelegat
     @IBOutlet weak var lyricsTextView: UITextView!
     @IBOutlet weak var lyricsView: UIView!
     @IBOutlet weak var shufView: UIView!
+    @IBOutlet weak var lyricsButton: UIButton!
+    @IBOutlet weak var ratingButton: UIButton!
+    @IBOutlet weak var BackgroundView: UIView!
+    
     var pickedID: MPMediaEntityPersistentID!
     var doubleTapArt: UITapGestureRecognizer!
     var doubleTapLyr: UITapGestureRecognizer!
@@ -65,6 +69,7 @@ class NowPlayingVC: UIViewController, UIGestureRecognizerDelegate, UpNextDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
+        view.backgroundColor = .clear
         setTemplates()
         setArtworkDoubleTap()
         setLabelTap()
@@ -82,7 +87,19 @@ class NowPlayingVC: UIViewController, UIGestureRecognizerDelegate, UpNextDelegat
         //shufBtn.setImage(templates[13], for: .normal)
         shufView.layer.cornerRadius = 6.0
         mpVolView.setVolumeThumbImage(templates[4], for: .normal)
-        
+        //sliderColors()
+        timeSlider.alpha = 0.8
+        timeSlider.setMinimumTrackImage(playImg[6], for: .normal)
+        timeSlider.setMaximumTrackImage(playImg[6], for: .normal)
+        timeSlider.setThumbImage(playImg[4], for: .normal)
+        if GlobalSettings.blur {
+            let blur = UIBlurEffect(style: .dark)
+            let fx = UIVisualEffectView(frame: BackgroundView.frame)
+            fx.effect = blur
+            backgroundImgView.contentMode = .scaleAspectFill
+            BackgroundView.addSubview(fx)
+        }
+        setColors()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -119,12 +136,16 @@ class NowPlayingVC: UIViewController, UIGestureRecognizerDelegate, UpNextDelegat
         }else{
             self.playbackBtn.setImage(self.templates[1], for: .normal)
         }
+        backgroundImgView.image = image
         self.artworkImage.image = self.image
-        self.magic(albumArt: self.image)
         self.outOfLabel.text = self.player.labelString(type: "out of")
         self.timeSlider.setValue(0, animated: false)
         self.timeSlider.maximumValue = Float(self.player.player.duration)
-        self.showRating()
+        if GlobalSettings.blur {
+            backgroundImgView.image = image
+        }else if GlobalSettings.color {
+            magic()
+        }
         if self.player.currentItem != nil{
             let ass = AVAsset(url: (self.player.currentItem?.assetURL)!)
             if let lyr = ass.lyrics {
@@ -171,7 +192,7 @@ class NowPlayingVC: UIViewController, UIGestureRecognizerDelegate, UpNextDelegat
             player.shuffleCurrent()
         }
         outOfLabel.text = player.labelString(type: "out of")
-        magic(albumArt: image)
+        setColors()
     }
     
     @objc func updateTimes(){
@@ -192,19 +213,19 @@ class NowPlayingVC: UIViewController, UIGestureRecognizerDelegate, UpNextDelegat
         player.player.currentTime = TimeInterval(timeSlider.value)
     }
     
-    func magic(albumArt: UIImage){
-        colors = albumArt.getColors(scaleDownSize: CGSize(width: scale, height: scale))
+    func magic(){
+        colors = image.getColors(scaleDownSize: CGSize(width: scale, height: scale))
         self.view.backgroundColor = colors.backgroundColor
         self.titleLabel.textColor = colors.primaryColor
         self.detailLabel.textColor = colors.detailColor
         self.elapsedLabel.textColor = colors.detailColor
         self.remainingLabel.textColor = colors.detailColor
+        timeSlider.minimumTrackTintColor = colors.primaryColor
+        timeSlider.maximumTrackTintColor = colors.detailColor
+        timeSlider.thumbTintColor = colors.secondaryColor
         doneBtn.tintColor = colors.detailColor
         upNextBtn.tintColor = colors.detailColor
         outOfLabel.textColor = colors.primaryColor
-        timeSlider.setMinimumTrackImage(#imageLiteral(resourceName: "track"), for: .normal)
-        timeSlider.setMaximumTrackImage(#imageLiteral(resourceName: "track"), for: .normal)
-        timeSlider.setThumbImage(#imageLiteral(resourceName: "thumb2"), for: .normal)
         ratingLabel.textColor = colors.primaryColor
         if(colors.backgroundColor.isDarkColor){
             UIApplication.shared.statusBarStyle = .lightContent
@@ -487,6 +508,72 @@ class NowPlayingVC: UIViewController, UIGestureRecognizerDelegate, UpNextDelegat
     
     @objc func doubleTapOnLyrics(_ sender: UITapGestureRecognizer){
         realPresent()
+    }
+    
+    @IBAction func ratingModePressed() {
+        GlobalSettings.changeRatingMode(!GlobalSettings.ratingMode, full: GlobalSettings.full)
+        if GlobalSettings.ratingMode {
+            ratingButton.setTitle("Ena", for: .normal)
+        }else{
+            ratingButton.setTitle("Dis", for: .normal)
+        }
+    }
+    
+    @IBAction func lyricsModePressed() {
+        GlobalSettings.changeLyrics(!GlobalSettings.lyrics)
+        if GlobalSettings.lyrics {
+            lyricsButton.setTitle("Ena", for: .normal)
+        }else{
+            lyricsButton.setTitle("Dis", for: .normal)
+        }
+    }
+    
+    func setColors() {
+        if GlobalSettings.color {
+            magic()
+        }else if GlobalSettings.blur {
+            titleLabel.textColor = UIColor.white.withAlphaComponent(0.5)
+            detailLabel.textColor = UIColor.white.withAlphaComponent(0.5)
+            playbackBtn.tintColor = .white
+            nextBtn.tintColor = .white
+            prevBtn.tintColor = .white
+            shufBtn.tintColor = .clear
+            elapsedLabel.textColor = UIColor.white.withAlphaComponent(0.5)
+            remainingLabel.textColor = UIColor.white.withAlphaComponent(0.5)
+            timeSlider.tintColor = .clear
+            //backgroundImgView.backgroundColor = .clear
+            minVolImg.tintColor = UIColor.white.withAlphaComponent(0.5)
+            maxVolImg.tintColor = UIColor.white.withAlphaComponent(0.5)
+            upperBar.backgroundColor = .clear
+            doneBtn.tintColor = .white
+            upNextBtn.tintColor = .white
+            outOfLabel.textColor = UIColor.white.withAlphaComponent(0.5)
+            ratingsView.backgroundColor = .clear
+            titleView.backgroundColor = .clear
+            ratingLabel.textColor = .white
+            shufView.tintColor = UIColor.white.withAlphaComponent(0.5)
+            lyricsButton.tintColor = .white
+            ratingButton.tintColor = .white
+            mpVolView.tintColor = UIColor.white.withAlphaComponent(0.5)
+            lightStyle = false
+            //timeSlider.minimumTrackTintColor = UIColor.white.withAlphaComponent(0.5)
+            //timeSlider.maximumTrackTintColor = UIColor.white.withAlphaComponent(0.5)
+            //timeSlider.thumbTintColor = .white
+        }else{
+            if GlobalSettings.theme == .dark {
+                BackgroundView.backgroundColor = .black
+            }else{
+                let imv = UIImageView(frame: BackgroundView.frame)
+                imv.image = #imageLiteral(resourceName: "background_se")
+                BackgroundView = imv
+            }
+        }
+    }
+    
+    func sliderColors() {
+        templates[4] = templates[4].tintImage(with: UIColor.white)
+        templates[5] = templates[5].tintImage(with: .white)
+        templates[6] = templates[6].tintImage(with: UIColor.white.withAlphaComponent(0.1))
     }
 }
 

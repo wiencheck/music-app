@@ -104,6 +104,7 @@ extension AlbumsVC: UITableViewDelegate, UITableViewDataSource{     //Table
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "albumCell", for: indexPath) as! AlbumCell
         cell.setup(album: (result[indexes[indexPath.section]]?[indexPath.row])!)
+        cell.backgroundColor = .clear
         return cell
     }
     

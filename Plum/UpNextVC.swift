@@ -104,9 +104,9 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! QueueCell
         let item = sungs[indexPath.section].songsIn[indexPath.row]
         cell.setup(item: item)
-        if GlobalSettings.theme == .dark || GlobalSettings.theme == .adaptive && !lightTheme{
+        if !lightTheme{
             if indexPath.section == 1{
-                cell.backgroundColor = GlobalSettings.tint.color.withAlphaComponent(0.5)
+                cell.backgroundColor = GlobalSettings.tint.color.withAlphaComponent(0.8)
                 cell.artist.textColor = .white
                 cell.title.textColor = .white
             }
@@ -117,7 +117,7 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
             }
         }else{
             if indexPath.section == 1{
-                cell.backgroundColor = GlobalSettings.tint.color.withAlphaComponent(0.3)
+                cell.backgroundColor = GlobalSettings.tint.color.withAlphaComponent(0.8)
                 cell.artist.textColor = .white
                 cell.title.textColor = .white
             }
@@ -449,16 +449,10 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
     }
     
     func setColors(){
-        if GlobalSettings.theme == .dark {
+        if !lightTheme {
             dark()
-        }else if GlobalSettings.theme == .light {
+        }else{
             light()
-        }else if GlobalSettings.theme == .adaptive {
-            if lightTheme {
-                light()
-            }else {
-                dark()
-            }
         }
         fxView.frame = self.view.frame
         self.tableView.backgroundView = fxView

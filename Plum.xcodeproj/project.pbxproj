@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3801102C1FC4595300B3F35B /* EightNowPlayingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3801102B1FC4595300B3F35B /* EightNowPlayingVC.swift */; };
 		3803CD541FBB5B1A009F5EA8 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3803CD531FBB5B1A009F5EA8 /* SearchCell.swift */; };
 		380934461FBE25F80095E1DF /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = 380934451FBE25F80095E1DF /* AppIcon.appiconset */; };
 		380C2EBA1FB1AE6400A6731B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 380C2EB91FB1AE6400A6731B /* AudioToolbox.framework */; };
@@ -87,6 +88,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3801102B1FC4595300B3F35B /* EightNowPlayingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EightNowPlayingVC.swift; sourceTree = "<group>"; };
 		3803CD531FBB5B1A009F5EA8 /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 		380934451FBE25F80095E1DF /* AppIcon.appiconset */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AppIcon.appiconset; sourceTree = "<group>"; };
 		380C2EB91FB1AE6400A6731B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -290,6 +292,7 @@
 				38944C9F1FA0EFA4005CB30C /* AlbumUpVC.swift */,
 				3858254C1FA32CE300697186 /* ArtistUpVC.swift */,
 				38F722EB1FC0409900A45CF9 /* QueueVC.swift */,
+				3801102B1FC4595300B3F35B /* EightNowPlayingVC.swift */,
 			);
 			name = NowPlaying;
 			sourceTree = "<group>";
@@ -478,6 +481,7 @@
 				38F0BDAA1FAB2DED0028008B /* PlaylistVC.swift in Sources */,
 				3871BC231FBC3DD80027CA2A /* ColorsVC.swift in Sources */,
 				385921411FA8869600CF9059 /* AlbumsVC.swift in Sources */,
+				3801102C1FC4595300B3F35B /* EightNowPlayingVC.swift in Sources */,
 				38E729541F2F496600F35780 /* SongsByVC.swift in Sources */,
 				38E68AC11F28C17500BFF4E2 /* AppDelegate.swift in Sources */,
 				384F9BF21F7A647E0053E22C /* RemoteCommandManager.swift in Sources */,

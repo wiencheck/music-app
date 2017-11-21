@@ -69,19 +69,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             if let uniqueIdentifier = userActivity.userInfo?[CSSearchableItemActivityIdentifier] as? String {
                 let id = MPMediaEntityPersistentID(uniqueIdentifier)
                 let item = musicQuery.shared.songForID(ID: id!)
-                if let lan = defaults.value(forKey: "landing") as? String {
-                    switch lan{
-                    case "artist":
-                        Plum.shared.landInArtist(item, new: true)
-                    case "album":
-                        Plum.shared.landInAlbum(item, new: true)
-                    case "songs":
-                        print("Wyladuje w piosenkach")
-                    default:
-                        Plum.shared.landInAlbum(item, new: true)
-                    }
-                }else{
+                switch GlobalSettings.deployIn {
+                case .artist:
+                    Plum.shared.landInArtist(item, new: true)
+                case .album:
                     Plum.shared.landInAlbum(item, new: true)
+                default:
+                    print("wyladuje w piosenkach")
                 }
                 Plum.shared.play()
             }
@@ -144,6 +138,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: "colorFlow") == nil{
             defaults.set(true, forKey: "colorFlow")
         }
+        if defaults.value(forKey: "blur") == nil{
+            defaults.set(false, forKey: "blur")
+        }
         if defaults.value(forKey: "tintName") == nil{
             defaults.set("Plum purple", forKey: "tintName")
             defaults.set(0.21, forKey: "tintRed")
@@ -195,7 +192,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             defaults.set(false, forKey: "lyrics")
         }
         if defaults.value(forKey: "theme") == nil {
-            defaults.set("adaptive", forKey: "theme")
+            defaults.set("light", forKey: "theme")
+        }
+        if defaults.value(forKey: "deploy") == nil {
+            defaults.set("album", forKey: "deploy")
         }
     }
     
@@ -226,18 +226,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 GlobalSettings.changePopupStyle(.classic)
             }
         }
-        if let lan = defaults.value(forKey: "landing") as? String{
-            switch lan{
-            case "artist":
-                GlobalSettings.changeLanding(.artist)
-            case "album":
-                GlobalSettings.changeLanding(.album)
-            case "songs":
-                GlobalSettings.changeLanding(.songs)
-            default:
-                GlobalSettings.changeLanding(.album)
-            }
-        }
         if let lyr = defaults.value(forKey: "lyrics") as? Bool {
             GlobalSettings.changeLyrics(lyr)
         }
@@ -259,12 +247,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             switch the {
             case "light":
                 GlobalSettings.changeTheme(.light)
-            case "dark":
-                GlobalSettings.changeTheme(.dark)
             default:
-                GlobalSettings.changeTheme(.adaptive)
+                GlobalSettings.changeTheme(.dark)
             }
         }
+        if let blu = defaults.value(forKey: "blur") as? Bool {
+            GlobalSettings.changeBlur(blu)
+        }
+        if let dep = defaults.value(forKey: "deploy") as? String {
+            GlobalSettings.changeDeploy(Deploy(rawValue: dep)!)
+        }
+        
     }
 }
 

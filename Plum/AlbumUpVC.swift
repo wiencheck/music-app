@@ -108,7 +108,7 @@ extension AlbumUpVC: UITableViewDelegate, UITableViewDataSource{
                 cell.durationLabel.textColor = GlobalSettings.tint.bar
             }else{
                 cell.backgroundColor = .clear
-                if GlobalSettings.theme == .dark || GlobalSettings.theme == .adaptive && !lightTheme{
+                if !lightTheme{
                     cell.titleLabel.textColor = .white
                     cell.trackNumberLabel.textColor = .white
                     cell.durationLabel.textColor = .white
@@ -229,16 +229,10 @@ extension AlbumUpVC: UITableViewDelegate, UITableViewDataSource{
     }
     
     func setColors(){
-        if GlobalSettings.theme == .dark {
+        if !lightTheme {
             dark()
-        }else if GlobalSettings.theme == .light {
+        }else {
             light()
-        }else if GlobalSettings.theme == .adaptive {
-            if lightTheme {
-                light()
-            }else {
-                dark()
-            }
         }
         fxView.frame = self.view.frame
         view.backgroundColor = .clear

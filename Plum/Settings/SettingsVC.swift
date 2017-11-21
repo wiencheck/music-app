@@ -29,6 +29,7 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     @IBOutlet weak var indexVisibleSwitch: UISwitch!
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var lyricsSwitch: UISwitch!
+    @IBOutlet weak var blurSwitch: UISwitch!
     @IBOutlet weak var colorView: UIView!
     var colorFlowStatus: Bool!
     var artistsGridStatus: Bool!
@@ -37,6 +38,7 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     var playlistsGridStatus: Bool!
     var ratingStatus: Bool!
     var lyricsStatus: Bool!
+    var blurStatus: Bool!
     var timer: Timer!
 
     override func viewDidLoad() {
@@ -64,6 +66,7 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
         spotlightSwitch.addTarget(self, action: #selector(spotlight(_:)), for: .valueChanged)
         ratingSwitch.addTarget(self, action: #selector(rating(_:)), for: .valueChanged)
         lyricsSwitch.addTarget(self, action: #selector(lyricsSwitched(_:)), for: .valueChanged)
+        blurSwitch.addTarget(self, action: #selector(blurSwitched(_:)), for: .valueChanged)
     }
     
     @objc func colorSwitched(_ sender: UISwitch){
@@ -72,7 +75,14 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
         }else{
             colorFlowStatus = false
         }
+        let np = tabBarController?.popupContent as! EightNowPlayingVC
+        np.viewDidLoad()
         defaults.set(colorFlowStatus, forKey: "colorFlow")
+    }
+    
+    @objc func blurSwitched(_ sender: UISwitch){
+        blurStatus = sender.isOn
+        defaults.set(blurStatus, forKey: "blur")
     }
     
     @objc func artistsGrid(_ sender: UISwitch){
@@ -213,26 +223,11 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
             ratingStatus = rat
             ratingSwitch.isOn = rat
         }
-        if let sty = defaults.value(forKey: "style") as? Int{
-            if sty == 0{
-                currentStyle.text = "Light"
-            }else if sty == 1{
-                currentStyle.text = "Dark"
-            }else if sty == 2{
-                currentStyle.text = "Adaptive"
-            }
-        }
-        if let pop = defaults.value(forKey: "modernPopup") as? Bool{
-            if pop {
-                currentMiniPlayer.text = "Modern"
-            }else {
-                currentMiniPlayer.text = "Classic"
-            }
-        }
-        if let lyr = defaults.value(forKey: "lyrics") as? Bool{
-            lyricsStatus = lyr
-            lyricsSwitch.isOn = lyr
-        }
+        currentStyle.text = GlobalSettings.theme.rawValue
+        currentMiniPlayer.text = GlobalSettings.popupStyle.rawValue
+        lyricsStatus = GlobalSettings.lyrics
+        lyricsSwitch.isOn = GlobalSettings.lyrics
+        blurSwitch.isOn = GlobalSettings.blur
     }
     
     func tabBarController(_ tabBarController: UITabBarController, didEndCustomizing viewControllers: [UIViewController], changed: Bool) {
@@ -278,7 +273,7 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
         case "playlist":
             explainPlaylistGrid()
         case "deploy":
-            performSegue(withIdentifier: "deploy", sender: nil)
+            explainDeploy()
         case "spotlight":
             explainSpotlight()
         case "indexing":
@@ -350,11 +345,11 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     func explainDeploy() {
         let alert = UIAlertController(title: "Where do we land, general?", message: "You can choose whether you prefer to start playing an album, artist, or all songs, when starting playback from Spotlight or in-app search screen", preferredStyle: .actionSheet)
         let album = UIAlertAction(title: "Album (default)", style: .default, handler: {(action) in
-            self.defaults.set("songs", forKey: "deploy")
+            self.defaults.set("albums", forKey: "deploy")
             self.reload()
         })
         let artist = UIAlertAction(title: "Artist", style: .default, handler: {(action) in
-            self.defaults.set("songs", forKey: "deploy")
+            self.defaults.set("artist", forKey: "deploy")
             self.reload()
         })
         let playlist = UIAlertAction(title: "Songs", style: .default, handler: {(action) in
@@ -369,13 +364,6 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     
     func explainColorFlow(){
         let alert = UIAlertController(title: "Colorflow? What does that mean!?", message: "Easy there, ColorFlow is a cool and one of Plum's unique features that changes colors on now playing screen to match current playing song's artwork. And it looks awesome.", preferredStyle: .alert)
-        let ok = UIAlertAction(title: "Understood, thanks!", style: .default, handler: nil)
-        alert.addAction(ok)
-        present(alert, animated: true, completion: nil)
-    }
-    
-    func explainBlur(){
-        let alert = UIAlertController(title: "Blur!?", message: "If enabled, background of lyrics and UpNext will be blured, if not, you will be able to always see your beautiful artworks.", preferredStyle: .alert)
         let ok = UIAlertAction(title: "Understood, thanks!", style: .default, handler: nil)
         alert.addAction(ok)
         present(alert, animated: true, completion: nil)
@@ -402,17 +390,17 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     }
     
     func explainMiniPlayer(){
-        let alert = UIAlertController(title: "Time for decision", message: "Modern: iOS 10 music app style\n\nClassic: iOS 9 music app style", preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "Time for decision", message: "Classic: iOS 9 music app styleModern: iOS 10 music app style\n\nModern: iOS 10 music app style", preferredStyle: .actionSheet)
         let dark = UIAlertAction(title: "Modern", style: .default, handler: {(action) in
-            GlobalSettings.changePopupStyle(.modern)
             let tab = self.tabBarController as! PlumTabBarController
-            tab.reloadPopup(false)
+            GlobalSettings.changePopupStyle(.modern)
+            tab.setPopup()
             self.reload()
         })
         let light = UIAlertAction(title: "Classic", style: .default, handler: {(action) in
             GlobalSettings.changePopupStyle(.classic)
             let tab = self.tabBarController as! PlumTabBarController
-            tab.reloadPopup(false)
+            tab.setPopup()
             self.reload()
         })
         alert.addAction(light)

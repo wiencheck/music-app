@@ -12,7 +12,7 @@ public var popupPresented = false
 
 class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     
-    var nowPlaying: NowPlayingVC!
+    var nowPlaying: EightNowPlayingVC!
     let player = Plum.shared
     var timer: Timer!
     var playBackBtn: UIBarButtonItem!
@@ -30,7 +30,8 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(updatePopup), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
         nextBtn = UIBarButtonItem(barButtonSystemItem: .fastForward, target: self, action: #selector(nextBtnPressed))
-        reloadPopup(true)
+        setPopup()
+        emptyPopup()
         //loadAllViews()
         /*if let firstNav = self.viewControllers?.first as? UINavigationController{
             if let first = firstNav.viewControllers.first as? SearchVC{
@@ -52,30 +53,43 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         self.nowPlaying.popupItem.progress = procent
     }
     
+    func emptyPopup() {
+        let story = UIStoryboard.init(name: "Main", bundle: nil)
+        nowPlaying = story.instantiateViewController(withIdentifier: "eight") as! EightNowPlayingVC
+        self.presentPopupBar(withContentViewController: nowPlaying, animated: true, completion: nil)
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
+        timer.fire()
+        popupPresented = true
+        nowPlaying.popupItem.title = "Welcome to Plum"
+        nowPlaying.popupItem.subtitle = "Pick some music to play"
+        self.popupBar.isUserInteractionEnabled = false
+    }
+    
     @objc func updatePopup() {
         if !popupPresented {
             let story = UIStoryboard.init(name: "Main", bundle: nil)
-            nowPlaying = story.instantiateViewController(withIdentifier: "nowPlayingVC") as! NowPlayingVC
+            nowPlaying = story.instantiateViewController(withIdentifier: "eight") as! EightNowPlayingVC
             self.presentPopupBar(withContentViewController: nowPlaying, animated: true, completion: nil)
-            timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
-            timer.fire()
             popupPresented = true
-            nowPlaying.popupItem.title = "Welcome to Plum"
-            nowPlaying.popupItem.subtitle = "Pick some music to play"
-            self.popupBar.isUserInteractionEnabled = false
-        }else{
-            nowPlaying.popupItem.title = player.currentItem?.title ?? "Unknown title"
-            nowPlaying.popupItem.subtitle = player.currentItem?.artist ?? "Unknown artist"
-            if !player.isPlayin(){
-                playBackBtn = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(playback))
-            }else {
-                playBackBtn = UIBarButtonItem(barButtonSystemItem: .pause, target: self, action: #selector(playback))
-            }
-            nowPlaying.popupItem.leftBarButtonItems = [playBackBtn]
-            nowPlaying.popupItem.rightBarButtonItems = [nextBtn]
-            nowPlaying.popupItem.image = player.currentItem?.artwork?.image(at: CGSize(width: 30, height: 30))
-            self.popupBar.isUserInteractionEnabled = true
         }
+        if popupPresented {
+            if Plum.shared.currentItem == nil {
+                dismissPopupBar(animated: true, completion: {popupPresented = false})
+            }else{
+                nowPlaying.popupItem.title = player.currentItem?.title ?? "Unknown title"
+                nowPlaying.popupItem.subtitle = player.currentItem?.artist ?? "Unknown artist"
+                if !player.isPlayin(){
+                    playBackBtn = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(playback))
+                }else {
+                    playBackBtn = UIBarButtonItem(barButtonSystemItem: .pause, target: self, action: #selector(playback))
+                }
+                nowPlaying.popupItem.leftBarButtonItems = [playBackBtn]
+                nowPlaying.popupItem.rightBarButtonItems = [nextBtn]
+                nowPlaying.popupItem.image = player.currentItem?.artwork?.image(at: CGSize(width: 30, height: 30))
+                self.popupBar.isUserInteractionEnabled = true
+            }
+        }
+
     }
     
     @objc func playback() {
@@ -97,7 +111,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         }
     }
     
-    func reloadPopup(_ initial: Bool) {
+    func setPopup() {
         if GlobalSettings.popupStyle == .classic {
             self.popupBar.barStyle = .compact
             self.popupInteractionStyle = .drag
@@ -112,14 +126,6 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
             self.popupContentView.popupCloseButtonStyle = .none
             self.popupBar.popupOpenGestureRecognizer.numberOfTapsRequired = 2
             print("modern")
-        }
-        if !initial {
-            self.dismissPopupBar(animated: true, completion: {
-                self.updatePopup()
-            })
-        }else{
-            print("initial")
-            updatePopup()
         }
     }
     

@@ -110,7 +110,7 @@ extension ArtistUpVC: UITableViewDelegate, UITableViewDataSource{
                 cell.duration.textColor = GlobalSettings.tint.bar
             }else{
                 cell.backgroundColor = .clear
-                if GlobalSettings.theme == .dark || GlobalSettings.theme == .adaptive && !lightTheme{
+                if !lightTheme{
                     cell.title.textColor = .white
                     cell.album.textColor = .white
                     cell.duration.textColor = .white
@@ -233,14 +233,8 @@ extension ArtistUpVC: UITableViewDelegate, UITableViewDataSource{
     func setColors(){
         if GlobalSettings.theme == .dark {
             dark()
-        }else if GlobalSettings.theme == .light {
+        }else {
             light()
-        }else if GlobalSettings.theme == .adaptive {
-            if lightTheme {
-                light()
-            }else {
-                dark()
-            }
         }
         fxView.frame = self.view.frame
         view.backgroundColor = .clear

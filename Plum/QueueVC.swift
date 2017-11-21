@@ -46,6 +46,7 @@ class QueueVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         setupQueue()
+        setHeaders()
         tableView.reloadData()
         tableView.scrollToRow(at: IndexPath(row: 0, section: 1), at: .top, animated: false)
     }
@@ -88,7 +89,7 @@ extension QueueVC: UITableViewDelegate, UITableViewDataSource {     //TableView 
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! QueueCell
         let item = sections[indexPath.section].songs[indexPath.row]
         cell.setup(item: item)
-        if GlobalSettings.theme == .dark || GlobalSettings.theme == .adaptive && !lightTheme{
+        if !lightTheme{
             if indexPath.section == 1{
                 cell.backgroundColor = GlobalSettings.tint.color.withAlphaComponent(0.5)
                 cell.artist.textColor = GlobalSettings.tint.bar
@@ -472,16 +473,10 @@ extension QueueVC: MPMediaPickerControllerDelegate {    //Media Picker
     }
     
     func setColors(){
-        if GlobalSettings.theme == .dark {
+        if !lightTheme {
             dark()
-        }else if GlobalSettings.theme == .light {
+        }else{
             light()
-        }else if GlobalSettings.theme == .adaptive {
-            if lightTheme {
-                light()
-            }else {
-                dark()
-            }
         }
         fxView.frame = self.view.frame
         self.view.backgroundColor = .clear

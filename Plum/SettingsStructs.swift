@@ -16,15 +16,20 @@ struct UpNextSettings {
     var upperBarColored = false
 }
 
-enum styles {
-    case modern
-    case classic
+enum styles: String {
+    case modern = "modern"
+    case classic = "classic"
 }
 
 enum Theme: String {
     case light = "light"
     case dark = "dark"
-    case adaptive = "adaptive"
+}
+
+enum Deploy: String {
+    case artist = "artist"
+    case album = "album"
+    case songs = "songs"
 }
 
 struct GlobalSettings{
@@ -68,7 +73,7 @@ struct GlobalSettings{
         defaults.set(t.name, forKey: "tintName")
     }
     
-    static var theme: Theme = .adaptive
+    static var theme: Theme = .light
     static func changeTheme(_ t: Theme) {
         self.theme = t
         defaults.set(t.rawValue, forKey: "theme")
@@ -139,15 +144,10 @@ struct GlobalSettings{
         self.compact = t
         defaults.set(t, forKey: "compact")
     }
-    enum Land: String {
-        case artist = "artist"
-        case album = "album"
-        case songs = "songs"
-    }
-    static var landIn: Land = .album
-    static func changeLanding(_ t: Land) {
-        self.landIn = t
-        defaults.set(t.rawValue, forKey: "landing")
+    static var deployIn: Deploy = .album
+    static func changeDeploy(_ t: Deploy) {
+        self.deployIn = t
+        defaults.set(t.rawValue, forKey: "deploy")
     }
     static var lyrics = false
     static func changeLyrics(_ t: Bool) {

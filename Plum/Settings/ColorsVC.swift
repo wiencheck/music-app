@@ -68,7 +68,7 @@ extension ColorsVC {
         colors = [Color]()
         colors.append(Color(n: "Sexy red", c: UIColor(red:0.71, green:0.28, blue:0.28, alpha:1.0), b: .white))
         colors.append(Color(n: "Rose red", c: UIColor(red:0.72, green:0.07, blue:0.07, alpha:1.0), b: .white))
-        colors.append(Color(n: "Wine red", c: UIColor(red:0.85, green:0.29, blue:0.29, alpha:1.0), b: .white))
+        colors.append(Color(n: "Classic Apple Red", c: UIColor(red: 1.0, green: 0.180392156862745, blue: 0.333333333333333, alpha: 1.0), b: .white))
         colors.append(Color(n: "Mustang blue", c: UIColor(red:0.12, green:0.58, blue:0.99, alpha:1.0), b: .white))
         colors.append(Color(n: "Elegant blue", c: UIColor(red:0.02, green:0.37, blue:0.69, alpha:1.0), b: .white))
         colors.append(Color(n: "Jeans blue", c: UIColor(red:0.12, green:0.35, blue:0.47, alpha:1.0), b: .white))

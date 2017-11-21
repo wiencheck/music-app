@@ -47,7 +47,7 @@ class ArtistsVC: UIViewController {
     
     func setTable(){
         self.tableView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
-        self.tableView.backgroundColor = .clear
+        //self.tableView.backgroundColor = .clear
         tableView.delegate = self
         tableView.dataSource = self
         self.view.addSubview(tableView)
@@ -61,7 +61,7 @@ class ArtistsVC: UIViewController {
     
     func setCollection(){
         self.collectionView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
-        self.collectionView.backgroundColor = .clear
+        //self.collectionView.backgroundColor = .clear
         collectionView.delegate = self
         collectionView.dataSource = self
         self.view.addSubview(collectionView)
@@ -97,6 +97,7 @@ extension ArtistsVC: UITableViewDelegate, UITableViewDataSource{    //Table
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "artistCell", for: indexPath) as! ArtistCell
         cell.setup(artist: (result[indexes[indexPath.section]]?[indexPath.row])!)
+        cell.backgroundColor = .clear
         return cell
     }
     
