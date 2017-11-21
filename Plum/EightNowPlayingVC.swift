@@ -11,7 +11,7 @@ import MediaPlayer
 
 class EightNowPlayingVC: UIViewController {
 
-    var scale = 18
+    var scale: Double!
     
     let player = Plum.shared
     @IBOutlet weak var volView: UIView!
@@ -83,6 +83,9 @@ class EightNowPlayingVC: UIViewController {
             backgroundImgView.contentMode = .scaleAspectFill
             BackgroundView.addSubview(fx)
         }
+        updateUI()
+        GlobalSettings.changeBlur(false)
+        GlobalSettings.changeColor(true)
         setColors()
     }
     
@@ -98,6 +101,7 @@ class EightNowPlayingVC: UIViewController {
             playbackBtn.isEnabled = false
         }
         updateUI()
+        print("Scale = \(GlobalSettings.scale)")
     }
     
     @IBAction func presentQueue(_ sender: Any){
@@ -406,6 +410,7 @@ extension EightNowPlayingVC: UpNextDelegate {
 extension EightNowPlayingVC {       //Kolory i UI
     
     @objc func updateUI(){
+        scale = GlobalSettings.scale
         if(self.player.currentItem != nil){
             self.titleLabel.text = self.player.labelString(type: "title")
             self.detailLabel.text = self.player.labelString(type: "detail")
@@ -472,10 +477,6 @@ extension EightNowPlayingVC {       //Kolory i UI
         }else{
             playbackBtn.setImage(#imageLiteral(resourceName: "play-butt"), for: .normal)
         }
-        let track = #imageLiteral(resourceName: "track")
-        timeSlider.setMinimumTrackImage(track, for: .normal)
-        timeSlider.setMaximumTrackImage(track, for: .normal)
-        timeSlider.setThumbImage(#imageLiteral(resourceName: "thumb"), for: .normal)
     }
     
     func setColors() {
@@ -494,16 +495,14 @@ extension EightNowPlayingVC {       //Kolory i UI
     }
     
     func color(){
-        
         colors = image.getColors(scaleDownSize: CGSize(width: scale, height: scale))
-        self.view.backgroundColor = colors.backgroundColor
+        BackgroundView.backgroundColor = colors.backgroundColor
         self.titleLabel.textColor = colors.primaryColor
         self.detailLabel.textColor = colors.detailColor
         self.elapsedLabel.textColor = colors.detailColor
         self.remainingLabel.textColor = colors.detailColor
-        timeSlider.minimumTrackTintColor = colors.primaryColor
-        timeSlider.maximumTrackTintColor = colors.detailColor
-        timeSlider.thumbTintColor = colors.secondaryColor
+        customTrackSlider(slider: timeSlider, min: colors.primaryColor, max: colors.detailColor, thumb: colors.primaryColor, thumbImg: #imageLiteral(resourceName: "thumb2"))
+        customVolumeSlider(min: colors.primaryColor, max: colors.detailColor, thumb: colors.detailColor, thumbImg: #imageLiteral(resourceName: "thumb"))
         doneBtn.tintColor = colors.detailColor
         upNextBtn.tintColor = colors.detailColor
         outOfLabel.textColor = colors.primaryColor
@@ -547,9 +546,10 @@ extension EightNowPlayingVC {       //Kolory i UI
         shufBtn.tintColor = .clear
         elapsedLabel.textColor = UIColor.white.withAlphaComponent(0.3)
         remainingLabel.textColor = UIColor.white.withAlphaComponent(0.3)
-        //timeSlider.minimumTrackTintColor = .blue
-        //timeSlider.maximumTrackTintColor = .yellow
-        //timeSlider.setMinimumTrackImage(#imageLiteral(resourceName: "track"), for: .normal)
+        let track = #imageLiteral(resourceName: "track")
+        timeSlider.setMinimumTrackImage(track.tintPictogram(with: UIColor.white.withAlphaComponent(0.5)), for: .normal)
+        timeSlider.setMaximumTrackImage(track.tintPictogram(with: UIColor.white.withAlphaComponent(0.2)), for: .normal)
+        timeSlider.setThumbImage(#imageLiteral(resourceName: "thumb"), for: .normal)
         timeSlider.tintColor = UIColor.white.withAlphaComponent(0.3)
         minVolImg.tintColor = UIColor.white.withAlphaComponent(0.3)
         maxVolImg.tintColor = UIColor.white.withAlphaComponent(0.3)
@@ -570,7 +570,7 @@ extension EightNowPlayingVC {       //Kolory i UI
         }
         lyricsButton.tintColor = .white
         ratingButton.tintColor = .white
-        customSlider(min: UIColor.white.withAlphaComponent(0.5), max: UIColor.white.withAlphaComponent(0.2), thumb: .white, thumbImg: #imageLiteral(resourceName: "thumb"))
+        customVolumeSlider(min: UIColor.white.withAlphaComponent(0.5), max: UIColor.white.withAlphaComponent(0.2), thumb: .white, thumbImg: #imageLiteral(resourceName: "thumb"))
         lightStyle = false
     }
     
@@ -629,15 +629,22 @@ extension EightNowPlayingVC {       //Kolory i UI
         lightStyle = true
     }
     
-    func customSlider(min: UIColor, max: UIColor, thumb: UIColor, thumbImg: UIImage) {
+    func customVolumeSlider(min: UIColor, max: UIColor, thumb: UIColor, thumbImg: UIImage) {
         let temp = mpVolView.subviews
         for current in temp {
             if current.isKind(of: UISlider.self) {
                 let tempSlider = current as! UISlider
-                tempSlider.minimumTrackTintColor = min
-                tempSlider.maximumTrackTintColor = max
+                tempSlider.setMinimumTrackImage(#imageLiteral(resourceName: "volumetrack").tintPictogram(with: min), for: .normal)
+                tempSlider.setMaximumTrackImage(#imageLiteral(resourceName: "volumetrack").tintPictogram(with: max), for: .normal)
+                tempSlider.setThumbImage(thumbImg.tintPictogram(with: thumb), for: .normal)
             }
         }
+    }
+    
+    func customTrackSlider(slider: UISlider, min: UIColor, max: UIColor, thumb: UIColor, thumbImg: UIImage) {
+        slider.setMinimumTrackImage(#imageLiteral(resourceName: "track").tintPictogram(with: min), for: .normal)
+        slider.setMaximumTrackImage(#imageLiteral(resourceName: "track").tintPictogram(with: max), for: .normal)
+        slider.setThumbImage(thumbImg.tintPictogram(with: thumb), for: .normal)
     }
     
 }

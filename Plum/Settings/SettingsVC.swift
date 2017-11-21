@@ -70,18 +70,22 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     }
     
     @objc func colorSwitched(_ sender: UISwitch){
-        if sender.isOn{
-            colorFlowStatus = true
-        }else{
-            colorFlowStatus = false
+        colorFlowStatus = sender.isOn
+        if blurStatus {
+            blurStatus = false
+            blurSwitch.isOn = false
+            GlobalSettings.changeBlur(false)
         }
-        let np = tabBarController?.popupContent as! EightNowPlayingVC
-        np.viewDidLoad()
         defaults.set(colorFlowStatus, forKey: "colorFlow")
     }
     
     @objc func blurSwitched(_ sender: UISwitch){
         blurStatus = sender.isOn
+        if colorFlowStatus {
+            colorFlowStatus = false
+            colorFlowSwitch.isOn = false
+            GlobalSettings.changeColor(false)
+        }
         defaults.set(blurStatus, forKey: "blur")
     }
     
@@ -224,7 +228,11 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
             ratingSwitch.isOn = rat
         }
         currentStyle.text = GlobalSettings.theme.rawValue
-        currentMiniPlayer.text = GlobalSettings.popupStyle.rawValue
+        if GlobalSettings.popupStyle == .modern {
+            currentMiniPlayer.text = "Modern"
+        }else{
+            currentMiniPlayer.text = "Classic"
+        }
         lyricsStatus = GlobalSettings.lyrics
         lyricsSwitch.isOn = GlobalSettings.lyrics
         blurSwitch.isOn = GlobalSettings.blur
@@ -247,7 +255,7 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
             else { return }
         switch identifier {
         case "colorflow":
-            explainColorFlow()
+            performSegue(withIdentifier: "scale", sender: nil)
         case "theme":
             explainStyle()
         case "miniplayer":

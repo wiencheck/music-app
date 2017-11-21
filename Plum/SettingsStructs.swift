@@ -91,6 +91,12 @@ struct GlobalSettings{
         defaults.set(t, forKey: "color")
     }
     
+    static var scale: Double = 0
+    static func changeScale(_ t: Double) {
+        scale = t
+        defaults.set(t, forKey: "scale")
+    }
+    
     static var alphabeticalSort = false
     static func changeAlphabeticalSort(_ t: Bool){
         self.alphabeticalSort = t

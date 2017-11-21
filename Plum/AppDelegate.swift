@@ -197,6 +197,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: "deploy") == nil {
             defaults.set("album", forKey: "deploy")
         }
+        if defaults.value(forKey: "scale") == nil {
+            defaults.set(18, forKey: "scale")
+        }
     }
     
     func readSettings(){
@@ -257,7 +260,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let dep = defaults.value(forKey: "deploy") as? String {
             GlobalSettings.changeDeploy(Deploy(rawValue: dep)!)
         }
-        
+        if let sca = defaults.value(forKey: "scale") as? Double {
+            GlobalSettings.changeScale(sca)
+        }
     }
 }
 
