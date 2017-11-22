@@ -37,6 +37,7 @@ class SetRatingsVC: UITableViewController {
         clearsSelectionOnViewWillAppear = true
         tableView.setEditing(true, animated: false)
         tableView.contentInset = UIEdgeInsetsMake(0, 0, 40, 0)
+        tableView.scrollIndicatorInsets = tableView.contentInset
         tableView.allowsSelectionDuringEditing = true
     }
 
@@ -129,7 +130,7 @@ class SetRatingsVC: UITableViewController {
             tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
             tableView.cellForRow(at: IndexPath(row: 0, section: 0))?.accessoryType = .none
         }
-        GlobalSettings.changeRatingMode(GlobalSettings.ratingMode, full: GlobalSettings.full)
+        GlobalSettings.changeRating(GlobalSettings.rating, full: GlobalSettings.full)
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -173,7 +174,7 @@ class SetRatingsVC: UITableViewController {
         for rating in GlobalSettings.ratings {
             print(rating.rawValue)
         }
-        GlobalSettings.changeRatingMode(GlobalSettings.ratingMode, full: GlobalSettings.full)
+        GlobalSettings.changeRating(GlobalSettings.rating, full: GlobalSettings.full)
     }
 
 }

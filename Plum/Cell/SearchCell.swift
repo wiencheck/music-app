@@ -25,7 +25,7 @@ class SearchCell: UITableViewCell {
             artwork.image = #imageLiteral(resourceName: "no_music")
         }
         title.text = song.title ?? "Unknown title"
-        if GlobalSettings.ratingMode {
+        if GlobalSettings.rating {
             detail.textColor = GlobalSettings.tint.color
             detail.text = "\(song.albumArtist ?? "Unknown artist") - \(labelFromRating(item: song))"
         }else{

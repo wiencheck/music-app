@@ -21,6 +21,7 @@ class AlbumsByVC: UITableViewController {
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
+        tableView.scrollIndicatorInsets = tableView.contentInset
         als = musicQuery.shared.artistAlbumsID(artist: receivedID)
         als = als.sorted(by:{ ($0.name! > $1.name!)})
         als.reverse()

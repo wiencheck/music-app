@@ -46,12 +46,8 @@ class TableIndexView: UIView {
         
         let gestureRecogniser = UIPanGestureRecognizer(target: self, action: #selector(indexViewWasDragged))
         addGestureRecognizer(gestureRecogniser)
-        if GlobalSettings.indexVisible {
-         self.alpha = 0.3
-         }else{
-         self.alpha = 0.1
-         }
-        //self.alpha = 0.3
+        self.alpha = 0.02
+        //self.alpha = 0.0
     }
     
     @objc func indexViewWasDragged(_ gesture: UIPanGestureRecognizer){
@@ -90,11 +86,7 @@ class TableIndexView: UIView {
     }
     
     func hide(){
-        if GlobalSettings.indexVisible {
-            self.alpha = 0.3
-        }else{
-            self.alpha = 0.1
-        }
+        self.alpha = 0.02
     }
 }
 
@@ -137,11 +129,7 @@ class CollectionIndexView: UIView {
         
         let gestureRecogniser = UIPanGestureRecognizer(target: self, action: #selector(indexViewWasDragged))
         addGestureRecognizer(gestureRecogniser)
-        if GlobalSettings.indexVisible {
-            self.alpha = 0.3
-        }else{
-            self.alpha = 0.1
-        }
+        self.alpha = 0.02
     }
     
     @objc func indexViewWasDragged(_ gesture: UIPanGestureRecognizer){
@@ -182,10 +170,6 @@ class CollectionIndexView: UIView {
     }
     
     func hide(){
-        if GlobalSettings.indexVisible {
-            self.alpha = 0.3
-        }else{
-            self.alpha = 0.1
-        }
+        self.alpha = 0.02
     }
 }

@@ -23,7 +23,7 @@ class RatingVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        current = GlobalSettings.ratingMode
+        current = GlobalSettings.rating
         leftView.layer.cornerRadius = 4.0
         leftImage.layer.cornerRadius = 4.0
         rightView.layer.cornerRadius = 4.0
@@ -73,7 +73,7 @@ class RatingVC: UIViewController {
     }
     
     func setButton() {
-        if GlobalSettings.ratingMode {
+        if GlobalSettings.rating {
             dragBtn.setTitle("Enable", for: .normal)
         }else{
             dragBtn.setTitle("Disable", for: .normal)
@@ -85,13 +85,13 @@ class RatingVC: UIViewController {
     }
     
     @IBAction func dragBtnPressed(_ sender: UIButton) {
-        GlobalSettings.changeRatingMode(!GlobalSettings.lyrics, full: GlobalSettings.full)
-        if GlobalSettings.ratingMode {
+        GlobalSettings.changeRating(!GlobalSettings.lyrics, full: GlobalSettings.full)
+        if GlobalSettings.rating {
             self.enable()
         }else{
             self.disable()
         }
-        current = GlobalSettings.ratingMode
+        current = GlobalSettings.rating
     }
     
     @IBAction func setBtnPressed(_ sender: UIButton) {

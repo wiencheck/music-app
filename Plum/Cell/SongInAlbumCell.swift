@@ -34,7 +34,7 @@ class SongInAlbumCell: UITableViewCell {
             trackNumberLabel.text = "\(item.albumTrackNumber)"
         }
         titleLabel.text = item.title
-        if GlobalSettings.ratingMode{
+        if GlobalSettings.rating{
             durationLabel.textColor = GlobalSettings.tint.color
             durationLabel.text = labelFromRating(item: item)
         }else{
@@ -51,7 +51,7 @@ class SongInAlbumCell: UITableViewCell {
         }
         titleLabel.text = item.title
         artistLabel?.text = item.artist
-        if GlobalSettings.ratingMode{
+        if GlobalSettings.rating{
             durationLabel.textColor = GlobalSettings.tint.color
             switch item.rating{
             case 1:

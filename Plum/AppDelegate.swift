@@ -40,6 +40,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.gray], for: .normal)
         UIBarButtonItem.appearance().tintColor = GlobalSettings.tint.color
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
+        UISwitch.appearance().tintColor = GlobalSettings.tint.color
+        UISwitch.appearance().onTintColor = GlobalSettings.tint.color
 
         // Getting access to your tabBarController
         let tabBar: UITabBarController = self.window?.rootViewController as! UITabBarController
@@ -166,17 +168,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: "style") == nil{
             defaults.set(2, forKey: "style")
         }
-        if defaults.value(forKey: "ratingMode") == nil{
-            defaults.set(false, forKey: "ratingMode")
+        if defaults.value(forKey: "rating") == nil{
+            defaults.set(false, forKey: "rating")
         }
         if defaults.value(forKey: "fullRating") == nil {
             defaults.set(true, forKey: "fullRating")
         }
         if defaults.array(forKey: "searchHistory") == nil{
             defaults.set([""], forKey: "searchHistory")
-        }
-        if defaults.value(forKey: "indexVisible") == nil{
-            defaults.set(false, forKey: "indexVisible")
         }
         if defaults.value(forKey: "modernPopup") == nil{
             defaults.set(false, forKey: "modernPopup")
@@ -200,6 +199,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: "scale") == nil {
             defaults.set(57, forKey: "scale")
         }
+        if defaults.value(forKey: "slider") == nil {
+            defaults.set("Alphabetical", forKey: "slider")
+        }
     }
     
     func readSettings(){
@@ -213,14 +215,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let fu = defaults.value(forKey: "fullRating") as? Bool {
             GlobalSettings.full = fu
         }
-        if let rat = defaults.value(forKey: "ratingMode") as? Bool{
-            GlobalSettings.changeRatingMode(rat, full: GlobalSettings.full)
+        if let rat = defaults.value(forKey: "rating") as? Bool{
+            GlobalSettings.changeRating(rat, full: GlobalSettings.full)
         }
         if let alp = defaults.value(forKey: "alphabeticalSort") as? Bool{
             GlobalSettings.changeAlphabeticalSort(alp)
-        }
-        if let ind = defaults.value(forKey: "indexVisible") as? Bool{
-            GlobalSettings.changeIndexVisibility(ind)
         }
         if let pop = defaults.value(forKey: "modernPopup") as? Bool{
             if pop {
@@ -262,6 +261,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         if let sca = defaults.value(forKey: "scale") as? Double {
             GlobalSettings.changeScale(sca)
+        }
+        if let slid = defaults.value(forKey: "slider") as? String {
+            GlobalSettings.changeSlider(Slider(rawValue: slid)!)
         }
     }
 }

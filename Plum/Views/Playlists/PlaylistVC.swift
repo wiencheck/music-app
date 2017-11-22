@@ -42,6 +42,7 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
         tableView.delegate = self
         tableView.dataSource = self
         self.view.addSubview(tableView)
+        songs = receivedList.items
         setup()
         var iterator = 0
         for index in indexes{
@@ -51,11 +52,15 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
             }
             iterator += 1
         }
-        if songs.count > 11 {
-            tableIndexView.indexes = self.indexes
-            tableIndexView.tableView = self.tableView
-            tableIndexView.setup()
-            view.addSubview(tableIndexView)
+        if GlobalSettings.slider == .alphabetical {
+            if songs.count > 11 {
+                tableIndexView.indexes = self.indexes
+                tableIndexView.tableView = self.tableView
+                tableIndexView.setup()
+                view.addSubview(tableIndexView)
+            }
+        }else{
+            tableView.addScrollBar(tint: GlobalSettings.tint.color)
         }
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(PlaylistVC.longPress(_:)))
         longPress.minimumPressDuration = 0.5
@@ -246,7 +251,6 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
 //    }
     
     func setup(){
-        songs = receivedList.items
         let bcount = receivedList.songsIn
         if bcount > 11 {
             let difference: Int = bcount / 12

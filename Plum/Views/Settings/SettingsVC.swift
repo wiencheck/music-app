@@ -11,7 +11,7 @@ import MediaPlayer
 import UserNotifications
 
 protocol SettingsDelegate {
-    func enableRatingMode(enable: Bool)
+    func enablerating(enable: Bool)
 }
 
 class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlightDelegate {
@@ -31,6 +31,7 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     @IBOutlet weak var lyricsSwitch: UISwitch!
     @IBOutlet weak var blurSwitch: UISwitch!
     @IBOutlet weak var colorView: UIView!
+    @IBOutlet weak var sliderLabel: UILabel!
     var colorFlowStatus: Bool!
     var artistsGridStatus: Bool!
     var albumsGridStatus: Bool!
@@ -106,9 +107,9 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     
     @objc func rating(_ sender: UISwitch){
         ratingStatus = sender.isOn
-        GlobalSettings.changeRatingMode(ratingStatus, full: GlobalSettings.full)
+        GlobalSettings.changeRating(ratingStatus, full: GlobalSettings.full)
         ratingSwitch.isOn = ratingStatus
-        defaults.set(ratingStatus, forKey: "ratingMode")
+        defaults.set(ratingStatus, forKey: "rating")
         if ratingStatus {
             lyricsStatus = false
             lyricsSwitch.isOn = false
@@ -128,7 +129,7 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
         if lyricsStatus {
             ratingStatus = false
             ratingSwitch.isOn = false
-            GlobalSettings.changeRatingMode(false, full: GlobalSettings.full)
+            GlobalSettings.changeRating(false, full: GlobalSettings.full)
         }
         GlobalSettings.changeLyrics(sender.isOn)
     }
@@ -168,10 +169,6 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
             alert.addAction(noAction)
             present(alert, animated: true, completion: nil)
         }
-    }
-    
-    @objc func indexVisible(_ sender: UISwitch){
-        GlobalSettings.changeIndexVisibility(sender.isOn)
     }
     
     @IBAction func spotlightBtnPressed(){
@@ -223,7 +220,7 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
             spotlightStatus = spot
             spotlightButton.isEnabled = spot
         }
-        if let rat = defaults.value(forKey: "ratingMode") as? Bool{
+        if let rat = defaults.value(forKey: "rating") as? Bool{
             ratingStatus = rat
             ratingSwitch.isOn = rat
         }
@@ -264,8 +261,8 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
             performSegue(withIdentifier: "colors", sender: nil)
         case "skip":
             explainSkip()
-        case "ratingmode":
-            explainRatingMode()
+        case "rating":
+            explainrating()
         case "ratingset":
             performSegue(withIdentifier: "setratings", sender: nil)
         case "lyrics":
@@ -274,6 +271,8 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
             performSegue(withIdentifier: "lyricsSettings", sender: nil)
         case "left":
             explainLeft()
+        case "slider":
+            explainSlider()
         case "artist":
             explainArtistsGrid()
         case "album":
@@ -310,9 +309,8 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
         }
         progressBar.tintColor = GlobalSettings.tint.color
         colorView.backgroundColor = GlobalSettings.tint.color
-        UISwitch.appearance().tintColor = GlobalSettings.tint.color
-        UISwitch.appearance().onTintColor = GlobalSettings.tint.color
         spotlightButton.setTitleColor(GlobalSettings.tint.color, for: .normal)
+        sliderLabel.text = GlobalSettings.slider.rawValue
     }
     
     func selfExplanatory() {
@@ -340,6 +338,21 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
         let alert = UIAlertController(title: "Oh now we're discriminating lefties, huh?", message: "Not really, it just changes few UI elements so it will be more comfortable to use the app and users won't be...left behind", preferredStyle: .alert)
         let ok = UIAlertAction(title: "This was the greatest pun in the history of mankind", style: .default, handler: nil)
         alert.addAction(ok)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func explainSlider() {
+        let alert = UIAlertController(title: "\"Ohh, let me slide\"", message: "Smooth: slider similar to what can be seen in most computer applications\n\nAlphabetical: similar to stock iOS slider (like in Contacts app) but with improved and more precise scrolling", preferredStyle: .alert)
+        let smooth = UIAlertAction(title: "Smooth", style: .default, handler: { (action) in
+            GlobalSettings.changeSlider(.smooth)
+            self.reload()
+        })
+        let alp = UIAlertAction(title: "Alphabetical", style: .default, handler: { (action) in
+            GlobalSettings.changeSlider(.alphabetical)
+            self.reload()
+        })
+        alert.addAction(smooth)
+        alert.addAction(alp)
         present(alert, animated: true, completion: nil)
     }
     
@@ -432,7 +445,7 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
 
     }
     
-    func explainRatingMode(){
+    func explainrating(){
         let alert = UIAlertController(title: "Rating Mode?", message: "If enabled, you'll see ratings for each song right from the song view and also you will be able to rate current song from Lockscreen/ControlCenter", preferredStyle: .alert)
         let ok = UIAlertAction(title: "Understood, thanks!", style: .default, handler: nil)
         alert.addAction(ok)

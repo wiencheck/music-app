@@ -45,30 +45,36 @@ class AlbumsVC: UIViewController {
     }
     
     func setTable(){
-        self.setup()
+        setup()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
         self.view.addSubview(tableView)
-        tableIndexView.indexes = self.indexes
-        tableIndexView.tableView = self.tableView
-        
-        tableIndexView.setup()
-        self.view.addSubview(tableIndexView)
+        if GlobalSettings.slider == .alphabetical {
+            tableIndexView.indexes = self.indexes
+            tableIndexView.tableView = self.tableView
+            tableIndexView.setup()
+            self.view.addSubview(tableIndexView)
+        }else{
+            tableView.addScrollBar(tint: GlobalSettings.tint.color)
+        }
     }
     
     func setCollection(){
-        self.setup()
+        setup()
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         collectionView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
         correctCollectionSections()
         self.view.addSubview(collectionView)
-        self.collectionIndexView.indexes = self.indexes
-        self.collectionIndexView.collectionView = self.collectionView
-        
-        self.collectionIndexView.setup()
-        self.view.addSubview(collectionIndexView)
+        if GlobalSettings.slider == .alphabetical {
+            self.collectionIndexView.indexes = self.indexes
+            self.collectionIndexView.collectionView = self.collectionView
+            self.collectionIndexView.setup()
+            self.view.addSubview(collectionIndexView)
+        }else{
+            collectionView.addScrollBar(tint: GlobalSettings.tint.color)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

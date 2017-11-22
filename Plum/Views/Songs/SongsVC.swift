@@ -40,17 +40,20 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             }
             iterator += 1
         }
-        indexView.indexes = self.indexes
-        indexView.tableView = self.tableView
-        indexView.setup()
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(SongsVC.longPress(_:)))
         longPress.minimumPressDuration = 0.5
         longPress.delegate = self
         self.tableView.addGestureRecognizer(longPress)
         self.tableView.backgroundView = UIImageView(image: backround)
-        
         self.view.addSubview(tableView)
-        self.view.addSubview(indexView)
+        if GlobalSettings.slider == .alphabetical {
+            indexView.indexes = self.indexes
+            indexView.tableView = self.tableView
+            indexView.setup()
+            self.view.addSubview(indexView)
+        }else{
+            tableView.addScrollBar(tint: GlobalSettings.tint.color)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

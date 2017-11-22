@@ -52,11 +52,14 @@ class ArtistsVC: UIViewController {
         tableView.dataSource = self
         self.view.addSubview(tableView)
         setup2()
-        tableIndexView.indexes = self.indexes
-        tableIndexView.tableView = self.tableView
-        
-        tableIndexView.setup()
-        self.view.addSubview(tableIndexView)
+        if GlobalSettings.slider == .alphabetical {
+            tableIndexView.indexes = self.indexes
+            tableIndexView.tableView = self.tableView
+            tableIndexView.setup()
+            self.view.addSubview(tableIndexView)
+        }else{
+            tableView.addScrollBar(tint: GlobalSettings.tint.color)
+        }
     }
     
     func setCollection(){
@@ -67,11 +70,14 @@ class ArtistsVC: UIViewController {
         self.view.addSubview(collectionView)
         setup2()
         correctCollectionSections()
-        collectionIndexView.indexes = self.indexes
-        collectionIndexView.collectionView = self.collectionView
-        
-        collectionIndexView.setup()
-        self.view.addSubview(collectionIndexView)
+        if GlobalSettings.slider == .alphabetical {
+            collectionIndexView.indexes = self.indexes
+            collectionIndexView.collectionView = self.collectionView
+            collectionIndexView.setup()
+            self.view.addSubview(collectionIndexView)
+        }else{
+            collectionView.addScrollBar(tint: GlobalSettings.tint.color)
+        }
     }
     
 }

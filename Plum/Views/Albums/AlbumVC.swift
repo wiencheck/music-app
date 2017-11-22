@@ -28,6 +28,7 @@ class AlbumVC: UITableViewController, QueueCellDelegate, MoreActionsCellDelegate
         super.viewDidLoad()
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
+        tableView.scrollIndicatorInsets = tableView.contentInset
         tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
         readSettings()
         if receivedID != nil{
@@ -271,6 +272,6 @@ class AlbumVC: UITableViewController, QueueCellDelegate, MoreActionsCellDelegate
     }
     
     func readSettings(){
-        rating = GlobalSettings.ratingMode
+        rating = GlobalSettings.rating
     }
 }

@@ -62,6 +62,7 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
         let backround = #imageLiteral(resourceName: "background_se")
         self.tableView.backgroundView = UIImageView(image: backround)
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
+        tableView.scrollIndicatorInsets = tableView.contentInset
     }
     
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {

@@ -52,11 +52,14 @@ class PlaylistsVC: UIViewController {
         tableView.dataSource = self
         self.view.addSubview(tableView)
         setup()
-        tableIndexView.indexes = self.indexes
-        tableIndexView.tableView = self.tableView
-        
-        tableIndexView.setup()
-        self.view.addSubview(tableIndexView)
+        if GlobalSettings.slider == .alphabetical {
+            tableIndexView.indexes = self.indexes
+            tableIndexView.tableView = self.tableView
+            tableIndexView.setup()
+            self.view.addSubview(tableIndexView)
+        }else{
+            tableView.addScrollBar(tint: GlobalSettings.tint.color)
+        }
     }
     
     func setCollection(){
@@ -65,13 +68,19 @@ class PlaylistsVC: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         self.view.addSubview(collectionView)
+        print(GlobalSettings.slider.rawValue)
         setup()
-        correctCollectionSections()
-        collectionIndexView.indexes = self.indexes
-        collectionIndexView.collectionView = self.collectionView
-        
-        collectionIndexView.setup()
-        self.view.addSubview(collectionIndexView)
+        if GlobalSettings.slider == .alphabetical {
+            correctCollectionSections()
+            collectionIndexView.indexes = self.indexes
+            collectionIndexView.collectionView = self.collectionView
+            collectionIndexView.setup()
+            self.view.addSubview(collectionIndexView)
+        }else{
+            correctCollectionSections()
+            //collectionView.contentInset = UIEdgeInsetsMake(10, 10, 10, 10)
+            collectionView.addScrollBar(tint: GlobalSettings.tint.color)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

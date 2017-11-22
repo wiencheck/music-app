@@ -523,7 +523,7 @@ class Plum: NSObject, AVAudioPlayerDelegate{
         var nowPlayingInfo = infoCC.nowPlayingInfo ?? [String: Any]()
         duration = Float(player.duration)
         let item = currentItem
-        if GlobalSettings.ratingMode{
+        if GlobalSettings.rating{
             var str = ""
             let itrating = item?.rating
             switch itrating{

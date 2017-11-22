@@ -32,24 +32,29 @@ enum Deploy: String {
     case songs = "songs"
 }
 
+enum Slider: String {
+    case alphabetical = "Alphabetical"
+    case smooth = "Smooth"
+}
+
 struct GlobalSettings{
     static var remote: RemoteCommandManager!
     static let defaults = UserDefaults.standard
-    static var ratingMode = false
-    static var full = false
+    static var rating = false                                       //UI
+    static var full = false                                       //UI
     static var bottomInset: CGFloat!
-    static func changeRatingMode(_ t: Bool, full: Bool){
+    static func changeRating(_ t: Bool, full: Bool){
         if lyrics && t {
             changeLyrics(false)
             updateRatings(ratings)
         }
-        self.ratingMode = t
+        self.rating = t
         self.full = full
         if full {
             self.remote.switchRatingCommands(t)
         }
-        print("Rating mode is \(ratingMode)")
-        defaults.set(t, forKey: "ratingMode")
+        print("Rating mode is \(rating)")
+        defaults.set(t, forKey: "rating")
         defaults.set(full, forKey: "fullRating")
     }
     
@@ -63,7 +68,7 @@ struct GlobalSettings{
         defaults.set(raw, forKey: "ratings")
     }
     
-    static var tint: Color!
+    static var tint: Color!                                       //UI
     static func changeTint(_ t: Color){
         self.tint = t
         defaults.set(t.color.components.red, forKey: "tintRed")
@@ -73,19 +78,19 @@ struct GlobalSettings{
         defaults.set(t.name, forKey: "tintName")
     }
     
-    static var theme: Theme = .light
+    static var theme: Theme = .light                                       //UI
     static func changeTheme(_ t: Theme) {
         self.theme = t
         defaults.set(t.rawValue, forKey: "theme")
     }
     
-    static var blur: Bool = false
+    static var blur: Bool = false                                       //UI
     static func changeBlur(_ t: Bool) {
         self.blur = t
         defaults.set(t, forKey: "blur")
     }
     
-    static var color: Bool = false
+    static var color: Bool = false                                       //UI
     static func changeColor(_ t: Bool) {
         self.color = t
         defaults.set(t, forKey: "color")
@@ -102,10 +107,10 @@ struct GlobalSettings{
         self.alphabeticalSort = t
     }
     
-    static var indexVisible = false
-    static func changeIndexVisibility(_ t: Bool) {
-        self.indexVisible = t
-        defaults.set(t, forKey: "indexVisible")
+    static var slider: Slider = .alphabetical                                       //UI
+    static func changeSlider(_ t: Slider) {
+        slider = t
+        defaults.set(t.rawValue, forKey: "slider")
     }
     
     static var popupStyle: styles = .classic
@@ -129,21 +134,21 @@ struct GlobalSettings{
     static func changeFeedbackContent(which: String, message: String, value: Int) {
         switch which {
         case "Like":
-            remote.toggleLikeCommand(self.ratingMode)
+            remote.toggleLikeCommand(self.rating)
             defaults.set(message, forKey: "likeMessage")
             defaults.set(value, forKey: "likeValue")
         case "Dislike":
-            remote.toggleDislikeCommand(self.ratingMode)
+            remote.toggleDislikeCommand(self.rating)
             defaults.set(message, forKey: "dislikeMessage")
             defaults.set(value, forKey: "dislikeValue")
         case "Bookmark":
-            remote.toggleBookmarkCommand(self.ratingMode)
+            remote.toggleBookmarkCommand(self.rating)
             defaults.set(message, forKey: "bookmarkMessage")
             defaults.set(value, forKey: "bookmarkValue")
         default:
             print("Zla nazwa feedbacku")
         }
-        remote.switchRatingCommands(self.ratingMode)
+        remote.switchRatingCommands(self.rating)
     }
     static var compact = true
     static func changeCompact(_ t: Bool){
@@ -157,8 +162,8 @@ struct GlobalSettings{
     }
     static var lyrics = false
     static func changeLyrics(_ t: Bool) {
-        if ratingMode && t{
-            changeRatingMode(false, full: self.full)
+        if rating && t{
+            changeRating(false, full: self.full)
         }
         self.lyrics = t
         self.remote.switchLyricsCommand(t)
@@ -172,5 +177,6 @@ struct GlobalSettings{
 }
 
 func ==(left: GlobalSettings, right: GlobalSettings) -> Bool {
+    
     return false
 }
