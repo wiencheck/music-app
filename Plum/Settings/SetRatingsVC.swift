@@ -15,11 +15,12 @@ public enum Rating: String {
     case four = "★★★★☆"
     case five = "★★★★★"
     case stop = "Disable rating mode"
+    case previous = "Previous song"
 }
 
 class SetRatingsVC: UITableViewController {
     
-    var ratings: [Rating] = [.one, .two, .three, .four, .five, .stop]
+    var ratings: [Rating] = [.one, .two, .three, .four, .five, .stop, .previous]
     var active = [Rating]()
     var notActive = [Rating]()
 

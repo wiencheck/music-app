@@ -733,7 +733,7 @@
                                     <action selector="prevBtnPressed" destination="DwD-4M-o7H" eventType="touchUpInside" id="0yS-PV-Rcq"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b8c-OG-IOW">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b8c-OG-IOW">
                                 <rect key="frame" x="160" y="332" width="120" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="Y3G-mP-LDp"/>
@@ -1596,8 +1596,10 @@
                                         </stackView>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="74P-g6-cGv" secondAttribute="trailing" constant="7" id="3xY-aT-mt7"/>
                                         <constraint firstItem="74P-g6-cGv" firstAttribute="centerY" secondItem="dCf-bM-vpS" secondAttribute="centerY" id="5sk-2Z-xpc"/>
                                         <constraint firstItem="74P-g6-cGv" firstAttribute="centerX" secondItem="dCf-bM-vpS" secondAttribute="centerX" id="jzG-yu-3Vz"/>
+                                        <constraint firstItem="74P-g6-cGv" firstAttribute="leading" secondItem="dCf-bM-vpS" secondAttribute="leading" constant="7" id="lOa-VT-2Tu"/>
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -2219,8 +2221,10 @@
                                         </stackView>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="KcD-3d-ygw" secondAttribute="trailing" constant="7" id="6Do-UI-WZF"/>
                                         <constraint firstItem="KcD-3d-ygw" firstAttribute="centerX" secondItem="FsA-Fp-LEh" secondAttribute="centerX" id="Gtm-8f-v5B"/>
                                         <constraint firstItem="KcD-3d-ygw" firstAttribute="centerY" secondItem="FsA-Fp-LEh" secondAttribute="centerY" id="Iv5-oJ-m0B"/>
+                                        <constraint firstItem="KcD-3d-ygw" firstAttribute="leading" secondItem="FsA-Fp-LEh" secondAttribute="leading" constant="7" id="Qcd-C8-Jh2"/>
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -2563,7 +2567,6 @@
                             <constraint firstItem="rkv-QP-kNV" firstAttribute="top" secondItem="1rc-sd-IRz" secondAttribute="bottom" constant="10" id="4Ae-Er-Uqh"/>
                             <constraint firstItem="w7c-Tx-bwi" firstAttribute="top" secondItem="5Oh-Ka-Tnp" secondAttribute="top" id="6t9-Ox-vBe"/>
                             <constraint firstItem="ln5-qL-Pwg" firstAttribute="top" secondItem="5Oh-Ka-Tnp" secondAttribute="top" id="7w2-lI-SoQ"/>
-                            <constraint firstItem="fsy-i5-bCI" firstAttribute="top" secondItem="wT7-lt-rH4" secondAttribute="bottom" constant="8" id="87d-hN-hB8"/>
                             <constraint firstItem="S1m-tk-j5M" firstAttribute="leading" secondItem="5Oh-Ka-Tnp" secondAttribute="leading" constant="2" id="8Gt-a9-SX8"/>
                             <constraint firstItem="HsT-F6-cUw" firstAttribute="leading" secondItem="5Oh-Ka-Tnp" secondAttribute="leadingMargin" constant="30" id="CYP-J7-HDh"/>
                             <constraint firstItem="nk7-6h-gfk" firstAttribute="height" secondItem="FJj-8i-9gq" secondAttribute="height" id="Cai-bQ-lKl"/>
@@ -2574,16 +2577,17 @@
                             <constraint firstItem="cd1-e2-oey" firstAttribute="leading" secondItem="1rc-sd-IRz" secondAttribute="leading" id="Gz7-Gy-3BS"/>
                             <constraint firstItem="dHj-fO-0oP" firstAttribute="leading" secondItem="1rc-sd-IRz" secondAttribute="trailing" constant="8" id="LEf-Qq-gcg"/>
                             <constraint firstItem="HsT-F6-cUw" firstAttribute="top" secondItem="S1m-tk-j5M" secondAttribute="bottom" id="N0r-sF-GOH"/>
-                            <constraint firstItem="C2i-CI-Vnq" firstAttribute="top" secondItem="S1m-tk-j5M" secondAttribute="bottom" constant="55" id="N74-8f-dAh"/>
                             <constraint firstItem="mtA-3f-Qpe" firstAttribute="top" secondItem="ln5-qL-Pwg" secondAttribute="bottom" id="PON-uQ-3u4"/>
+                            <constraint firstItem="C2i-CI-Vnq" firstAttribute="top" secondItem="S1m-tk-j5M" secondAttribute="bottom" constant="55" id="QBv-22-buA"/>
+                            <constraint firstItem="wT7-lt-rH4" firstAttribute="top" secondItem="S1m-tk-j5M" secondAttribute="bottom" constant="53" id="Se0-Xi-6ef"/>
                             <constraint firstItem="mtA-3f-Qpe" firstAttribute="top" secondItem="fsy-i5-bCI" secondAttribute="bottom" constant="2" id="T3K-DT-KpX"/>
+                            <constraint firstItem="cd1-e2-oey" firstAttribute="top" secondItem="HsT-F6-cUw" secondAttribute="bottom" constant="1" id="TSi-T8-oCb"/>
                             <constraint firstItem="1rc-sd-IRz" firstAttribute="top" secondItem="FJj-8i-9gq" secondAttribute="bottom" constant="11" id="UhH-k2-3w0"/>
                             <constraint firstAttribute="trailing" secondItem="rkv-QP-kNV" secondAttribute="trailing" id="YI0-bq-UC1"/>
                             <constraint firstItem="cd1-e2-oey" firstAttribute="trailing" secondItem="1rc-sd-IRz" secondAttribute="trailing" id="YcR-Ks-wiD"/>
                             <constraint firstItem="nk7-6h-gfk" firstAttribute="centerX" secondItem="FJj-8i-9gq" secondAttribute="centerX" id="Z0q-7O-iw8"/>
                             <constraint firstItem="1rc-sd-IRz" firstAttribute="leading" secondItem="LYG-ZI-2Pv" secondAttribute="trailing" constant="8" id="aGb-tn-CSw"/>
                             <constraint firstItem="LYG-ZI-2Pv" firstAttribute="leading" secondItem="5Oh-Ka-Tnp" secondAttribute="leading" constant="4" id="bIO-hA-R7q"/>
-                            <constraint firstItem="mtA-3f-Qpe" firstAttribute="top" secondItem="cd1-e2-oey" secondAttribute="bottom" constant="25" id="ch5-Me-6jE"/>
                             <constraint firstItem="nk7-6h-gfk" firstAttribute="centerY" secondItem="FJj-8i-9gq" secondAttribute="centerY" id="dQS-hs-7k4"/>
                             <constraint firstItem="w7c-Tx-bwi" firstAttribute="leading" secondItem="5Oh-Ka-Tnp" secondAttribute="leading" id="epX-4S-u9M"/>
                             <constraint firstItem="ln5-qL-Pwg" firstAttribute="leading" secondItem="5Oh-Ka-Tnp" secondAttribute="leading" id="fQZ-XM-Gks"/>
@@ -2900,6 +2904,8 @@
                                                 </stackView>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="B14-Ty-sxm" secondAttribute="trailing" constant="7" id="M6Z-5P-usX"/>
+                                                <constraint firstItem="B14-Ty-sxm" firstAttribute="leading" secondItem="mTT-Ot-AEd" secondAttribute="leading" constant="7" id="PxU-OX-e8P"/>
                                                 <constraint firstItem="B14-Ty-sxm" firstAttribute="centerY" secondItem="mTT-Ot-AEd" secondAttribute="centerY" id="cS4-it-jE3"/>
                                                 <constraint firstItem="B14-Ty-sxm" firstAttribute="centerX" secondItem="mTT-Ot-AEd" secondAttribute="centerX" id="qo2-km-f4L"/>
                                             </constraints>
@@ -3200,6 +3206,8 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="fsW-h6-lbk" firstAttribute="centerX" secondItem="WiE-6Y-TmZ" secondAttribute="centerX" id="J7j-7z-AGK"/>
+                                                <constraint firstItem="fsW-h6-lbk" firstAttribute="leading" secondItem="WiE-6Y-TmZ" secondAttribute="leading" constant="7" id="Sbw-fk-hzF"/>
+                                                <constraint firstAttribute="trailing" secondItem="fsW-h6-lbk" secondAttribute="trailing" constant="7" id="UQo-Kg-KOe"/>
                                                 <constraint firstItem="fsW-h6-lbk" firstAttribute="centerY" secondItem="WiE-6Y-TmZ" secondAttribute="centerY" id="vVR-St-YKO"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -3861,11 +3869,11 @@
                                     <size key="itemSize" width="142" height="197"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                                    <inset key="sectionInset" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                    <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="playlistCell" id="KOe-Wy-ncp" customClass="PlaylistCell" customModule="Plum" customModuleProvider="target">
-                                        <rect key="frame" x="10" y="0.0" width="142" height="197"/>
+                                        <rect key="frame" x="10" y="10" width="142" height="197"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="142" height="197"/>
@@ -4092,6 +4100,8 @@
                                                 </stackView>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="JuE-ii-tGN" secondAttribute="trailing" constant="7" id="01I-Wx-fYY"/>
+                                                <constraint firstItem="JuE-ii-tGN" firstAttribute="leading" secondItem="o7w-t9-q0q" secondAttribute="leading" constant="7" id="GFy-Aj-4yH"/>
                                                 <constraint firstItem="JuE-ii-tGN" firstAttribute="centerY" secondItem="o7w-t9-q0q" secondAttribute="centerY" id="ROJ-f4-Xl3"/>
                                                 <constraint firstItem="JuE-ii-tGN" firstAttribute="centerX" secondItem="o7w-t9-q0q" secondAttribute="centerX" id="zk7-CP-C1z"/>
                                             </constraints>
@@ -4356,11 +4366,11 @@
         <image name="prev-butt" width="43" height="47"/>
         <image name="rtj" width="658" height="658"/>
         <image name="thumb2" width="2" height="14"/>
-        <image name="track" width="226" height="4"/>
+        <image name="track" width="226" height="6"/>
         <image name="zeroVol" width="175" height="298"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="YN1-uv-N46"/>
-        <segue reference="7Xq-dO-ndj"/>
+        <segue reference="g4J-C0-9Kx"/>
+        <segue reference="GRh-Pt-2wL"/>
     </inferredMetricsTieBreakers>
 </document>

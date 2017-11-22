@@ -109,6 +109,7 @@ extension ArtistsVC: UITableViewDelegate, UITableViewDataSource{    //Table
             pickedID = musicQuery().artistAlbumsID(artist: pickedID).first?.ID
             performSegue(withIdentifier: "album", sender: nil)
         }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
 }

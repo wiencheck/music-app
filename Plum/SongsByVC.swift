@@ -45,7 +45,10 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
             cellTypes[iterator] = Array<Int>(repeating: 0, count: albums[album].songsIn)
             let header = tableView.dequeueReusableCell(withIdentifier: "infoCell") as! AlbumInfoCell
             header.setup(album: albums[album], play: false)
-            header.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
+            let imv = UIImageView(frame: header.frame)
+            imv.contentMode = .scaleAspectFill
+            imv.image = #imageLiteral(resourceName: "background_se")
+            header.backgroundView = imv
             let v = UIView()
             v.addSubview(header)
             v.layer.borderWidth = 0.5

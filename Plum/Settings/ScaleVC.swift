@@ -27,7 +27,7 @@ class ScaleVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         scale = GlobalSettings.scale
-        scaleLabel.text = "\(scale!)"
+        scaleLabel.text = "\(Int(scale!))"
         stepper.maximumValue = 200
         stepper.value = scale
         images = loadImages()
@@ -58,7 +58,7 @@ class ScaleVC: UIViewController {
     @objc func stepperUpdated(_ sender: UIStepper) {
         scale = sender.value
         GlobalSettings.changeScale(scale)
-        scaleLabel.text = "\(scale!)"
+        scaleLabel.text = "\(Int(scale!))"
         magic()
     }
     

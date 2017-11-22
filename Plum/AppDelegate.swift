@@ -198,7 +198,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             defaults.set("album", forKey: "deploy")
         }
         if defaults.value(forKey: "scale") == nil {
-            defaults.set(18, forKey: "scale")
+            defaults.set(57, forKey: "scale")
         }
     }
     

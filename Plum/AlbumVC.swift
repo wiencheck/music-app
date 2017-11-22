@@ -122,7 +122,12 @@ class AlbumVC: UITableViewController, QueueCellDelegate, MoreActionsCellDelegate
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableCell(withIdentifier: "infoCell") as! AlbumInfoCell
         header.setup(album: album, play: true)
-        header.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
+        let imv = UIImageView(frame: header.bounds)
+        imv.autoresizingMask = [.flexibleWidth, .flexibleHeight, .flexibleBottomMargin, .flexibleRightMargin, .flexibleLeftMargin, .flexibleTopMargin]
+        imv.contentMode = .scaleAspectFill // OR .scaleAspectFill
+        imv.clipsToBounds = true
+        imv.image = #imageLiteral(resourceName: "background_se")
+        header.backgroundView = imv
         let v = UIView()
         v.addSubview(header)
         v.layer.borderWidth = 0.7

@@ -112,6 +112,7 @@ extension AlbumsVC: UITableViewDelegate, UITableViewDataSource{     //Table
         let album = result[indexes[indexPath.section]]?[indexPath.row]
         picked = album
         performSegue(withIdentifier: "album", sender: nil)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
     

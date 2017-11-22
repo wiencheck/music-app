@@ -413,9 +413,9 @@ class Plum: NSObject, AVAudioPlayerDelegate{
     func labelString(type: String) -> String{
         switch type {
         case "title":
-            return currentItem!.value(forProperty: MPMediaItemPropertyTitle) as! String
+            return currentItem?.title ?? "Unkown title"
         case "detail":
-            return "\(currentItem!.value(forProperty: MPMediaItemPropertyArtist) as! String) - \(currentItem!.value(forProperty: MPMediaItemPropertyAlbumTitle) as! String)"
+            return "\(currentItem?.artist ?? "Unknown artist") - \(currentItem?.albumTitle ?? "Unknown album")"
         case "out of":
             if(!isShuffle){
                 if(!isUsrQueue){
@@ -757,7 +757,7 @@ class Plum: NSObject, AVAudioPlayerDelegate{
     }
     
     func postLyrics() {
-        if currentItem != nil && shouldPost{
+        if currentItem != nil && shouldPost && player.rate != 0.0 {
             let content = UNMutableNotificationContent()
             let ass = AVAsset(url: (currentItem?.assetURL)!)
             if let lyr = ass.lyrics {

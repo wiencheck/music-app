@@ -51,15 +51,16 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
             }
             iterator += 1
         }
-        tableIndexView.indexes = self.indexes
-        tableIndexView.tableView = self.tableView
-        
-        tableIndexView.setup()
+        if songs.count > 11 {
+            tableIndexView.indexes = self.indexes
+            tableIndexView.tableView = self.tableView
+            tableIndexView.setup()
+            view.addSubview(tableIndexView)
+        }
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(PlaylistVC.longPress(_:)))
         longPress.minimumPressDuration = 0.5
         longPress.delegate = self
         self.tableView.addGestureRecognizer(longPress)
-        self.view.addSubview(tableIndexView)
     }
 
 }
@@ -236,31 +237,43 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
         let indexPath = IndexPath(row: activeIndexRow, section: activeIndexSection)
         self.tableView.deselectRow(at: indexPath, animated: true)
         self.tableView.reloadRows(at: [indexPath], with: .fade)
+        //tableView.deselectRow(at: IndexPath(row: activeIndexRow, section: activeIndexSection), animated: true)
     }
 
+//    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+//        cellTypes[indexPath.section]?[indexPath.row] = 0
+//        tableView.reloadRows(at: [indexPath], with: .fade)
+//    }
     
     func setup(){
         songs = receivedList.items
         let bcount = receivedList.songsIn
-        let difference: Int = bcount / 12
-        var index = difference
-        indexes.append("#1")
-        indexesInt.append(1)
-        while index < bcount{
-            indexes.append("#\(index)")
-            indexesInt.append(index)
-            index += difference
-        }
-        var stoppedAt = 0
-        for i in 0 ..< indexes.count{
-            result[indexes[i]] = []
-            for j in stoppedAt ..< bcount{
-                if j > indexesInt[i]{
-                    stoppedAt = j
-                    break
-                }
-                result[indexes[i]]?.append(songs[j])
+        if bcount > 11 {
+            let difference: Int = bcount / 12
+            var index = difference
+            indexes.append("#1")
+            indexesInt.append(1)
+            while index < bcount{
+                indexes.append("#\(index)")
+                indexesInt.append(index)
+                index += difference
             }
+            var stoppedAt = 0
+            for i in 0 ..< indexes.count{
+                result[indexes[i]] = []
+                for j in stoppedAt ..< bcount{
+                    if j > indexesInt[i]{
+                        stoppedAt = j
+                        break
+                    }
+                    result[indexes[i]]?.append(songs[j])
+                }
+            }
+        }else{
+            indexesInt.append(0)
+            indexes.append("A")
+            result["A"] = []
+            result["A"]?.append(contentsOf: songs)
         }
     }
 }

@@ -515,7 +515,6 @@ extension EightNowPlayingVC {       //Kolory i UI
             nextBtn.tintColor = .white
             minVolImg.tintColor = .white
             maxVolImg.tintColor = .white
-            mpVolView.tintColor = colors.primaryColor
             lightStyle = false
         }else{
             UIApplication.shared.statusBarStyle = .default
@@ -525,7 +524,6 @@ extension EightNowPlayingVC {       //Kolory i UI
             nextBtn.tintColor = colors.primaryColor
             minVolImg.tintColor = colors.primaryColor
             maxVolImg.tintColor = colors.primaryColor
-            mpVolView.tintColor = colors.detailColor
             lightStyle = true
         }
         if(player.isShuffle){
