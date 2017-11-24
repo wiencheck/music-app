@@ -32,7 +32,13 @@ class RemoteCommandManager: NSObject{
     }
     
     func switchRatingCommands(_ enable: Bool){
+        for rating in GlobalSettings.ratings {
+            print(rating.rawValue)
+        }
         if enable {
+            toggleLyricsCommand(false)
+            toggleStopLyricsCommand(false)
+            togglePreviousLyricsCommand(false)
             switch GlobalSettings.ratings.count {
             case 1:
                 toggleLikeCommand(true)
@@ -56,6 +62,7 @@ class RemoteCommandManager: NSObject{
     func switchLyricsCommand(_ enable: Bool){
         toggleLyricsCommand(enable)
         toggleStopLyricsCommand(enable)
+        togglePreviousLyricsCommand(enable)
     }
     
     func activatePlaybackCommands(_ enable: Bool){
@@ -128,24 +135,35 @@ class RemoteCommandManager: NSObject{
     
     func toggleLyricsCommand(_ enable: Bool){
         if enable{
-            remoteCommandCenter.bookmarkCommand.localizedTitle = "Show lyrics"
-            remoteCommandCenter.bookmarkCommand.localizedShortTitle = "Show lyrics"
-            remoteCommandCenter.bookmarkCommand.addTarget(self, action: #selector(RemoteCommandManager.handleLyricsCommandEvent(event:)))
+            remoteCommandCenter.likeCommand.localizedTitle = "Show lyrics"
+            remoteCommandCenter.likeCommand.localizedShortTitle = "Show lyrics"
+            remoteCommandCenter.likeCommand.addTarget(self, action: #selector(RemoteCommandManager.handleLyricsCommandEvent(event:)))
         }else{
-            remoteCommandCenter.bookmarkCommand.removeTarget(self, action: #selector(RemoteCommandManager.handleLyricsCommandEvent(event:)))
+            remoteCommandCenter.likeCommand.removeTarget(self, action: #selector(RemoteCommandManager.handleLyricsCommandEvent(event:)))
         }
-        remoteCommandCenter.bookmarkCommand.isEnabled = enable
+        remoteCommandCenter.likeCommand.isEnabled = enable
     }
     
     func toggleStopLyricsCommand(_ enable: Bool) {
         if enable {
-            remoteCommandCenter.dislikeCommand.localizedTitle = "Stop posting lyrics"
-            remoteCommandCenter.dislikeCommand.localizedShortTitle = "Stop posting lyrics"
+            remoteCommandCenter.dislikeCommand.localizedTitle = "Disable lyrics mode"
+            remoteCommandCenter.dislikeCommand.localizedShortTitle = "Disable lyrics mode"
             remoteCommandCenter.dislikeCommand.addTarget(self, action: #selector(RemoteCommandManager.handleStopLyricsCommandEvent(event:)))
         }else{
             remoteCommandCenter.dislikeCommand.removeTarget(self, action: #selector(RemoteCommandManager.handleStopLyricsCommandEvent(event:)))
         }
         remoteCommandCenter.dislikeCommand.isEnabled = enable
+    }
+    
+    func togglePreviousLyricsCommand(_ enable: Bool) {
+        if enable {
+            remoteCommandCenter.bookmarkCommand.localizedTitle = "Previous song"
+            remoteCommandCenter.bookmarkCommand.localizedShortTitle = "Previous song"
+            remoteCommandCenter.bookmarkCommand.addTarget(self, action: #selector(RemoteCommandManager.handlePreviousLyricsCommandEvent(event:)))
+        }else{
+            remoteCommandCenter.bookmarkCommand.removeTarget(self, action: #selector(RemoteCommandManager.handlePreviousLyricsCommandEvent(event:)))
+        }
+        remoteCommandCenter.bookmarkCommand.isEnabled = enable
     }
     
     func toggleDislikeCommand(_ enable: Bool) {
@@ -229,6 +247,10 @@ class RemoteCommandManager: NSObject{
             player.rateItem(rating: 4)
         case .five:
             player.rateItem(rating: 5)
+        case .previous:
+            player.player.currentTime = 0.01
+            player.prev()
+            player.play()
         default:
             handleStopRatingCommandEvent()
         }
@@ -248,6 +270,10 @@ class RemoteCommandManager: NSObject{
             player.rateItem(rating: 4)
         case .five:
             player.rateItem(rating: 5)
+        case .previous:
+            player.player.currentTime = 0.01
+            player.prev()
+            player.play()
         default:
             handleStopRatingCommandEvent()
         }
@@ -267,6 +293,10 @@ class RemoteCommandManager: NSObject{
             player.rateItem(rating: 4)
         case .five:
             player.rateItem(rating: 5)
+        case .previous:
+            player.player.currentTime = 0.01
+            player.prev()
+            player.play()
         default:
             handleStopRatingCommandEvent()
         }
@@ -288,6 +318,13 @@ class RemoteCommandManager: NSObject{
         player.shouldPost = false
         GlobalSettings.changeLyrics(false)
         player.removeLyrics()
+        return .success
+    }
+    
+    @objc func handlePreviousLyricsCommandEvent(event: MPFeedbackCommandEvent) -> MPRemoteCommandHandlerStatus {
+        player.player.currentTime = 0.01
+        player.prev()
+        player.play()
         return .success
     }
 }

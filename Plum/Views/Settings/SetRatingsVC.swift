@@ -130,7 +130,7 @@ class SetRatingsVC: UITableViewController {
             tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
             tableView.cellForRow(at: IndexPath(row: 0, section: 0))?.accessoryType = .none
         }
-        GlobalSettings.changeRating(GlobalSettings.rating, full: GlobalSettings.full)
+        //GlobalSettings.changeRating(GlobalSettings.rating, full: GlobalSettings.full)
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -174,7 +174,8 @@ class SetRatingsVC: UITableViewController {
         for rating in GlobalSettings.ratings {
             print(rating.rawValue)
         }
-        GlobalSettings.changeRating(GlobalSettings.rating, full: GlobalSettings.full)
+        GlobalSettings.changeRating(!GlobalSettings.rating, full: GlobalSettings.full)
+        GlobalSettings.changeRating(!GlobalSettings.rating, full: GlobalSettings.full)
     }
 
 }

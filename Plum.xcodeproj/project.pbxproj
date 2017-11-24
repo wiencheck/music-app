@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3801102C1FC4595300B3F35B /* EightNowPlayingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3801102B1FC4595300B3F35B /* EightNowPlayingVC.swift */; };
+		3801C60A1FC83DDA00EFBC52 /* CollectionActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3801C6091FC83DDA00EFBC52 /* CollectionActionCell.swift */; };
 		3803CD541FBB5B1A009F5EA8 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3803CD531FBB5B1A009F5EA8 /* SearchCell.swift */; };
 		380934461FBE25F80095E1DF /* AppIcon.appiconset in Resources */ = {isa = PBXBuildFile; fileRef = 380934451FBE25F80095E1DF /* AppIcon.appiconset */; };
 		380C2EBA1FB1AE6400A6731B /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 380C2EB91FB1AE6400A6731B /* AudioToolbox.framework */; };
@@ -92,6 +93,7 @@
 
 /* Begin PBXFileReference section */
 		3801102B1FC4595300B3F35B /* EightNowPlayingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EightNowPlayingVC.swift; sourceTree = "<group>"; };
+		3801C6091FC83DDA00EFBC52 /* CollectionActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionActionCell.swift; sourceTree = "<group>"; };
 		3803CD531FBB5B1A009F5EA8 /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 		380934451FBE25F80095E1DF /* AppIcon.appiconset */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AppIcon.appiconset; sourceTree = "<group>"; };
 		380C2EB91FB1AE6400A6731B /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -211,6 +213,7 @@
 				38D142561FB367CF003F08F5 /* SearchHeader.swift */,
 				3803CD531FBB5B1A009F5EA8 /* SearchCell.swift */,
 				3871BC251FBC42A30027CA2A /* ColorCell.swift */,
+				3801C6091FC83DDA00EFBC52 /* CollectionActionCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -510,6 +513,7 @@
 				38E729541F2F496600F35780 /* SongsByVC.swift in Sources */,
 				38E68AC11F28C17500BFF4E2 /* AppDelegate.swift in Sources */,
 				384F9BF21F7A647E0053E22C /* RemoteCommandManager.swift in Sources */,
+				3801C60A1FC83DDA00EFBC52 /* CollectionActionCell.swift in Sources */,
 				38121E9F1FA07CBE00C2A3BD /* AlbumVC.swift in Sources */,
 				38A12EA61F7270DB00E3E53E /* AlbumInfoCell.swift in Sources */,
 				38F722EC1FC0409900A45CF9 /* QueueVC.swift in Sources */,

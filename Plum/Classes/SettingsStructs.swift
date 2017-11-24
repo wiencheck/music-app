@@ -50,9 +50,10 @@ struct GlobalSettings{
         }
         self.rating = t
         self.full = full
-        if full {
-            self.remote.switchRatingCommands(t)
-        }
+//        if full {
+//            self.remote.switchRatingCommands(t)
+//        }
+        remote.switchRatingCommands(t)
         print("Rating mode is \(rating)")
         defaults.set(t, forKey: "rating")
         defaults.set(full, forKey: "fullRating")

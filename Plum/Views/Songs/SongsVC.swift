@@ -220,7 +220,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         performSegue(withIdentifier: "artist", sender: nil)
     }
     @objc func longPress(_ longPress: UIGestureRecognizer){
-        if(cellTypes[activeIndexSection]?[activeIndexRow] == 1 || cellTypes[activeIndexSection]?[activeIndexRow] == 2){
+        if cellTypes[activeIndexSection]?[activeIndexRow] != 0{
             cellTypes[activeIndexSection]?[activeIndexRow] = 0
             tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .left)
         }

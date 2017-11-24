@@ -377,12 +377,13 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
         //////////////////////////////// NEXT
         
         nextStart = previousMeta + 1
-        if(player.defIndex > player.defQueueCount - 40 || player.shufIndex > player.shufQueueCount - 40){
-            nextMeta = player.defQueueCount
-        }else{
-            nextMeta = player.defIndex + 40
-        }
+        
         if(!player.isShuffle){
+            if player.defIndex > player.defQueue.count - 60 {
+                nextMeta = player.defQueue.count
+            }else{
+                nextMeta = player.defIndex + 60
+            }
             for i in nextStart ..< nextMeta{
                 //songs.append(player.defQueue[i])
                 tmp.append(player.defQueue[i])
@@ -390,8 +391,12 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
             sungs[2] = Songs(sectionName: "Next", songsIn: tmp)
             tmp.removeAll()
         }else{
+            if player.shufIndex > player.shufQueue.count - 60 {
+                nextMeta = player.shufQueue.count
+            }else{
+                nextMeta = player.shufIndex + 60
+            }
             for i in nextStart ..< nextMeta{
-                //songs.append(player.shufQueue[i])
                 tmp.append(player.shufQueue[i])
             }
             sungs[2] = Songs(sectionName: "Next", songsIn: tmp)

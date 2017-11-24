@@ -231,7 +231,7 @@ extension ArtistUpVC: UITableViewDelegate, UITableViewDataSource{
     }
     
     func setColors(){
-        if GlobalSettings.theme == .dark {
+        if !lightTheme {
             dark()
         }else {
             light()

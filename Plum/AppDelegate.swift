@@ -31,8 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //authorized()
         self.query = musicQuery.shared
         self.query.setArrays()
-        self.remote = RemoteCommandManager()
-        GlobalSettings.remote = self.remote
+        //self.remote = RemoteCommandManager()
+        GlobalSettings.remote = RemoteCommandManager()
         defaults = UserDefaults.standard
         setInitialSettings()
         readSettings()
@@ -168,9 +168,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: "style") == nil{
             defaults.set(2, forKey: "style")
         }
-        if defaults.value(forKey: "rating") == nil{
-            defaults.set(false, forKey: "rating")
-        }
         if defaults.value(forKey: "fullRating") == nil {
             defaults.set(true, forKey: "fullRating")
         }
@@ -206,9 +203,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func readSettings(){
         if let rats = defaults.array(forKey: "ratings") as? [String] {
+            print("Ratingi = \(rats)")
             var en = [Rating]()
-            for rating in rats {
-                en.append(Rating(rawValue: rating)!)
+            for i in 0 ..< rats.count {
+                en.append(Rating(rawValue: rats[i])!)
             }
             GlobalSettings.updateRatings(en)
         }

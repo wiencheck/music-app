@@ -9,11 +9,15 @@
 import UIKit
 import MediaPlayer
 
-class ArtistsVC: UIViewController {
+class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     
     var grid: Bool!
     var initialGrid: Bool!
     
+    var collectionTypes = [[Int]]()
+    var tableTypes = [[Int]]()
+    var activeSection = 0
+    var activeRow = 0
     var indexes = [String]()
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionIndexView: CollectionIndexView!
@@ -52,6 +56,9 @@ class ArtistsVC: UIViewController {
         tableView.dataSource = self
         self.view.addSubview(tableView)
         setup2()
+        for i in 0 ..< tableView.numberOfSections {
+            tableTypes.append(Array<Int>(repeating: 0, count: tableView.numberOfRows(inSection: i)))
+        }
         if GlobalSettings.slider == .alphabetical {
             tableIndexView.indexes = self.indexes
             tableIndexView.tableView = self.tableView
@@ -68,8 +75,15 @@ class ArtistsVC: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         self.view.addSubview(collectionView)
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPress(_:)))
+        longPress.minimumPressDuration = 0.2
+        longPress.numberOfTouchesRequired = 1
+        collectionView.addGestureRecognizer(longPress)
         setup2()
-        correctCollectionSections()
+        for i in 0 ..< collectionView.numberOfSections {
+            collectionTypes.append(Array<Int>(repeating: 0, count: collectionView.numberOfItems(inSection: i)))
+        }
+        //correctCollectionSections()
         if GlobalSettings.slider == .alphabetical {
             collectionIndexView.indexes = self.indexes
             collectionIndexView.collectionView = self.collectionView
@@ -101,6 +115,7 @@ extension ArtistsVC: UITableViewDelegate, UITableViewDataSource{    //Table
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "artistCell", for: indexPath) as! ArtistCell
         cell.setup(artist: (result[indexes[indexPath.section]]?[indexPath.row])!)
         cell.backgroundColor = .clear
@@ -120,7 +135,7 @@ extension ArtistsVC: UITableViewDelegate, UITableViewDataSource{    //Table
     
 }
 
-extension ArtistsVC: UICollectionViewDelegate, UICollectionViewDataSource{  //Collection
+extension ArtistsVC: UICollectionViewDelegate, UICollectionViewDataSource, CollectionActionCellDelegate{  //Collection
     
     func indexTitles(for collectionView: UICollectionView) -> [String]? {
         return indexes
@@ -136,10 +151,16 @@ extension ArtistsVC: UICollectionViewDelegate, UICollectionViewDataSource{  //Co
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
-        let item = result[indexes[indexPath.section]]?[indexPath.row]
-        cell.setup(artist: item!)
-        return cell
+        if collectionTypes[indexPath.section][indexPath.row] != 0 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "actionscell", for: indexPath) as! CollectionActionCell
+            cell.delegate = self
+            return cell
+        }else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
+            let item = result[indexes[indexPath.section]]?[indexPath.row]
+            cell.setup(artist: item!)
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -152,9 +173,95 @@ extension ArtistsVC: UICollectionViewDelegate, UICollectionViewDataSource{  //Co
         }
     }
     
+    @objc func longPress(_ sender: UILongPressGestureRecognizer) {
+        if collectionTypes[activeSection][activeRow] != 0 {
+            collectionTypes[activeSection][activeRow] = 0
+            collectionView.reloadItems(at: [IndexPath(row: activeRow, section: activeSection)])
+        }
+        if sender.state == .recognized {
+            let point = sender.location(in: collectionView)
+            if let path = collectionView.indexPathForItem(at: point) {
+                activeRow = path.row
+                activeSection = path.section
+                collectionTypes[activeSection][activeRow] = 1
+                pickedID = result[indexes[activeSection]]?[activeRow].ID
+                collectionView.reloadItems(at: [path])
+            }
+        }
+    }
+    
+    func cell(_ cell: CollectionActionCell, action: CollectionAction) {
+        switch action {
+        case .now:
+            playNowBtn()
+        case .next:
+            playNextBtn()
+        case .shuffle:
+            shuffleBtn()
+        }
+    }
+    
 }
 
 extension ArtistsVC{    //Other functions
+    
+    func playNowBtn() {
+        let songs = musicQuery.shared.songsByArtistID(artist: pickedID)
+        Plum.shared.disableShuffle()
+        Plum.shared.createDefQueue(items: songs)
+        Plum.shared.playFromDefQueue(index: 0, new: true)
+        Plum.shared.play()
+        let path = IndexPath(row: activeRow, section: activeSection)
+        if grid {
+            collectionView.reloadItems(at: [path])
+        }else{
+            tableView.reloadRows(at: [path], with: .fade)
+        }
+    }
+    
+    func playNextBtn() {
+        let songs = musicQuery.shared.songsByArtistID(artist: pickedID)
+        var i = songs.count - 1
+        while i > -1 {
+            Plum.shared.addNext(item: songs[i])
+            i -= 1
+        }
+        let path = IndexPath(row: activeRow, section: activeSection)
+        if grid {
+            collectionView.reloadItems(at: [path])
+        }else{
+            tableView.reloadRows(at: [path], with: .fade)
+        }
+    }
+    
+    func shuffleBtn() {
+        let songs = musicQuery.shared.songsByArtistID(artist: pickedID)
+        Plum.shared.createDefQueue(items: songs)
+        Plum.shared.defIndex = Int(arc4random_uniform(UInt32(songs.count)))
+        Plum.shared.shuffleCurrent()
+        Plum.shared.playFromShufQueue(index: 0, new: true)
+        Plum.shared.play()
+        let path = IndexPath(row: activeRow, section: activeSection)
+        if grid {
+            collectionView.reloadItems(at: [path])
+        }else{
+            tableView.reloadRows(at: [path], with: .fade)
+        }
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        if grid {
+            collectionTypes[activeSection][activeRow] = 0
+            let path = IndexPath(row: activeRow, section: activeSection)
+            collectionView.reloadItems(at: [path])
+            collectionView.deselectItem(at: path, animated: true)
+        }else{
+            tableTypes[activeSection][activeRow] = 0
+            let path = IndexPath(row: activeRow, section: activeSection)
+            tableView.reloadRows(at: [path], with: .fade)
+            tableView.deselectRow(at: path, animated: true)
+        }
+    }
     
         func setup2(){
         let letters = Array("aąbcćdeęfghijklmnoópqrsśtuvwxyzżź".characters)

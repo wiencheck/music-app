@@ -107,14 +107,14 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     
     @objc func rating(_ sender: UISwitch){
         ratingStatus = sender.isOn
-        GlobalSettings.changeRating(ratingStatus, full: GlobalSettings.full)
-        ratingSwitch.isOn = ratingStatus
-        defaults.set(ratingStatus, forKey: "rating")
         if ratingStatus {
             lyricsStatus = false
             lyricsSwitch.isOn = false
-            GlobalSettings.changeLyrics(false)
+            //GlobalSettings.changeLyrics(false)
         }
+        GlobalSettings.changeRating(ratingStatus, full: GlobalSettings.full)
+        ratingSwitch.isOn = ratingStatus
+        defaults.set(ratingStatus, forKey: "rating")
     }
     
     @objc func lyricsSwitched(_ sender: UISwitch) {
@@ -129,7 +129,7 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
         if lyricsStatus {
             ratingStatus = false
             ratingSwitch.isOn = false
-            GlobalSettings.changeRating(false, full: GlobalSettings.full)
+            //GlobalSettings.changeRating(false, full: GlobalSettings.full)
         }
         GlobalSettings.changeLyrics(sender.isOn)
     }
