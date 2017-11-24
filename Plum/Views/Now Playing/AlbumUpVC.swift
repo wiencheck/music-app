@@ -49,7 +49,7 @@ class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
         albumLabel.text = item.albumTitle ?? "Unknown album"
     }
     
-    @IBAction func doneBtnPressed(_ sender: Any){
+    @IBAction func doneBtnPressed(){
         self.delegate?.backFromUpNext()
         dismiss(animated: true, completion: nil)
     }
@@ -168,6 +168,12 @@ extension AlbumUpVC: UITableViewDelegate, UITableViewDataSource{
             tableView.reloadRows(at: [indexPath], with: .fade)
         }
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y < -120 {
+            doneBtnPressed()
+        }
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {

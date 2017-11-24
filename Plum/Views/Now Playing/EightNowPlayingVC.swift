@@ -101,6 +101,7 @@ class EightNowPlayingVC: UIViewController {
             playbackBtn.isEnabled = false
         }
         updateUI()
+        //setColors()
         print("Scale = \(GlobalSettings.scale)")
     }
     
@@ -109,9 +110,10 @@ class EightNowPlayingVC: UIViewController {
     }
     
     @IBAction func ratingPressed() {
-        GlobalSettings.changeRating(!GlobalSettings.rating, full: GlobalSettings.full)
+        GlobalSettings.changeRating(!GlobalSettings.rating)
         if GlobalSettings.rating {
             ratingButton.setTitle("Ena", for: .normal)
+            lyricsButton.setTitle("Dis", for: .normal)
         }else{
             ratingButton.setTitle("Dis", for: .normal)
         }
@@ -121,6 +123,7 @@ class EightNowPlayingVC: UIViewController {
         GlobalSettings.changeLyrics(!GlobalSettings.lyrics)
         if GlobalSettings.lyrics {
             lyricsButton.setTitle("Ena", for: .normal)
+            ratingButton.setTitle("Dis", for: .normal)
         }else{
             lyricsButton.setTitle("Dis", for: .normal)
         }
@@ -446,6 +449,16 @@ extension EightNowPlayingVC {       //Kolory i UI
         DispatchQueue.main.async(){
             self.lyricsTextView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
         }
+        if GlobalSettings.rating {
+            ratingButton.setTitle("Ena", for: .normal)
+        }else{
+            ratingButton.setTitle("Dis", for: .normal)
+        }
+        if GlobalSettings.lyrics {
+            lyricsButton.setTitle("Ena", for: .normal)
+        }else{
+            lyricsButton.setTitle("Dis", for: .normal)
+        }
         showRating()
     }
     
@@ -501,12 +514,14 @@ extension EightNowPlayingVC {       //Kolory i UI
         self.detailLabel.textColor = colors.detailColor
         self.elapsedLabel.textColor = colors.detailColor
         self.remainingLabel.textColor = colors.detailColor
-        customTrackSlider(slider: timeSlider, min: colors.primaryColor, max: colors.detailColor, thumb: colors.primaryColor, thumbImg: #imageLiteral(resourceName: "thumb2"))
+        customTrackSlider(slider: timeSlider, min: colors.primaryColor, max: colors.detailColor, thumb: colors.primaryColor)
         customVolumeSlider(min: colors.primaryColor, max: colors.detailColor, thumb: colors.detailColor, thumbImg: #imageLiteral(resourceName: "thumb"))
         doneBtn.tintColor = colors.detailColor
         upNextBtn.tintColor = colors.detailColor
         outOfLabel.textColor = colors.primaryColor
         ratingLabel.textColor = colors.primaryColor
+        ratingButton.tintColor = colors.detailColor
+        lyricsButton.tintColor = colors.detailColor
         if(colors.backgroundColor.isDarkColor){
             UIApplication.shared.statusBarStyle = .lightContent
             lightBar = true
@@ -619,7 +634,7 @@ extension EightNowPlayingVC {       //Kolory i UI
         outOfLabel.textColor = .black
         ratingsView.backgroundColor = .clear
         titleView.backgroundColor = .clear
-        ratingLabel.textColor = GlobalSettings.tint.color
+        ratingLabel.textColor = .black
         shufView.tintColor = GlobalSettings.tint.color.withAlphaComponent(0.5)
         lyricsButton.tintColor = .black
         ratingButton.tintColor = .black
@@ -639,10 +654,17 @@ extension EightNowPlayingVC {       //Kolory i UI
         }
     }
     
-    func customTrackSlider(slider: UISlider, min: UIColor, max: UIColor, thumb: UIColor, thumbImg: UIImage) {
+    func customTrackSlider(slider: UISlider, min: UIColor, max: UIColor, thumb: UIColor) {
+        var thumbImg: UIImage
+        if GlobalSettings.round {
+            thumbImg = #imageLiteral(resourceName: "thumb")
+            slider.setThumbImage(thumbImg, for: .normal)
+        }else{
+            thumbImg = #imageLiteral(resourceName: "thumb2")
+            slider.setThumbImage(thumbImg.tintPictogram(with: thumb), for: .normal)
+        }
         slider.setMinimumTrackImage(#imageLiteral(resourceName: "track").tintPictogram(with: min), for: .normal)
         slider.setMaximumTrackImage(#imageLiteral(resourceName: "track").tintPictogram(with: max), for: .normal)
-        slider.setThumbImage(thumbImg.tintPictogram(with: thumb), for: .normal)
     }
     
 }

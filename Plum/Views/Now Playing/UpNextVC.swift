@@ -143,6 +143,17 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
         return cell
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        print(scrollView.contentOffset.y)
+        if scrollView.contentOffset.y < 0 {
+            print("Pull")
+        }
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        print(scrollView.contentOffset.y)
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //if !player.usrIsAnyAfter { player.isUsrQueue = false }
         //if !player.usrIsAnyAfter { player.clearQueue() }
@@ -188,6 +199,12 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
         //if !player.usrIsAnyAfter { player.clearQueue() }
         tableView.reloadData()
         tableView.scrollToRow(at: IndexPath(row: 0, section: 1), at: .top, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let v = UIView(frame: CGRect(x: 5, y: 0, width: 40, height: 0.2))
+        v.backgroundColor = tableView.separatorColor?.withAlphaComponent(0.6)
+        return v
     }
 
     @IBAction func doneBtnPressed(_ sender: Any){

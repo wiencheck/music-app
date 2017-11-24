@@ -43,7 +43,8 @@ struct GlobalSettings{
     static var rating = false                                       //UI
     static var full = false                                       //UI
     static var bottomInset: CGFloat!
-    static func changeRating(_ t: Bool, full: Bool){
+    static var actions = [Rating]()
+    static func changeRating(_ t: Bool, full: Bool = false){
         if lyrics && t {
             changeLyrics(false)
             updateRatings(ratings)
@@ -53,6 +54,7 @@ struct GlobalSettings{
 //        if full {
 //            self.remote.switchRatingCommands(t)
 //        }
+        if t { actions = ratings }
         remote.switchRatingCommands(t)
         print("Rating mode is \(rating)")
         defaults.set(t, forKey: "rating")
@@ -167,13 +169,18 @@ struct GlobalSettings{
             changeRating(false, full: self.full)
         }
         self.lyrics = t
-        self.remote.switchLyricsCommand(t)
         if t {
+            actions = [.show, .stopLyrics, .previous]
             Plum.shared.registerforDeviceLockNotification()
         }else{
             Plum.shared.unRegisterLockNotification()
         }
+        self.remote.switchRatingCommands(t)
         defaults.set(t, forKey: "lyrics")
+    }
+    static var round = false
+    static func changeRound(_ t: Bool) {
+        round = t
     }
 }
 

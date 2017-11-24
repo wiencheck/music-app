@@ -10,10 +10,6 @@ import UIKit
 import MediaPlayer
 import UserNotifications
 
-protocol SettingsDelegate {
-    func enablerating(enable: Bool)
-}
-
 class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlightDelegate {
 
     let defaults = UserDefaults.standard
@@ -27,6 +23,7 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     @IBOutlet weak var currentStyle: UILabel!
     @IBOutlet weak var currentMiniPlayer: UILabel!
     @IBOutlet weak var indexVisibleSwitch: UISwitch!
+    @IBOutlet weak var roundSwitch: UISwitch!
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var lyricsSwitch: UISwitch!
     @IBOutlet weak var blurSwitch: UISwitch!
@@ -68,12 +65,12 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
         ratingSwitch.addTarget(self, action: #selector(rating(_:)), for: .valueChanged)
         lyricsSwitch.addTarget(self, action: #selector(lyricsSwitched(_:)), for: .valueChanged)
         blurSwitch.addTarget(self, action: #selector(blurSwitched(_:)), for: .valueChanged)
+        roundSwitch.addTarget(self, action: #selector(roundSwitched(_:)), for: .valueChanged)
     }
     
     @objc func colorSwitched(_ sender: UISwitch){
         colorFlowStatus = sender.isOn
-        if blurStatus {
-            blurStatus = false
+        if GlobalSettings.blur {
             blurSwitch.isOn = false
             GlobalSettings.changeBlur(false)
         }
@@ -81,13 +78,11 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     }
     
     @objc func blurSwitched(_ sender: UISwitch){
-        blurStatus = sender.isOn
-        if colorFlowStatus {
-            colorFlowStatus = false
+        if GlobalSettings.color {
             colorFlowSwitch.isOn = false
             GlobalSettings.changeColor(false)
         }
-        defaults.set(blurStatus, forKey: "blur")
+        GlobalSettings.changeBlur(sender.isOn)
     }
     
     @objc func artistsGrid(_ sender: UISwitch){
@@ -112,7 +107,7 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
             lyricsSwitch.isOn = false
             //GlobalSettings.changeLyrics(false)
         }
-        GlobalSettings.changeRating(ratingStatus, full: GlobalSettings.full)
+        GlobalSettings.changeRating(ratingStatus)
         ratingSwitch.isOn = ratingStatus
         defaults.set(ratingStatus, forKey: "rating")
     }
@@ -132,6 +127,10 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
             //GlobalSettings.changeRating(false, full: GlobalSettings.full)
         }
         GlobalSettings.changeLyrics(sender.isOn)
+    }
+    
+    @objc func roundSwitched(_ sender: UISwitch) {
+        GlobalSettings.changeRound(sender.isOn)
     }
     
     func notificationPermissionError(_ error: Error?) {
@@ -233,6 +232,7 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
         lyricsStatus = GlobalSettings.lyrics
         lyricsSwitch.isOn = GlobalSettings.lyrics
         blurSwitch.isOn = GlobalSettings.blur
+        roundSwitch.isOn = GlobalSettings.round
     }
     
     func tabBarController(_ tabBarController: UITabBarController, didEndCustomizing viewControllers: [UIViewController], changed: Bool) {
@@ -354,6 +354,7 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
         alert.addAction(smooth)
         alert.addAction(alp)
         present(alert, animated: true, completion: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "sliderChanged"), object: nil)
     }
     
     func explainPlaylistGrid() {

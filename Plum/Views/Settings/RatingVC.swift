@@ -85,7 +85,7 @@ class RatingVC: UIViewController {
     }
     
     @IBAction func dragBtnPressed(_ sender: UIButton) {
-        GlobalSettings.changeRating(!GlobalSettings.lyrics, full: GlobalSettings.full)
+        GlobalSettings.changeRating(!GlobalSettings.lyrics)
         if GlobalSettings.rating {
             self.enable()
         }else{

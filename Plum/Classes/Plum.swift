@@ -313,6 +313,7 @@ class Plum: NSObject, AVAudioPlayerDelegate{
                         clearQueue()
                     }
                 }
+            if shouldPost && GlobalSettings.lyrics { postLyrics() }
             NotificationCenter.default.post(name: Plum.playBackStateChanged, object: nil, userInfo: ["Artist": "Title"])
         }
         else{

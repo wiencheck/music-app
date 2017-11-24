@@ -29,6 +29,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
+        NotificationCenter.default.addObserver(self, selector: #selector(settingsChanged), name: Notification.Name(rawValue: "sliderChanged"), object: nil)
         tableView.delegate = self
         tableView.dataSource = self
         setup()
@@ -46,6 +47,18 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         self.tableView.addGestureRecognizer(longPress)
         self.tableView.backgroundView = UIImageView(image: backround)
         self.view.addSubview(tableView)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "sliderChanged"), object: nil)
+    }
+    
+    @objc func settingsChanged() {
+        reloadViewFromNib()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
         if GlobalSettings.slider == .alphabetical {
             indexView.indexes = self.indexes
             indexView.tableView = self.tableView
@@ -54,10 +67,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         }else{
             tableView.addScrollBar(tint: GlobalSettings.tint.color)
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
+        tableView.reloadData()
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -65,7 +75,11 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return indexes[section]
+        if GlobalSettings.slider == .alphabetical {
+            return indexes[section]
+        }else{
+            return String()
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -278,5 +292,14 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             }
             inLetters += 1
         }
+    }
+}
+
+extension UIViewController {
+    func reloadViewFromNib() {
+        let parent = view.superview
+        view.removeFromSuperview()
+        view = nil
+        parent?.addSubview(view) // This line causes the view to be reloaded
     }
 }

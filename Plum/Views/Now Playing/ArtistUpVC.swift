@@ -51,7 +51,7 @@ class ArtistUpVC: UIViewController {
         artistLabel.text = item.albumArtist ?? "Unknown artist"
     }
     
-    @IBAction func doneBtnPressed(_ sender: Any){
+    @IBAction func doneBtnPressed(){
         self.delegate?.backFromUpNext()
         dismiss(animated: true, completion: nil)
     }
@@ -170,6 +170,12 @@ extension ArtistUpVC: UITableViewDelegate, UITableViewDataSource{
             tableView.reloadRows(at: [indexPath], with: .fade)
         }
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y < -120 {
+            doneBtnPressed()
+        }
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {

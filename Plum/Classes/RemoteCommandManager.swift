@@ -32,14 +32,14 @@ class RemoteCommandManager: NSObject{
     }
     
     func switchRatingCommands(_ enable: Bool){
-        for rating in GlobalSettings.ratings {
+        for rating in GlobalSettings.actions {
             print(rating.rawValue)
         }
         if enable {
             toggleLyricsCommand(false)
             toggleStopLyricsCommand(false)
             togglePreviousLyricsCommand(false)
-            switch GlobalSettings.ratings.count {
+            switch GlobalSettings.actions.count {
             case 1:
                 toggleLikeCommand(true)
             case 2:
@@ -122,8 +122,8 @@ class RemoteCommandManager: NSObject{
     
     func toggleLikeCommand(_ enable: Bool) {
         if enable {
-            remoteCommandCenter.likeCommand.localizedTitle = GlobalSettings.ratings[0].rawValue
-            remoteCommandCenter.likeCommand.localizedShortTitle = GlobalSettings.ratings[0].rawValue
+            remoteCommandCenter.likeCommand.localizedTitle = GlobalSettings.actions[0].rawValue
+            remoteCommandCenter.likeCommand.localizedShortTitle = GlobalSettings.actions[0].rawValue
             remoteCommandCenter.likeCommand.addTarget(self, action: #selector(RemoteCommandManager.handleLikeCommandEvent(event:)))
         }
         else {
@@ -169,8 +169,8 @@ class RemoteCommandManager: NSObject{
     func toggleDislikeCommand(_ enable: Bool) {
         //dislikeValue = feedbacks["Dislike"]?.stars
         if enable {
-            remoteCommandCenter.dislikeCommand.localizedTitle = GlobalSettings.ratings[1].rawValue
-            remoteCommandCenter.dislikeCommand.localizedShortTitle = GlobalSettings.ratings[1].rawValue
+            remoteCommandCenter.dislikeCommand.localizedTitle = GlobalSettings.actions[1].rawValue
+            remoteCommandCenter.dislikeCommand.localizedShortTitle = GlobalSettings.actions[1].rawValue
             remoteCommandCenter.dislikeCommand.addTarget(self, action: #selector(RemoteCommandManager.handleDislikeCommandEvent(event:)))
         }
         else {
@@ -181,8 +181,8 @@ class RemoteCommandManager: NSObject{
     
     func toggleBookmarkCommand(_ enable: Bool){
         if enable{
-            remoteCommandCenter.bookmarkCommand.localizedTitle = GlobalSettings.ratings[2].rawValue
-            remoteCommandCenter.bookmarkCommand.localizedShortTitle = GlobalSettings.ratings[2].rawValue
+            remoteCommandCenter.bookmarkCommand.localizedTitle = GlobalSettings.actions[2].rawValue
+            remoteCommandCenter.bookmarkCommand.localizedShortTitle = GlobalSettings.actions[2].rawValue
             remoteCommandCenter.bookmarkCommand.addTarget(self, action: #selector(RemoteCommandManager.handleBookmarkCommandEvent(event:)))
         }else{
             remoteCommandCenter.bookmarkCommand.removeTarget(self, action: #selector(RemoteCommandManager.handleBookmarkCommandEvent(event:)))
@@ -236,7 +236,7 @@ class RemoteCommandManager: NSObject{
     }
     
     @objc func handleLikeCommandEvent(event: MPFeedbackCommandEvent) -> MPRemoteCommandHandlerStatus {
-        switch GlobalSettings.ratings[0] {
+        switch GlobalSettings.actions[0] {
         case .one:
             player.rateItem(rating: 1)
         case .two:
@@ -251,15 +251,19 @@ class RemoteCommandManager: NSObject{
             player.player.currentTime = 0.01
             player.prev()
             player.play()
-        default:
+        case .stop:
             handleStopRatingCommandEvent()
+        case .stopLyrics:
+            handleStopLyricsCommandEvent(event: event)
+        case .show:
+            handleLyricsCommandEvent(event: event)
         }
-        print(GlobalSettings.ratings[0].rawValue)
+        print(GlobalSettings.actions[0].rawValue)
         return .success
     }
     
     @objc func handleDislikeCommandEvent(event: MPFeedbackCommandEvent) -> MPRemoteCommandHandlerStatus {
-        switch GlobalSettings.ratings[1] {
+        switch GlobalSettings.actions[1] {
         case .one:
             player.rateItem(rating: 1)
         case .two:
@@ -277,12 +281,12 @@ class RemoteCommandManager: NSObject{
         default:
             handleStopRatingCommandEvent()
         }
-        print(GlobalSettings.ratings[1].rawValue)
+        print(GlobalSettings.actions[1].rawValue)
         return .success
     }
     
     @objc func handleBookmarkCommandEvent(event: MPFeedbackCommandEvent) -> MPRemoteCommandHandlerStatus {
-        switch GlobalSettings.ratings[2] {
+        switch GlobalSettings.actions[2] {
         case .one:
             player.rateItem(rating: 1)
         case .two:
@@ -300,7 +304,7 @@ class RemoteCommandManager: NSObject{
         default:
             handleStopRatingCommandEvent()
         }
-        print(GlobalSettings.ratings[0].rawValue)
+        print(GlobalSettings.actions[0].rawValue)
         return .success
     }
     

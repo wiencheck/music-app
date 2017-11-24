@@ -16,6 +16,8 @@ public enum Rating: String {
     case five = "★★★★★"
     case stop = "Disable rating mode"
     case previous = "Previous song"
+    case show = "Show lyrics"
+    case stopLyrics = "Disable lyrics mode"
 }
 
 class SetRatingsVC: UITableViewController {
@@ -174,8 +176,7 @@ class SetRatingsVC: UITableViewController {
         for rating in GlobalSettings.ratings {
             print(rating.rawValue)
         }
-        GlobalSettings.changeRating(!GlobalSettings.rating, full: GlobalSettings.full)
-        GlobalSettings.changeRating(!GlobalSettings.rating, full: GlobalSettings.full)
+        GlobalSettings.changeRating(!GlobalSettings.rating)
     }
 
 }

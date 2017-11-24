@@ -511,7 +511,7 @@ class NowPlayingVC: UIViewController, UIGestureRecognizerDelegate, UpNextDelegat
     }
     
     @IBAction func ratingPressed() {
-        GlobalSettings.changeRating(!GlobalSettings.rating, full: GlobalSettings.full)
+        GlobalSettings.changeRating(!GlobalSettings.rating)
         if GlobalSettings.rating {
             ratingButton.setTitle("Ena", for: .normal)
         }else{

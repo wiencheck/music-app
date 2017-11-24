@@ -213,9 +213,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let fu = defaults.value(forKey: "fullRating") as? Bool {
             GlobalSettings.full = fu
         }
-        if let rat = defaults.value(forKey: "rating") as? Bool{
-            GlobalSettings.changeRating(rat, full: GlobalSettings.full)
-        }
         if let alp = defaults.value(forKey: "alphabeticalSort") as? Bool{
             GlobalSettings.changeAlphabeticalSort(alp)
         }
@@ -225,9 +222,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }else {
                 GlobalSettings.changePopupStyle(.classic)
             }
-        }
-        if let lyr = defaults.value(forKey: "lyrics") as? Bool {
-            GlobalSettings.changeLyrics(lyr)
         }
         if defaults.value(forKey: "tintName") == nil{
             defaults.set("Plum purple", forKey: "tintName")
@@ -262,6 +256,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         if let slid = defaults.value(forKey: "slider") as? String {
             GlobalSettings.changeSlider(Slider(rawValue: slid)!)
+        }
+        if defaults.bool(forKey: "rating") {
+            GlobalSettings.changeRating(true)
+        }else if defaults.bool(forKey: "lyrics") {
+            GlobalSettings.changeLyrics(true)
         }
     }
 }
