@@ -367,7 +367,7 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     func explainDeploy() {
         let alert = UIAlertController(title: "Where do we land, general?", message: "You can choose whether you prefer to start playing an album, artist, or all songs, when starting playback from Spotlight or in-app search screen", preferredStyle: .actionSheet)
         let album = UIAlertAction(title: "Album (default)", style: .default, handler: {(action) in
-            self.defaults.set("albums", forKey: "deploy")
+            self.defaults.set("album", forKey: "deploy")
             self.reload()
         })
         let artist = UIAlertAction(title: "Artist", style: .default, handler: {(action) in

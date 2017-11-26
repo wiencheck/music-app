@@ -43,6 +43,8 @@ class EightNowPlayingVC: UIViewController {
     @IBOutlet weak var ratingButton: UIButton!
     @IBOutlet weak var BackgroundView: UIView!
     
+    let modesButtons = [#imageLiteral(resourceName: "lyricsbutton"), #imageLiteral(resourceName: "nolyricsbutton"), #imageLiteral(resourceName: "ratingsbutton"), #imageLiteral(resourceName: "noratingsbutton")]
+    
     var doubleTapArt: UITapGestureRecognizer!
     var doubleTapLyr: UITapGestureRecognizer!
     var colors: UIImageColors!
@@ -58,6 +60,8 @@ class EightNowPlayingVC: UIViewController {
     
     deinit{
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         timer.invalidate()
     }
     
@@ -87,10 +91,9 @@ class EightNowPlayingVC: UIViewController {
         GlobalSettings.changeBlur(false)
         GlobalSettings.changeColor(true)
         setColors()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
         NotificationCenter.default.addObserver(self, selector: #selector(updateUI), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         timer.fire()
     }
     
@@ -112,20 +115,20 @@ class EightNowPlayingVC: UIViewController {
     @IBAction func ratingPressed() {
         GlobalSettings.changeRating(!GlobalSettings.rating)
         if GlobalSettings.rating {
-            ratingButton.setTitle("Ena", for: .normal)
-            lyricsButton.setTitle("Dis", for: .normal)
+            ratingButton.setImage(#imageLiteral(resourceName: "ratingsbutton"), for: .normal)
+            lyricsButton.setImage(#imageLiteral(resourceName: "nolyricsbutton"), for: .normal)
         }else{
-            ratingButton.setTitle("Dis", for: .normal)
+            ratingButton.setImage(#imageLiteral(resourceName: "noratingsbutton"), for: .normal)
         }
     }
     
     @IBAction func lyricsModePressed() {
         GlobalSettings.changeLyrics(!GlobalSettings.lyrics)
         if GlobalSettings.lyrics {
-            lyricsButton.setTitle("Ena", for: .normal)
-            ratingButton.setTitle("Dis", for: .normal)
+            lyricsButton.setImage(#imageLiteral(resourceName: "lyricsbutton"), for: .normal)
+            ratingButton.setImage(#imageLiteral(resourceName: "noratingsbutton"), for: .normal)
         }else{
-            lyricsButton.setTitle("Dis", for: .normal)
+            lyricsButton.setImage(#imageLiteral(resourceName: "nolyricsbutton"), for: .normal)
         }
     }
     
@@ -446,18 +449,16 @@ extension EightNowPlayingVC {       //Kolory i UI
             }
         }
         self.lyricsTextView.textColor = .white
-        DispatchQueue.main.async(){
-            self.lyricsTextView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
-        }
+        self.lyricsTextView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
         if GlobalSettings.rating {
-            ratingButton.setTitle("Ena", for: .normal)
+            ratingButton.setImage(#imageLiteral(resourceName: "ratingsbutton"), for: .normal)
         }else{
-            ratingButton.setTitle("Dis", for: .normal)
+            ratingButton.setImage(#imageLiteral(resourceName: "noratingsbutton"), for: .normal)
         }
         if GlobalSettings.lyrics {
-            lyricsButton.setTitle("Ena", for: .normal)
+            lyricsButton.setImage(#imageLiteral(resourceName: "lyricsbutton"), for: .normal)
         }else{
-            lyricsButton.setTitle("Dis", for: .normal)
+            lyricsButton.setImage(#imageLiteral(resourceName: "nolyricsbutton"), for: .normal)
         }
         showRating()
     }
@@ -475,6 +476,8 @@ extension EightNowPlayingVC {       //Kolory i UI
         }
     }
     
+    
+    
     @objc func scrubAudio(){
         shouldUpdateSlider = false
         player.player.currentTime = TimeInterval(timeSlider.value)
@@ -490,6 +493,10 @@ extension EightNowPlayingVC {       //Kolory i UI
         }else{
             playbackBtn.setImage(#imageLiteral(resourceName: "play-butt"), for: .normal)
         }
+        ratingButton.clipsToBounds = true
+        lyricsButton.clipsToBounds = true
+        ratingButton.layer.cornerRadius = 3
+        lyricsButton.layer.cornerRadius = 3
     }
     
     func setColors() {
@@ -665,6 +672,15 @@ extension EightNowPlayingVC {       //Kolory i UI
         }
         slider.setMinimumTrackImage(#imageLiteral(resourceName: "track").tintPictogram(with: min), for: .normal)
         slider.setMaximumTrackImage(#imageLiteral(resourceName: "track").tintPictogram(with: max), for: .normal)
+    }
+    
+    @objc func didEnterBackground() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
+        timer.invalidate()
+    }
+    
+    @objc func didBecomeActive() {
+        NotificationCenter.default.addObserver(self, selector: #selector(updateUI), name: Notification.Name(rawValue: "playBackStateChanged"), object: nil)
     }
     
 }

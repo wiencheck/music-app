@@ -2541,23 +2541,33 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zPr-nq-UDX">
-                                        <rect key="frame" x="276" y="0.0" width="32" height="42"/>
+                                        <rect key="frame" x="277.5" y="9" width="24" height="24"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="42" id="N5F-QA-xmP"/>
-                                            <constraint firstAttribute="width" constant="32" id="sSV-jS-C0x"/>
+                                            <constraint firstAttribute="height" constant="24" id="cM2-VP-iVW"/>
+                                            <constraint firstAttribute="width" constant="24" id="gCz-R8-VHi"/>
                                         </constraints>
                                         <state key="normal" title="B"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="lyricsModePressed" destination="mhR-PN-ter" eventType="touchUpInside" id="qBu-wF-1Pq"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tIp-Xz-9Vg">
-                                        <rect key="frame" x="9" y="0.0" width="32" height="42"/>
+                                        <rect key="frame" x="16" y="9" width="24" height="24"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="42" id="KBF-Z2-Jfd"/>
-                                            <constraint firstAttribute="width" constant="32" id="cSk-KZ-3YL"/>
+                                            <constraint firstAttribute="height" constant="24" id="50G-Xe-clZ"/>
+                                            <constraint firstAttribute="width" constant="24" id="gjO-tA-3gr"/>
                                         </constraints>
                                         <state key="normal" title="B"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="ratingPressed" destination="mhR-PN-ter" eventType="touchUpInside" id="tBd-du-Ds1"/>
                                         </connections>
@@ -2565,15 +2575,15 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="zPr-nq-UDX" secondAttribute="trailing" constant="12" id="01F-0X-vtb"/>
+                                    <constraint firstItem="zPr-nq-UDX" firstAttribute="leading" secondItem="6zq-KY-nA8" secondAttribute="trailing" constant="16" id="4lI-7N-jIJ"/>
                                     <constraint firstAttribute="height" constant="42" id="6F1-f9-Msm"/>
                                     <constraint firstItem="6zq-KY-nA8" firstAttribute="centerY" secondItem="rkv-QP-kNV" secondAttribute="centerY" id="7xb-jj-9YM"/>
-                                    <constraint firstItem="tIp-Xz-9Vg" firstAttribute="leading" secondItem="rkv-QP-kNV" secondAttribute="leading" constant="9" id="BIh-PF-fy1"/>
-                                    <constraint firstAttribute="bottom" secondItem="zPr-nq-UDX" secondAttribute="bottom" id="DrU-3b-8Er"/>
+                                    <constraint firstAttribute="bottom" secondItem="tIp-Xz-9Vg" secondAttribute="bottom" constant="9" id="J0B-fC-FzJ"/>
+                                    <constraint firstItem="tIp-Xz-9Vg" firstAttribute="leading" secondItem="rkv-QP-kNV" secondAttribute="leading" constant="16" id="NVP-Qv-I3w"/>
+                                    <constraint firstItem="zPr-nq-UDX" firstAttribute="top" secondItem="rkv-QP-kNV" secondAttribute="top" constant="9" id="UIy-C6-uF0"/>
                                     <constraint firstItem="6zq-KY-nA8" firstAttribute="centerX" secondItem="rkv-QP-kNV" secondAttribute="centerX" id="X5D-Ae-GN5"/>
-                                    <constraint firstItem="zPr-nq-UDX" firstAttribute="top" secondItem="rkv-QP-kNV" secondAttribute="top" id="n1I-aO-UmM"/>
-                                    <constraint firstAttribute="bottom" secondItem="tIp-Xz-9Vg" secondAttribute="bottom" id="uBC-ga-pSU"/>
-                                    <constraint firstItem="tIp-Xz-9Vg" firstAttribute="top" secondItem="rkv-QP-kNV" secondAttribute="top" id="wgW-9e-sJd"/>
+                                    <constraint firstItem="tIp-Xz-9Vg" firstAttribute="top" secondItem="rkv-QP-kNV" secondAttribute="top" constant="9" id="oza-cL-MEw"/>
+                                    <constraint firstAttribute="bottom" secondItem="zPr-nq-UDX" secondAttribute="bottom" constant="9" id="ylD-e3-WDS"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nk7-6h-gfk">

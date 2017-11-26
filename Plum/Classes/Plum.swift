@@ -17,6 +17,7 @@ class Plum: NSObject, AVAudioPlayerDelegate{
     static let shared = Plum()
     let infoCC = MPNowPlayingInfoCenter.default()
     var shouldPost = false
+    var shouldPlay = true
     var lyricsPosted = false
     var initialized = false
     var session = false
@@ -255,12 +256,14 @@ class Plum: NSObject, AVAudioPlayerDelegate{
                     playFromDefQueue(index: defIndex + 1, new: true)
                 }else{
                     playFromDefQueue(index: 0, new: true)
+                    shouldPlay = false
                 }
             }else{
                 if(shufIsAnyAfter){
                     playFromShufQueue(index: shufIndex + 1, new: true)
                 }else{
                     playFromShufQueue(index: 0, new: true)
+                    shouldPlay = false
                 }
             }
         }else{
@@ -272,19 +275,21 @@ class Plum: NSObject, AVAudioPlayerDelegate{
                             playFromDefQueue(index: defIndex + 1, new: true)
                         }else{
                             playFromDefQueue(index: 0, new: true)
+                            shouldPlay = false
                         }
                     }else{
                         if(shufIsAnyAfter){
                             playFromShufQueue(index: shufIndex + 1, new: true)
                         }else{
                             playFromShufQueue(index: 0, new: true)
+                            shouldPlay = false
                         }
                     }
                 clearQueue()
                 }
             }
         if shouldPost && GlobalSettings.lyrics { postLyrics() }
-        NotificationCenter.default.post(name: Plum.playBackStateChanged, object: nil, userInfo: ["Artist": "Title"])
+        postPlaybackStateChanged()
         //print("nextnext")
     }
     
@@ -314,7 +319,7 @@ class Plum: NSObject, AVAudioPlayerDelegate{
                     }
                 }
             if shouldPost && GlobalSettings.lyrics { postLyrics() }
-            NotificationCenter.default.post(name: Plum.playBackStateChanged, object: nil, userInfo: ["Artist": "Title"])
+            postPlaybackStateChanged()
         }
         else{
             player.currentTime = 0
@@ -322,6 +327,7 @@ class Plum: NSObject, AVAudioPlayerDelegate{
     }
     
     func play(){
+        shouldPlay = true
         if shouldResumeAfterInterruption == false{
             shouldResumeAfterInterruption = true
         }
@@ -336,7 +342,7 @@ class Plum: NSObject, AVAudioPlayerDelegate{
                 print("player is already playing")
             }
         }
-        NotificationCenter.default.post(name: Plum.playBackStateChanged, object: nil, userInfo: ["Artist": "Title"])
+        postPlaybackStateChanged()
     }
     
     func pause(){
@@ -348,7 +354,7 @@ class Plum: NSObject, AVAudioPlayerDelegate{
         }else{
             print("player is currently not playing")
         }
-        NotificationCenter.default.post(name: Plum.playBackStateChanged, object: nil, userInfo: ["Artist": "Title"])
+        postPlaybackStateChanged()
     }
     
     func togglePlayPause(){
@@ -453,7 +459,7 @@ class Plum: NSObject, AVAudioPlayerDelegate{
         timer.invalidate()
         currentItem?.setValue((currentItem?.playCount)! + 1, forKey: MPMediaItemPropertyPlayCount)
         next()
-        play()
+        if shouldPlay { play() }
     }
     
     func audioSessionInterrupted(_ notification: Notification){
@@ -543,7 +549,7 @@ class Plum: NSObject, AVAudioPlayerDelegate{
             }
             nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = str
         }else{
-            nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = item?.albumTitle ?? "Unknown Album"
+            nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = ""
         }
         nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = player.currentTime
         nowPlayingInfo[MPNowPlayingInfoPropertyPlaybackRate] = player.rate
@@ -641,15 +647,15 @@ class Plum: NSObject, AVAudioPlayerDelegate{
     
     @objc dynamic private func audioRouteChangeListener(notification:NSNotification) {
         let audioRouteChangeReason = notification.userInfo![AVAudioSessionRouteChangeReasonKey] as! UInt
-        
         switch audioRouteChangeReason {
         case AVAudioSessionRouteChangeReason.newDeviceAvailable.rawValue:
             print("headphone plugged in")
-        case AVAudioSessionRouteChangeReason.oldDeviceUnavailable.rawValue:
-            print("headphone pulled out")
-            self.pause()
+//        case AVAudioSessionRouteChangeReason.oldDeviceUnavailable.rawValue:
+//            print("headphone pulled out")
+//            self.pause()
         default:
-            break
+            print("Route changed")
+            pause()
         }
     }
     
@@ -745,8 +751,6 @@ class Plum: NSObject, AVAudioPlayerDelegate{
     }
     
     private func displayStatusChanged(_ lockState: String) {
-        // the "com.apple.springboard.lockcomplete" notification will always come after the "com.apple.springboard.lockstate" notification
-        //print("Darwin notification NAME = \(lockState)")
         if (lockState == "com.apple.springboard.lockcomplete") {
             if GlobalSettings.lyrics {
                 shouldPost = true
@@ -754,6 +758,12 @@ class Plum: NSObject, AVAudioPlayerDelegate{
             }
         }else{
             //print("unlocked")
+        }
+    }
+    
+    func postPlaybackStateChanged() {
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: Plum.playBackStateChanged, object: nil)
         }
     }
     

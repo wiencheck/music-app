@@ -137,9 +137,9 @@ class RemoteCommandManager: NSObject{
         if enable{
             remoteCommandCenter.likeCommand.localizedTitle = "Show lyrics"
             remoteCommandCenter.likeCommand.localizedShortTitle = "Show lyrics"
-            remoteCommandCenter.likeCommand.addTarget(self, action: #selector(RemoteCommandManager.handleLyricsCommandEvent(event:)))
+            remoteCommandCenter.likeCommand.addTarget(self, action: #selector(RemoteCommandManager.handleLyricsCommandEvent))
         }else{
-            remoteCommandCenter.likeCommand.removeTarget(self, action: #selector(RemoteCommandManager.handleLyricsCommandEvent(event:)))
+            remoteCommandCenter.likeCommand.removeTarget(self, action: #selector(RemoteCommandManager.handleLyricsCommandEvent))
         }
         remoteCommandCenter.likeCommand.isEnabled = enable
     }
@@ -148,9 +148,9 @@ class RemoteCommandManager: NSObject{
         if enable {
             remoteCommandCenter.dislikeCommand.localizedTitle = "Disable lyrics mode"
             remoteCommandCenter.dislikeCommand.localizedShortTitle = "Disable lyrics mode"
-            remoteCommandCenter.dislikeCommand.addTarget(self, action: #selector(RemoteCommandManager.handleStopLyricsCommandEvent(event:)))
+            remoteCommandCenter.dislikeCommand.addTarget(self, action: #selector(RemoteCommandManager.handleStopLyricsCommandEvent))
         }else{
-            remoteCommandCenter.dislikeCommand.removeTarget(self, action: #selector(RemoteCommandManager.handleStopLyricsCommandEvent(event:)))
+            remoteCommandCenter.dislikeCommand.removeTarget(self, action: #selector(RemoteCommandManager.handleStopLyricsCommandEvent))
         }
         remoteCommandCenter.dislikeCommand.isEnabled = enable
     }
@@ -159,9 +159,9 @@ class RemoteCommandManager: NSObject{
         if enable {
             remoteCommandCenter.bookmarkCommand.localizedTitle = "Previous song"
             remoteCommandCenter.bookmarkCommand.localizedShortTitle = "Previous song"
-            remoteCommandCenter.bookmarkCommand.addTarget(self, action: #selector(RemoteCommandManager.handlePreviousLyricsCommandEvent(event:)))
+            remoteCommandCenter.bookmarkCommand.addTarget(self, action: #selector(RemoteCommandManager.handlePreviousLyricsCommandEvent))
         }else{
-            remoteCommandCenter.bookmarkCommand.removeTarget(self, action: #selector(RemoteCommandManager.handlePreviousLyricsCommandEvent(event:)))
+            remoteCommandCenter.bookmarkCommand.removeTarget(self, action: #selector(RemoteCommandManager.handlePreviousLyricsCommandEvent))
         }
         remoteCommandCenter.bookmarkCommand.isEnabled = enable
     }
@@ -254,9 +254,9 @@ class RemoteCommandManager: NSObject{
         case .stop:
             handleStopRatingCommandEvent()
         case .stopLyrics:
-            handleStopLyricsCommandEvent(event: event)
+            handleStopLyricsCommandEvent()
         case .show:
-            handleLyricsCommandEvent(event: event)
+            handleLyricsCommandEvent()
         }
         print(GlobalSettings.actions[0].rawValue)
         return .success
@@ -278,8 +278,12 @@ class RemoteCommandManager: NSObject{
             player.player.currentTime = 0.01
             player.prev()
             player.play()
-        default:
+        case .stop:
             handleStopRatingCommandEvent()
+        case .stopLyrics:
+            handleStopLyricsCommandEvent()
+        case .show:
+            handleLyricsCommandEvent()
         }
         print(GlobalSettings.actions[1].rawValue)
         return .success
@@ -301,8 +305,12 @@ class RemoteCommandManager: NSObject{
             player.player.currentTime = 0.01
             player.prev()
             player.play()
-        default:
+        case .stop:
             handleStopRatingCommandEvent()
+        case .stopLyrics:
+            handleStopLyricsCommandEvent()
+        case .show:
+            handleLyricsCommandEvent()
         }
         print(GlobalSettings.actions[0].rawValue)
         return .success
@@ -312,23 +320,20 @@ class RemoteCommandManager: NSObject{
         GlobalSettings.changeRating(false, full: GlobalSettings.full)
     }
     
-    @objc func handleLyricsCommandEvent(event: MPFeedbackCommandEvent) -> MPRemoteCommandHandlerStatus {
+    @objc func handleLyricsCommandEvent() {
         player.shouldPost = true
         player.postLyrics()
-        return .success
     }
     
-    @objc func handleStopLyricsCommandEvent(event: MPFeedbackCommandEvent) -> MPRemoteCommandHandlerStatus {
+    @objc func handleStopLyricsCommandEvent() {
         player.shouldPost = false
         GlobalSettings.changeLyrics(false)
         player.removeLyrics()
-        return .success
     }
     
-    @objc func handlePreviousLyricsCommandEvent(event: MPFeedbackCommandEvent) -> MPRemoteCommandHandlerStatus {
+    @objc func handlePreviousLyricsCommandEvent() {
         player.player.currentTime = 0.01
         player.prev()
         player.play()
-        return .success
     }
 }

@@ -28,7 +28,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
+        navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         NotificationCenter.default.addObserver(self, selector: #selector(settingsChanged), name: Notification.Name(rawValue: "sliderChanged"), object: nil)
         tableView.delegate = self
         tableView.dataSource = self
@@ -54,7 +54,8 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     }
     
     @objc func settingsChanged() {
-        reloadViewFromNib()
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "sliderChanged"), object: nil)
+        viewDidLoad()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -64,6 +65,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             indexView.tableView = self.tableView
             indexView.setup()
             self.view.addSubview(indexView)
+            tableView.to_removeScrollbar()
         }else{
             tableView.addScrollBar(tint: GlobalSettings.tint.color)
         }
@@ -295,7 +297,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     }
 }
 
-extension UIViewController {
+extension SongsVC {
     func reloadViewFromNib() {
         let parent = view.superview
         view.removeFromSuperview()

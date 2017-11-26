@@ -168,8 +168,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: "style") == nil{
             defaults.set(2, forKey: "style")
         }
-        if defaults.value(forKey: "fullRating") == nil {
-            defaults.set(true, forKey: "fullRating")
+        if defaults.value(forKey: "rating") == nil {
+            defaults.set(false, forKey: "rating")
         }
         if defaults.array(forKey: "searchHistory") == nil{
             defaults.set([""], forKey: "searchHistory")
@@ -258,9 +258,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             GlobalSettings.changeSlider(Slider(rawValue: slid)!)
         }
         if defaults.bool(forKey: "rating") {
-            GlobalSettings.changeRating(true)
+            GlobalSettings.changeRating(defaults.bool(forKey: "rating"))
         }else if defaults.bool(forKey: "lyrics") {
-            GlobalSettings.changeLyrics(true)
+            GlobalSettings.changeLyrics(defaults.bool(forKey: "lyrics"))
         }
     }
 }
