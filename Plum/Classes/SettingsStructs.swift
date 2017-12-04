@@ -27,9 +27,9 @@ enum Theme: String {
 }
 
 enum Deploy: String {
-    case artist = "artist"
-    case album = "album"
-    case songs = "songs"
+    case artist = "Artist"
+    case album = "Album"
+    case songs = "Songs"
 }
 
 enum Slider: String {
@@ -182,9 +182,4 @@ struct GlobalSettings{
     static func changeRound(_ t: Bool) {
         round = t
     }
-}
-
-func ==(left: GlobalSettings, right: GlobalSettings) -> Bool {
-    
-    return false
 }

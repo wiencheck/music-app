@@ -145,7 +145,10 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
     }
     
     @IBAction func NPBtnPressed(_ sender: Any) {
-        
+        Plum.shared.createDefQueue(items: songs)
+        Plum.shared.defIndex = Int(arc4random_uniform(UInt32(songs.count)))
+        Plum.shared.shuffleCurrent()
+        Plum.shared.playFromShufQueue(index: 0, new: true)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

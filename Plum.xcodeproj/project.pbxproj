@@ -22,7 +22,6 @@
 		38401DD41F88CAB800EF64F1 /* PermissionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38401DD31F88CAB800EF64F1 /* PermissionVC.swift */; };
 		38401DF71F88EB9C00EF64F1 /* VolumeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38401DF61F88EB9C00EF64F1 /* VolumeSlider.swift */; };
 		38401DF91F88F16E00EF64F1 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38401DF81F88F16E00EF64F1 /* Colors.swift */; };
-		3840C5A81F7D0BEE003CEDE7 /* trackSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3840C5A71F7D0BEE003CEDE7 /* trackSlider.swift */; };
 		3843ADBF1FBF39EA005E1C2F /* LyricsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3843ADBE1FBF39EA005E1C2F /* LyricsVC.swift */; };
 		3843ADC11FBF4261005E1C2F /* RatingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3843ADC01FBF4261005E1C2F /* RatingVC.swift */; };
 		3843ADC31FBF44A9005E1C2F /* SetRatingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3843ADC21FBF44A9005E1C2F /* SetRatingsVC.swift */; };
@@ -60,7 +59,6 @@
 		38DB70381FB86B3100FC2235 /* LNPopupController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DB70371FB86B3100FC2235 /* LNPopupController.framework */; };
 		38DB70391FB86B3100FC2235 /* LNPopupController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 38DB70371FB86B3100FC2235 /* LNPopupController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		38E68AC11F28C17500BFF4E2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E68AC01F28C17500BFF4E2 /* AppDelegate.swift */; };
-		38E68AC31F28C17500BFF4E2 /* NowPlayingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E68AC21F28C17500BFF4E2 /* NowPlayingVC.swift */; };
 		38E68AC61F28C17500BFF4E2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 38E68AC41F28C17500BFF4E2 /* Main.storyboard */; };
 		38E68AC81F28C17500BFF4E2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 38E68AC71F28C17500BFF4E2 /* Assets.xcassets */; };
 		38E68ACB1F28C17500BFF4E2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 38E68AC91F28C17500BFF4E2 /* LaunchScreen.storyboard */; };
@@ -108,7 +106,6 @@
 		38401DD31F88CAB800EF64F1 /* PermissionVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PermissionVC.swift; sourceTree = "<group>"; };
 		38401DF61F88EB9C00EF64F1 /* VolumeSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VolumeSlider.swift; sourceTree = "<group>"; };
 		38401DF81F88F16E00EF64F1 /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
-		3840C5A71F7D0BEE003CEDE7 /* trackSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = trackSlider.swift; sourceTree = "<group>"; };
 		3843ADBE1FBF39EA005E1C2F /* LyricsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyricsVC.swift; sourceTree = "<group>"; };
 		3843ADC01FBF4261005E1C2F /* RatingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingVC.swift; sourceTree = "<group>"; };
 		3843ADC21FBF44A9005E1C2F /* SetRatingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetRatingsVC.swift; sourceTree = "<group>"; };
@@ -150,7 +147,6 @@
 		38DB70371FB86B3100FC2235 /* LNPopupController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = LNPopupController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		38E68ABD1F28C17500BFF4E2 /* Plum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plum.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		38E68AC01F28C17500BFF4E2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		38E68AC21F28C17500BFF4E2 /* NowPlayingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingVC.swift; sourceTree = "<group>"; };
 		38E68AC51F28C17500BFF4E2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		38E68AC71F28C17500BFF4E2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		38E68ACA1F28C17500BFF4E2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -223,7 +219,6 @@
 			children = (
 				38E98BC21F70177200D29FB4 /* Ext.swift */,
 				38401DF81F88F16E00EF64F1 /* Colors.swift */,
-				3840C5A71F7D0BEE003CEDE7 /* trackSlider.swift */,
 				38401DF61F88EB9C00EF64F1 /* VolumeSlider.swift */,
 			);
 			path = Extensions;
@@ -338,7 +333,6 @@
 		38BB693A1FC5F1260097F6E7 /* Now Playing */ = {
 			isa = PBXGroup;
 			children = (
-				38E68AC21F28C17500BFF4E2 /* NowPlayingVC.swift */,
 				384625DE1F8A3656005DB6E2 /* UpNextVC.swift */,
 				38944C9F1FA0EFA4005CB30C /* AlbumUpVC.swift */,
 				3858254C1FA32CE300697186 /* ArtistUpVC.swift */,
@@ -482,7 +476,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				38E68AC31F28C17500BFF4E2 /* NowPlayingVC.swift in Sources */,
 				3803CD541FBB5B1A009F5EA8 /* SearchCell.swift in Sources */,
 				38121EA31FA0856400C2A3BD /* AlbumsCollectionCell.swift in Sources */,
 				38E729521F2F422900F35780 /* SongCell.swift in Sources */,
@@ -500,7 +493,6 @@
 				3858254D1FA32CE300697186 /* ArtistUpVC.swift in Sources */,
 				38E98BC31F70177200D29FB4 /* Ext.swift in Sources */,
 				38AF9C791F2F72A800FA73B8 /* Plum.swift in Sources */,
-				3840C5A81F7D0BEE003CEDE7 /* trackSlider.swift in Sources */,
 				3858254F1FA33A2800697186 /* SettingsStructs.swift in Sources */,
 				38C4BCAA1F94BAF700DABE81 /* CollectionViewCell.swift in Sources */,
 				38CC1A151F9CAEA500B2AA8D /* IndexViews.swift in Sources */,
@@ -597,6 +589,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/**";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -654,6 +647,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/**";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

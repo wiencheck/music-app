@@ -18,7 +18,6 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     @IBOutlet weak var albumsGridSwitch: UISwitch!
     @IBOutlet weak var playlistsGridSwitch: UISwitch!
     @IBOutlet weak var spotlightButton: UIButton!
-    @IBOutlet weak var spotlightSwitch: UISwitch!
     @IBOutlet weak var ratingSwitch: UISwitch!
     @IBOutlet weak var currentStyle: UILabel!
     @IBOutlet weak var currentMiniPlayer: UILabel!
@@ -29,10 +28,10 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     @IBOutlet weak var blurSwitch: UISwitch!
     @IBOutlet weak var colorView: UIView!
     @IBOutlet weak var sliderLabel: UILabel!
+    @IBOutlet weak var deployLabel: UILabel!
     var colorFlowStatus: Bool!
     var artistsGridStatus: Bool!
     var albumsGridStatus: Bool!
-    var spotlightStatus: Bool!
     var playlistsGridStatus: Bool!
     var ratingStatus: Bool!
     var lyricsStatus: Bool!
@@ -45,6 +44,7 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
         timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateProgressBar), userInfo: nil, repeats: true)
         tabBarController?.delegate = self
         musicQuery.shared.delegate = self
+        tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
         spotlightButton.alpha = 1.0
         progressBar.alpha = 0.0
         handleSwitches()
@@ -61,7 +61,6 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
         artistsGridSwitch.addTarget(self, action: #selector(artistsGrid(_:)), for: .valueChanged)
         albumsGridSwitch.addTarget(self, action: #selector(albumsGrid(_:)), for: .valueChanged)
         playlistsGridSwitch.addTarget(self, action: #selector(playlistsGrid(_:)), for: .valueChanged)
-        spotlightSwitch.addTarget(self, action: #selector(spotlight(_:)), for: .valueChanged)
         ratingSwitch.addTarget(self, action: #selector(rating(_:)), for: .valueChanged)
         lyricsSwitch.addTarget(self, action: #selector(lyricsSwitched(_:)), for: .valueChanged)
         blurSwitch.addTarget(self, action: #selector(blurSwitched(_:)), for: .valueChanged)
@@ -148,27 +147,6 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     }
     
     /////////////////////////////////////////
-    @objc func spotlight(_ sender: UISwitch){
-        if sender.isOn{
-            spotlightStatus = true
-            spotlightButton.isEnabled = true
-        }else{
-            let alert = UIAlertController(title: "Confirm", message: "This will delete entries from Spotlight, you will have to index them again", preferredStyle: .alert)
-            let yesAction = UIAlertAction(title: "Just do it!", style: .default, handler: {(action) in
-                self.spotlightStatus = false
-                musicQuery.shared.removeAllFromSpotlight()
-                self.defaults.set(self.spotlightStatus, forKey: "spotlightActive")
-                self.reload()
-            })
-            let noAction = UIAlertAction(title: "This was a mistake", style: .cancel, handler: {(action) in
-                self.spotlightSwitch.isOn = true
-                self.spotlightButton.setTitle("Enable Spotlight", for: .normal)
-            })
-            alert.addAction(yesAction)
-            alert.addAction(noAction)
-            present(alert, animated: true, completion: nil)
-        }
-    }
     
     @IBAction func spotlightBtnPressed(){
         musicQuery.shared.removeAllFromSpotlight()
@@ -188,13 +166,13 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     }
     
     func indexingEnded() {
-        timer.invalidate()
         self.progressBar.setProgress(0, animated: false)
         UIView.animate(withDuration: 0.3, animations: {
             self.progressBar.alpha = 0.0
             self.spotlightButton.alpha = 1.0
         })
         self.spotlightButton.setTitle("Done!", for: .disabled)
+        timer.invalidate()
     }
     
     func readCurrentSettings(){
@@ -215,8 +193,6 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
             playlistsGridStatus = playG
         }
         if let spot = defaults.value(forKey: "spotlightActive") as? Bool{
-            spotlightSwitch.isOn = spot
-            spotlightStatus = spot
             spotlightButton.isEnabled = spot
         }
         if let rat = defaults.value(forKey: "rating") as? Bool{
@@ -269,8 +245,6 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
             explainLyrics()
         case "lyricset":
             performSegue(withIdentifier: "lyricsSettings", sender: nil)
-        case "left":
-            explainLeft()
         case "slider":
             explainSlider()
         case "artist":
@@ -281,8 +255,6 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
             explainPlaylistGrid()
         case "deploy":
             explainDeploy()
-        case "spotlight":
-            explainSpotlight()
         case "indexing":
             spotlightBtnPressed()
         default:
@@ -293,24 +265,12 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     
     func reload(){
         readCurrentSettings()
-        if spotlightSwitch.isOn {
-            if musicQuery.shared.hasLibraryChanged(){
-                spotlightButton.isEnabled = true
-                spotlightButton.setTitle("Index content", for: .normal)
-            }else{
-                if spotlightStatus && spotlightSwitch.isOn{
-                    spotlightButton.isEnabled = false
-                    spotlightButton.setTitle("Spotlight records are up-to-date", for: .disabled)
-                }
-            }
-        }else{
-            spotlightButton.setTitle("Enable spotlight", for: .disabled)
-            spotlightButton.isEnabled = false
-        }
+        spotlightButton.setTitle("Reindex Spotlight content", for: .normal)
         progressBar.tintColor = GlobalSettings.tint.color
         colorView.backgroundColor = GlobalSettings.tint.color
         spotlightButton.setTitleColor(GlobalSettings.tint.color, for: .normal)
         sliderLabel.text = GlobalSettings.slider.rawValue
+        deployLabel.text = GlobalSettings.deployIn.rawValue
     }
     
     func selfExplanatory() {
@@ -330,13 +290,6 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     func explainLyrics() {
         let alert = UIAlertController(title: "Lyrics mode? What?", message: "If enabled, you will get lyrics for now playing song delivered right to your lockscreen. And they will change automatically too. It only works with lyrics embedeed in song's tags, Plum does not download lyrics from the internet", preferredStyle: .alert)
         let ok = UIAlertAction(title: "Understood, thanks!", style: .default, handler: nil)
-        alert.addAction(ok)
-        present(alert, animated: true, completion: nil)
-    }
-    
-    func explainLeft() {
-        let alert = UIAlertController(title: "Oh now we're discriminating lefties, huh?", message: "Not really, it just changes few UI elements so it will be more comfortable to use the app and users won't be...left behind", preferredStyle: .alert)
-        let ok = UIAlertAction(title: "This was the greatest pun in the history of mankind", style: .default, handler: nil)
         alert.addAction(ok)
         present(alert, animated: true, completion: nil)
     }
@@ -367,20 +320,20 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     func explainDeploy() {
         let alert = UIAlertController(title: "Where do we land, general?", message: "You can choose whether you prefer to start playing an album, artist, or all songs, when starting playback from Spotlight or in-app search screen", preferredStyle: .actionSheet)
         let album = UIAlertAction(title: "Album (default)", style: .default, handler: {(action) in
-            self.defaults.set("album", forKey: "deploy")
+            GlobalSettings.changeDeploy(Deploy(rawValue: "Album")!)
             self.reload()
         })
         let artist = UIAlertAction(title: "Artist", style: .default, handler: {(action) in
-            self.defaults.set("artist", forKey: "deploy")
+            GlobalSettings.changeDeploy(Deploy(rawValue: "Artist")!)
             self.reload()
         })
         let playlist = UIAlertAction(title: "Songs", style: .default, handler: {(action) in
-            self.defaults.set("songs", forKey: "deploy")
+            self.defaults.set("Songs", forKey: "deploy")
             self.reload()
         })
         alert.addAction(album)
         alert.addAction(artist)
-        alert.addAction(playlist)
+        //alert.addAction(playlist)
         present(alert, animated: true, completion: nil)
     }
     
@@ -452,12 +405,5 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
         alert.addAction(ok)
         present(alert, animated: true, completion: nil)
         
-    }
-    
-    func explainSpotlight(){
-        let alert = UIAlertController(title: "Spotlight?", message: "If enabled, you will be able to pick songs from anywhere outside the app. Just like in stock Music app.\nIt is recommended that you reindex every time there was a change in your library. If the Re-Index button is blue, you should click on it", preferredStyle: .alert)
-        let ok = UIAlertAction(title: "Understood, thanks!", style: .default, handler: nil)
-        alert.addAction(ok)
-        present(alert, animated: true, completion: nil)
     }
 }

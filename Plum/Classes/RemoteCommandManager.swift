@@ -321,8 +321,10 @@ class RemoteCommandManager: NSObject{
     }
     
     @objc func handleLyricsCommandEvent() {
+        let tmp = player.shouldPost
         player.shouldPost = true
         player.postLyrics()
+        player.shouldPost = tmp
     }
     
     @objc func handleStopLyricsCommandEvent() {

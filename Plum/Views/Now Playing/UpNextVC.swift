@@ -144,14 +144,10 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print(scrollView.contentOffset.y)
-        if scrollView.contentOffset.y < 0 {
-            print("Pull")
+        upperBar.alpha = 1 + scrollView.contentOffset.y/100
+        if scrollView.contentOffset.y < -120 {
+            doneBtnPressed()
         }
-    }
-    
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        print(scrollView.contentOffset.y)
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -207,7 +203,7 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
         return v
     }
 
-    @IBAction func doneBtnPressed(_ sender: Any){
+    @IBAction func doneBtnPressed(){
         self.delegate?.backFromUpNext()
         dismiss(animated: true, completion: nil)
     }
@@ -340,6 +336,7 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
                 }
             }
         }
+        //setupQueueArray()
     }
     
     func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
@@ -408,7 +405,7 @@ class UpNextVC: UIViewController, UITableViewDelegate, UITableViewDataSource, MP
             sungs[2] = Songs(sectionName: "Next", songsIn: tmp)
             tmp.removeAll()
         }else{
-            if player.shufIndex > player.shufQueue.count - 60 {
+            if player.shufIndex > player.defQueue.count - 60 {
                 nextMeta = player.shufQueue.count
             }else{
                 nextMeta = player.shufIndex + 60

@@ -323,4 +323,8 @@ public extension UIImage {
     }
 }
 
+extension UIColor {
+    static let lightGray = UIColor(red:0.67, green:0.67, blue:0.67, alpha:1.0)
+}
+
 

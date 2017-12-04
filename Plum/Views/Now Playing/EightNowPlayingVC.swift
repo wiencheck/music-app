@@ -8,6 +8,7 @@
 
 import UIKit
 import MediaPlayer
+import UserNotifications
 
 class EightNowPlayingVC: UIViewController {
 
@@ -42,6 +43,7 @@ class EightNowPlayingVC: UIViewController {
     @IBOutlet weak var lyricsButton: UIButton!
     @IBOutlet weak var ratingButton: UIButton!
     @IBOutlet weak var BackgroundView: UIView!
+    var viewActive = false
     
     let modesButtons = [#imageLiteral(resourceName: "lyricsbutton"), #imageLiteral(resourceName: "nolyricsbutton"), #imageLiteral(resourceName: "ratingsbutton"), #imageLiteral(resourceName: "noratingsbutton")]
     
@@ -56,7 +58,6 @@ class EightNowPlayingVC: UIViewController {
     var timer: Timer!
     var shouldUpdateSlider = true
     var interval: TimeInterval = 0.05
-    //var playImg = [#imageLiteral(resourceName: "prev-butt"), #imageLiteral(resourceName: "play-butt"), #imageLiteral(resourceName: "pause-butt"), #imageLiteral(resourceName: "next-butt"), #imageLiteral(resourceName: "thumb"), #imageLiteral(resourceName: "thumb2"), #imageLiteral(resourceName: "track"), #imageLiteral(resourceName: "blackS"), #imageLiteral(resourceName: "zeroVol"), #imageLiteral(resourceName: "maxVol"), #imageLiteral(resourceName: "list"), #imageLiteral(resourceName: "dot"), #imageLiteral(resourceName: "star"), #imageLiteral(resourceName: "shuf")]
     
     deinit{
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
@@ -92,9 +93,23 @@ class EightNowPlayingVC: UIViewController {
         GlobalSettings.changeColor(true)
         setColors()
         NotificationCenter.default.addObserver(self, selector: #selector(updateUI), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         timer.fire()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        viewActive = false
+        UIApplication.shared.statusBarStyle = .default
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if lightStyle {
+            UIApplication.shared.statusBarStyle = .default
+        }else{
+            UIApplication.shared.statusBarStyle = .lightContent
+        }
+        viewActive = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -104,7 +119,7 @@ class EightNowPlayingVC: UIViewController {
             playbackBtn.isEnabled = false
         }
         updateUI()
-        //setColors()
+        //timer.fire()
         print("Scale = \(GlobalSettings.scale)")
     }
     
@@ -124,6 +139,7 @@ class EightNowPlayingVC: UIViewController {
     
     @IBAction func lyricsModePressed() {
         GlobalSettings.changeLyrics(!GlobalSettings.lyrics)
+        askNotification()
         if GlobalSettings.lyrics {
             lyricsButton.setImage(#imageLiteral(resourceName: "lyricsbutton"), for: .normal)
             ratingButton.setImage(#imageLiteral(resourceName: "noratingsbutton"), for: .normal)
@@ -530,7 +546,7 @@ extension EightNowPlayingVC {       //Kolory i UI
         ratingButton.tintColor = colors.detailColor
         lyricsButton.tintColor = colors.detailColor
         if(colors.backgroundColor.isDarkColor){
-            UIApplication.shared.statusBarStyle = .lightContent
+            if viewActive { UIApplication.shared.statusBarStyle = .lightContent }
             lightBar = true
             prevBtn.tintColor = .white
             playbackBtn.tintColor = .white
@@ -539,7 +555,7 @@ extension EightNowPlayingVC {       //Kolory i UI
             maxVolImg.tintColor = .white
             lightStyle = false
         }else{
-            UIApplication.shared.statusBarStyle = .default
+            if viewActive { UIApplication.shared.statusBarStyle = .default }
             lightBar = false
             prevBtn.tintColor = colors.primaryColor
             playbackBtn.tintColor = colors.primaryColor
@@ -681,6 +697,27 @@ extension EightNowPlayingVC {       //Kolory i UI
     
     @objc func didBecomeActive() {
         NotificationCenter.default.addObserver(self, selector: #selector(updateUI), name: Notification.Name(rawValue: "playBackStateChanged"), object: nil)
+        timer.fire()
+    }
+    
+    func askNotification() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert], completionHandler: { enabled, error in
+            if !enabled {
+                self.notificationPermissionError(error)
+            }
+        })
+    }
+    
+    func notificationPermissionError(_ error: Error?) {
+        if error != nil {
+            print(error!)
+        }
+        let alert = UIAlertController(title: "Error", message: "You have to allow notifications for this feature to work. Fix in settings?", preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK Computer", style: .default, handler: nil)
+        alert.addAction(action)
+        present(alert, animated: true) {
+            GlobalSettings.changeLyrics(false)
+        }
     }
     
 }

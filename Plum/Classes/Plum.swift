@@ -288,7 +288,6 @@ class Plum: NSObject, AVAudioPlayerDelegate{
                 clearQueue()
                 }
             }
-        if shouldPost && GlobalSettings.lyrics { postLyrics() }
         postPlaybackStateChanged()
         //print("nextnext")
     }
@@ -318,7 +317,6 @@ class Plum: NSObject, AVAudioPlayerDelegate{
                         clearQueue()
                     }
                 }
-            if shouldPost && GlobalSettings.lyrics { postLyrics() }
             postPlaybackStateChanged()
         }
         else{
@@ -342,6 +340,7 @@ class Plum: NSObject, AVAudioPlayerDelegate{
                 print("player is already playing")
             }
         }
+        if shouldPost && GlobalSettings.lyrics { postLyrics() }
         postPlaybackStateChanged()
     }
     
@@ -768,7 +767,7 @@ class Plum: NSObject, AVAudioPlayerDelegate{
     }
     
     func postLyrics() {
-        if currentItem != nil && shouldPost && player.rate != 0.0 {
+        if currentItem != nil && shouldPost && player.isPlaying {
             let content = UNMutableNotificationContent()
             let ass = AVAsset(url: (currentItem?.assetURL)!)
             if let lyr = ass.lyrics {

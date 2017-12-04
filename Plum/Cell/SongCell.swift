@@ -37,7 +37,16 @@ class SongCell: UITableViewCell {
         let albumLetters = item.albumTitle?.characters.count
         let artAl = "\(item.albumArtist ?? "Unknown artist") \(item.albumTitle ?? "Unknown album")"
         artAlLabel.attributedText = editString(artAl: artAl, artistLetters: artistLetters, albumLetters: albumLetters!)*/
-        artAlLabel.text = "\(item.albumArtist ?? "Unknown") - \(item.albumTitle ?? "Unknown")"
+        let art = "\(item.albumArtist ?? "Unknown")" as NSString
+        let text = "\(item.albumArtist ?? "Unknown") \(item.albumTitle ?? "Unknown")"
+        let toColor = "\(item.albumTitle ?? "Unknown")"
+        let range = (text as NSString).range(of: toColor)
+        let att = NSMutableAttributedString(string: text)
+        let front = text.index(text.startIndex, offsetBy: art.length)
+        let end = text.index(text.endIndex, offsetBy: 0)
+        let r = front..<end
+        att.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.lightGray , range: range)
+        artAlLabel.attributedText = att
     }
     
     func artSetup(item: MPMediaItem){

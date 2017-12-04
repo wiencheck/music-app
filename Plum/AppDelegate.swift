@@ -73,8 +73,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let item = musicQuery.shared.songForID(ID: id!)
                 switch GlobalSettings.deployIn {
                 case .artist:
+                    Plum.shared.isShuffle = true
                     Plum.shared.landInArtist(item, new: true)
                 case .album:
+                    Plum.shared.isShuffle = true
                     Plum.shared.landInAlbum(item, new: true)
                 default:
                     print("wyladuje w piosenkach")
@@ -181,9 +183,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let arr = ["★★★★★", "★☆☆☆☆", "Disable rating mode"]
             defaults.set(arr, forKey: "ratings")
         }
-        if defaults.value(forKey: "landing") == nil{
-            defaults.set("album", forKey: "landing")
-        }
         if defaults.value(forKey: "lyrics") == nil{
             defaults.set(false, forKey: "lyrics")
         }
@@ -191,7 +190,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             defaults.set("light", forKey: "theme")
         }
         if defaults.value(forKey: "deploy") == nil {
-            defaults.set("album", forKey: "deploy")
+            defaults.set("Album", forKey: "deploy")
         }
         if defaults.value(forKey: "scale") == nil {
             defaults.set(57, forKey: "scale")

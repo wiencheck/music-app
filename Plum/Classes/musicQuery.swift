@@ -248,6 +248,7 @@ class musicQuery{
     
     func addToSpotlight(){
         print("Indeksowanie rozpoczete...")
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         let items = allSongs()
         var searchableItems = [CSSearchableItem]()
         var i: Float = 0.0
@@ -276,6 +277,7 @@ class musicQuery{
                 print("Search item successfully indexed!")
             }
         }
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
         })
         print("Indeksowanie zakonczone!")
     }

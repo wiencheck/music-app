@@ -173,6 +173,7 @@ extension ArtistUpVC: UITableViewDelegate, UITableViewDataSource{
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        upperBar.alpha = 1 + scrollView.contentOffset.y/100
         if scrollView.contentOffset.y < -120 {
             doneBtnPressed()
         }
