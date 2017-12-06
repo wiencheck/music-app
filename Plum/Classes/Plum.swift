@@ -158,8 +158,6 @@ class Plum: NSObject, AVAudioPlayerDelegate{
     deinit {
         NotificationCenter.default.removeObserver(self, name: .AVAudioSessionInterruption, object: AVAudioSession.sharedInstance())
         UIApplication.shared.endReceivingRemoteControlEvents()
-        //player.removeObserver(self, forKeyPath: #keyPath(AVAudioPlayer.currentItem), context: nil)
-        //player.removeObserver(self, forKeyPath: #keyPath(AVAudioPlayer.rate), context: nil)
         timer.invalidate()
 
     }

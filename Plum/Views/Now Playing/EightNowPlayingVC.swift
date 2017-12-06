@@ -420,7 +420,8 @@ extension EightNowPlayingVC: UpNextDelegate {
         }
         tbvc.modalPresentationStyle = .overCurrentContext
         tbvc.modalTransitionStyle = .coverVertical
-        self.present(tbvc, animated: true, completion: nil)
+        present(tbvc, animated: true, completion: nil)
+        //presentDetail(tbvc)
     }
     
     func backFromUpNext() {
@@ -720,4 +721,27 @@ extension EightNowPlayingVC {       //Kolory i UI
         }
     }
     
+}
+
+extension UIViewController {
+    
+    func presentDetail(_ viewControllerToPresent: UIViewController) {
+        let transition = CATransition()
+        transition.duration = 0.3
+        transition.type = kCATransitionMoveIn
+        transition.subtype = kCATransitionFromRight
+        self.view.window!.layer.add(transition, forKey: kCATransition)
+        
+        present(viewControllerToPresent, animated: false)
+    }
+    
+    func dismissDetail() {
+        let transition = CATransition()
+        transition.duration = 0.3
+        transition.type = kCATransitionMoveIn
+        transition.subtype = kCATransitionFromLeft
+        self.view.window!.layer.add(transition, forKey: kCATransition)
+        
+        dismiss(animated: false)
+    }
 }

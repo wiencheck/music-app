@@ -52,6 +52,7 @@ class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
     @IBAction func doneBtnPressed(){
         self.delegate?.backFromUpNext()
         dismiss(animated: true, completion: nil)
+        //dismissDetail()
     }
     
     @IBAction func shufBtnPressed(_ sender: Any){

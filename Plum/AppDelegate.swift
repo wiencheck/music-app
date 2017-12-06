@@ -193,7 +193,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             defaults.set("Album", forKey: "deploy")
         }
         if defaults.value(forKey: "scale") == nil {
-            defaults.set(57, forKey: "scale")
+            defaults.set(20, forKey: "scale")
         }
         if defaults.value(forKey: "slider") == nil {
             defaults.set("Alphabetical", forKey: "slider")

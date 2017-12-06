@@ -11,7 +11,7 @@ import MediaPlayer
 import LNPopupController
 
 class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, QueueCellDelegate, MoreActionsCellDelegate {
-    var cellTypes = [Int: [Int]]()
+    var cellTypes = [[Int]]()
     var indexes = [String]()
     var songs = [MPMediaItem]()
     var result = [String: [MPMediaItem]]()
@@ -29,59 +29,36 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
-        NotificationCenter.default.addObserver(self, selector: #selector(settingsChanged), name: Notification.Name(rawValue: "sliderChanged"), object: nil)
         tableView.delegate = self
         tableView.dataSource = self
-        setup()
-        var iterator = 0
-        for index in indexes{
-            cellTypes[iterator] = []
-            for _ in 0 ..< (result[index]?.count)!{
-                cellTypes[iterator]?.append(0)
-            }
-            iterator += 1
+        setupDict()
+        print(songs.count)
+        for index in indexes {
+            cellTypes.append(Array<Int>(repeating: 0, count: (result[index]?.count)!))
         }
+        self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(SongsVC.longPress(_:)))
         longPress.minimumPressDuration = 0.5
         longPress.delegate = self
         self.tableView.addGestureRecognizer(longPress)
         self.tableView.backgroundView = UIImageView(image: backround)
         self.view.addSubview(tableView)
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "sliderChanged"), object: nil)
-    }
-    
-    @objc func settingsChanged() {
-        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "sliderChanged"), object: nil)
-        viewDidLoad()
+        indexView.indexes = self.indexes
+        indexView.tableView = self.tableView
+        indexView.setup()
+        self.view.addSubview(indexView)
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
-        if GlobalSettings.slider == .alphabetical {
-            indexView.indexes = self.indexes
-            indexView.tableView = self.tableView
-            indexView.setup()
-            self.view.addSubview(indexView)
-            tableView.to_removeScrollbar()
-        }else{
-            tableView.addScrollBar(tint: GlobalSettings.tint.color)
-        }
         tableView.reloadData()
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return indexes.count
+        return result.keys.count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if GlobalSettings.slider == .alphabetical {
-            return indexes[section]
-        }else{
-            return String()
-        }
+        return indexes[section]
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -89,7 +66,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     }
 
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        if cellTypes[indexPath.section]?[indexPath.row] != 0{
+        if cellTypes[indexPath.section][indexPath.row] != 0{
             return nil
         }else{
             return indexPath
@@ -98,7 +75,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         absoluteIndex = indexPath.absoluteRow(tableView)
-        if(cellTypes[indexPath.section]?[indexPath.row] == 0){
+        if(cellTypes[indexPath.section][indexPath.row] == 0){
             let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as? SongCell
                 let item = result[indexes[indexPath.section]]?[indexPath.row]
                 if(item != Plum.shared.currentItem){
@@ -108,12 +85,12 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
                 }
                 cell?.backgroundColor = .clear
                 return cell!
-            }else if cellTypes[indexPath.section]?[indexPath.row] == 1{
+            }else if cellTypes[indexPath.section][indexPath.row] == 1{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as? QueueActionsCell
                 cell?.delegate = self
                 cell?.backgroundColor = .clear
                 return cell!
-            }else if cellTypes[indexPath.section]?[indexPath.row] == 2{
+            }else if cellTypes[indexPath.section][indexPath.row] == 2{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "moreCell", for: indexPath) as? MoreActionsCell
                 cell?.delegate = self
                 cell?.backgroundColor = .clear
@@ -128,17 +105,18 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if(cellTypes[activeIndexSection]?[activeIndexRow] == 1 || cellTypes[activeIndexSection]?[activeIndexRow] == 2){
-            cellTypes[activeIndexSection]?[activeIndexRow] = 0
+        if cellTypes[activeIndexSection][activeIndexRow] != 0 {
+            cellTypes[activeIndexSection][activeIndexRow] = 0
             tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .fade)
         }
         activeIndexRow = indexPath.row
         activeIndexSection = indexPath.section
         absoluteIndex = indexPath.absoluteRow(tableView)
-        
-        if(cellTypes[indexPath.section]?[indexPath.row] == 0){
+        print("Absolute index = \(absoluteIndex)")
+        print(result[indexes[indexPath.section]]![indexPath.row].title)
+        if(cellTypes[indexPath.section][indexPath.row] == 0){
             if(Plum.shared.isPlayin()){
-                cellTypes[indexPath.section]?[indexPath.row] = 1
+                cellTypes[indexPath.section][indexPath.row] = 1
                 tableView.reloadRows(at: [indexPath], with: .fade)
             }else{
                 if(Plum.shared.isShuffle){
@@ -154,7 +132,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
                 Plum.shared.play()
             }
         }else{
-            cellTypes[indexPath.section]?[indexPath.row] = 0
+            cellTypes[indexPath.section][indexPath.row] = 0
             tableView.reloadRows(at: [indexPath], with: .right)
         }
         tableView.deselectRow(at: indexPath, animated: true)
@@ -164,12 +142,6 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        /*let nav = segue.destination as! UINavigationController
-        if let destination = nav.viewControllers.first as? AlbumVC{
-            destination.receivedID = pickedAlbumID
-        }else if let destination = nav.viewControllers.first as? AlbumsByVC{
-            destination.receivedID = pickedArtistID
-       }*/
         if let destination = segue.destination as? AlbumVC{
             destination.receivedID = pickedAlbumID
         }else if let destination = segue.destination as? AlbumsByVC{
@@ -199,12 +171,12 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     
     func playNextBtn() {
         Plum.shared.addNext(item: songs[absoluteIndex])
-        cellTypes[activeIndexSection]?[activeIndexRow] = 0
+        cellTypes[activeIndexSection][activeIndexRow] = 0
         tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .right)
     }
     func playLastBtn() {
         Plum.shared.addLast(item: songs[absoluteIndex])
-        cellTypes[activeIndexSection]?[activeIndexRow] = 0
+        cellTypes[activeIndexSection][activeIndexRow] = 0
         tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .right)
     }
     func playNowBtn() {
@@ -222,22 +194,22 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
                 Plum.shared.playFromDefQueue(index: absoluteIndex, new: true)
             }
         Plum.shared.play()
-        cellTypes[activeIndexSection]?[activeIndexRow] = 0
+        cellTypes[activeIndexSection][activeIndexRow] = 0
         tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .right)
     }
     func albumBtn(){
-        cellTypes[activeIndexSection]?[activeIndexRow] = 0
+        cellTypes[activeIndexSection][activeIndexRow] = 0
         self.tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .fade)
         performSegue(withIdentifier: "album", sender: nil)
     }
     func artistBtn(){
-        cellTypes[activeIndexSection]?[activeIndexRow] = 0
+        cellTypes[activeIndexSection][activeIndexRow] = 0
         self.tableView.reloadRows(at: [IndexPath(row: self.activeIndexRow, section: activeIndexSection)], with: .fade)
         performSegue(withIdentifier: "artist", sender: nil)
     }
     @objc func longPress(_ longPress: UIGestureRecognizer){
-        if cellTypes[activeIndexSection]?[activeIndexRow] != 0{
-            cellTypes[activeIndexSection]?[activeIndexRow] = 0
+        if cellTypes[activeIndexSection][activeIndexRow] != 0{
+            cellTypes[activeIndexSection][activeIndexRow] = 0
             tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .left)
         }
         if longPress.state == .recognized{
@@ -245,63 +217,99 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             if let indexPath = tableView.indexPathForRow(at: touchPoint){
                 activeIndexSection = indexPath.section
                 activeIndexRow = indexPath.row
-                print("held \(result[indexes[activeIndexSection]]?[activeIndexRow].title)")
-                pickedAlbumID = result[indexes[activeIndexSection]]?[activeIndexRow].albumPersistentID
-                pickedArtistID = result[indexes[activeIndexSection]]?[activeIndexRow].albumArtistPersistentID
-                self.cellTypes[activeIndexSection]?[activeIndexRow] = 2
+                print("held \(result[indexes[activeIndexSection]]![activeIndexRow].title)")
+                pickedAlbumID = result[indexes[activeIndexSection]]![activeIndexRow].albumPersistentID
+                pickedArtistID = result[indexes[activeIndexSection]]![activeIndexRow].albumArtistPersistentID
+                self.cellTypes[activeIndexSection][activeIndexRow] = 2
                 self.tableView.reloadRows(at: [indexPath], with: .fade)
             }
         }
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        cellTypes[activeIndexSection]?[activeIndexRow] = 0
+        cellTypes[activeIndexSection][activeIndexRow] = 0
         let indexPath = IndexPath(row: activeIndexRow, section: activeIndexSection)
         self.tableView.deselectRow(at: indexPath, animated: true)
         self.tableView.reloadRows(at: [indexPath], with: .fade)
     }
-    
-    func setup(){
-        let letters = Array("aąbcćdeęfghijklmnoópqrsśtuvwxyzżź".characters)
-        let numbers = Array("0123456789".characters)
-        songs = musicQuery.shared.songs
-        let bcount = songs.count
-        result["#"] = []
-        result["?"] = []
-        var inLetters = 0
-        var stoppedAt = 0
-        while inLetters < letters.count{
-            let smallLetter = letters[inLetters]
-            let letter = String(letters[inLetters]).uppercased()
-            result[letter] = []
-            for i in stoppedAt ..< bcount{
-                let curr = songs[i]
-                let layLow = curr.title?.lowercased()
-                if layLow?.firstLetter() == smallLetter{
-                    result[letter]?.append(curr)
-                    if !indexes.contains(letter) {indexes.append(letter)}
-                }else if numbers.contains((layLow!.firstLetter())){
-                    result["#"]?.append(curr)
-                    if !indexes.contains("#") {indexes.append("#")}
-                }else if layLow?.firstLetter() == "_"{
-                    result["?"]?.append(curr)
-                    if !indexes.contains("?") {indexes.append("?")}
-                }else{
-                    stoppedAt = i
-                    //print("stopped = \(songs[i].title)")
-                    break
-                }
-            }
-            inLetters += 1
-        }
-    }
 }
 
 extension SongsVC {
-    func reloadViewFromNib() {
-        let parent = view.superview
-        view.removeFromSuperview()
-        view = nil
-        parent?.addSubview(view) // This line causes the view to be reloaded
+    
+    func setupDict() {
+        songs = musicQuery.shared.songs
+        let articles = ["The","A","An"]
+        var anyNumber = false
+        var anySpecial = false
+        for song in songs {
+            let objStr = song.title!
+            let article = objStr.components(separatedBy: " ").first!
+            if articles.contains(article) {
+                if objStr.components(separatedBy: " ").count > 1 {
+                    let secondStr = objStr.components(separatedBy: " ")[1]
+                    if result["\(secondStr.first!)"] != nil {
+                        result["\(secondStr.first!)"]?.append(song)
+                    }else{
+                        result.updateValue([song], forKey: "\(secondStr.first!)")
+                        indexes.append("\(secondStr.uppercased().first!)")
+                    }
+                }
+            }else{
+                let prefix = "\(article.first!)".uppercased()
+                if Int(prefix) != nil {
+                    if result["#"] != nil {
+                        result["#"]?.append(song)
+                    }else{
+                        result.updateValue([song], forKey: "#")
+                        anyNumber = true
+                    }
+                }else if prefix.firstSpecial() {
+                    if result["?"] != nil {
+                        result["?"]?.append(song)
+                    }else{
+                        result.updateValue([song], forKey: "?")
+                        anySpecial = true
+                    }
+                }else if result[prefix] != nil {
+                    result[prefix]?.append(song)
+                }else{
+                    result.updateValue([song], forKey: prefix)
+                    indexes.append(prefix)
+                }
+            }
+        }
+        //indexes = Array(result.keys).sorted(by: <)
+        if anyNumber {
+            indexes.append("#")
+        }
+        if anySpecial {
+            indexes.append("?")
+        }
+        songs.removeAll()
+        for index in indexes {
+            songs.append(contentsOf: result[index]!)
+        }
+        //songs = result.flatMap(){ $0.1 }
+    }
+}
+
+extension String {
+    func firstSpecial() -> Bool {
+        if prefix(1).rangeOfCharacter(from: NSCharacterSet.alphanumerics.inverted) != nil {
+            return true
+        }else{
+            return false
+        }
+    }
+    
+    func firstNumber() -> Bool {
+        return Int(prefix(1)) != nil
+    }
+}
+
+public extension LazyMapCollection  {
+    
+    func toArray() -> [Element]{
+        return Array(self)
     }
 }

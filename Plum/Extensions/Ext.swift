@@ -97,18 +97,11 @@ extension String{
 
 extension IndexPath{
     func absoluteRow(_ tableView: UITableView) -> Int{
-        var i = 0
         var rowCount = 0
-        
-        while i < self.section {
-            
-            rowCount += tableView.numberOfRows(inSection: i)
-            
-            i += 1
+        for s in 0 ..< section {
+            rowCount += tableView.numberOfRows(inSection: s)
         }
-        
-        rowCount += self.row
-        
+        rowCount += row
         return rowCount
     }
 }

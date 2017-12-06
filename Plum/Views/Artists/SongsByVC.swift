@@ -33,6 +33,9 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
         super.viewDidLoad()
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         alphabeticalSort = GlobalSettings.alphabeticalSort
+        if alphabeticalSort {
+            tableView.addScrollBar(tint: GlobalSettings.tint.color)
+        }
         albums = musicQuery.shared.artistAlbumsID(artist: receivedID)
         songs = musicQuery.shared.songsByArtistID(artist: receivedID)
         for album in albums{
@@ -271,8 +274,10 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
         absoluteIndex = 0
         if alphabeticalSort{
             alphabeticalSort = false
+            tableView.to_removeScrollbar()
         }else{
             alphabeticalSort = true
+            tableView.addScrollBar(tint: GlobalSettings.tint.color)
         }
         GlobalSettings.changeAlphabeticalSort(alphabeticalSort)
         UserDefaults.standard.set(alphabeticalSort, forKey: "alphabeticalSort")

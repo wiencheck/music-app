@@ -52,15 +52,11 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
             }
             iterator += 1
         }
-        if GlobalSettings.slider == .alphabetical {
-            if songs.count > 11 {
-                tableIndexView.indexes = self.indexes
-                tableIndexView.tableView = self.tableView
-                tableIndexView.setup()
-                view.addSubview(tableIndexView)
-            }
-        }else{
-            tableView.addScrollBar(tint: GlobalSettings.tint.color)
+        if songs.count > 11 {
+            tableIndexView.indexes = self.indexes
+            tableIndexView.tableView = self.tableView
+            tableIndexView.setup()
+            view.addSubview(tableIndexView)
         }
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(PlaylistVC.longPress(_:)))
         longPress.minimumPressDuration = 0.5

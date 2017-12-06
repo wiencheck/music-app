@@ -27,7 +27,6 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     @IBOutlet weak var lyricsSwitch: UISwitch!
     @IBOutlet weak var blurSwitch: UISwitch!
     @IBOutlet weak var colorView: UIView!
-    @IBOutlet weak var sliderLabel: UILabel!
     @IBOutlet weak var deployLabel: UILabel!
     var colorFlowStatus: Bool!
     var artistsGridStatus: Bool!
@@ -245,8 +244,6 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
             explainLyrics()
         case "lyricset":
             performSegue(withIdentifier: "lyricsSettings", sender: nil)
-        case "slider":
-            explainSlider()
         case "artist":
             explainArtistsGrid()
         case "album":
@@ -269,7 +266,6 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
         progressBar.tintColor = GlobalSettings.tint.color
         colorView.backgroundColor = GlobalSettings.tint.color
         spotlightButton.setTitleColor(GlobalSettings.tint.color, for: .normal)
-        sliderLabel.text = GlobalSettings.slider.rawValue
         deployLabel.text = GlobalSettings.deployIn.rawValue
     }
     
@@ -292,22 +288,6 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
         let ok = UIAlertAction(title: "Understood, thanks!", style: .default, handler: nil)
         alert.addAction(ok)
         present(alert, animated: true, completion: nil)
-    }
-    
-    func explainSlider() {
-        let alert = UIAlertController(title: "\"Ohh, let me slide\"", message: "Smooth: slider similar to what can be seen in most computer applications\n\nAlphabetical: similar to stock iOS slider (like in Contacts app) but with improved and more precise scrolling", preferredStyle: .alert)
-        let smooth = UIAlertAction(title: "Smooth", style: .default, handler: { (action) in
-            GlobalSettings.changeSlider(.smooth)
-            self.reload()
-        })
-        let alp = UIAlertAction(title: "Alphabetical", style: .default, handler: { (action) in
-            GlobalSettings.changeSlider(.alphabetical)
-            self.reload()
-        })
-        alert.addAction(smooth)
-        alert.addAction(alp)
-        present(alert, animated: true, completion: nil)
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "sliderChanged"), object: nil)
     }
     
     func explainPlaylistGrid() {

@@ -54,6 +54,7 @@ class QueueVC: UIViewController {
     @IBAction func doneBtnPressed(_ sender: Any){
         self.delegate?.backFromUpNext()
         dismiss(animated: true, completion: nil)
+        //dismissDetail()
     }
     
     @objc func reload() {

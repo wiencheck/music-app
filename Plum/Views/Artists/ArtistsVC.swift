@@ -52,26 +52,24 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     func setTable(){
         self.tableView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
         //self.tableView.backgroundColor = .clear
+        setupDict()
         tableView.delegate = self
         tableView.dataSource = self
         self.view.addSubview(tableView)
-        setup2()
         for i in 0 ..< tableView.numberOfSections {
             tableTypes.append(Array<Int>(repeating: 0, count: tableView.numberOfRows(inSection: i)))
         }
-        if GlobalSettings.slider == .alphabetical {
-            tableIndexView.indexes = self.indexes
-            tableIndexView.tableView = self.tableView
-            tableIndexView.setup()
-            self.view.addSubview(tableIndexView)
-        }else{
-            tableView.addScrollBar(tint: GlobalSettings.tint.color)
-        }
+        tableIndexView.indexes = self.indexes
+        tableIndexView.tableView = self.tableView
+        tableIndexView.setup()
+        self.view.addSubview(tableIndexView)
     }
     
     func setCollection(){
         self.collectionView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
+        collectionView.contentInset = UIEdgeInsetsMake(10, 0, 10, 0)
         //self.collectionView.backgroundColor = .clear
+        setupDict()
         collectionView.delegate = self
         collectionView.dataSource = self
         self.view.addSubview(collectionView)
@@ -79,19 +77,14 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         longPress.minimumPressDuration = 0.2
         longPress.numberOfTouchesRequired = 1
         collectionView.addGestureRecognizer(longPress)
-        setup2()
         for i in 0 ..< collectionView.numberOfSections {
             collectionTypes.append(Array<Int>(repeating: 0, count: collectionView.numberOfItems(inSection: i)))
         }
         //correctCollectionSections()
-        if GlobalSettings.slider == .alphabetical {
-            collectionIndexView.indexes = self.indexes
-            collectionIndexView.collectionView = self.collectionView
-            collectionIndexView.setup()
-            self.view.addSubview(collectionIndexView)
-        }else{
-            collectionView.addScrollBar(tint: GlobalSettings.tint.color)
-        }
+        collectionIndexView.indexes = self.indexes
+        collectionIndexView.collectionView = self.collectionView
+        collectionIndexView.setup()
+        self.view.addSubview(collectionIndexView)
     }
     
 }
@@ -157,6 +150,7 @@ extension ArtistsVC: UICollectionViewDelegate, UICollectionViewDataSource, Colle
             return cell
         }else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
+            print("\(indexPath.section) - \(indexPath.row) - \(indexes[indexPath.section])")
             let item = result[indexes[indexPath.section]]?[indexPath.row]
             cell.setup(artist: item!)
             return cell
@@ -263,39 +257,61 @@ extension ArtistsVC{    //Other functions
         }
     }
     
-        func setup2(){
-        let letters = Array("aąbcćdeęfghijklmnoópqrsśtuvwxyzżź".characters)
-        let numbers = Array("0123456789".characters)
+    func setupDict() {
         artists = musicQuery.shared.artists
-        let bcount = artists.count
-        result["#"] = []
-        result["?"] = []
-        var inLetters = 0
-        var stoppedAt = 0
-        while inLetters < letters.count{
-            let smallLetter = letters[inLetters]
-            let letter = String(letters[inLetters]).uppercased()
-            result[letter] = []
-            for i in stoppedAt ..< bcount{
-                let curr = artists[i]
-                let layLow = curr.name.lowercased()
-                if layLow.firstLetter() == smallLetter{
-                    result[letter]?.append(curr)
-                    if !indexes.contains(letter) {indexes.append(letter)}
-                }else if numbers.contains((layLow.firstLetter())){
-                    result["#"]?.append(curr)
-                    if !indexes.contains("#") {indexes.append("#")}
-                }else if layLow.firstLetter() == "_"{
-                    result["?"]?.append(curr)
-                    if !indexes.contains("?") {indexes.append("?")}
+        let articles = ["The","A","An"]
+        var anyNumber = false
+        var anySpecial = false
+        for artist in artists {
+            let objStr = artist.name!
+            print(objStr)
+            let article = objStr.components(separatedBy: " ").first!
+            if articles.contains(article) {
+                if objStr.components(separatedBy: " ").count > 1 {
+                    let secondStr = objStr.components(separatedBy: " ")[1]
+                    if result["\(secondStr.first!)"] != nil {
+                        result["\(secondStr.first!)"]?.append(artist)
+                    }else{
+                        result.updateValue([artist], forKey: "\(secondStr.first!)")
+                        indexes.append("\(secondStr.uppercased().first!)")
+                    }
+                }
+            }else{
+                let prefix = "\(article.first!)".uppercased()
+                if Int(prefix) != nil {
+                    if result["#"] != nil {
+                        result["#"]?.append(artist)
+                    }else{
+                        result.updateValue([artist], forKey: "#")
+                        anyNumber = true
+                    }
+                }else if prefix.firstSpecial() {
+                    if result["?"] != nil {
+                        result["?"]?.append(artist)
+                    }else{
+                        result.updateValue([artist], forKey: "?")
+                        anySpecial = true
+                    }
+                }else if result[prefix] != nil {
+                    result[prefix]?.append(artist)
                 }else{
-                    stoppedAt = i
-                    //print("stopped = \(songs[i].title)")
-                    break
+                    result.updateValue([artist], forKey: prefix)
+                    indexes.append(prefix)
                 }
             }
-            inLetters += 1
         }
+        //indexes = Array(result.keys).sorted(by: <)
+        if anyNumber {
+            indexes.append("#")
+        }
+        if anySpecial {
+            indexes.append("?")
+        }
+        artists.removeAll()
+        for index in indexes {
+            artists.append(contentsOf: result[index]!)
+        }
+        //songs = result.flatMap(){ $0.1 }
     }
     
     func readSettings(){

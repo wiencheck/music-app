@@ -50,14 +50,10 @@ class AlbumsVC: UIViewController {
         tableView.dataSource = self
         tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
         self.view.addSubview(tableView)
-        if GlobalSettings.slider == .alphabetical {
-            tableIndexView.indexes = self.indexes
-            tableIndexView.tableView = self.tableView
-            tableIndexView.setup()
-            self.view.addSubview(tableIndexView)
-        }else{
-            tableView.addScrollBar(tint: GlobalSettings.tint.color)
-        }
+        tableIndexView.indexes = self.indexes
+        tableIndexView.tableView = self.tableView
+        tableIndexView.setup()
+        self.view.addSubview(tableIndexView)
     }
     
     func setCollection(){
@@ -67,14 +63,10 @@ class AlbumsVC: UIViewController {
         collectionView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
         correctCollectionSections()
         self.view.addSubview(collectionView)
-        if GlobalSettings.slider == .alphabetical {
-            self.collectionIndexView.indexes = self.indexes
-            self.collectionIndexView.collectionView = self.collectionView
-            self.collectionIndexView.setup()
-            self.view.addSubview(collectionIndexView)
-        }else{
-            collectionView.addScrollBar(tint: GlobalSettings.tint.color)
-        }
+        self.collectionIndexView.indexes = self.indexes
+        self.collectionIndexView.collectionView = self.collectionView
+        self.collectionIndexView.setup()
+        self.view.addSubview(collectionIndexView)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
