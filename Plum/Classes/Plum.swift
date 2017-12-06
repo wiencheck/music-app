@@ -13,7 +13,7 @@ import AVFoundation
 import AVKit
 import UserNotifications
 
-class Plum: NSObject, AVAudioPlayerDelegate{
+public class Plum: NSObject, AVAudioPlayerDelegate{
     static let shared = Plum()
     let infoCC = MPNowPlayingInfoCenter.default()
     var shouldPost = false
@@ -195,6 +195,7 @@ class Plum: NSObject, AVAudioPlayerDelegate{
             }
         }
         defIndex = index
+        writeQueue()
     }
     
     func playFromUsrQueue(index: Int){
@@ -452,7 +453,7 @@ class Plum: NSObject, AVAudioPlayerDelegate{
         return index
     }
     
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+    public func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         timer.invalidate()
         currentItem?.setValue((currentItem?.playCount)! + 1, forKey: MPMediaItemPropertyPlayCount)
         next()
@@ -795,5 +796,50 @@ class Plum: NSObject, AVAudioPlayerDelegate{
     func removeLyrics() {
         UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: ["lyricsOnLS"])
         lyricsPosted = false
+    }
+    
+    func writeQueue() {
+        if let defaults = UserDefaults.init(suiteName: "group.adw.Plum") {
+            var arr = Array<[String]>(repeating: ["","",""], count: 6)
+            arr[0][0] = defQueue[defIndex].title ?? "Unknown title"
+            arr[0][1] = defQueue[defIndex].albumArtist ?? "Unknown artist"
+            if let img = defQueue[defIndex].artwork?.image(at: CGSize(width: 100, height: 100)) {
+                if let path = saveImageToDocumentsDirectory(image: img, withName: "currentImg") {
+                    arr[0][2] = path
+                }
+            }
+            defaults.set(arr[0], forKey: "currentInfo")
+            defaults.set(defQueue[defIndex].rating, forKey: "currentRating")
+            for i in 0 ..< arr.count {
+                arr[i][0] = defQueue[defIndex + i + 1].title ?? "Unknown title"
+                arr[i][1] = defQueue[defIndex + i + 1].albumArtist ?? "Unknown aritst"
+                defaults.set(arr[i], forKey: "queue\(i)")
+            }
+            if let arr = defaults.stringArray(forKey: "queue0") {
+                print(arr)
+            }
+            defaults.synchronize()
+        }
+    }
+    
+    func getDocumentDirectoryPath() -> NSString {
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let documentsDirectory = paths[0]
+        return documentsDirectory as NSString
+    }
+    
+    func saveImageToDocumentsDirectory(image: UIImage, withName: String) -> String? {
+        if let data = UIImagePNGRepresentation(image) {
+            let dirPath = getDocumentDirectoryPath()
+            let imageFileUrl = URL(fileURLWithPath: dirPath.appendingPathComponent(withName) as String)
+            do {
+                try data.write(to: imageFileUrl)
+                print("Successfully saved image at path: \(imageFileUrl)")
+                return imageFileUrl.absoluteString
+            } catch {
+                print("Error saving image: \(error)")
+            }
+        }
+        return nil
     }
 }

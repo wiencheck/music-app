@@ -47,9 +47,11 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
             if count != (musicQuery.shared.songs.count) {
                 musicQuery.shared.removeAllFromSpotlight()
                 musicQuery.shared.addToSpotlight()
+                UserDefaults.standard.set(musicQuery.shared.songs.count, forKey: "count")
             }
+        }else{
+            UserDefaults.standard.set(musicQuery.shared.songs.count, forKey: "count")
         }
-        UserDefaults.standard.set(musicQuery.shared.songs.count, forKey: "count")
     }
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {

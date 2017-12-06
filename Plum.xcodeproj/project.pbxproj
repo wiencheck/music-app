@@ -44,10 +44,17 @@
 		3871BC231FBC3DD80027CA2A /* ColorsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3871BC221FBC3DD80027CA2A /* ColorsVC.swift */; };
 		3871BC261FBC42A30027CA2A /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3871BC251FBC42A30027CA2A /* ColorCell.swift */; };
 		387678E51F7E99CE00F1AFD7 /* SongInAlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387678E41F7E99CE00F1AFD7 /* SongInAlbumCell.swift */; };
+		3878D4FB1FD7F91500A6C42B /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3878D4FA1FD7F91500A6C42B /* NotificationCenter.framework */; };
+		3878D4FE1FD7F91500A6C42B /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3878D4FD1FD7F91500A6C42B /* TodayViewController.swift */; };
+		3878D5011FD7F91500A6C42B /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3878D4FF1FD7F91500A6C42B /* MainInterface.storyboard */; };
+		3878D5051FD7F91500A6C42B /* PlumWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3878D4F91FD7F91500A6C42B /* PlumWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3890B3581F920A6C000198D8 /* Structs:Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3890B3571F920A6C000198D8 /* Structs:Classes.swift */; };
 		38944CA01FA0EFA4005CB30C /* AlbumUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38944C9F1FA0EFA4005CB30C /* AlbumUpVC.swift */; };
 		38944CA31FA0F024005CB30C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38944CA21FA0F024005CB30C /* MediaPlayer.framework */; };
 		38944CA51FA0F031005CB30C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38944CA41FA0F031005CB30C /* AVFoundation.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		389A24721FD86F190092F979 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3878D4FD1FD7F91500A6C42B /* TodayViewController.swift */; };
+		389A24781FD8872D0092F979 /* QueueCellLite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 389A24761FD8871B0092F979 /* QueueCellLite.swift */; };
+		389A24791FD8874E0092F979 /* QueueCellLite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 389A24761FD8871B0092F979 /* QueueCellLite.swift */; };
 		38A12EA61F7270DB00E3E53E /* AlbumInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38A12EA51F7270DB00E3E53E /* AlbumInfoCell.swift */; };
 		38A12EA81F72834E00E3E53E /* QueueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38A12EA71F72834E00E3E53E /* QueueCell.swift */; };
 		38AF9C791F2F72A800FA73B8 /* Plum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AF9C781F2F72A800FA73B8 /* Plum.swift */; };
@@ -75,7 +82,28 @@
 		38FFA1381F83DD950079FF4B /* ArtistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38FFA1371F83DD950079FF4B /* ArtistCell.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		3878D5031FD7F91500A6C42B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 38E68AB51F28C17500BFF4E2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3878D4F81FD7F91500A6C42B;
+			remoteInfo = PlumWidget;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
+		3878D5091FD7F91500A6C42B /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				3878D5051FD7F91500A6C42B /* PlumWidget.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		38DB703A1FB86B3100FC2235 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -129,10 +157,18 @@
 		3871BC221FBC3DD80027CA2A /* ColorsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsVC.swift; sourceTree = "<group>"; };
 		3871BC251FBC42A30027CA2A /* ColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCell.swift; sourceTree = "<group>"; };
 		387678E41F7E99CE00F1AFD7 /* SongInAlbumCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongInAlbumCell.swift; sourceTree = "<group>"; };
+		3878D4F91FD7F91500A6C42B /* PlumWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PlumWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		3878D4FA1FD7F91500A6C42B /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		3878D4FD1FD7F91500A6C42B /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
+		3878D5001FD7F91500A6C42B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		3878D5021FD7F91500A6C42B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3890B3571F920A6C000198D8 /* Structs:Classes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Structs:Classes.swift"; sourceTree = "<group>"; };
 		38944C9F1FA0EFA4005CB30C /* AlbumUpVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumUpVC.swift; sourceTree = "<group>"; };
 		38944CA21FA0F024005CB30C /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		38944CA41FA0F031005CB30C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		389A24731FD87A7E0092F979 /* PlumWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PlumWidget.entitlements; sourceTree = "<group>"; };
+		389A24741FD87AC00092F979 /* Plum.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Plum.entitlements; sourceTree = "<group>"; };
+		389A24761FD8871B0092F979 /* QueueCellLite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueCellLite.swift; sourceTree = "<group>"; };
 		38A12EA51F7270DB00E3E53E /* AlbumInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumInfoCell.swift; sourceTree = "<group>"; };
 		38A12EA71F72834E00E3E53E /* QueueCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueCell.swift; sourceTree = "<group>"; };
 		38AF9C781F2F72A800FA73B8 /* Plum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plum.swift; sourceTree = "<group>"; };
@@ -165,6 +201,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3878D4F61FD7F91500A6C42B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3878D4FB1FD7F91500A6C42B /* NotificationCenter.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		38E68ABA1F28C17500BFF4E2 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -179,6 +223,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3878D4FC1FD7F91500A6C42B /* PlumWidget */ = {
+			isa = PBXGroup;
+			children = (
+				389A24731FD87A7E0092F979 /* PlumWidget.entitlements */,
+				3878D4FD1FD7F91500A6C42B /* TodayViewController.swift */,
+				3878D4FF1FD7F91500A6C42B /* MainInterface.storyboard */,
+				3878D5021FD7F91500A6C42B /* Info.plist */,
+			);
+			path = PlumWidget;
+			sourceTree = "<group>";
+		};
 		38944CA11FA0F024005CB30C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -186,6 +241,7 @@
 				380C2EB91FB1AE6400A6731B /* AudioToolbox.framework */,
 				38944CA41FA0F031005CB30C /* AVFoundation.framework */,
 				38944CA21FA0F024005CB30C /* MediaPlayer.framework */,
+				3878D4FA1FD7F91500A6C42B /* NotificationCenter.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -210,6 +266,7 @@
 				3803CD531FBB5B1A009F5EA8 /* SearchCell.swift */,
 				3871BC251FBC42A30027CA2A /* ColorCell.swift */,
 				3801C6091FC83DDA00EFBC52 /* CollectionActionCell.swift */,
+				389A24761FD8871B0092F979 /* QueueCellLite.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -359,6 +416,7 @@
 			children = (
 				38DB70371FB86B3100FC2235 /* LNPopupController.framework */,
 				38E68ABF1F28C17500BFF4E2 /* Plum */,
+				3878D4FC1FD7F91500A6C42B /* PlumWidget */,
 				38E68ABE1F28C17500BFF4E2 /* Products */,
 				38944CA11FA0F024005CB30C /* Frameworks */,
 			);
@@ -368,6 +426,7 @@
 			isa = PBXGroup;
 			children = (
 				38E68ABD1F28C17500BFF4E2 /* Plum.app */,
+				3878D4F91FD7F91500A6C42B /* PlumWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -375,6 +434,7 @@
 		38E68ABF1F28C17500BFF4E2 /* Plum */ = {
 			isa = PBXGroup;
 			children = (
+				389A24741FD87AC00092F979 /* Plum.entitlements */,
 				38BB692C1FC5F0880097F6E7 /* Cell */,
 				38BB692D1FC5F09B0097F6E7 /* Extensions */,
 				38BB692E1FC5F0AB0097F6E7 /* Controller */,
@@ -396,6 +456,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		3878D4F81FD7F91500A6C42B /* PlumWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3878D5081FD7F91500A6C42B /* Build configuration list for PBXNativeTarget "PlumWidget" */;
+			buildPhases = (
+				3878D4F51FD7F91500A6C42B /* Sources */,
+				3878D4F61FD7F91500A6C42B /* Frameworks */,
+				3878D4F71FD7F91500A6C42B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PlumWidget;
+			productName = PlumWidget;
+			productReference = 3878D4F91FD7F91500A6C42B /* PlumWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		38E68ABC1F28C17500BFF4E2 /* Plum */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 38E68ACF1F28C17500BFF4E2 /* Build configuration list for PBXNativeTarget "Plum" */;
@@ -404,10 +481,12 @@
 				38E68ABA1F28C17500BFF4E2 /* Frameworks */,
 				38E68ABB1F28C17500BFF4E2 /* Resources */,
 				38DB703A1FB86B3100FC2235 /* Embed Frameworks */,
+				3878D5091FD7F91500A6C42B /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				3878D5041FD7F91500A6C42B /* PBXTargetDependency */,
 			);
 			name = Plum;
 			productName = myPlayer;
@@ -420,16 +499,29 @@
 		38E68AB51F28C17500BFF4E2 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0830;
+				LastSwiftUpdateCheck = 0910;
 				LastUpgradeCheck = 0910;
 				ORGANIZATIONNAME = "Adam Wienconek";
 				TargetAttributes = {
+					3878D4F81FD7F91500A6C42B = {
+						CreatedOnToolsVersion = 9.1;
+						DevelopmentTeam = 5346R7RC8E;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
 					38E68ABC1F28C17500BFF4E2 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = 5346R7RC8E;
 						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
@@ -451,11 +543,20 @@
 			projectRoot = "";
 			targets = (
 				38E68ABC1F28C17500BFF4E2 /* Plum */,
+				3878D4F81FD7F91500A6C42B /* PlumWidget */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		3878D4F71FD7F91500A6C42B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3878D5011FD7F91500A6C42B /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		38E68ABB1F28C17500BFF4E2 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -472,6 +573,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		3878D4F51FD7F91500A6C42B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3878D4FE1FD7F91500A6C42B /* TodayViewController.swift in Sources */,
+				389A24781FD8872D0092F979 /* QueueCellLite.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		38E68AB91F28C17500BFF4E2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -512,11 +622,13 @@
 				38591B151FBF309500D455FF /* ColorflowVC.swift in Sources */,
 				38E729501F2F40B600F35780 /* musicQuery.swift in Sources */,
 				38FFA1361F83DBE60079FF4B /* NavigationController.swift in Sources */,
+				389A24721FD86F190092F979 /* TodayViewController.swift in Sources */,
 				38345F461FABBBCA003DA1F2 /* PlaylistCell.swift in Sources */,
 				38121E9D1FA07A1700C2A3BD /* AlbumCell.swift in Sources */,
 				3822211E1FA5EA4000004B21 /* QueueActionsCell.swift in Sources */,
 				38944CA01FA0EFA4005CB30C /* AlbumUpVC.swift in Sources */,
 				3859213F1FA879D900CF9059 /* ArtistsVC.swift in Sources */,
+				389A24791FD8874E0092F979 /* QueueCellLite.swift in Sources */,
 				3843ADC11FBF4261005E1C2F /* RatingVC.swift in Sources */,
 				387678E51F7E99CE00F1AFD7 /* SongInAlbumCell.swift in Sources */,
 				385921431FA88A7600CF9059 /* SettingsVC.swift in Sources */,
@@ -536,7 +648,23 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		3878D5041FD7F91500A6C42B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3878D4F81FD7F91500A6C42B /* PlumWidget */;
+			targetProxy = 3878D5031FD7F91500A6C42B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
+		3878D4FF1FD7F91500A6C42B /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3878D5001FD7F91500A6C42B /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
 		38E68AC41F28C17500BFF4E2 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -556,6 +684,48 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		3878D5061FD7F91500A6C42B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = PlumWidget/PlumWidget.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5346R7RC8E;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = PlumWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.adw.plum.PlumWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3878D5071FD7F91500A6C42B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = PlumWidget/PlumWidget.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 5346R7RC8E;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = PlumWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.adw.plum.PlumWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		38E68ACD1F28C17500BFF4E2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -668,8 +838,12 @@
 		38E68AD01F28C17500BFF4E2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Plum/Plum.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 5346R7RC8E;
 				INFOPLIST_FILE = Plum/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adw.plum;
@@ -684,8 +858,12 @@
 		38E68AD11F28C17500BFF4E2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Plum/Plum.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 5346R7RC8E;
 				INFOPLIST_FILE = Plum/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adw.plum;
@@ -699,6 +877,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3878D5081FD7F91500A6C42B /* Build configuration list for PBXNativeTarget "PlumWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3878D5061FD7F91500A6C42B /* Debug */,
+				3878D5071FD7F91500A6C42B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		38E68AB81F28C17500BFF4E2 /* Build configuration list for PBXProject "Plum" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
