@@ -120,7 +120,7 @@ struct Playlist {
     let name: String
     let songsIn: Int
     let image: UIImage
-    var images: [UIImage]!
+    private var images: [UIImage]!
     
     init(collection: MPMediaItemCollection){
         items = collection.items
@@ -132,14 +132,6 @@ struct Playlist {
         }
         images = [UIImage]()
         songsIn = items.count
-        /*var artists = [String]()
-        for song in items{
-            if !artists.contains(song.albumArtist!) && song.artwork != nil{
-                artists.append(song.albumArtist!)
-                images.append((song.artwork?.image(at: CGSize(width: 200, height: 200)))!)
-                if images.count == 9 { break }
-            }
-        }*/
         var albums = [String]()
         if images.count < 4{
             for song in items{

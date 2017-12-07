@@ -37,5 +37,12 @@ class ArtistCell: UITableViewCell {
         let image = artist.artwork
         artistImage.image = image?.image(at: CGSize(width: 50, height: 50)) ?? #imageLiteral(resourceName: "no_music")
     }
+    
+    func setup(list: Playlist) {
+        let songsCount = list.songsIn
+        artistLabel.text = list.name
+        detailLabel.text = "\(songsCount) songs"
+        artistImage.image = list.image
+    }
 
 }

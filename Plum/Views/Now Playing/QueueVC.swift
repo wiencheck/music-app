@@ -18,6 +18,10 @@ struct Section {
     }
 }
 
+protocol UpNextDelegate {
+    func backFromUpNext()
+}
+
 class QueueVC: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
@@ -231,6 +235,7 @@ extension QueueVC: UITableViewDelegate, UITableViewDataSource {     //TableView 
             }
         }
         if zeros != zeros2 { tableView.reloadData() }
+        player.writeQueue()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

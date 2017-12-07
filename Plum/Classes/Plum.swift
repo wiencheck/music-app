@@ -12,6 +12,7 @@ import MediaPlayer
 import AVFoundation
 import AVKit
 import UserNotifications
+import NotificationCenter
 
 public class Plum: NSObject, AVAudioPlayerDelegate{
     static let shared = Plum()
@@ -807,8 +808,34 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
                     queue.append(usrQueue[i])
                 }
             }
-        }
-        if isShuffle && shufIsAnyAfter{
+            if isShuffle && shufIsAnyAfter {
+                start = shufIndex + 1
+                if shufIndex > shufQueue.count - 6 {
+                    meta = shufQueue.count
+                    for i in start ..< meta {
+                        queue.append(shufQueue[i])
+                    }
+                }else{
+                    meta = shufIndex + 6
+                    for i in start ..< meta {
+                        queue.append(shufQueue[i])
+                    }
+                }
+            }else if !isShuffle && defIsAnyAfter {
+                start = defIndex + 1
+                if defIndex > defQueue.count - 6 {
+                    meta = defQueue.count
+                    for i in start ..< meta {
+                        queue.append(defQueue[i])
+                    }
+                }else{
+                    meta = defIndex + 6
+                    for i in start ..< meta {
+                        queue.append(defQueue[i])
+                    }
+                }
+            }
+        }else if isShuffle && shufIsAnyAfter{
             start = shufIndex
             if shufIndex > shufQueue.count - 6 {
                 meta = shufQueue.count
@@ -840,6 +867,9 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
                 queue.append(MPMediaItem())
             }
         }
+        if let c = currentItem {
+            queue[0] = c
+        }
         if let defaults = UserDefaults.init(suiteName: "group.adw.Plum") {
             var arr = [[String]]()
             for i in 0 ..< 6 {
@@ -852,15 +882,25 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
             }
             defaults.set(queue[0].rating, forKey: "currentRating")
             defaults.set(queue[0].albumTitle ?? "Unknown album", forKey: "currentAlbum")
-            var year = ""
-            let yearNumber: NSNumber = queue[0].value(forProperty: "year") as! NSNumber
-            if (yearNumber.isKind(of: NSNumber.self)) {
-                let _year = yearNumber.intValue
-                if (_year != 0) {
-                    year = "\(_year)"
+            if let yearNumber: NSNumber = queue[0].value(forProperty: "year") as? NSNumber {
+                var year = ""
+                if (yearNumber.isKind(of: NSNumber.self)) {
+                    let _year = yearNumber.intValue
+                    if (_year != 0) {
+                        year = "\(_year)"
+                    }
                 }
+                defaults.set(year, forKey: "currentYear")
             }
-            defaults.set(year, forKey: "currentYear")
+            if let d = defaults.value(forKey: "widgetActive") as? Bool {
+                if !d {
+                    defaults.set(true, forKey: "widgetActive")
+                    NCWidgetController.widgetController().setHasContent(true, forWidgetWithBundleIdentifier: "com.adw.plum.PlumWidget")
+                }
+            }else{
+                defaults.set(true, forKey: "widgetActive")
+                NCWidgetController.widgetController().setHasContent(true, forWidgetWithBundleIdentifier: "com.adw.plum.PlumWidget")
+            }
             defaults.synchronize()
         }
     }

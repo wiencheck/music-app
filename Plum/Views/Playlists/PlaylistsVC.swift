@@ -96,19 +96,22 @@ extension PlaylistsVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "playlistCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "playlistCell", for: indexPath) as! ArtistCell
         let item = result[indexes[indexPath.section]]?[indexPath.row]
-        cell.textLabel?.text = item?.name
-        cell.detailTextLabel?.text = "\(item?.songsIn)"
+        cell.setup(list: item!)
         cell.backgroundColor = .clear
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = result[indexes[indexPath.section]]?[indexPath.row]
-        //pickedID = item?.ID
         pickedList = item
         performSegue(withIdentifier: "playlist", sender: nil)
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 94
     }
     
 }
