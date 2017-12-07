@@ -40,13 +40,6 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     var isUsrQueue: Bool!
     var usrQueue = [MPMediaItem]()
     var userQueueIndex: Int!
-    var isUserQueue: Bool!{
-        if usrQueue.count > 0{
-            return true
-        }else{
-            return false
-        }
-    }
     var usrIndex: Int!
     var isShuffle: Bool!
     var shufQueue = [MPMediaItem]()
@@ -153,13 +146,14 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
             player.addObserver(self, forKeyPath: #keyPath(AVAudioPlayer.rate), options: [.new], context: nil)
             observed = true
         }
+        addTodayObservers()
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: .AVAudioSessionInterruption, object: AVAudioSession.sharedInstance())
         UIApplication.shared.endReceivingRemoteControlEvents()
         timer.invalidate()
-
+        removeTodayObservers()
     }
     
     func initSession(){
@@ -183,37 +177,35 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
             print("requires connection to device")
         }
         NotificationCenter.default.addObserver(self, selector: #selector(Plum.audioRouteChangeListener(notification:)), name: .AVAudioSessionRouteChange, object: nil)
-        
         UIApplication.shared.beginReceivingRemoteControlEvents()
     }
     
     func playFromDefQueue(index: Int, new: Bool){
+        defIndex = index
         if new{
             let item = defQueue[index]
             if(loadWithMediaItem(item: item) != "succ"){
                 playFromDefQueue(index: index+1, new: true)
             }
         }
-        defIndex = index
-        writeQueue()
     }
     
     func playFromUsrQueue(index: Int){
+        usrIndex = index
         let item = usrQueue[index]
         if(loadWithMediaItem(item: item) != "succ"){
             playFromUsrQueue(index: index+1)
         }
-        usrIndex = index
     }
     
     func playFromShufQueue(index: Int, new: Bool){
+        shufIndex = index
         if new{
             let item = shufQueue[index]
             if(loadWithMediaItem(item: item) != "succ"){
                 playFromShufQueue(index: index+1, new: true)
             }
         }
-        shufIndex = index
     }
     
     func createDefQueue(items: [MPMediaItem]){
@@ -235,6 +227,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         }else{
             usrQueue.insert(item, at: usrIndex + 1)
         }
+        writeQueue()
     }
     
     func addLast(item: MPMediaItem){
@@ -245,6 +238,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         }else{
             usrQueue.append(item)
         }
+        writeQueue()
     }
     
     func next(){
@@ -391,6 +385,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         }
         print("shufQueue.count = \(shufQueue.count)")
         shufQueue.shuffle()
+        writeQueue()
     }
 
     func disableShuffle(){
@@ -400,6 +395,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         defIndex = currentItem?.index
         print("defindex = \(defIndex)")
         shufQueue.removeAll()
+        writeQueue()
     }
     
     func nowPlayingItem() -> MPMediaItem{
@@ -574,6 +570,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
                 initialized = true
                 timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(Plum.updatePlaybackRateData), userInfo: nil, repeats: true)
                 timer.fire()
+                writeQueue()
                 //updateGeneralMetadata()
             }catch{
                 print("Failed to initialize with URL")
@@ -583,11 +580,6 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         }else{
             print("iCloud item, please download it in music app and come back")
             return "fail"
-        }
-        if skip{
-            if currentItem?.rating == nil{
-                next()
-            }
         }
     }
     
@@ -799,47 +791,92 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     }
     
     func writeQueue() {
-        if let defaults = UserDefaults.init(suiteName: "group.adw.Plum") {
-            var arr = Array<[String]>(repeating: ["","",""], count: 6)
-            arr[0][0] = defQueue[defIndex].title ?? "Unknown title"
-            arr[0][1] = defQueue[defIndex].albumArtist ?? "Unknown artist"
-            if let img = defQueue[defIndex].artwork?.image(at: CGSize(width: 100, height: 100)) {
-                if let path = saveImageToDocumentsDirectory(image: img, withName: "currentImg") {
-                    arr[0][2] = path
+        var queue = [MPMediaItem]()
+        var start = 0
+        var meta = 0
+        if isUsrQueue {
+            start = usrIndex
+            if usrIndex > usrQueue.count - 6 {
+                meta = usrQueue.count
+                for i in start ..< meta {
+                    queue.append(usrQueue[i])
+                }
+            }else{
+                meta = usrIndex + 6
+                for i in start ..< meta {
+                    queue.append(usrQueue[i])
                 }
             }
-            defaults.set(arr[0], forKey: "currentInfo")
-            defaults.set(defQueue[defIndex].rating, forKey: "currentRating")
-            for i in 0 ..< arr.count {
-                arr[i][0] = defQueue[defIndex + i + 1].title ?? "Unknown title"
-                arr[i][1] = defQueue[defIndex + i + 1].albumArtist ?? "Unknown aritst"
-                defaults.set(arr[i], forKey: "queue\(i)")
+        }
+        if isShuffle && shufIsAnyAfter{
+            start = shufIndex
+            if shufIndex > shufQueue.count - 6 {
+                meta = shufQueue.count
+                for i in start ..< meta {
+                    queue.append(shufQueue[i])
+                }
+            }else{
+                meta = shufIndex + 6
+                for i in start ..< meta {
+                    queue.append(shufQueue[i])
+                }
             }
-            if let arr = defaults.stringArray(forKey: "queue0") {
-                print(arr)
+        }else if !isShuffle && defIsAnyAfter{
+            start = defIndex
+            if defIndex > defQueue.count - 6 {
+                meta = defQueue.count
+                for i in start ..< meta {
+                    queue.append(defQueue[i])
+                }
+            }else{
+                meta = defIndex + 6
+                for i in start ..< meta {
+                    queue.append(defQueue[i])
+                }
             }
+        }
+        if queue.count < 7 {
+            for _ in queue.count ..< 7 {
+                queue.append(MPMediaItem())
+            }
+        }
+        if let defaults = UserDefaults.init(suiteName: "group.adw.Plum") {
+            var arr = [[String]]()
+            for i in 0 ..< 6 {
+                if queue[i].assetURL != nil {
+                    arr.append([queue[i].title ?? "Unknown title", queue[i].albumArtist ?? "Unknown artist"])
+                    defaults.set(arr[i], forKey: "queue\(i)")
+                }else{
+                    defaults.set("", forKey: "queue\(i)")
+                }
+            }
+            defaults.set(queue[0].rating, forKey: "currentRating")
+            defaults.set(queue[0].albumTitle ?? "Unknown album", forKey: "currentAlbum")
+            var year = ""
+            let yearNumber: NSNumber = queue[0].value(forProperty: "year") as! NSNumber
+            if (yearNumber.isKind(of: NSNumber.self)) {
+                let _year = yearNumber.intValue
+                if (_year != 0) {
+                    year = "\(_year)"
+                }
+            }
+            defaults.set(year, forKey: "currentYear")
             defaults.synchronize()
         }
     }
     
-    func getDocumentDirectoryPath() -> NSString {
-        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-        let documentsDirectory = paths[0]
-        return documentsDirectory as NSString
+    func addTodayObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTodayRatingNotification(_:)), name: Notification.Name(rawValue: "ratingToday"), object: nil)
     }
     
-    func saveImageToDocumentsDirectory(image: UIImage, withName: String) -> String? {
-        if let data = UIImagePNGRepresentation(image) {
-            let dirPath = getDocumentDirectoryPath()
-            let imageFileUrl = URL(fileURLWithPath: dirPath.appendingPathComponent(withName) as String)
-            do {
-                try data.write(to: imageFileUrl)
-                print("Successfully saved image at path: \(imageFileUrl)")
-                return imageFileUrl.absoluteString
-            } catch {
-                print("Error saving image: \(error)")
-            }
+    @objc func handleTodayRatingNotification(_ notification: NSNotification) {
+        if let rat = notification.userInfo?["rating"] as? Int {
+            rateItem(rating: rat)
+            print("Rating: \(rat)")
         }
-        return nil
+    }
+    
+    func removeTodayObservers() {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "ratingToday"), object: nil)
     }
 }
