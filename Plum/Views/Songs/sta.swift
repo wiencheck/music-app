@@ -1,12 +1,4 @@
-//
-//  SongsVC.swift
-//  myPlayer
-//
-//  Created by Adam Wienconek on 31.07.2017.
-//  Copyright © 2017 Adam Wienconek. All rights reserved.
-//
-
-import UIKit
+/*import UIKit
 import MediaPlayer
 import LNPopupController
 
@@ -18,31 +10,19 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     var absoluteIndex = 0
     var activeIndexRow = 0
     var activeIndexSection = 0
-    let defaults = UserDefaults.standard
-    var pickedAlbumID: MPMediaEntityPersistentID!
-    var pickedArtistID: MPMediaEntityPersistentID!
-    
-    let backround = #imageLiteral(resourceName: "background_se")
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var indexView: TableIndexView!
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         tableView.delegate = self
         tableView.dataSource = self
-        setupDict()
-        print(songs.count)
-        for index in indexes {
-            cellTypes.append(Array<Int>(repeating: 0, count: (result[index]?.count)!))
-        }
-        self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(SongsVC.longPress(_:)))
         longPress.minimumPressDuration = 0.5
         longPress.delegate = self
         tableView.addGestureRecognizer(longPress)
-        tableView.backgroundView = UIImageView(image: backround)
-        //view.addSubview(tableView)
+        view.addSubview(tableView)
         indexView.indexes = self.indexes
         indexView.tableView = self.tableView
         indexView.setup()
@@ -68,7 +48,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (result[indexes[section]]?.count)!
     }
-
+    
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if cellTypes[indexPath.section][indexPath.row] != 0{
             return nil
@@ -81,24 +61,24 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         absoluteIndex = indexPath.absoluteRow(tableView)
         if(cellTypes[indexPath.section][indexPath.row] == 0){
             let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as? SongCell
-                let item = result[indexes[indexPath.section]]?[indexPath.row]
-                if(item != Plum.shared.currentItem){
-                    cell?.setup(item: item!)
-                }else{
-                    cell?.setup(item: item!)
-                }
-                cell?.backgroundColor = .clear
-                return cell!
-            }else if cellTypes[indexPath.section][indexPath.row] == 1{
-                let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as? QueueActionsCell
-                cell?.delegate = self
-                cell?.backgroundColor = .clear
-                return cell!
-            }else if cellTypes[indexPath.section][indexPath.row] == 2{
-                let cell = tableView.dequeueReusableCell(withIdentifier: "moreCell", for: indexPath) as? MoreActionsCell
-                cell?.delegate = self
-                cell?.backgroundColor = .clear
-                return cell!
+            let item = result[indexes[indexPath.section]]?[indexPath.row]
+            if(item != Plum.shared.currentItem){
+                cell?.setup(item: item!)
+            }else{
+                cell?.setup(item: item!)
+            }
+            cell?.backgroundColor = .clear
+            return cell!
+        }else if cellTypes[indexPath.section][indexPath.row] == 1{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as? QueueActionsCell
+            cell?.delegate = self
+            cell?.backgroundColor = .clear
+            return cell!
+        }else if cellTypes[indexPath.section][indexPath.row] == 2{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "moreCell", for: indexPath) as? MoreActionsCell
+            cell?.delegate = self
+            cell?.backgroundColor = .clear
+            return cell!
         }else{
             return UITableViewCell()
         }
@@ -117,7 +97,6 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         activeIndexSection = indexPath.section
         absoluteIndex = indexPath.absoluteRow(tableView)
         print("Absolute index = \(absoluteIndex)")
-        print(result[indexes[indexPath.section]]![indexPath.row].title)
         if(cellTypes[indexPath.section][indexPath.row] == 0){
             if(Plum.shared.isPlayin()){
                 cellTypes[indexPath.section][indexPath.row] = 1
@@ -195,10 +174,10 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             Plum.shared.createDefQueue(items: songs)
             Plum.shared.shuffleCurrent()
             Plum.shared.playFromShufQueue(index: 0, new: true)
-            }else{
-                Plum.shared.createDefQueue(items: songs)
-                Plum.shared.playFromDefQueue(index: absoluteIndex, new: true)
-            }
+        }else{
+            Plum.shared.createDefQueue(items: songs)
+            Plum.shared.playFromDefQueue(index: absoluteIndex, new: true)
+        }
         Plum.shared.play()
         cellTypes[activeIndexSection][activeIndexRow] = 0
         tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .right)
@@ -223,7 +202,6 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             if let indexPath = tableView.indexPathForRow(at: touchPoint){
                 activeIndexSection = indexPath.section
                 activeIndexRow = indexPath.row
-                print("held \(result[indexes[activeIndexSection]]![activeIndexRow].title)")
                 pickedAlbumID = result[indexes[activeIndexSection]]![activeIndexRow].albumPersistentID
                 pickedArtistID = result[indexes[activeIndexSection]]![activeIndexRow].albumArtistPersistentID
                 self.cellTypes[activeIndexSection][activeIndexRow] = 2
@@ -240,82 +218,61 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     }
 }
 
-extension SongsVC {
-    
-    func setupDict() {
-        songs = musicQuery.shared.songs
-        let articles = ["The","A","An"]
-        var anyNumber = false
-        var anySpecial = false
-        for song in songs {
-            let objStr = song.title!
-            let article = objStr.components(separatedBy: " ").first!
-            if articles.contains(article) {
-                if objStr.components(separatedBy: " ").count > 1 {
-                    let secondStr = objStr.components(separatedBy: " ")[1]
-                    if result["\(secondStr.first!)"] != nil {
-                        result["\(secondStr.first!)"]?.append(song)
-                    }else{
-                        result.updateValue([song], forKey: "\(secondStr.first!)")
-                        indexes.append("\(secondStr.uppercased().first!)")
-                    }
-                }
-            }else{
-                let prefix = "\(article.first!)".uppercased()
-                if Int(prefix) != nil {
-                    if result["#"] != nil {
-                        result["#"]?.append(song)
-                    }else{
-                        result.updateValue([song], forKey: "#")
-                        anyNumber = true
-                    }
-                }else if prefix.firstSpecial() {
-                    if result["?"] != nil {
-                        result["?"]?.append(song)
-                    }else{
-                        result.updateValue([song], forKey: "?")
-                        anySpecial = true
-                    }
-                }else if result[prefix] != nil {
-                    result[prefix]?.append(song)
-                }else{
-                    result.updateValue([song], forKey: prefix)
-                    indexes.append(prefix)
-                }
-            }
-        }
-        //indexes = Array(result.keys).sorted(by: <)
-        if anyNumber {
-            indexes.append("#")
-        }
-        if anySpecial {
-            indexes.append("?")
-        }
-        songs.removeAll()
-        for index in indexes {
-            songs.append(contentsOf: result[index]!)
-        }
-        //songs = result.flatMap(){ $0.1 }
+override func viewDidLoad() {
+    super.viewDidLoad()
+    self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
+    readSettings()
+    if grid{
+        setCollection()
+    }else{
+        setTable()
+    }
+    initialGrid = grid
+}
+
+override func viewWillAppear(_ animated: Bool) {
+    self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
+    readSettings()
+    if initialGrid != grid{
+        initialGrid = grid
+        self.viewDidLoad()
     }
 }
 
-extension String {
-    func firstSpecial() -> Bool {
-        if prefix(1).rangeOfCharacter(from: NSCharacterSet.alphanumerics.inverted) != nil {
-            return true
-        }else{
-            return false
-        }
+func setTable(){
+    self.tableView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
+    //self.tableView.backgroundColor = .clear
+    setupDict()
+    tableView.delegate = self
+    tableView.dataSource = self
+    //self.view.addSubview(tableView)
+    for i in 0 ..< tableView.numberOfSections {
+        tableTypes.append(Array<Int>(repeating: 0, count: tableView.numberOfRows(inSection: i)))
     }
-    
-    func firstNumber() -> Bool {
-        return Int(prefix(1)) != nil
-    }
+    tableIndexView.indexes = self.indexes
+    tableIndexView.tableView = self.tableView
+    tableIndexView.setup()
+    self.view.addSubview(tableIndexView)
 }
 
-public extension LazyMapCollection  {
-    
-    func toArray() -> [Element]{
-        return Array(self)
+func setCollection(){
+    self.collectionView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
+    collectionView.contentInset = UIEdgeInsetsMake(10, 0, 10, 0)
+    //self.collectionView.backgroundColor = .clear
+    setupDict()
+    collectionView.delegate = self
+    collectionView.dataSource = self
+    self.view.addSubview(collectionView)
+    let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPress(_:)))
+    longPress.minimumPressDuration = 0.2
+    longPress.numberOfTouchesRequired = 1
+    collectionView.addGestureRecognizer(longPress)
+    for i in 0 ..< collectionView.numberOfSections {
+        collectionTypes.append(Array<Int>(repeating: 0, count: collectionView.numberOfItems(inSection: i)))
     }
-}
+    //correctCollectionSections()
+    collectionIndexView.indexes = self.indexes
+    collectionIndexView.collectionView = self.collectionView
+    collectionIndexView.setup()
+    self.view.addSubview(collectionIndexView)
+}*/

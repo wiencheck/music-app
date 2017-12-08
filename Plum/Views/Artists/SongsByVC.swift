@@ -33,9 +33,6 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
         super.viewDidLoad()
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         alphabeticalSort = GlobalSettings.alphabeticalSort
-        if alphabeticalSort {
-            tableView.addScrollBar(tint: GlobalSettings.tint.color)
-        }
         albums = musicQuery.shared.artistAlbumsID(artist: receivedID)
         songs = musicQuery.shared.songsByArtistID(artist: receivedID)
         for album in albums{
@@ -187,12 +184,11 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
         }
     }
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        //42 52
         if !alphabeticalSort{
             if albums[indexPath.section].manyArtists{
                 return 54
             }else{
-                return 50
+                return 44
             }
         }else{
             return 62
@@ -269,19 +265,14 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
     }
     
     @IBAction func sortBtnPressed(_ sender: Any){
+        print("sort")
         activeIndexRow = 0
         activeIndexSection = 0
         absoluteIndex = 0
-        if alphabeticalSort{
-            alphabeticalSort = false
-            tableView.to_removeScrollbar()
-        }else{
-            alphabeticalSort = true
-            tableView.addScrollBar(tint: GlobalSettings.tint.color)
-        }
+        alphabeticalSort = !alphabeticalSort
         GlobalSettings.changeAlphabeticalSort(alphabeticalSort)
         UserDefaults.standard.set(alphabeticalSort, forKey: "alphabeticalSort")
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

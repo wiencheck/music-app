@@ -4,7 +4,4 @@
    <FileRef
       location = "container:../Plum.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:../../LNPopupController-master-1/LNPopupController/LNPopupController.xcodeproj">
-   </FileRef>
 </Workspace>

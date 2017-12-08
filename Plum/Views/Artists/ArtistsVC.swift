@@ -45,7 +45,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         readSettings()
         if initialGrid != grid{
             initialGrid = grid
-            self.viewDidLoad()
+            //self.viewDidLoad()
         }
     }
     
@@ -55,7 +55,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         setupDict()
         tableView.delegate = self
         tableView.dataSource = self
-        self.view.addSubview(tableView)
+        //self.view.addSubview(tableView)
         for i in 0 ..< tableView.numberOfSections {
             tableTypes.append(Array<Int>(repeating: 0, count: tableView.numberOfRows(inSection: i)))
         }
@@ -68,7 +68,6 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     func setCollection(){
         self.collectionView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
         collectionView.contentInset = UIEdgeInsetsMake(10, 0, 10, 0)
-        //self.collectionView.backgroundColor = .clear
         setupDict()
         collectionView.delegate = self
         collectionView.dataSource = self

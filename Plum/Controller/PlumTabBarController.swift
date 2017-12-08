@@ -22,6 +22,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        _ = viewControllers?.first
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         self.tabBar.tintColor = GlobalSettings.tint.color
         self.tabBarController?.moreNavigationController.navigationBar.tintColor = GlobalSettings.tint.color
@@ -51,6 +52,8 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
             }
         }else{
             UserDefaults.standard.set(musicQuery.shared.songs.count, forKey: "count")
+            musicQuery.shared.removeAllFromSpotlight()
+            musicQuery.shared.addToSpotlight()
         }
     }
     

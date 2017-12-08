@@ -182,7 +182,7 @@ class AlbumVC: UITableViewController, QueueCellDelegate, MoreActionsCellDelegate
         if album.manyArtists{
             return 54
         }else{
-            return 50
+            return 44
         }
     }
     

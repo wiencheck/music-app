@@ -112,20 +112,3 @@ extension UIScrollView {
         setContentOffset(desiredOffset, animated: true)
     }
 }
-
-extension UITableView {
-    func addScrollBar(tint: UIColor) {
-        let bar = TOScrollBar()
-        self.to_add(bar)
-        self.separatorInset = (self.to_scrollBar?.adjustedTableViewSeparatorInset(forInset: self.separatorInset))!
-        self.to_scrollBar?.tintColor = tint
-    }
-}
-
-extension UICollectionView {
-    func addScrollBar(tint: UIColor) {
-        let bar = TOScrollBar()
-        self.to_add(bar)
-        self.to_scrollBar?.tintColor = tint
-    }
-}
