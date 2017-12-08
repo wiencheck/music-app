@@ -31,7 +31,6 @@ class EightNowPlayingVC: UIViewController {
     @IBOutlet weak var minVolImg: UIImageView!
     @IBOutlet weak var maxVolImg: UIImageView!
     @IBOutlet weak var upperBar: UIView!
-    @IBOutlet weak var doneBtn: UIButton!
     @IBOutlet weak var upNextBtn: UIButton!
     @IBOutlet weak var outOfLabel: UILabel!
     @IBOutlet weak var ratingsView: UIView!
@@ -540,7 +539,6 @@ extension EightNowPlayingVC {       //Kolory i UI
         self.remainingLabel.textColor = colors.detailColor
         customTrackSlider(slider: timeSlider, min: colors.primaryColor, max: colors.detailColor, thumb: colors.primaryColor)
         customVolumeSlider(min: colors.primaryColor, max: colors.detailColor, thumb: colors.detailColor, thumbImg: #imageLiteral(resourceName: "thumb"))
-        doneBtn.tintColor = colors.detailColor
         upNextBtn.tintColor = colors.detailColor
         outOfLabel.textColor = colors.primaryColor
         ratingLabel.textColor = colors.primaryColor
@@ -591,7 +589,6 @@ extension EightNowPlayingVC {       //Kolory i UI
         minVolImg.tintColor = UIColor.white.withAlphaComponent(0.3)
         maxVolImg.tintColor = UIColor.white.withAlphaComponent(0.3)
         upperBar.backgroundColor = .clear
-        doneBtn.tintColor = .white
         upNextBtn.tintColor = .white
         outOfLabel.textColor = UIColor.white.withAlphaComponent(0.3)
         ratingsView.backgroundColor = .clear
@@ -624,7 +621,6 @@ extension EightNowPlayingVC {       //Kolory i UI
         minVolImg.tintColor = UIColor.white.withAlphaComponent(0.5)
         maxVolImg.tintColor = UIColor.white.withAlphaComponent(0.5)
         upperBar.backgroundColor = .clear
-        doneBtn.tintColor = .white
         upNextBtn.tintColor = .white
         outOfLabel.textColor = UIColor.white.withAlphaComponent(0.5)
         ratingsView.backgroundColor = .clear
@@ -653,7 +649,6 @@ extension EightNowPlayingVC {       //Kolory i UI
         minVolImg.tintColor = UIColor.black.withAlphaComponent(0.5)
         maxVolImg.tintColor = UIColor.black.withAlphaComponent(0.5)
         upperBar.backgroundColor = .clear
-        doneBtn.tintColor = GlobalSettings.tint.color
         upNextBtn.tintColor = GlobalSettings.tint.color
         outOfLabel.textColor = .black
         ratingsView.backgroundColor = .clear

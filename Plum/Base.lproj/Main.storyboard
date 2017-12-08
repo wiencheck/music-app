@@ -2382,25 +2382,15 @@
                                             <action selector="presentQueue:" destination="mhR-PN-ter" eventType="touchUpInside" id="cDe-a3-kHo"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Aq-oi-Dxq">
-                                        <rect key="frame" x="12" y="26" width="37" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="37" id="6Cl-TX-q9w"/>
-                                            <constraint firstAttribute="height" constant="30" id="fNv-tK-9K3"/>
-                                        </constraints>
-                                        <state key="normal" title="Done"/>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="64" id="9eQ-E4-S5m"/>
                                     <constraint firstItem="e1g-qu-jhw" firstAttribute="centerX" secondItem="w7c-Tx-bwi" secondAttribute="centerX" id="JQe-NV-s4i"/>
                                     <constraint firstAttribute="bottom" secondItem="DBI-ta-HPe" secondAttribute="bottom" constant="8" id="PpB-Od-D7T"/>
-                                    <constraint firstItem="3Aq-oi-Dxq" firstAttribute="leading" secondItem="w7c-Tx-bwi" secondAttribute="leading" constant="12" id="PpL-nE-RKD"/>
                                     <constraint firstItem="e1g-qu-jhw" firstAttribute="top" secondItem="w7c-Tx-bwi" secondAttribute="top" constant="31.5" id="e3a-Rk-UnT"/>
                                     <constraint firstAttribute="trailing" secondItem="DBI-ta-HPe" secondAttribute="trailing" constant="12" id="fFK-eS-IkV"/>
                                     <constraint firstAttribute="bottom" secondItem="e1g-qu-jhw" secondAttribute="bottom" constant="12" id="fZ8-vh-fNT"/>
-                                    <constraint firstAttribute="bottom" secondItem="3Aq-oi-Dxq" secondAttribute="bottom" constant="8" id="hDg-mt-gOu"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S1m-tk-j5M" userLabel="titleView">
@@ -2592,7 +2582,6 @@
                         <outlet property="artworkImage" destination="FJj-8i-9gq" id="uhy-jo-2Tm"/>
                         <outlet property="backgroundImgView" destination="clx-nw-tLs" id="ioB-HK-0JD"/>
                         <outlet property="detailLabel" destination="daz-Ph-WFX" id="U5n-CL-FC6"/>
-                        <outlet property="doneBtn" destination="3Aq-oi-Dxq" id="0cg-rm-TtE"/>
                         <outlet property="elapsedLabel" destination="LYG-ZI-2Pv" id="qBv-Tl-2Xd"/>
                         <outlet property="lyricsButton" destination="zPr-nq-UDX" id="5BN-5d-6R2"/>
                         <outlet property="lyricsTextView" destination="uBT-J2-9WL" id="HGG-8e-zZ4"/>
@@ -2738,14 +2727,14 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5ER-zk-H3Q">
-                                        <rect key="frame" x="4" y="31" width="46" height="30"/>
+                                        <rect key="frame" x="4" y="30" width="46" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="46" id="0I2-aY-fLf"/>
                                             <constraint firstAttribute="height" constant="30" id="pak-6t-T2V"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <state key="normal" title="Add">
-                                            <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="24"/>
+                                        <state key="normal" title="+">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
                                             <action selector="addBtnPressed:" destination="JFZ-Pw-iWO" eventType="touchUpInside" id="Xc7-Ar-Bpy"/>
@@ -2759,7 +2748,7 @@
                                     <constraint firstAttribute="height" constant="64" id="cIC-LL-Ssd"/>
                                     <constraint firstAttribute="bottom" secondItem="ZvP-5O-Amm" secondAttribute="bottom" constant="3" id="hff-Xs-uiC"/>
                                     <constraint firstItem="CwN-Tj-Ckz" firstAttribute="centerX" secondItem="gAk-GD-dog" secondAttribute="centerX" id="i7q-LH-dNk"/>
-                                    <constraint firstAttribute="bottom" secondItem="5ER-zk-H3Q" secondAttribute="bottom" constant="3" id="tQ9-rJ-mqF"/>
+                                    <constraint firstAttribute="bottom" secondItem="5ER-zk-H3Q" secondAttribute="bottom" constant="4" id="tQ9-rJ-mqF"/>
                                 </constraints>
                             </view>
                         </subviews>

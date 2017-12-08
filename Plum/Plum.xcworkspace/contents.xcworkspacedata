@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:../../../Downloads/LNPopupController-master-3/LNPopupController/LNPopupController.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "container:../Plum.xcodeproj">
    </FileRef>
 </Workspace>
