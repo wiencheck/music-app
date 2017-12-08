@@ -26,8 +26,9 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         self.tabBar.tintColor = GlobalSettings.tint.color
         self.tabBarController?.moreNavigationController.navigationBar.tintColor = GlobalSettings.tint.color
-        self.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color], for: UIControlState.normal)
-        self.tabBar.unselectedItemTintColor = UIColor.gray
+        //moreNavigationController.topViewController?.view 
+        //self.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color], for: UIControlState.normal)
+        //self.tabBar.unselectedItemTintColor = UIColor.gray
         delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(updatePopup), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
         nextBtn = UIBarButtonItem(barButtonSystemItem: .fastForward, target: self, action: #selector(nextBtnPressed))

@@ -255,8 +255,8 @@ extension ArtistUpVC: UITableViewDelegate, UITableViewDataSource{
     func dark() {
         upperBar.backgroundColor = UIColor(red: 0.105882352941176, green: 0.105882352941176, blue: 0.105882352941176, alpha: 0.8)
         artistLabel.textColor = .white
-        doneBtn.setTitleColor(.white, for: .normal)
-        shufBtn.setTitleColor(.white, for: .normal)
+        doneBtn.setTitleColor(GlobalSettings.tint.color, for: .normal)
+        shufBtn.setTitleColor(GlobalSettings.tint.color, for: .normal)
         UIApplication.shared.statusBarStyle = .lightContent
         fxView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
         self.tableView.separatorColor = .black
@@ -266,8 +266,8 @@ extension ArtistUpVC: UITableViewDelegate, UITableViewDataSource{
     func light() {
         upperBar.backgroundColor = UIColor(red: 0.972549019607843, green: 0.972549019607843, blue: 0.972549019607843, alpha: 0.8)
         artistLabel.textColor = .black
-        doneBtn.setTitleColor(.black, for: .normal)
-        shufBtn.setTitleColor(.black, for: .normal)
+        doneBtn.setTitleColor(GlobalSettings.tint.color, for: .normal)
+        shufBtn.setTitleColor(GlobalSettings.tint.color, for: .normal)
         UIApplication.shared.statusBarStyle = .default
         fxView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
         self.tableView.separatorColor = UIColor(red: 0.929411764705882, green: 0.929411764705882, blue: 0.933333333333333, alpha: 1.0)

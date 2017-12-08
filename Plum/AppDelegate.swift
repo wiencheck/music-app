@@ -36,12 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         defaults = UserDefaults.standard
         setInitialSettings()
         readSettings()
-        UITabBar.appearance().tintColor = .gray
-        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.gray], for: .normal)
-        UIBarButtonItem.appearance().tintColor = GlobalSettings.tint.color
-        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
-        UISwitch.appearance().tintColor = GlobalSettings.tint.color
-        UISwitch.appearance().onTintColor = GlobalSettings.tint.color
+        setCustomizing()
 
         // Getting access to your tabBarController
         let tabBar: UITabBarController = self.window?.rootViewController as! UITabBarController
@@ -265,6 +260,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }else if defaults.bool(forKey: "lyrics") {
             GlobalSettings.changeLyrics(defaults.bool(forKey: "lyrics"))
         }
+    }
+    
+    func setCustomizing() {
+        UITabBar.appearance().tintColor = GlobalSettings.tint.color
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.gray], for: .normal)
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color], for: .selected)
+        UIBarButtonItem.appearance().tintColor = GlobalSettings.tint.color
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
+        UISwitch.appearance().tintColor = GlobalSettings.tint.color
+        UISwitch.appearance().onTintColor = GlobalSettings.tint.color
     }
 }
 

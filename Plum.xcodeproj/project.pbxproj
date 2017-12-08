@@ -34,7 +34,6 @@
 		3858254D1FA32CE300697186 /* ArtistUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3858254C1FA32CE300697186 /* ArtistUpVC.swift */; };
 		3858254F1FA33A2800697186 /* SettingsStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3858254E1FA33A2800697186 /* SettingsStructs.swift */; };
 		385825521FA33C8600697186 /* ArtistUpCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385825511FA33C8600697186 /* ArtistUpCell.swift */; };
-		38591B111FBF228200D455FF /* Screenshots in Resources */ = {isa = PBXBuildFile; fileRef = 38591B101FBF228100D455FF /* Screenshots */; };
 		38591B131FBF284F00D455FF /* MiniPlayerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38591B121FBF284F00D455FF /* MiniPlayerVC.swift */; };
 		38591B151FBF309500D455FF /* ColorflowVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38591B141FBF309500D455FF /* ColorflowVC.swift */; };
 		3859213F1FA879D900CF9059 /* ArtistsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3859213E1FA879D900CF9059 /* ArtistsVC.swift */; };
@@ -143,7 +142,6 @@
 		3858254C1FA32CE300697186 /* ArtistUpVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtistUpVC.swift; sourceTree = "<group>"; };
 		3858254E1FA33A2800697186 /* SettingsStructs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsStructs.swift; sourceTree = "<group>"; };
 		385825511FA33C8600697186 /* ArtistUpCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtistUpCell.swift; sourceTree = "<group>"; };
-		38591B101FBF228100D455FF /* Screenshots */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Screenshots; sourceTree = "<group>"; };
 		38591B121FBF284F00D455FF /* MiniPlayerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiniPlayerVC.swift; sourceTree = "<group>"; };
 		38591B141FBF309500D455FF /* ColorflowVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorflowVC.swift; sourceTree = "<group>"; };
 		3859213E1FA879D900CF9059 /* ArtistsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtistsVC.swift; sourceTree = "<group>"; };
@@ -423,7 +421,6 @@
 				38E68AC01F28C17500BFF4E2 /* AppDelegate.swift */,
 				38E68AC41F28C17500BFF4E2 /* Main.storyboard */,
 				38E68AC71F28C17500BFF4E2 /* Assets.xcassets */,
-				38591B101FBF228100D455FF /* Screenshots */,
 				380934451FBE25F80095E1DF /* AppIcon.appiconset */,
 				38E68AC91F28C17500BFF4E2 /* LaunchScreen.storyboard */,
 				38E68ACC1F28C17500BFF4E2 /* Info.plist */,
@@ -545,7 +542,6 @@
 				38E68AC81F28C17500BFF4E2 /* Assets.xcassets in Resources */,
 				3845B81B1F7FBA6400EA02F4 /* change.mp3 in Resources */,
 				380934461FBE25F80095E1DF /* AppIcon.appiconset in Resources */,
-				38591B111FBF228200D455FF /* Screenshots in Resources */,
 				38E68AC61F28C17500BFF4E2 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

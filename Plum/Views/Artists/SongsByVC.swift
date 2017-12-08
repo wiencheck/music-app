@@ -9,8 +9,10 @@
 import UIKit
 import MediaPlayer
 
-class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDelegate, MoreActionsCellDelegate {
-    var cellTypes = [Int: [Int]]()
+class SongsByVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, QueueCellDelegate, MoreActionsCellDelegate {
+    
+    var sort: Sort!
+    var cellTypes = [[Int]]()
     var cellTypesAl = [Int]()
     var songs = [MPMediaItem]()
     var songsByAlbums = [MPMediaItem]()
@@ -21,28 +23,36 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
     var activeIndexRow = 0
     var activeIndexSection = 0
     @IBOutlet weak var upperBar: UINavigationItem!
-    @IBOutlet weak var sortBtn: UIButton!
+    @IBOutlet weak var sortBtn: UIBarButtonItem!
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var indexView: TableIndexView!
     var albums = [AlbumB]()
     var result = [String: [AlbumB]]()
+    var resultB = [String: [MPMediaItem]]()
     var indexes = [String]()
+    var indexesInt = [Int]()
     var alphabeticalSort: Bool = false
     var chosenItem: MPMediaItem!
     var headers = [UIView]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tableView.delegate = self
+        tableView.dataSource = self
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         alphabeticalSort = GlobalSettings.alphabeticalSort
         albums = musicQuery.shared.artistAlbumsID(artist: receivedID)
         songs = musicQuery.shared.songsByArtistID(artist: receivedID)
+        sort = .alphabetically
+        sortAlbums()
         for album in albums{
             songsByAlbums.append(contentsOf: album.items)
         }
+        setup()
         upperBar.title = "\(songs.count) Songs"
         var iterator = 0
         for album in 0 ..< albums.count{
-            cellTypes[iterator] = []
-            cellTypes[iterator] = Array<Int>(repeating: 0, count: albums[album].songsIn)
+            cellTypes.append(Array<Int>(repeating: 0, count: albums[album].songsIn))
             let header = tableView.dequeueReusableCell(withIdentifier: "infoCell") as! AlbumInfoCell
             header.setup(album: albums[album], play: false)
             let imv = UIImageView(frame: header.frame)
@@ -57,7 +67,7 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
             iterator += 1
         }
         iterator += 1
-        cellTypes[iterator] = []
+        cellTypes.append(Array<Int>(repeating: 0, count: 1))
         cellTypesAl = Array<Int>(repeating: 0, count: songs.count)
         let backround = #imageLiteral(resourceName: "background_se")
         self.tableView.backgroundView = UIImageView(image: backround)
@@ -65,7 +75,7 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
         tableView.scrollIndicatorInsets = tableView.contentInset
     }
     
-    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if alphabeticalSort{
             if cellTypesAl[indexPath.row] != 0{
                 return nil
@@ -73,7 +83,7 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
                 return indexPath
             }
         }else{
-            if cellTypes[indexPath.section]?[indexPath.row] != 0{
+            if cellTypes[indexPath.section][indexPath.row] != 0{
                 return nil
             }else{
                 return indexPath
@@ -81,11 +91,11 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
         }
     }
 
-    override func didReceiveMemoryWarning() {
+     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+     func numberOfSections(in tableView: UITableView) -> Int {
         if !alphabeticalSort{
             return albums.count
         }else{
@@ -93,7 +103,7 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
         }
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if !alphabeticalSort{
             return albums[section].songsIn
         }else{
@@ -101,25 +111,15 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
         }
     }
     
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if !alphabeticalSort{
-//            let header = tableView.dequeueReusableCell(withIdentifier: "infoCell") as! AlbumInfoCell
-//            header.setup(album: albums[section], play: false)
-//            header.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
-//            header.layer.borderWidth = 0.7
-//            header.layer.borderColor = tableView.separatorColor?.cgColor
-//            return header
             return headers[section]
         }else{
-            /*let header = tableView.dequeueReusableCell(withIdentifier: "letterCell")
-            header?.textLabel?.text = indexes[section]
-            header?.backgroundColor = .blue
-            return header*/
             return UIView()
         }
     }
     
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if alphabeticalSort{
             return 0
         }else{
@@ -128,10 +128,10 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
     }
 
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         absoluteIndex = indexPath.absoluteRow(tableView)
         if !alphabeticalSort{
-            if(cellTypes[indexPath.section]?[indexPath.row] == 0){
+            if(cellTypes[indexPath.section][indexPath.row] == 0){
                 if albums[indexPath.section].manyArtists{
                     let cell = tableView.dequeueReusableCell(withIdentifier: "extendedSongCell", for: indexPath) as? SongInAlbumCell
                     let item = songsByAlbums[absoluteIndex]
@@ -153,7 +153,7 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
                     cell?.backgroundColor = .clear
                     return cell!
                 }
-            }else if cellTypes[indexPath.section]?[indexPath.row] == 1{
+            }else if cellTypes[indexPath.section][indexPath.row] == 1{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as? QueueActionsCell
                 cell?.delegate = self
                 cell?.backgroundColor = .clear
@@ -183,7 +183,7 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
 
         }
     }
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if !alphabeticalSort{
             if albums[indexPath.section].manyArtists{
                 return 54
@@ -194,19 +194,19 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
             return 62
         }
     }
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if !alphabeticalSort{
-            if(cellTypes[activeIndexSection]?[activeIndexRow] == 1){
-                cellTypes[activeIndexSection]?[activeIndexRow] = 0
+            if(cellTypes[activeIndexSection][activeIndexRow] == 1){
+                cellTypes[activeIndexSection][activeIndexRow] = 0
                 tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .fade)
             }
             activeIndexSection = indexPath.section
             absoluteIndex = indexPath.absoluteRow(tableView)
             activeIndexRow = indexPath.row
-            if(cellTypes[indexPath.section]?[indexPath.row] == 0){
+            if(cellTypes[indexPath.section][indexPath.row] == 0){
                 if(Plum.shared.isPlayin()){
                     pickedID = songsByAlbums[absoluteIndex].albumPersistentID
-                    cellTypes[indexPath.section]?[indexPath.row] = 1
+                    cellTypes[indexPath.section][indexPath.row] = 1
                     tableView.reloadRows(at: [indexPath], with: .fade)
                 }else{
                     if(Plum.shared.isShuffle){
@@ -222,7 +222,7 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
                     Plum.shared.play()
                 }
             }else{
-                cellTypes[indexPath.section]?[indexPath.row] = 0
+                cellTypes[indexPath.section][indexPath.row] = 0
                 tableView.reloadRows(at: [indexPath], with: .right)
             }
             tableView.deselectRow(at: indexPath, animated: true)
@@ -254,7 +254,7 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
                     Plum.shared.play()
                 }
             }else{
-                cellTypes[indexPath.section]?[indexPath.row] = 0
+                cellTypes[indexPath.section][indexPath.row] = 0
                 tableView.reloadRows(at: [indexPath], with: .right)
             }
             tableView.deselectRow(at: indexPath, animated: true)
@@ -275,7 +275,7 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
         tableView.reloadData()
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? AlbumVC{
             destination.receivedID = pickedID
         }
@@ -284,7 +284,7 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
     func playNextBtn() {
         if !alphabeticalSort{
             Plum.shared.addNext(item: songsByAlbums[absoluteIndex])
-            cellTypes[activeIndexSection]?[activeIndexRow] = 0
+            cellTypes[activeIndexSection][activeIndexRow] = 0
         }else{
             Plum.shared.addNext(item: songs[absoluteIndex])
             cellTypesAl[activeIndexRow] = 0
@@ -294,7 +294,7 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
     func playLastBtn() {
         if !alphabeticalSort{
             Plum.shared.addLast(item: songsByAlbums[absoluteIndex])
-            cellTypes[activeIndexSection]?[activeIndexRow] = 0
+            cellTypes[activeIndexSection][activeIndexRow] = 0
         }else{
             Plum.shared.addLast(item: songs[absoluteIndex])
             cellTypesAl[activeIndexRow] = 0
@@ -313,7 +313,7 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
                 cellTypesAl[activeIndexRow] = 0
             }else{
                 Plum.shared.createDefQueue(items: songsByAlbums)
-                cellTypes[activeIndexSection]?[activeIndexRow] = 0
+                cellTypes[activeIndexSection][activeIndexRow] = 0
             }
             Plum.shared.shuffleCurrent()
             Plum.shared.playFromShufQueue(index: 0, new: true)
@@ -323,7 +323,7 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
                 cellTypesAl[activeIndexRow] = 0
             }else{
                 Plum.shared.createDefQueue(items: songsByAlbums)
-                cellTypes[activeIndexSection]?[activeIndexRow] = 0
+                cellTypes[activeIndexSection][activeIndexRow] = 0
             }
             Plum.shared.playFromDefQueue(index: absoluteIndex, new: true)
         }
@@ -331,7 +331,7 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
         tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .right)
     }
     
-    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == tableView.numberOfSections - 1 {
             let v = UIView(frame: CGRect(x: 5, y: 0, width: 40, height: 0.1))
             v.backgroundColor = tableView.separatorColor?.withAlphaComponent(0.3)
@@ -341,7 +341,7 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
         }
     }
     
-    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if section == tableView.numberOfSections - 1 {
             return 0.1
         }else{
@@ -353,7 +353,7 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
         if alphabeticalSort{
             cellTypesAl[activeIndexRow] = 0
         }else{
-            cellTypes[activeIndexSection]?[activeIndexRow] = 0
+            cellTypes[activeIndexSection][activeIndexRow] = 0
         }
         self.tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .none)
         performSegue(withIdentifier: "album", sender: nil)
@@ -374,20 +374,27 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
         albumBtn()
     }
     
-    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         if !alphabeticalSort{
-            cellTypes[activeIndexSection]?[activeIndexRow] = 0
+           if cellTypes[activeIndexSection][activeIndexRow] != 0 {
+                cellTypes[activeIndexSection][activeIndexRow] = 0
+                let indexPath = IndexPath(row: activeIndexRow, section: activeIndexSection)
+                self.tableView.deselectRow(at: indexPath, animated: true)
+                self.tableView.reloadRows(at: [indexPath], with: .fade)
+            }
         }else{
-            cellTypesAl[activeIndexRow] = 0
+            if cellTypesAl[activeIndexRow] != 0 {
+                cellTypesAl[activeIndexRow] = 0
+                let indexPath = IndexPath(row: activeIndexRow, section: 0)
+                self.tableView.deselectRow(at: indexPath, animated: true)
+                self.tableView.reloadRows(at: [indexPath], with: .fade)
+            }
         }
-        let indexPath = IndexPath(row: activeIndexRow, section: activeIndexSection)
-        self.tableView.deselectRow(at: indexPath, animated: true)
-        self.tableView.reloadRows(at: [indexPath], with: .fade)
     }
     
     func longPress(_ longPress: UIGestureRecognizer){
-        if(cellTypes[activeIndexSection]?[activeIndexRow] == 1){
-            cellTypes[activeIndexSection]?[activeIndexRow] = 0
+        if(cellTypes[activeIndexSection][activeIndexRow] == 1){
+            cellTypes[activeIndexSection][activeIndexRow] = 0
             tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .left)
         }
         if longPress.state == .recognized{
@@ -395,9 +402,41 @@ class SongsByVC: UITableViewController, UIGestureRecognizerDelegate, QueueCellDe
             if let indexPath = tableView.indexPathForRow(at: touchPoint){
                 activeIndexSection = indexPath.section
                 activeIndexRow = indexPath.row
-                self.cellTypes[activeIndexSection]?[activeIndexRow] = 2
+                self.cellTypes[activeIndexSection][activeIndexRow] = 2
                 self.tableView.reloadRows(at: [indexPath], with: .fade)
             }
+        }
+    }
+    
+    func sortAlbums() {
+        switch sort {
+        case .alphabetically:
+            albums.sort { $0.name! < $1.name! }
+        case .yearAscending:
+            albums.sort { Int($0.year)! < Int($1.year)! }
+        case .yearDescending:
+            albums.sort { Int($0.year)! > Int($1.year)! }
+        default:
+            print("sortAlbums default")
+        }
+    }
+    
+    func setup() {
+        let bcount = songs.count
+        if bcount > 11 {
+            let difference: Int = bcount / 12
+            var index = difference
+            indexes.append("#1")
+            indexesInt.append(1)
+            while index < bcount {
+                indexes.append("#\(index)")
+                indexesInt.append(index)
+                index += difference
+            }
+            indexView.indexes = self.indexes
+            indexView.tableView = self.tableView
+            indexView.setup()
+            //view.addSubview(indexView)
         }
     }
 }

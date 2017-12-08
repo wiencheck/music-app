@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "tab_artist.png",
+      "filename" : "tab_guitar.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "tab_artist@2x.png",
+      "filename" : "tab_guitar@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "tab_artist@3x.png",
+      "filename" : "tab_guitar@3x.png",
       "scale" : "3x"
     }
   ],

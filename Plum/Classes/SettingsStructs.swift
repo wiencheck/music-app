@@ -16,6 +16,12 @@ struct UpNextSettings {
     var upperBarColored = false
 }
 
+public enum Sort {
+    case alphabetically
+    case yearAscending
+    case yearDescending
+}
+
 enum styles: String {
     case modern = "modern"
     case classic = "classic"

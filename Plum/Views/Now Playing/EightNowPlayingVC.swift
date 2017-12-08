@@ -403,6 +403,8 @@ extension EightNowPlayingVC: UpNextDelegate {
     func realPresent(){
         pickedID = player.currentItem?.albumPersistentID
         let tbvc = storyboard?.instantiateViewController(withIdentifier: "GOGOGO") as! UITabBarController
+        //tbvc.tabBar.tintColor = GlobalSettings.tint.color
+        //tbvc.tabBar.unselectedItemTintColor = .gray
         if let upvc = tbvc.viewControllers?[0] as? QueueVC{
             upvc.lightTheme = lightStyle
             upvc.delegate = self
@@ -513,6 +515,7 @@ extension EightNowPlayingVC {       //Kolory i UI
         lyricsButton.clipsToBounds = true
         ratingButton.layer.cornerRadius = 3
         lyricsButton.layer.cornerRadius = 3
+        upNextBtn.setImage(#imageLiteral(resourceName: "Ulist_icon"), for: .normal)
     }
     
     func setColors() {
@@ -717,7 +720,7 @@ extension EightNowPlayingVC {       //Kolory i UI
     }
     
 }
-
+/*
 extension UIViewController {
     
     func presentDetail(_ viewControllerToPresent: UIViewController) {
@@ -739,4 +742,4 @@ extension UIViewController {
         
         dismiss(animated: false)
     }
-}
+}*/
