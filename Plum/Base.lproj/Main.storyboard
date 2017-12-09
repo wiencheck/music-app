@@ -1431,7 +1431,7 @@
         <!--Title-->
         <scene sceneID="549-za-MZQ">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="Mzv-cc-r99" customClass="SongsByVC" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="Mzv-cc-r99" customClass="ArtistSongs" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="tTS-6Z-WHi"/>
                         <viewControllerLayoutGuide type="bottom" id="zeQ-0M-qEe"/>
@@ -1860,21 +1860,31 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GHa-r8-mEQ" customClass="TableIndexView" customModule="Plum" customModuleProvider="target">
-                                <rect key="frame" x="300" y="74" width="20" height="420"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GHa-r8-mEQ" userLabel="Alp" customClass="TableIndexView" customModule="Plum" customModuleProvider="target">
+                                <rect key="frame" x="300" y="74" width="20" height="435"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="20" id="QHT-LI-vOt"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1fI-A7-OFg" userLabel="Alb" customClass="TableIndexView" customModule="Plum" customModuleProvider="target">
+                                <rect key="frame" x="260" y="74" width="60" height="435"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="KXt-l6-ALn"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="NPL-WV-1cd" firstAttribute="leading" secondItem="dhn-aL-5Xi" secondAttribute="leading" id="7dp-5G-Yjc"/>
+                            <constraint firstItem="1fI-A7-OFg" firstAttribute="top" secondItem="tTS-6Z-WHi" secondAttribute="bottom" constant="10" id="Jfq-W4-fWg"/>
                             <constraint firstItem="zeQ-0M-qEe" firstAttribute="top" secondItem="NPL-WV-1cd" secondAttribute="bottom" id="KFx-Tk-eFn"/>
-                            <constraint firstAttribute="bottom" secondItem="GHa-r8-mEQ" secondAttribute="bottom" constant="74" id="LSf-hI-RTM"/>
+                            <constraint firstItem="zeQ-0M-qEe" firstAttribute="top" secondItem="1fI-A7-OFg" secondAttribute="bottom" constant="10" id="N5q-Zk-24M"/>
                             <constraint firstAttribute="trailing" secondItem="NPL-WV-1cd" secondAttribute="trailing" id="QDI-Aa-Hd7"/>
+                            <constraint firstAttribute="trailing" secondItem="1fI-A7-OFg" secondAttribute="trailing" id="WUu-vK-eGx"/>
                             <constraint firstItem="GHa-r8-mEQ" firstAttribute="top" secondItem="dhn-aL-5Xi" secondAttribute="top" constant="74" id="fXA-Gl-IEo"/>
+                            <constraint firstItem="zeQ-0M-qEe" firstAttribute="top" secondItem="GHa-r8-mEQ" secondAttribute="bottom" constant="10" id="sgE-4m-rwb"/>
                             <constraint firstAttribute="trailing" secondItem="GHa-r8-mEQ" secondAttribute="trailing" id="ue2-73-Q2Z"/>
                             <constraint firstItem="NPL-WV-1cd" firstAttribute="top" secondItem="dhn-aL-5Xi" secondAttribute="top" constant="64" id="xaQ-fa-FDw"/>
                         </constraints>
@@ -1882,19 +1892,20 @@
                     <navigationItem key="navigationItem" title="Title" id="HKA-M6-Q1r">
                         <barButtonItem key="rightBarButtonItem" systemItem="organize" id="ZTD-am-JBQ">
                             <connections>
-                                <action selector="sortBtnPressed:" destination="Mzv-cc-r99" id="nF7-5O-bhN"/>
+                                <action selector="sortBtnPressed" destination="Mzv-cc-r99" id="tSs-qK-Gt1"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="indexView" destination="GHa-r8-mEQ" id="J4b-wt-Qeh"/>
+                        <outlet property="albIndexView" destination="1fI-A7-OFg" id="IfB-9P-EbP"/>
+                        <outlet property="alpIndexView" destination="GHa-r8-mEQ" id="yhm-h0-Xfh"/>
                         <outlet property="tableView" destination="NPL-WV-1cd" id="NMd-Fu-vy4"/>
                         <outlet property="upperBar" destination="HKA-M6-Q1r" id="OFW-R6-USO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lrg-4D-vy1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4500" y="257.74647887323943"/>
+            <point key="canvasLocation" x="4157" y="177"/>
         </scene>
         <!--Songs by artist-->
         <scene sceneID="a1R-lt-D25">
@@ -3492,7 +3503,7 @@
         <!--Artist-->
         <scene sceneID="Ol8-dU-cc3">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="dQw-Ml-Zsz" customClass="ArtistUpVC" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="dQw-Ml-Zsz" customClass="ArtistUpVCB" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ALd-TL-JwH"/>
                         <viewControllerLayoutGuide type="bottom" id="dL6-lt-FMi"/>
@@ -3584,7 +3595,7 @@
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                             <connections>
-                                                                <action selector="playNowBtn:" destination="dQw-Ml-Zsz" eventType="touchUpInside" id="CxJ-m7-A3o"/>
+                                                                <action selector="playNowBtn:" destination="dQw-Ml-Zsz" eventType="touchUpInside" id="GZM-9M-U9b"/>
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YSH-ne-iAy">
@@ -3609,7 +3620,7 @@
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                             <connections>
-                                                                <action selector="playNextBtn:" destination="dQw-Ml-Zsz" eventType="touchUpInside" id="PaM-6t-QfV"/>
+                                                                <action selector="playNextBtn:" destination="dQw-Ml-Zsz" eventType="touchUpInside" id="lW9-P4-2qb"/>
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0xE-mi-zS3">
@@ -3634,7 +3645,7 @@
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                             <connections>
-                                                                <action selector="playLastBtn:" destination="dQw-Ml-Zsz" eventType="touchUpInside" id="alg-fa-ayH"/>
+                                                                <action selector="playLastBtn:" destination="dQw-Ml-Zsz" eventType="touchUpInside" id="yMU-0F-Gc9"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
@@ -3661,7 +3672,7 @@
                                         </constraints>
                                         <state key="normal" title="Done"/>
                                         <connections>
-                                            <action selector="doneBtnPressed" destination="dQw-Ml-Zsz" eventType="touchUpInside" id="qio-qE-mnJ"/>
+                                            <action selector="doneBtnPressed" destination="dQw-Ml-Zsz" eventType="touchUpInside" id="lxb-2M-AMp"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dkL-Ec-7vr">
@@ -3675,7 +3686,7 @@
                                             <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="shufBtnPressed:" destination="dQw-Ml-Zsz" eventType="touchUpInside" id="cW1-JJ-srZ"/>
+                                            <action selector="shufBtnPressed:" destination="dQw-Ml-Zsz" eventType="touchUpInside" id="r6p-i5-WI1"/>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Run The Jewels" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="czz-WR-vev">
@@ -3700,15 +3711,25 @@
                                     <constraint firstAttribute="bottom" secondItem="dOH-kL-lU3" secondAttribute="bottom" constant="3" id="neo-Pb-Vmt"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nLi-CZ-ImR" customClass="TableIndexView" customModule="Plum" customModuleProvider="target">
+                                <rect key="frame" x="300" y="74" width="20" height="435"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="5L4-cb-Jar"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="be3-Sp-y8O" firstAttribute="leading" secondItem="age-ep-O0X" secondAttribute="leading" id="7Wm-8O-9tl"/>
                             <constraint firstItem="be3-Sp-y8O" firstAttribute="top" secondItem="age-ep-O0X" secondAttribute="top" id="HbG-IY-Gmo"/>
+                            <constraint firstAttribute="trailing" secondItem="nLi-CZ-ImR" secondAttribute="trailing" id="K3e-3Y-KmC"/>
                             <constraint firstItem="CIa-fU-VW9" firstAttribute="top" secondItem="age-ep-O0X" secondAttribute="top" constant="64" id="OW6-S5-fwT"/>
                             <constraint firstAttribute="trailing" secondItem="be3-Sp-y8O" secondAttribute="trailing" id="P9B-9c-Ogd"/>
+                            <constraint firstItem="nLi-CZ-ImR" firstAttribute="top" secondItem="be3-Sp-y8O" secondAttribute="bottom" constant="10" id="QPB-IE-Y7k"/>
                             <constraint firstAttribute="trailing" secondItem="CIa-fU-VW9" secondAttribute="trailing" id="dve-cw-Zzl"/>
                             <constraint firstItem="CIa-fU-VW9" firstAttribute="leading" secondItem="age-ep-O0X" secondAttribute="leading" id="hgj-Lc-XFK"/>
+                            <constraint firstItem="dL6-lt-FMi" firstAttribute="top" secondItem="nLi-CZ-ImR" secondAttribute="bottom" constant="10" id="n3R-eH-nMS"/>
                             <constraint firstItem="dL6-lt-FMi" firstAttribute="top" secondItem="CIa-fU-VW9" secondAttribute="bottom" id="r2t-qg-7uF"/>
                         </constraints>
                     </view>
@@ -3716,6 +3737,7 @@
                     <connections>
                         <outlet property="artistLabel" destination="czz-WR-vev" id="6Z0-H8-gap"/>
                         <outlet property="doneBtn" destination="dOH-kL-lU3" id="5mM-TR-geG"/>
+                        <outlet property="indexView" destination="nLi-CZ-ImR" id="EjE-lb-zSo"/>
                         <outlet property="shufBtn" destination="dkL-Ec-7vr" id="SG9-3C-HHC"/>
                         <outlet property="tableView" destination="CIa-fU-VW9" id="PdX-nz-C8P"/>
                         <outlet property="upperBar" destination="be3-Sp-y8O" id="MkB-62-A2M"/>
@@ -4978,6 +5000,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="7ph-u4-5tD"/>
-        <segue reference="GRh-Pt-2wL"/>
+        <segue reference="uGV-fK-q4R"/>
     </inferredMetricsTieBreakers>
 </document>

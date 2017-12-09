@@ -16,10 +16,11 @@ struct UpNextSettings {
     var upperBarColored = false
 }
 
-public enum Sort {
-    case alphabetically
-    case yearAscending
-    case yearDescending
+public enum Sort: String {
+    case alphabetically = "alphabetically"
+    case album = "album"
+    case yearAscending = "yearAscending"
+    case yearDescending = "yearDescending"
 }
 
 enum styles: String {
@@ -111,9 +112,10 @@ struct GlobalSettings{
         defaults.set(t, forKey: "scale")
     }
     
-    static var alphabeticalSort = false
-    static func changeAlphabeticalSort(_ t: Bool){
-        self.alphabeticalSort = t
+    static var artistSort: Sort = .alphabetically
+    static func changeArtistSort(_ t: Sort){
+        self.artistSort = t
+        UserDefaults.standard.set(t.rawValue, forKey: "artistSort")
     }
     
     static var slider: Slider = .alphabetical                                       //UI

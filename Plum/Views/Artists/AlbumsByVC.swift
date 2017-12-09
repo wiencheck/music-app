@@ -80,7 +80,7 @@ class AlbumsByVC: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? AlbumVC{
             destination.receivedID = pickedID
-        }else if let destination = segue.destination as? SongsByVC{
+        }else if let destination = segue.destination as? ArtistSongs{
             destination.receivedID = receivedID
         }
     }

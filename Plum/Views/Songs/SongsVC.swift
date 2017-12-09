@@ -150,7 +150,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             destination.receivedID = pickedAlbumID
         }else if let destination = segue.destination as? AlbumsByVC{
             destination.receivedID = pickedArtistID
-        }else if let destination = segue.destination as? SongsByVC {
+        }else if let destination = segue.destination as? ArtistSongs {
             destination.receivedID = pickedArtistID
         }
     }

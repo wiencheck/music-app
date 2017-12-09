@@ -64,17 +64,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
         if userActivity.activityType == CSSearchableItemActionType{
             if let uniqueIdentifier = userActivity.userInfo?[CSSearchableItemActivityIdentifier] as? String {
-                let id = MPMediaEntityPersistentID(uniqueIdentifier)
-                let item = musicQuery.shared.songForID(ID: id!)
-                switch GlobalSettings.deployIn {
-                case .artist:
-                    Plum.shared.isShuffle = true
-                    Plum.shared.landInArtist(item, new: true)
-                case .album:
-                    Plum.shared.isShuffle = true
-                    Plum.shared.landInAlbum(item, new: true)
-                default:
-                    print("wyladuje w piosenkach")
+                let type = uniqueIdentifier.components(separatedBy: " ")
+                if type[0] == "song" {
+                    let id = MPMediaEntityPersistentID(type[1])
+                    let item = musicQuery.shared.songForID(ID: id!)
+                    switch GlobalSettings.deployIn {
+                    case .artist:
+                        Plum.shared.isShuffle = true
+                        Plum.shared.landInArtist(item, new: true)
+                    case .album:
+                        Plum.shared.isShuffle = true
+                        Plum.shared.landInAlbum(item, new: true)
+                    default:
+                        print("wyladuje w piosenkach")
+                    }
+                }else if type[0] == "list" {
+                    print("spotlight lista")
+                    let id = MPMediaEntityPersistentID(type[1])
+                    let list = musicQuery.shared.playlistForID(playlist: id!)
+                    Plum.shared.createDefQueue(items: list.items)
+                    Plum.shared.defIndex = Int(arc4random_uniform(UInt32(list.songsIn)))
+                    Plum.shared.shuffleCurrent()
+                    Plum.shared.playFromShufQueue(index: 0, new: true)
                 }
                 Plum.shared.play()
             }
@@ -211,8 +222,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let fu = defaults.value(forKey: "fullRating") as? Bool {
             GlobalSettings.full = fu
         }
-        if let alp = defaults.value(forKey: "alphabeticalSort") as? Bool{
-            GlobalSettings.changeAlphabeticalSort(alp)
+        if let alp = defaults.value(forKey: "artistSort") as? String{
+            GlobalSettings.changeArtistSort(Sort(rawValue: alp)!)
         }
         if let pop = defaults.value(forKey: "modernPopup") as? Bool{
             if pop {

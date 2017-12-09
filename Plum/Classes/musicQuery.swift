@@ -22,8 +22,6 @@ class musicQuery{
     var artists: [Artist]!
     var albums: [AlbumB]!
     var playlists: [Playlist]!
-    var spotlightIdentifiers = [String]()
-    var currentIdentifiers = [String]()
     var spotlightProgress: Float = 0
     
     init(){
@@ -42,9 +40,6 @@ class musicQuery{
         filterCloudItems()
         let songs = detailQuery?.items
         currentSongsCount = songs?.count
-        for song in songs!{
-            currentIdentifiers.append("\(song.persistentID)")
-        }
         return songs!
     }
     
@@ -170,6 +165,15 @@ class musicQuery{
         return playlists
     }
     
+    func playlistForID(playlist: MPMediaEntityPersistentID) -> Playlist {
+        detailQuery = MPMediaQuery.playlists()
+        let predicate = MPMediaPropertyPredicate(value: playlist, forProperty: MPMediaPlaylistPropertyPersistentID, comparisonType: .equalTo)
+        detailQuery.addFilterPredicate(predicate)
+        let list = Playlist(collection: detailQuery.collections![0])
+        print(list.name)
+        return list
+    }
+    
     func filterCloudItems(){
         let cloudPredicate = MPMediaPropertyPredicate(value: NSNumber(value: false), forProperty: MPMediaItemPropertyIsCloudItem)
         detailQuery.addFilterPredicate(cloudPredicate)
@@ -250,64 +254,59 @@ class musicQuery{
         print("Indeksowanie rozpoczete...")
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         let items = allSongs()
+        let lists = allPlaylists()
         var searchableItems = [CSSearchableItem]()
         var i: Float = 0.0
         spotlightProgress = 0
-        let tmp = Float(currentSongsCount)
+        var tmp = Float(currentSongsCount + lists.count)
         DispatchQueue.global().async(execute: {
-        for item in items{
-            let attributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeText as String)
-            attributeSet.title = item.title
-            attributeSet.contentDescription = "\(item.albumArtist ?? "Unknown artist") - \(item.albumTitle ?? "Unknown album")"
-            attributeSet.rating = item.rating as NSNumber
-            let artwork = item.artwork?.image(at: CGSize(width: 10, height: 10)) ?? #imageLiteral(resourceName: "no_music")
-            let artworkData = UIImagePNGRepresentation(artwork)
-            attributeSet.thumbnailData = artworkData
-            let searchableItem = CSSearchableItem(uniqueIdentifier: String(item.persistentID), domainIdentifier: "com.adw.plum", attributeSet: attributeSet)
-            searchableItems.append(searchableItem)
-            print("progress = \(self.spotlightProgress)")
-            self.spotlightProgress = i / tmp
-            i += 1.0
-            self.spotlightIdentifiers.append(searchableItem.uniqueIdentifier)
-        }
-        CSSearchableIndex.default().indexSearchableItems(searchableItems) { error in
-            if let error = error {
-                print("Indexing error: \(error.localizedDescription)")
-            } else {
-                print("Search item successfully indexed!")
+            for item in items{
+                let attributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeText as String)
+                attributeSet.title = item.title
+                attributeSet.contentDescription = "\(item.albumArtist ?? "Unknown artist") - \(item.albumTitle ?? "Unknown album")"
+                attributeSet.rating = item.rating as NSNumber
+                let artwork = item.artwork?.image(at: CGSize(width: 10, height: 10)) ?? #imageLiteral(resourceName: "no_music")
+                let artworkData = UIImagePNGRepresentation(artwork)
+                attributeSet.thumbnailData = artworkData
+                let searchableItem = CSSearchableItem(uniqueIdentifier: "song \(item.persistentID)", domainIdentifier: "com.adw.plum", attributeSet: attributeSet)
+                searchableItems.append(searchableItem)
+                print("progress = \(self.spotlightProgress)")
+                self.spotlightProgress = i / tmp
+                i += 1.0
             }
-        }
+            for list in lists {
+                let attributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeText as String)
+                attributeSet.title = list.name
+                attributeSet.contentDescription = "Playlist - \(list.songsIn) songs"
+                let artwork = list.image
+                let artworkData = UIImagePNGRepresentation(artwork)
+                attributeSet.thumbnailData = artworkData
+                let searchableItem = CSSearchableItem(uniqueIdentifier: "list \(list.ID)", domainIdentifier: "com.adw.plum", attributeSet: attributeSet)
+                searchableItems.append(searchableItem)
+                print("progress = \(self.spotlightProgress)")
+                self.spotlightProgress = i / tmp
+                i += 1.0
+            }
+            CSSearchableIndex.default().indexSearchableItems(searchableItems) { error in
+                if let error = error {
+                    print("Indexing error: \(error.localizedDescription)")
+                } else {
+                    print("Search item successfully indexed!")
+                }
+            }
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
         })
         print("Indeksowanie zakonczone!")
     }
     
-    func removeFromSpotlight(){
-        let answer = zip(spotlightIdentifiers, currentIdentifiers).enumerated().filter() {
-            $1.0 != $1.1
-            }.map{$0.0}
-        var toDelete = [String]()
-        for i in 0 ..< answer.count{
-            toDelete.append(spotlightIdentifiers[i])
-            spotlightIdentifiers.remove(at: answer[i])
-        }
-        CSSearchableIndex.default().deleteSearchableItems(withIdentifiers: toDelete) { error in
-            if let error = error {
-                print("Deindexing error: \(error.localizedDescription)")
-            } else {
-                print("Search item successfully removed!")
-            }
-        }
-    }
-    
     func removeAllFromSpotlight(){
-        CSSearchableIndex.default().deleteSearchableItems(withIdentifiers: spotlightIdentifiers) { error in
+        CSSearchableIndex.default().deleteAllSearchableItems(completionHandler: { error in
             if let error = error {
                 print("Deindexing error: \(error.localizedDescription)")
             } else {
                 print("Search item successfully removed!")
             }
-        }
+        })
     }
 }
 

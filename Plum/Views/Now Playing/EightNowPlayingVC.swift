@@ -414,7 +414,7 @@ extension EightNowPlayingVC: UpNextDelegate {
             alvc.lightTheme = lightStyle
             alvc.delegate = self
         }
-        if let arvc = tbvc.viewControllers?[2] as? ArtistUpVC{
+        if let arvc = tbvc.viewControllers?[2] as? ArtistUpVCB{
             arvc.receivedID = pickedID
             arvc.lightTheme = lightStyle
             arvc.delegate = self

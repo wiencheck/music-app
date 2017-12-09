@@ -57,10 +57,12 @@
 		389A24791FD8874E0092F979 /* QueueCellLite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 389A24761FD8871B0092F979 /* QueueCellLite.swift */; };
 		38A12EA61F7270DB00E3E53E /* AlbumInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38A12EA51F7270DB00E3E53E /* AlbumInfoCell.swift */; };
 		38A12EA81F72834E00E3E53E /* QueueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38A12EA71F72834E00E3E53E /* QueueCell.swift */; };
+		38AC0F501FDC54DC0049AD09 /* ArtistUpVCB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AC0F4F1FDC54DC0049AD09 /* ArtistUpVCB.swift */; };
 		38AF9C791F2F72A800FA73B8 /* Plum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AF9C781F2F72A800FA73B8 /* Plum.swift */; };
 		38B8E0311FDAE632003A3B78 /* LNPopupController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38B8E0301FDAE632003A3B78 /* LNPopupController.framework */; };
 		38B8E0321FDAE632003A3B78 /* LNPopupController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 38B8E0301FDAE632003A3B78 /* LNPopupController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		38C4BCAA1F94BAF700DABE81 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C4BCA91F94BAF700DABE81 /* CollectionViewCell.swift */; };
+		38C83D5D1FDBFBD600C7D94E /* ArtistSongs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C83D5C1FDBFBD600C7D94E /* ArtistSongs.swift */; };
 		38CC1A151F9CAEA500B2AA8D /* IndexViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38CC1A141F9CAEA500B2AA8D /* IndexViews.swift */; };
 		38D142571FB367CF003F08F5 /* SearchHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D142561FB367CF003F08F5 /* SearchHeader.swift */; };
 		38E68AC11F28C17500BFF4E2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E68AC01F28C17500BFF4E2 /* AppDelegate.swift */; };
@@ -167,10 +169,12 @@
 		389A24761FD8871B0092F979 /* QueueCellLite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueCellLite.swift; sourceTree = "<group>"; };
 		38A12EA51F7270DB00E3E53E /* AlbumInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumInfoCell.swift; sourceTree = "<group>"; };
 		38A12EA71F72834E00E3E53E /* QueueCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueCell.swift; sourceTree = "<group>"; };
+		38AC0F4F1FDC54DC0049AD09 /* ArtistUpVCB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistUpVCB.swift; sourceTree = "<group>"; };
 		38AF9C781F2F72A800FA73B8 /* Plum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plum.swift; sourceTree = "<group>"; };
 		38B8E0301FDAE632003A3B78 /* LNPopupController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = LNPopupController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		38B8E0331FDAE64B003A3B78 /* LNPopupController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LNPopupController.framework; sourceTree = "<group>"; };
 		38C4BCA91F94BAF700DABE81 /* CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
+		38C83D5C1FDBFBD600C7D94E /* ArtistSongs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistSongs.swift; sourceTree = "<group>"; };
 		38CC1A141F9CAEA500B2AA8D /* IndexViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexViews.swift; sourceTree = "<group>"; };
 		38D142561FB367CF003F08F5 /* SearchHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchHeader.swift; sourceTree = "<group>"; };
 		38E68ABD1F28C17500BFF4E2 /* Plum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plum.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -365,6 +369,7 @@
 				3859213E1FA879D900CF9059 /* ArtistsVC.swift */,
 				386CD58E1F6FC4350075EFD9 /* AlbumsByVC.swift */,
 				38E729531F2F496600F35780 /* SongsByVC.swift */,
+				38C83D5C1FDBFBD600C7D94E /* ArtistSongs.swift */,
 			);
 			path = Artists;
 			sourceTree = "<group>";
@@ -385,6 +390,7 @@
 				3858254C1FA32CE300697186 /* ArtistUpVC.swift */,
 				38F722EB1FC0409900A45CF9 /* QueueVC.swift */,
 				3801102B1FC4595300B3F35B /* EightNowPlayingVC.swift */,
+				38AC0F4F1FDC54DC0049AD09 /* ArtistUpVCB.swift */,
 			);
 			path = "Now Playing";
 			sourceTree = "<group>";
@@ -575,6 +581,7 @@
 				3871BC261FBC42A30027CA2A /* ColorCell.swift in Sources */,
 				3843ADBF1FBF39EA005E1C2F /* LyricsVC.swift in Sources */,
 				385825521FA33C8600697186 /* ArtistUpCell.swift in Sources */,
+				38C83D5D1FDBFBD600C7D94E /* ArtistSongs.swift in Sources */,
 				3858254D1FA32CE300697186 /* ArtistUpVC.swift in Sources */,
 				38E98BC31F70177200D29FB4 /* Ext.swift in Sources */,
 				38AF9C791F2F72A800FA73B8 /* Plum.swift in Sources */,
@@ -614,6 +621,7 @@
 				3890B3581F920A6C000198D8 /* Structs:Classes.swift in Sources */,
 				38401DF91F88F16E00EF64F1 /* Colors.swift in Sources */,
 				38F0BDA71FAB1CA90028008B /* PlaylistsVC.swift in Sources */,
+				38AC0F501FDC54DC0049AD09 /* ArtistUpVCB.swift in Sources */,
 				38E7294E1F2F407900F35780 /* SongsVC.swift in Sources */,
 				38A12EA81F72834E00E3E53E /* QueueCell.swift in Sources */,
 				38401DD41F88CAB800EF64F1 /* PermissionVC.swift in Sources */,
