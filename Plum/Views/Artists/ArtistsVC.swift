@@ -13,6 +13,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     
     var grid: Bool!
     var initialGrid: Bool!
+    let player = Plum.shared
     
     var collectionTypes = [[Int]]()
     var tableTypes = [[Int]]()
@@ -51,11 +52,9 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     
     func setTable(){
         self.tableView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
-        //self.tableView.backgroundColor = .clear
         setupDict()
         tableView.delegate = self
         tableView.dataSource = self
-        //self.view.addSubview(tableView)
         for i in 0 ..< tableView.numberOfSections {
             tableTypes.append(Array<Int>(repeating: 0, count: tableView.numberOfRows(inSection: i)))
         }
@@ -104,6 +103,32 @@ extension ArtistsVC: UITableViewDelegate, UITableViewDataSource{    //Table
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (result[indexes[section]]?.count)!
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let play = UITableViewRowAction(style: .default, title: "Play Now", handler: {_,path in
+            self.pickedID = self.result[self.indexes[path.section]]?[path.row].ID
+            self.playNowBtn()
+            self.tableView.setEditing(false, animated: true)
+        })
+        play.backgroundColor = .red
+        let next = UITableViewRowAction(style: .default, title: "Play Next", handler: {__,path in
+            self.pickedID = self.result[self.indexes[path.section]]?[path.row].ID
+            self.playNextBtn()
+            self.tableView.setEditing(false, animated: true)
+        })
+        next.backgroundColor = .orange
+        let shuffle = UITableViewRowAction(style: .default, title: "Shuffle", handler: {_,path in
+            self.pickedID = self.result[self.indexes[path.section]]?[path.row].ID
+            self.shuffleBtn()
+            self.tableView.setEditing(false, animated: true)
+        })
+        shuffle.backgroundColor = .purple
+        return [shuffle, next, play]
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -200,15 +225,12 @@ extension ArtistsVC{    //Other functions
     
     func playNowBtn() {
         let songs = musicQuery.shared.songsByArtistID(artist: pickedID)
-        Plum.shared.disableShuffle()
-        Plum.shared.createDefQueue(items: songs)
-        Plum.shared.playFromDefQueue(index: 0, new: true)
-        Plum.shared.play()
+        player.createDefQueue(items: songs)
+        player.playFromDefQueue(index: 0, new: true)
+        player.play()
         let path = IndexPath(row: activeRow, section: activeSection)
         if grid {
             collectionView.reloadItems(at: [path])
-        }else{
-            tableView.reloadRows(at: [path], with: .fade)
         }
     }
     
@@ -216,29 +238,25 @@ extension ArtistsVC{    //Other functions
         let songs = musicQuery.shared.songsByArtistID(artist: pickedID)
         var i = songs.count - 1
         while i > -1 {
-            Plum.shared.addNext(item: songs[i])
+            player.addNext(item: songs[i])
             i -= 1
         }
         let path = IndexPath(row: activeRow, section: activeSection)
         if grid {
             collectionView.reloadItems(at: [path])
-        }else{
-            tableView.reloadRows(at: [path], with: .fade)
         }
     }
     
     func shuffleBtn() {
         let songs = musicQuery.shared.songsByArtistID(artist: pickedID)
-        Plum.shared.createDefQueue(items: songs)
-        Plum.shared.defIndex = Int(arc4random_uniform(UInt32(songs.count)))
-        Plum.shared.shuffleCurrent()
-        Plum.shared.playFromShufQueue(index: 0, new: true)
-        Plum.shared.play()
+        player.createDefQueue(items: songs)
+        player.defIndex = Int(arc4random_uniform(UInt32(songs.count)))
+        player.shuffleCurrent()
+        player.playFromShufQueue(index: 0, new: true)
+        player.play()
         let path = IndexPath(row: activeRow, section: activeSection)
         if grid {
             collectionView.reloadItems(at: [path])
-        }else{
-            tableView.reloadRows(at: [path], with: .fade)
         }
     }
     

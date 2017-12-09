@@ -10,7 +10,7 @@ import UIKit
 import MediaPlayer
 import LNPopupController
 
-class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, QueueCellDelegate, MoreActionsCellDelegate {
+class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, QueueCellDelegate {
     var cellTypes = [[Int]]()
     var indexes = [String]()
     var songs = [MPMediaItem]()
@@ -37,10 +37,6 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             cellTypes.append(Array<Int>(repeating: 0, count: (result[index]?.count)!))
         }
         self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(SongsVC.longPress(_:)))
-        longPress.minimumPressDuration = 0.5
-        longPress.delegate = self
-        tableView.addGestureRecognizer(longPress)
         tableView.backgroundView = UIImageView(image: backround)
         //view.addSubview(tableView)
         indexView.indexes = self.indexes
@@ -77,6 +73,27 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         }
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let album = UITableViewRowAction(style: .default, title: "Album", handler: {_,path in
+            let item = self.result[self.indexes[path.section]]?[path.row]
+            self.pickedAlbumID = item?.albumPersistentID
+            self.albumBtn()
+        })
+        album.backgroundColor = .albumGreen
+        let artist = UITableViewRowAction(style: .default, title: "Artist", handler: {_,path in
+            let item = self.result[self.indexes[path.section]]?[path.row]
+            self.pickedArtistID = item?.albumArtistPersistentID
+            self.pickedAlbumID = item?.albumPersistentID
+            self.artistBtn()
+        })
+        artist.backgroundColor = .artistBlue
+        return [album, artist]
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         absoluteIndex = indexPath.absoluteRow(tableView)
         if(cellTypes[indexPath.section][indexPath.row] == 0){
@@ -89,19 +106,12 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
                 }
                 cell?.backgroundColor = .clear
                 return cell!
-            }else if cellTypes[indexPath.section][indexPath.row] == 1{
+            }else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as? QueueActionsCell
                 cell?.delegate = self
                 cell?.backgroundColor = .clear
                 return cell!
-            }else if cellTypes[indexPath.section][indexPath.row] == 2{
-                let cell = tableView.dequeueReusableCell(withIdentifier: "moreCell", for: indexPath) as? MoreActionsCell
-                cell?.delegate = self
-                cell?.backgroundColor = .clear
-                return cell!
-        }else{
-            return UITableViewCell()
-        }
+            }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -166,15 +176,6 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         }
     }
     
-    func cell(_ cell: MoreActionsCell, action: MoreActions){
-        switch action {
-        case .album:
-            albumBtn()
-        case .artist:
-            artistBtn()
-        }
-    }
-    
     func playNextBtn() {
         Plum.shared.addNext(item: songs[absoluteIndex])
         cellTypes[activeIndexSection][activeIndexRow] = 0
@@ -212,24 +213,6 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         cellTypes[activeIndexSection][activeIndexRow] = 0
         self.tableView.reloadRows(at: [IndexPath(row: self.activeIndexRow, section: activeIndexSection)], with: .fade)
         performSegue(withIdentifier: "artist", sender: nil)
-    }
-    @objc func longPress(_ longPress: UIGestureRecognizer){
-        if cellTypes[activeIndexSection][activeIndexRow] != 0{
-            cellTypes[activeIndexSection][activeIndexRow] = 0
-            tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .left)
-        }
-        if longPress.state == .recognized{
-            let touchPoint = longPress.location(in: self.tableView)
-            if let indexPath = tableView.indexPathForRow(at: touchPoint){
-                activeIndexSection = indexPath.section
-                activeIndexRow = indexPath.row
-                print("held \(result[indexes[activeIndexSection]]![activeIndexRow].title)")
-                pickedAlbumID = result[indexes[activeIndexSection]]![activeIndexRow].albumPersistentID
-                pickedArtistID = result[indexes[activeIndexSection]]![activeIndexRow].albumArtistPersistentID
-                self.cellTypes[activeIndexSection][activeIndexRow] = 2
-                self.tableView.reloadRows(at: [indexPath], with: .fade)
-            }
-        }
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {

@@ -13,6 +13,7 @@ class PlaylistsVC: UIViewController {
     
     var grid: Bool!
     var initialGrid: Bool!
+    let player = Plum.shared
     
     var indexes = [String]()
     var result = [String: [Playlist]]()
@@ -114,6 +115,31 @@ extension PlaylistsVC: UITableViewDelegate, UITableViewDataSource {
         return 94
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let play = UITableViewRowAction(style: .default, title: "Play Now", handler: {_,path in
+            self.pickedList = self.result[self.indexes[path.section]]?[path.row]
+            self.playNow()
+            self.tableView.setEditing(false, animated: true)
+        })
+        play.backgroundColor = .red
+        let next = UITableViewRowAction(style: .default, title: "Play Next", handler: {_,path in
+            self.pickedList = self.result[self.indexes[path.section]]?[path.row]
+            self.playNext()
+            self.tableView.setEditing(false, animated: true)
+        })
+        next.backgroundColor = .orange
+        let shuffle = UITableViewRowAction(style: .default, title: "Shuffle", handler: {_,path in
+            self.pickedList = self.result[self.indexes[path.section]]?[path.row]
+            self.shuffle()
+            self.tableView.setEditing(false, animated: true)
+        })
+        shuffle.backgroundColor = .purple
+        return [shuffle, next, play]
+    }
 }
 
 extension PlaylistsVC: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -196,4 +222,29 @@ extension PlaylistsVC {
         }
     }
     
+    func playNow() {
+        let items = pickedList.items
+        player.createDefQueue(items: items)
+        player.defIndex = 0
+        player.playFromDefQueue(index: 0, new: true)
+        player.play()
+    }
+    
+    func playNext() {
+        let items = pickedList.items
+        var i = items.count - 1
+        while i > -1 {
+            player.addNext(item: items[i])
+            i -= 1
+        }
+    }
+    
+    func shuffle() {
+        let items = pickedList.items
+        player.createDefQueue(items: items)
+        player.defIndex = Int(arc4random_uniform(UInt32(items.count)))
+        player.shuffleCurrent()
+        player.playFromShufQueue(index: 0, new: true)
+        player.play()
+    }
 }

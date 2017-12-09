@@ -9,7 +9,7 @@
 import UIKit
 import MediaPlayer
 
-class AlbumVC: UITableViewController, QueueCellDelegate, MoreActionsCellDelegate, UIGestureRecognizerDelegate {
+class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDelegate {
     
     var rating: Bool!
     var bigAssQuery = musicQuery.shared
@@ -79,18 +79,11 @@ class AlbumVC: UITableViewController, QueueCellDelegate, MoreActionsCellDelegate
                 }
                 cell?.backgroundColor = .clear
                 return cell!
-            }else if cellTypes[indexPath.row] == 1{
+            }else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as? QueueActionsCell
                 cell?.delegate = self
                 cell?.backgroundColor = .clear
                 return cell!
-            }else if cellTypes[indexPath.row] == 2{
-                let cell = tableView.dequeueReusableCell(withIdentifier: "moreCell", for: indexPath) as? MoreActionsCell
-                cell?.delegate = self
-                cell?.backgroundColor = .clear
-                return cell!
-            }else{
-                return UITableViewCell()
             }
         }else{
             absoluteIndex = indexPath.absoluteRow(tableView)
@@ -104,18 +97,11 @@ class AlbumVC: UITableViewController, QueueCellDelegate, MoreActionsCellDelegate
                 }
                 cell?.backgroundColor = .clear
                 return cell!
-            }else if cellTypes[indexPath.row] == 1{
+            }else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as? QueueActionsCell
                 cell?.delegate = self
                 cell?.backgroundColor = .clear
                 return cell!
-            }else if cellTypes[indexPath.row] == 2{
-                let cell = tableView.dequeueReusableCell(withIdentifier: "moreCell", for: indexPath) as? MoreActionsCell
-                cell?.delegate = self
-                cell?.backgroundColor = .clear
-                return cell!
-            }else{
-                return UITableViewCell()
             }
         }
     }
@@ -209,10 +195,6 @@ class AlbumVC: UITableViewController, QueueCellDelegate, MoreActionsCellDelegate
         case.playLast:
             playLastBtn()
         }
-    }
-    
-    func cell(_ cell: MoreActionsCell, action: MoreActions){
-        artistBtn()
     }
     
     func playNextBtn() {

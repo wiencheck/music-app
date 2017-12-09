@@ -66,7 +66,7 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
 
 }
 
-extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDelegate, MoreActionsCellDelegate{
+extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDelegate{
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return indexesInt.count
@@ -88,18 +88,11 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
             }
             cell?.backgroundColor = .clear
             return cell!
-        }else if cellTypes[indexPath.section]?[indexPath.row] == 1{
+        }else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as? QueueActionsCell
             cell?.delegate = self
             cell?.backgroundColor = .clear
             return cell!
-        }else if cellTypes[indexPath.section]?[indexPath.row] == 2{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "moreCell", for: indexPath) as? MoreActionsCell
-            cell?.delegate = self
-            cell?.backgroundColor = .clear
-            return cell!
-        }else{
-            return UITableViewCell()
         }
     }
     
@@ -163,15 +156,6 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
             playNextBtn()
         case.playLast:
             playLastBtn()
-        }
-    }
-    
-    func cell(_ cell: MoreActionsCell, action: MoreActions){
-        switch action {
-        case .album:
-            albumBtn()
-        case .artist:
-            artistBtn()
         }
     }
     

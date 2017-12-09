@@ -13,6 +13,7 @@ class AlbumsVC: UIViewController {
     
     var grid: Bool!
     var initialGrid: Bool!
+    let player = Plum.shared
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableIndexView: TableIndexView!
@@ -22,6 +23,7 @@ class AlbumsVC: UIViewController {
     var indexes = [String]()
     var result = [String: [AlbumB]]()
     var picked: AlbumB!
+    var selected: AlbumB!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -112,8 +114,33 @@ extension AlbumsVC: UITableViewDelegate, UITableViewDataSource{     //Table
         performSegue(withIdentifier: "album", sender: nil)
         tableView.deselectRow(at: indexPath, animated: true)
     }
-
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let play = UITableViewRowAction(style: .default, title: "Play Now", handler: {_,path in
+            self.selected = self.result[self.indexes[path.section]]?[path.row]
+            self.playNow()
+            self.tableView.setEditing(false, animated: true)
+        })
+        play.backgroundColor = .red
+        let next = UITableViewRowAction(style: .default, title: "Play Next", handler: {_,path in
+            self.selected = self.result[self.indexes[path.section]]?[path.row]
+            self.playNext()
+            self.tableView.setEditing(false, animated: true)
+        })
+        next.backgroundColor = .orange
+        let shuffle = UITableViewRowAction(style: .default, title: "Shuffle", handler: {_,path in
+            self.selected = self.result[self.indexes[path.section]]?[path.row]
+            self.shuffle()
+            self.tableView.setEditing(false, animated: true)
+        })
+        shuffle.backgroundColor = .purple
+        return [shuffle, next, play]
+    }
+
 }
 
 extension AlbumsVC: UICollectionViewDelegate, UICollectionViewDataSource{       //Collection
@@ -143,6 +170,32 @@ extension AlbumsVC: UICollectionViewDelegate, UICollectionViewDataSource{       
 }
 
 extension AlbumsVC{     //Other functions
+    
+    func playNow() {
+        let items = selected.items
+        player.createDefQueue(items: items)
+        player.defIndex = 0
+        player.playFromDefQueue(index: 0, new: true)
+        player.play()
+    }
+    
+    func playNext() {
+        let items = selected.items
+        var i = items.count - 1
+        while i > -1 {
+            player.addNext(item: items[i])
+            i -= 1
+        }
+    }
+    
+    func shuffle() {
+        let items = selected.items
+        player.createDefQueue(items: items)
+        player.defIndex = Int(arc4random_uniform(UInt32(items.count)))
+        player.shuffleCurrent()
+        player.playFromShufQueue(index: 0, new: true)
+        player.play()
+    }
     
     func readSettings(){
         let defaults = UserDefaults.standard

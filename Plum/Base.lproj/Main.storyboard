@@ -1245,61 +1245,6 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="moreCell" rowHeight="62" id="Kd8-G0-d1f" userLabel="moreCell" customClass="MoreActionsCell" customModule="Plum" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="152" width="320" height="62"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Kd8-G0-d1f" id="oN8-Y7-N4h">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="61.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="UHw-wd-yQE">
-                                                    <rect key="frame" x="30" y="13" width="260" height="36"/>
-                                                    <subviews>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IZG-4C-7s3">
-                                                            <rect key="frame" x="0.0" y="0.0" width="120" height="36"/>
-                                                            <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="36" id="Uqb-L7-bSe"/>
-                                                                <constraint firstAttribute="width" constant="120" id="ac3-rq-1mr"/>
-                                                            </constraints>
-                                                            <state key="normal" title="Album"/>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                                    <integer key="value" value="5"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                                                                    <integer key="value" value="0"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                            </userDefinedRuntimeAttributes>
-                                                            <connections>
-                                                                <action selector="albumPressed:" destination="Kd8-G0-d1f" eventType="touchUpInside" id="xKH-V2-aJ1"/>
-                                                            </connections>
-                                                        </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JHT-kG-wgc">
-                                                            <rect key="frame" x="140" y="0.0" width="120" height="36"/>
-                                                            <color key="backgroundColor" red="0.0" green="0.25098040700000002" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <state key="normal" title="Artist"/>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                                    <integer key="value" value="5"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                                                                    <integer key="value" value="0"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                            </userDefinedRuntimeAttributes>
-                                                            <connections>
-                                                                <action selector="artistPressed:" destination="Kd8-G0-d1f" eventType="touchUpInside" id="KHt-sg-lQL"/>
-                                                            </connections>
-                                                        </button>
-                                                    </subviews>
-                                                </stackView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="UHw-wd-yQE" firstAttribute="centerY" secondItem="oN8-Y7-N4h" secondAttribute="centerY" id="0vM-6U-Kbi"/>
-                                                <constraint firstItem="UHw-wd-yQE" firstAttribute="centerX" secondItem="oN8-Y7-N4h" secondAttribute="centerX" id="vi4-Ma-COa"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
                                 </prototypes>
                             </tableView>
                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="alO-IS-L7N" customClass="TableIndexView" customModule="Plum" customModuleProvider="target">
@@ -1328,6 +1273,7 @@
                         <outlet property="indexView" destination="alO-IS-L7N" id="Ce3-Lu-bRX"/>
                         <outlet property="tableView" destination="Aiz-RW-8Cf" id="e6b-8J-pU3"/>
                         <segue destination="O5b-aR-CcB" kind="show" identifier="album" id="SrT-cb-STQ"/>
+                        <segue destination="Y0c-SE-ysp" kind="show" identifier="artist" id="YnW-II-s3C"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eoa-2c-vjQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1824,40 +1770,6 @@
                                             <outlet property="titleLabel" destination="XkK-F3-7OY" id="Sqp-r0-aEK"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="moreCell" rowHeight="62" id="Rm4-OW-Ifg" userLabel="moreCell" customClass="MoreActionsCell" customModule="Plum" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="383" width="320" height="62"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Rm4-OW-Ifg" id="Dm2-oX-Wfn">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="61.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="roF-ik-Mt3">
-                                                    <rect key="frame" x="100" y="6" width="120" height="49.5"/>
-                                                    <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="120" id="QrU-Xd-NXi"/>
-                                                    </constraints>
-                                                    <state key="normal" title="Album"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                            <integer key="value" value="5"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                                                            <integer key="value" value="0"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
-                                                    <connections>
-                                                        <action selector="albumPressed:" destination="Rm4-OW-Ifg" eventType="touchUpInside" id="urx-FI-TR5"/>
-                                                    </connections>
-                                                </button>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="roF-ik-Mt3" secondAttribute="bottom" constant="6" id="WKa-EV-f8y"/>
-                                                <constraint firstItem="roF-ik-Mt3" firstAttribute="top" secondItem="Dm2-oX-Wfn" secondAttribute="top" constant="6" id="pyB-Lh-hxb"/>
-                                                <constraint firstItem="roF-ik-Mt3" firstAttribute="centerX" secondItem="Dm2-oX-Wfn" secondAttribute="centerX" id="zrg-Bf-Pop"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
                                 </prototypes>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GHa-r8-mEQ" userLabel="Alp" customClass="TableIndexView" customModule="Plum" customModuleProvider="target">
@@ -2058,42 +1970,8 @@
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="moreCell" rowHeight="62" id="1de-Hy-3Og" userLabel="moreCell" customClass="MoreActionsCell" customModule="Plum" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="152" width="320" height="62"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1de-Hy-3Og" id="zRO-og-qMV">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="61.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qDH-up-Qdo">
-                                            <rect key="frame" x="100" y="6" width="120" height="49.5"/>
-                                            <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="120" id="PYz-1x-fQa"/>
-                                            </constraints>
-                                            <state key="normal" title="Album"/>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                    <integer key="value" value="5"/>
-                                                </userDefinedRuntimeAttribute>
-                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                                                    <integer key="value" value="0"/>
-                                                </userDefinedRuntimeAttribute>
-                                            </userDefinedRuntimeAttributes>
-                                            <connections>
-                                                <action selector="albumPressed:" destination="1de-Hy-3Og" eventType="touchUpInside" id="fO8-LE-ces"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="qDH-up-Qdo" secondAttribute="bottom" constant="6" id="KMN-e8-xHE"/>
-                                        <constraint firstItem="qDH-up-Qdo" firstAttribute="centerX" secondItem="zRO-og-qMV" secondAttribute="centerX" id="Wpp-bm-Sh7"/>
-                                        <constraint firstItem="qDH-up-Qdo" firstAttribute="top" secondItem="zRO-og-qMV" secondAttribute="top" constant="6" id="bpv-Vb-Pcr"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="letterCell" textLabel="xTf-Hn-vlL" rowHeight="21" style="IBUITableViewCellStyleDefault" id="S5G-nS-zOR">
-                                <rect key="frame" x="0.0" y="214" width="320" height="21"/>
+                                <rect key="frame" x="0.0" y="152" width="320" height="21"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="S5G-nS-zOR" id="uBo-KM-FtC">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="20.5"/>
@@ -2110,7 +1988,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="infoCell" rowHeight="112" id="9Wv-B5-Z8J" customClass="AlbumInfoCell" customModule="Plum" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="235" width="320" height="112"/>
+                                <rect key="frame" x="0.0" y="173" width="320" height="112"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9Wv-B5-Z8J" id="bQM-cq-DaJ">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="111.5"/>
@@ -2207,7 +2085,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="albumSongCell" rowHeight="44" id="YXU-8z-h4W" customClass="SongInAlbumCell" customModule="Plum" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="347" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="285" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YXU-8z-h4W" id="Hyv-Xv-T54">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
@@ -2261,7 +2139,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="extendedSongCell" rowHeight="54" id="7Sg-nm-WM4" customClass="SongInAlbumCell" customModule="Plum" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="391" width="320" height="54"/>
+                                <rect key="frame" x="0.0" y="329" width="320" height="54"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7Sg-nm-WM4" id="JXd-a6-1fH">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="53.5"/>
@@ -2678,40 +2556,6 @@
                                         <constraint firstAttribute="bottom" secondItem="KcD-3d-ygw" secondAttribute="bottom" constant="6" id="Btc-aW-GLR"/>
                                         <constraint firstItem="KcD-3d-ygw" firstAttribute="centerX" secondItem="FsA-Fp-LEh" secondAttribute="centerX" id="Gtm-8f-v5B"/>
                                         <constraint firstItem="KcD-3d-ygw" firstAttribute="leading" secondItem="FsA-Fp-LEh" secondAttribute="leading" constant="7" id="Qcd-C8-Jh2"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="moreCell" rowHeight="62" id="czD-7h-0wg" userLabel="moreCell" customClass="MoreActionsCell" customModule="Plum" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="300" width="320" height="62"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="czD-7h-0wg" id="TMg-aV-0F4">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="61.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8HT-uw-JOB">
-                                            <rect key="frame" x="100" y="6" width="120" height="49"/>
-                                            <color key="backgroundColor" red="0.0" green="0.25098040700000002" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="120" id="5En-Ou-TAd"/>
-                                            </constraints>
-                                            <state key="normal" title="Artist"/>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                    <integer key="value" value="5"/>
-                                                </userDefinedRuntimeAttribute>
-                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                                                    <integer key="value" value="0"/>
-                                                </userDefinedRuntimeAttribute>
-                                            </userDefinedRuntimeAttributes>
-                                            <connections>
-                                                <action selector="albumPressed:" destination="czD-7h-0wg" eventType="touchUpInside" id="dZq-6T-IRa"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="8HT-uw-JOB" firstAttribute="top" secondItem="TMg-aV-0F4" secondAttribute="top" constant="6" id="Epz-43-eoV"/>
-                                        <constraint firstAttribute="bottom" secondItem="8HT-uw-JOB" secondAttribute="bottom" constant="6" id="Yqr-fz-kGr"/>
-                                        <constraint firstItem="8HT-uw-JOB" firstAttribute="centerX" secondItem="TMg-aV-0F4" secondAttribute="centerX" id="yyH-gE-9KT"/>
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -4728,61 +4572,6 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="moreCell" rowHeight="62" id="NBk-L9-GPh" userLabel="moreCell" customClass="MoreActionsCell" customModule="Plum" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="152" width="320" height="62"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NBk-L9-GPh" id="Vo8-UV-Jeb">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="61.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="HGz-JK-nxf">
-                                                    <rect key="frame" x="30" y="13" width="260" height="36"/>
-                                                    <subviews>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7ST-TA-Aa6">
-                                                            <rect key="frame" x="0.0" y="0.0" width="120" height="36"/>
-                                                            <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="120" id="49h-ty-ep1"/>
-                                                                <constraint firstAttribute="height" constant="36" id="pZo-hg-uPX"/>
-                                                            </constraints>
-                                                            <state key="normal" title="Album"/>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                                    <integer key="value" value="5"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                                                                    <integer key="value" value="0"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                            </userDefinedRuntimeAttributes>
-                                                            <connections>
-                                                                <action selector="albumPressed:" destination="NBk-L9-GPh" eventType="touchUpInside" id="yAy-Pz-Rhj"/>
-                                                            </connections>
-                                                        </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hVz-d5-1EX">
-                                                            <rect key="frame" x="140" y="0.0" width="120" height="36"/>
-                                                            <color key="backgroundColor" red="0.0" green="0.25098040700000002" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <state key="normal" title="Artist"/>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                                    <integer key="value" value="5"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                                                                    <integer key="value" value="0"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                            </userDefinedRuntimeAttributes>
-                                                            <connections>
-                                                                <action selector="artistPressed:" destination="NBk-L9-GPh" eventType="touchUpInside" id="9g9-8x-gxT"/>
-                                                            </connections>
-                                                        </button>
-                                                    </subviews>
-                                                </stackView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="HGz-JK-nxf" firstAttribute="centerX" secondItem="Vo8-UV-Jeb" secondAttribute="centerX" id="8AS-3y-9sX"/>
-                                                <constraint firstItem="HGz-JK-nxf" firstAttribute="centerY" secondItem="Vo8-UV-Jeb" secondAttribute="centerY" id="8KG-xx-SqJ"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
                                 </prototypes>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CJs-jX-kTO" customClass="TableIndexView" customModule="Plum" customModuleProvider="target">
@@ -4999,7 +4788,7 @@
         <image name="zeroVol" width="175" height="298"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="7ph-u4-5tD"/>
+        <segue reference="LCY-3G-uHV"/>
         <segue reference="uGV-fK-q4R"/>
     </inferredMetricsTieBreakers>
 </document>
