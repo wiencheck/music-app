@@ -297,7 +297,6 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        //shouldShowResults = true
         tableView.reloadData()
     }
     
@@ -456,7 +455,14 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     func playNow(content: Content) {
         switch content {
         case .song:
-            player.landInAlbum(pickedSong, new: true)
+            switch GlobalSettings.deployIn {
+            case .album:
+                player.landInAlbum(pickedSong, new: true)
+            case .artist:
+                player.landInArtist(pickedSong, new: true)
+            case .songs:
+                player.landInAlbum(pickedSong, new: true)
+            }
             player.play()
         case .artist:
             let songs = musicQuery.shared.songsByArtistID(artist: pickedArtistID)

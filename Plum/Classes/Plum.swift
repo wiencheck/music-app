@@ -43,6 +43,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     var userQueueIndex: Int!
     var usrIndex: Int!
     var isShuffle: Bool!
+    var isRepeat: Bool!
     var shufQueue = [MPMediaItem]()
     var shufQueueCount: Int!{
         return defQueueCount
@@ -141,6 +142,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         usrIndex = 0
         isShuffle = false
         shufIndex = 0
+        isRepeat = false
         NotificationCenter.default.addObserver(self, selector: #selector(Plum.handleAudioSessionInterruption(notification:)), name: .AVAudioSessionInterruption, object: AVAudioSession.sharedInstance())
         if observed{
             player.addObserver(self, forKeyPath: #keyPath(AVAudioPlayer.data), options: [.new, .initial], context: nil)
@@ -450,10 +452,19 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         return index
     }
     
+    func repeatMode(_ enable: Bool) {
+        isRepeat = enable
+        shouldPlay = enable
+    }
+    
     public func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         timer.invalidate()
         currentItem?.setValue((currentItem?.playCount)! + 1, forKey: MPMediaItemPropertyPlayCount)
-        next()
+        if isRepeat {
+            player.currentTime = 0.0
+        }else{
+            next()
+        }
         if shouldPlay { play() }
     }
     

@@ -39,6 +39,8 @@ class EightNowPlayingVC: UIViewController {
     @IBOutlet weak var lyricsTextView: UITextView!
     @IBOutlet weak var lyricsView: UIView!
     @IBOutlet weak var shufView: UIView!
+    @IBOutlet weak var repView: UIView!
+    @IBOutlet weak var repBtn: UIButton!
     @IBOutlet weak var lyricsButton: UIButton!
     @IBOutlet weak var ratingButton: UIButton!
     @IBOutlet weak var BackgroundView: UIView!
@@ -80,6 +82,7 @@ class EightNowPlayingVC: UIViewController {
         setLyricsView()
         setSlider()
         shufView.layer.cornerRadius = 6.0
+        repView.layer.cornerRadius = 6.0
         if GlobalSettings.blur {
             let blur = UIBlurEffect(style: .dark)
             let fx = UIVisualEffectView(frame: BackgroundView.frame)
@@ -176,12 +179,19 @@ class EightNowPlayingVC: UIViewController {
     @IBAction func shuffleBtn(_ sender: Any) {
         if(player.isShuffle){
             player.disableShuffle()
-            shufBtn.setTitle("Shuffle off", for: .normal)
         }else{
             player.shuffleCurrent()
-            shufBtn.setTitle("Shuffle on", for: .normal)
         }
         outOfLabel.text = player.labelString(type: "out of")
+        setColors()
+    }
+    
+    @IBAction func repeatBtn() {
+        if player.isRepeat {
+            player.repeatMode(false)
+        }else{
+            player.repeatMode(true)
+        }
         setColors()
     }
 
@@ -447,11 +457,6 @@ extension EightNowPlayingVC {       //Kolory i UI
         }else{
             self.playbackBtn.setImage(#imageLiteral(resourceName: "play-butt"), for: .normal)
         }
-        if player.isShuffle {
-            shufBtn.setTitle("Shuffle on", for: .normal)
-        }else{
-            shufBtn.setTitle("Shuffle off", for: .normal)
-        }
         self.artworkImage.image = self.image
         self.outOfLabel.text = self.player.labelString(type: "out of")
         self.timeSlider.setValue(0, animated: false)
@@ -576,6 +581,13 @@ extension EightNowPlayingVC {       //Kolory i UI
             shufBtn.setTitleColor(colors.primaryColor, for: .normal)
             shufView.backgroundColor = .clear
         }
+        if player.isRepeat {
+            repBtn.setTitleColor(colors.detailColor, for: .normal)
+            repView.backgroundColor = colors.primaryColor.withAlphaComponent(0.3)
+        }else{
+            repBtn.setTitleColor(colors.detailColor, for: .normal)
+            repView.backgroundColor = .clear
+        }
     }
     
     func blur() {
@@ -585,6 +597,7 @@ extension EightNowPlayingVC {       //Kolory i UI
         nextBtn.tintColor = .white
         prevBtn.tintColor = .white
         shufBtn.tintColor = .clear
+        repBtn.tintColor = .clear
         elapsedLabel.textColor = UIColor.white.withAlphaComponent(0.3)
         remainingLabel.textColor = UIColor.white.withAlphaComponent(0.3)
         let track = #imageLiteral(resourceName: "track")
@@ -607,6 +620,13 @@ extension EightNowPlayingVC {       //Kolory i UI
         }else{
             shufBtn.setTitleColor(UIColor.white.withAlphaComponent(0.3), for: .normal)
             shufView.backgroundColor = .clear
+        }
+        if player.isRepeat {
+            repBtn.setTitleColor(.white, for: .normal)
+            repView.backgroundColor = UIColor.white.withAlphaComponent(0.3)
+        }else{
+            repBtn.setTitleColor(UIColor.white.withAlphaComponent(0.3), for: .normal)
+            repView.backgroundColor = .clear
         }
         lyricsButton.tintColor = .white
         ratingButton.tintColor = .white
