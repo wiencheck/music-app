@@ -42,10 +42,6 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
             songs[i].index = i
         }
         upperBar.title = album.name
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(PlaylistVC.longPress(_:)))
-        longPress.minimumPressDuration = 0.5
-        longPress.delegate = self
-        self.tableView.addGestureRecognizer(longPress)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -109,15 +105,13 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableCell(withIdentifier: "infoCell") as! AlbumInfoCell
         header.setup(album: album, play: true)
-        let imv = UIImageView(frame: header.bounds)
-        imv.autoresizingMask = [.flexibleWidth, .flexibleHeight, .flexibleBottomMargin, .flexibleRightMargin, .flexibleLeftMargin, .flexibleTopMargin]
-        imv.contentMode = .scaleAspectFill // OR .scaleAspectFill
-        imv.clipsToBounds = true
+        let imv = UIImageView(frame: header.frame)
+        imv.contentMode = .scaleToFill
         imv.image = #imageLiteral(resourceName: "background_se")
         header.backgroundView = imv
         let v = UIView()
         v.addSubview(header)
-        v.layer.borderWidth = 0.7
+        v.layer.borderWidth = 0.5
         v.layer.borderColor = tableView.separatorColor?.cgColor
         return v
     }

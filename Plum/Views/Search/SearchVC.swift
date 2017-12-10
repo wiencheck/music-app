@@ -291,9 +291,11 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        let path = IndexPath(row: activeRow, section: 2)
-        cellTypes[activeRow] = 0
-        tableView.reloadRows(at: [path], with: .fade)
+        if shouldShowResults {
+            let path = IndexPath(row: activeRow, section: 2)
+            cellTypes[activeRow] = 0
+            tableView.reloadRows(at: [path], with: .fade)
+        }
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {

@@ -32,7 +32,9 @@ class AlbumInfoCell: UITableViewCell {
     func setup(album: AlbumB, play: Bool){
         self.album = album
         playBtn.isHidden = play
-        shufBtn.isHidden = false
+        shufBtn.setImage(#imageLiteral(resourceName: "shuffle").imageScaled(toFit: CGSize(width: 28, height: 22)).tintPictogram(with: GlobalSettings.tint.color), for: .normal)
+        playBtn.setImage(#imageLiteral(resourceName: "play-butt").imageScaled(toFit: CGSize(width: 36, height: 24)), for: .normal)
+        playBtn.tintColor = GlobalSettings.tint.color
         songs = album.items
         titleLabel.text = album.name
         yearLabel.text = album.year

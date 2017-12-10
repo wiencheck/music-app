@@ -65,139 +65,157 @@ class ArtistSongs: UIViewController {
 extension ArtistSongs: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return indexes.count
+        return indexes.count + 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (result[indexes[section]]?.count)!
+        if section == 0 {
+            return 1
+        }else{
+            return (result[indexes[section-1]]?.count)!
+        }
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if sort == .album {
-            return headers[section]
+            if section == 0 {
+                return UIView()
+            }else{
+                return headers[section-1]
+            }
         }else{
             return UIView()
         }
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if sort == .alphabetically {
-            return "\(section) / \(tableView.numberOfSections)"
-        }else{
-            return String()
-        }
-    }
-    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if sort == .album {
-            return 112
-        }else{
+        if section == 0 {
             return 0
+        }else{
+            if sort == .album {
+                return 112
+            }else{
+                return 0
+            }
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if sort == .album {
-            if albums[indexPath.section].manyArtists {
-                return 54
-            }else{
-                return 44
-            }
+        if indexPath.section == 0 {
+            return 44
         }else{
-            return 62
+            if sort == .album {
+                if albums[indexPath.section-1].manyArtists {
+                    return 54
+                }else{
+                    return 44
+                }
+            }else{
+                return 62
+            }
         }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        absoluteIndex = indexPath.absoluteRow(tableView)
-        if sort == .alphabetically {
-            if typesSongs[indexPath.section][indexPath.row] == 0 {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! SongCell
-                let item = result[indexes[indexPath.section]]?[indexPath.row]
-                cell.setup(item: item!)
-                cell.backgroundColor = .clear
-                return cell
-            }else{
-                let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as! QueueActionsCell
-                cell.delegate = self
-                cell.backgroundColor = .clear
-                return cell
-            }
+        if indexPath.section == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath)
+            cell.textLabel?.text = "Shuffle"
+            cell.backgroundColor = .clear
+            return cell
         }else{
-            if typesAlbums[indexPath.section][indexPath.row] == 0 {
-                if albums[indexPath.section].manyArtists {
-                    let cell = tableView.dequeueReusableCell(withIdentifier: "extendedSongCell", for: indexPath) as! SongInAlbumCell
-                    let item = result[indexes[indexPath.section]]?[indexPath.row]
-                    cell.setupA(item: item!)
+            if sort == .alphabetically {
+                if typesSongs[indexPath.section-1][indexPath.row] == 0 {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! SongCell
+                    let item = result[indexes[indexPath.section-1]]?[indexPath.row]
+                    cell.setup(item: item!)
                     cell.backgroundColor = .clear
                     return cell
                 }else{
-                    let cell = tableView.dequeueReusableCell(withIdentifier: "albumSongCell", for: indexPath) as! SongInAlbumCell
-                    let item = result[indexes[indexPath.section]]?[indexPath.row]
-                    cell.setup(item: item!)
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as! QueueActionsCell
+                    cell.delegate = self
                     cell.backgroundColor = .clear
                     return cell
                 }
             }else{
-                let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as! QueueActionsCell
-                cell.delegate = self
-                cell.backgroundColor = .clear
-                return cell
+                if typesAlbums[indexPath.section-1][indexPath.row] == 0 {
+                    if albums[indexPath.section-1].manyArtists {
+                        let cell = tableView.dequeueReusableCell(withIdentifier: "extendedSongCell", for: indexPath) as! SongInAlbumCell
+                        let item = result[indexes[indexPath.section-1]]?[indexPath.row]
+                        cell.setupA(item: item!)
+                        cell.backgroundColor = .clear
+                        return cell
+                    }else{
+                        let cell = tableView.dequeueReusableCell(withIdentifier: "albumSongCell", for: indexPath) as! SongInAlbumCell
+                        let item = result[indexes[indexPath.section-1]]?[indexPath.row]
+                        cell.setup(item: item!)
+                        cell.backgroundColor = .clear
+                        return cell
+                    }
+                }else{
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as! QueueActionsCell
+                    cell.delegate = self
+                    cell.backgroundColor = .clear
+                    return cell
+                }
             }
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if sort == .album {
-            if typesAlbums[activeIndexSection][activeIndexRow] != 0 {
-                typesAlbums[activeIndexSection][activeIndexRow] = 0
-                tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .fade)
-            }
-            activeIndexSection = indexPath.section
-            activeIndexRow = indexPath.row
-            absoluteIndex = indexPath.absoluteRow(tableView)
-            if typesAlbums[activeIndexSection][activeIndexRow] == 0 {
-                if player.isPlayin() {
-                    typesAlbums[activeIndexSection][activeIndexRow] = 1
-                    tableView.reloadRows(at: [indexPath], with: .fade)
-                }else{
-                    if player.isShuffle {
-                        player.disableShuffle()
-                        player.createDefQueue(items: songsByAlbums)
-                        player.defIndex = absoluteIndex
-                        player.shuffleCurrent()
-                        player.playFromShufQueue(index: 0, new: true)
-                    }else{
-                        player.createDefQueue(items: songsByAlbums)
-                        player.playFromDefQueue(index: absoluteIndex, new: true)
-                    }
-                    player.play()
-                }
-            }
+        if indexPath.section == 0 {
+            print("Shuffle")
         }else{
-            if typesSongs[activeIndexSection][activeIndexRow] != 0 {
-                typesSongs[activeIndexSection][activeIndexRow] = 0
-                tableView.reloadRows(at: [IndexPath(row: activeIndexRow,section: activeIndexSection)], with: .fade)
-            }
-            activeIndexRow = indexPath.row
-            activeIndexSection = indexPath.section
-            absoluteIndex = indexPath.absoluteRow(tableView)
-            if typesSongs[activeIndexSection][activeIndexRow] == 0 {
-                if player.isPlayin() {
-                    typesSongs[activeIndexSection][activeIndexRow] = 1
-                    tableView.reloadRows(at: [indexPath], with: .fade)
-                }else{
-                    if player.isShuffle {
-                        player.disableShuffle()
-                        player.createDefQueue(items: songs)
-                        player.defIndex = activeIndexRow
-                        player.shuffleCurrent()
-                        player.playFromShufQueue(index: 0, new: true)
+            if sort == .album {
+                if typesAlbums[activeIndexSection][activeIndexRow] != 0 {
+                    typesAlbums[activeIndexSection][activeIndexRow] = 0
+                    tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .fade)
+                }
+                activeIndexSection = indexPath.section - 1
+                activeIndexRow = indexPath.row
+                absoluteIndex = indexPath.absoluteRow(tableView) - 1
+                if typesAlbums[activeIndexSection][activeIndexRow] == 0 {
+                    if player.isPlayin() {
+                        typesAlbums[activeIndexSection][activeIndexRow] = 1
+                        tableView.reloadRows(at: [indexPath], with: .fade)
                     }else{
-                        player.createDefQueue(items: songs)
-                        player.playFromDefQueue(index: absoluteIndex, new: true)
+                        if player.isShuffle {
+                            player.disableShuffle()
+                            player.createDefQueue(items: songsByAlbums)
+                            player.defIndex = absoluteIndex
+                            player.shuffleCurrent()
+                            player.playFromShufQueue(index: 0, new: true)
+                        }else{
+                            player.createDefQueue(items: songsByAlbums)
+                            player.playFromDefQueue(index: absoluteIndex, new: true)
+                        }
+                        player.play()
                     }
-                    player.play()
+                }
+            }else{
+                if typesSongs[activeIndexSection][activeIndexRow] != 0 {
+                    typesSongs[activeIndexSection][activeIndexRow] = 0
+                    tableView.reloadRows(at: [IndexPath(row: activeIndexRow,section: activeIndexSection)], with: .fade)
+                }
+                activeIndexRow = indexPath.row
+                activeIndexSection = indexPath.section - 1
+                absoluteIndex = indexPath.absoluteRow(tableView) - 1
+                if typesSongs[activeIndexSection][activeIndexRow] == 0 {
+                    if player.isPlayin() {
+                        typesSongs[activeIndexSection][activeIndexRow] = 1
+                        tableView.reloadRows(at: [indexPath], with: .fade)
+                    }else{
+                        if player.isShuffle {
+                            player.disableShuffle()
+                            player.createDefQueue(items: songs)
+                            player.defIndex = activeIndexRow
+                            player.shuffleCurrent()
+                            player.playFromShufQueue(index: 0, new: true)
+                        }else{
+                            player.createDefQueue(items: songs)
+                            player.playFromDefQueue(index: absoluteIndex, new: true)
+                        }
+                        player.play()
+                    }
                 }
             }
         }
@@ -217,6 +235,7 @@ extension ArtistSongs: UIGestureRecognizerDelegate, QueueCellDelegate {
         case.playLast:
             playLastBtn()
         }
+        tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection+1)], with: .right)
     }
     
     func playNextBtn() {
@@ -227,7 +246,6 @@ extension ArtistSongs: UIGestureRecognizerDelegate, QueueCellDelegate {
             Plum.shared.addNext(item: songs[absoluteIndex])
             typesSongs[activeIndexSection][activeIndexRow] = 0
         }
-        tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .right)
     }
     func playLastBtn() {
         if sort == .album{
@@ -237,7 +255,6 @@ extension ArtistSongs: UIGestureRecognizerDelegate, QueueCellDelegate {
             Plum.shared.addLast(item: songs[absoluteIndex])
             typesSongs[activeIndexSection][activeIndexRow] = 0
         }
-        tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .right)
     }
     func playNowBtn() {
         if(Plum.shared.isUsrQueue){
@@ -266,21 +283,20 @@ extension ArtistSongs: UIGestureRecognizerDelegate, QueueCellDelegate {
             Plum.shared.playFromDefQueue(index: absoluteIndex, new: true)
         }
         Plum.shared.play()
-        tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .right)
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         if sort == .album{
             if typesAlbums[activeIndexSection][activeIndexRow] != 0 {
                 typesAlbums[activeIndexSection][activeIndexRow] = 0
-                let indexPath = IndexPath(row: activeIndexRow, section: activeIndexSection)
+                let indexPath = IndexPath(row: activeIndexRow, section: activeIndexSection+1)
                 self.tableView.deselectRow(at: indexPath, animated: true)
                 self.tableView.reloadRows(at: [indexPath], with: .fade)
             }
         }else{
             if typesSongs[activeIndexSection][activeIndexRow] != 0 {
                 typesSongs[activeIndexSection][activeIndexRow] = 0
-                let indexPath = IndexPath(row: activeIndexRow, section: 0)
+                let indexPath = IndexPath(row: activeIndexRow, section: 1)
                 self.tableView.deselectRow(at: indexPath, animated: true)
                 self.tableView.reloadRows(at: [indexPath], with: .fade)
             }

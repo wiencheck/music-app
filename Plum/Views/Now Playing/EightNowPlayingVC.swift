@@ -694,8 +694,8 @@ extension EightNowPlayingVC {       //Kolory i UI
         for current in temp {
             if current.isKind(of: UISlider.self) {
                 let tempSlider = current as! UISlider
-                let minT = #imageLiteral(resourceName: "minVolTrack").imageScaled(toFit: CGSize(width: 100, height: 4))
-                let maxT = #imageLiteral(resourceName: "maxVolTrack").imageScaled(toFit: CGSize(width: 100, height: 4))
+                let minT = #imageLiteral(resourceName: "minVolTrack").imageScaled(toFit: CGSize(width: 90, height: 3))
+                let maxT = #imageLiteral(resourceName: "maxVolTrack").imageScaled(toFit: CGSize(width: 90, height: 3))
                 tempSlider.setMinimumTrackImage(minT?.tintPictogram(with: min), for: .normal)
                 tempSlider.setMaximumTrackImage(maxT?.tintPictogram(with: max), for: .normal)
                 let size = CGSize(width: 20, height: 20)
