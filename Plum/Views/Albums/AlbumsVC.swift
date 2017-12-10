@@ -12,7 +12,6 @@ import MediaPlayer
 class AlbumsVC: UIViewController {
     
     var grid: Bool!
-    var initialGrid: Bool!
     let player = Plum.shared
     
     @IBOutlet weak var tableView: UITableView!
@@ -31,20 +30,17 @@ class AlbumsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
-        readSettings()
+        grid = GlobalSettings.albumsGrid
         if grid{
             setCollection()
         }else{
             setTable()
         }
-        initialGrid = grid
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
-        readSettings()
-        if initialGrid != grid{
-            initialGrid = grid
+        if grid != GlobalSettings.albumsGrid{
             self.viewDidLoad()
         }
     }
@@ -259,19 +255,6 @@ extension AlbumsVC{     //Other functions
         player.shuffleCurrent()
         player.playFromShufQueue(index: 0, new: true)
         player.play()
-    }
-    
-    func readSettings(){
-        let defaults = UserDefaults.standard
-        if let val = defaults.value(forKey: "albumsGrid") as? Bool{
-            if val{
-                grid = true
-            }else{
-                grid = false
-            }
-        }else{
-            print("Value not found!")
-        }
     }
     
     func correctCollectionSections(){

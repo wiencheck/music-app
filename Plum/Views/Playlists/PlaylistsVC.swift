@@ -12,7 +12,6 @@ import MediaPlayer
 class PlaylistsVC: UIViewController {
     
     var grid: Bool!
-    var initialGrid: Bool!
     let player = Plum.shared
     
     var cellTypes = [[Int]]()
@@ -32,20 +31,17 @@ class PlaylistsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
-        readSettings()
+        grid = GlobalSettings.playlistsGrid
         if grid{
             setCollection()
         }else{
             setTable()
         }
-        initialGrid = grid
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
-        readSettings()
-        if initialGrid != grid{
-            initialGrid = grid
+        if grid != GlobalSettings.playlistsGrid{
             self.viewDidLoad()
         }
     }
@@ -55,7 +51,7 @@ class PlaylistsVC: UIViewController {
         self.tableView.backgroundColor = .clear
         tableView.delegate = self
         tableView.dataSource = self
-        //self.view.addSubview(tableView)
+        self.view.addSubview(tableView)
         setup()
         tableIndexView.indexes = self.indexes
         tableIndexView.tableView = self.tableView
@@ -68,7 +64,7 @@ class PlaylistsVC: UIViewController {
         self.collectionView.backgroundColor = .clear
         collectionView.delegate = self
         collectionView.dataSource = self
-        //self.view.addSubview(collectionView)
+        self.view.addSubview(collectionView)
         print(GlobalSettings.slider.rawValue)
         setup()
         correctCollectionSections()
@@ -228,15 +224,6 @@ extension PlaylistsVC: UICollectionViewDelegate, UICollectionViewDataSource, Col
 }
 
 extension PlaylistsVC {
-    
-    func readSettings(){
-        let defaults = UserDefaults.standard
-        if let val = defaults.value(forKey: "playlistsGrid") as? Bool{
-            grid = val
-        }else{
-            print("Value not found!")
-        }
-    }
     
     func correctCollectionSections(){
         for sect in 0 ..< indexes.count{

@@ -85,17 +85,17 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
     
     @objc func artistsGrid(_ sender: UISwitch){
         artistsGridStatus = sender.isOn
-        defaults.set(artistsGridStatus, forKey: "artistsGrid")
+        GlobalSettings.changeArtists(grid: artistsGridStatus)
     }
     
     @objc func albumsGrid(_ sender: UISwitch){
         albumsGridStatus = sender.isOn
-        defaults.set(albumsGridStatus, forKey: "albumsGrid")
+        GlobalSettings.changeAlbums(grid: albumsGridStatus)
     }
     
     @objc func playlistsGrid(_ sender: UISwitch){
         playlistsGridStatus = sender.isOn
-        defaults.set(playlistsGridStatus, forKey: "playlistsGrid")
+        GlobalSettings.changePlaylists(grid: playlistsGridStatus)
     }
     
     @objc func rating(_ sender: UISwitch){

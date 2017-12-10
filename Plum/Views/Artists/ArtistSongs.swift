@@ -39,13 +39,7 @@ class ArtistSongs: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         sort = GlobalSettings.artistSort
-        sort = .alphabetically
         setup()
-        for index in indexes {
-            for item in result[index]! {
-                print(item.title)
-            }
-        }
     }
     
     @IBAction func sortBtnPressed() {
@@ -130,7 +124,7 @@ extension ArtistSongs: UITableViewDelegate, UITableViewDataSource {
                 if albums[indexPath.section].manyArtists {
                     let cell = tableView.dequeueReusableCell(withIdentifier: "extendedSongCell", for: indexPath) as! SongInAlbumCell
                     let item = result[indexes[indexPath.section]]?[indexPath.row]
-                    cell.setup(item: item!)
+                    cell.setupA(item: item!)
                     cell.backgroundColor = .clear
                     return cell
                 }else{

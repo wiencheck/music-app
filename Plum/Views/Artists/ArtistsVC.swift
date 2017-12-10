@@ -12,7 +12,6 @@ import MediaPlayer
 class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     
     var grid: Bool!
-    var initialGrid: Bool!
     let player = Plum.shared
     
     var collectionTypes = [[Int]]()
@@ -33,21 +32,18 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
-        readSettings()
+        grid = GlobalSettings.artistsGrid
         if grid{
             setCollection()
         }else{
             setTable()
         }
-        initialGrid = grid
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
-        readSettings()
-        if initialGrid != grid{
-            initialGrid = grid
-            //self.viewDidLoad()
+        if grid != GlobalSettings.artistsGrid{
+            viewDidLoad()
         }
     }
     
@@ -56,6 +52,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         setupDict()
         tableView.delegate = self
         tableView.dataSource = self
+        view.addSubview(tableView)
         for i in 0 ..< tableView.numberOfSections {
             tableTypes.append(Array<Int>(repeating: 0, count: tableView.numberOfRows(inSection: i)))
         }
@@ -320,20 +317,6 @@ extension ArtistsVC{    //Other functions
         artists.removeAll()
         for index in indexes {
             artists.append(contentsOf: result[index]!)
-        }
-        //songs = result.flatMap(){ $0.1 }
-    }
-    
-    func readSettings(){
-        let defaults = UserDefaults.standard
-        if let val = defaults.value(forKey: "artistsGrid") as? Bool{
-            if val{
-                grid = true
-            }else{
-                grid = false
-            }
-        }else{
-            print("Value not found!")
         }
     }
     

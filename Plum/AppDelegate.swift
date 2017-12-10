@@ -115,6 +115,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
+    
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
@@ -208,6 +209,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: "slider") == nil {
             defaults.set("Alphabetical", forKey: "slider")
         }
+        if defaults.value(forKey: "playlistsGrid") == nil{
+            defaults.set(true, forKey: "playlistsGrid")
+        }
+        if defaults.value(forKey: "albumsGrid") == nil{
+            defaults.set(false, forKey: "albumsGrid")
+        }
+        if defaults.value(forKey: "artistsGrid") == nil{
+            defaults.set(false, forKey: "artistsGrid")
+        }
     }
     
     func readSettings(){
@@ -270,6 +280,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             GlobalSettings.changeRating(defaults.bool(forKey: "rating"))
         }else if defaults.bool(forKey: "lyrics") {
             GlobalSettings.changeLyrics(defaults.bool(forKey: "lyrics"))
+        }
+        if let alg = defaults.value(forKey: "albumsGrid") as? Bool {
+            GlobalSettings.changeAlbums(grid: alg)
+        }
+        if let arg = defaults.value(forKey: "artistsGrid") as? Bool {
+            GlobalSettings.changeArtists(grid: arg)
+        }
+        if let plg = defaults.value(forKey: "playlistsGrid") as? Bool {
+            GlobalSettings.changePlaylists(grid: plg)
         }
     }
     

@@ -190,4 +190,19 @@ struct GlobalSettings{
     static func changeRound(_ t: Bool) {
         round = t
     }
+    static var playlistsGrid = false
+    static func changePlaylists(grid: Bool) {
+        playlistsGrid = grid
+        defaults.set(grid, forKey: "playlistsGrid")
+    }
+    static var albumsGrid = false
+    static func changeAlbums(grid: Bool) {
+        albumsGrid = grid
+        defaults.set(grid, forKey: "albumsGrid")
+    }
+    static var artistsGrid = false
+    static func changeArtists(grid: Bool) {
+        artistsGrid = grid
+        defaults.set(grid, forKey: "artistsGrid")
+    }
 }
