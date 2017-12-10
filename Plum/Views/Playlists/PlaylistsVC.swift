@@ -15,6 +15,9 @@ class PlaylistsVC: UIViewController {
     var initialGrid: Bool!
     let player = Plum.shared
     
+    var cellTypes = [[Int]]()
+    var activeSection = 0
+    var activeRow = 0
     var indexes = [String]()
     var result = [String: [Playlist]]()
     var playlists: [Playlist]!
@@ -24,6 +27,7 @@ class PlaylistsVC: UIViewController {
     @IBOutlet weak var collectionIndexView: CollectionIndexView!
     var pickedID: MPMediaEntityPersistentID!
     var pickedList: Playlist!
+    var gesture: UILongPressGestureRecognizer!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,7 +55,7 @@ class PlaylistsVC: UIViewController {
         self.tableView.backgroundColor = .clear
         tableView.delegate = self
         tableView.dataSource = self
-        self.view.addSubview(tableView)
+        //self.view.addSubview(tableView)
         setup()
         tableIndexView.indexes = self.indexes
         tableIndexView.tableView = self.tableView
@@ -64,13 +68,20 @@ class PlaylistsVC: UIViewController {
         self.collectionView.backgroundColor = .clear
         collectionView.delegate = self
         collectionView.dataSource = self
-        self.view.addSubview(collectionView)
+        //self.view.addSubview(collectionView)
         print(GlobalSettings.slider.rawValue)
         setup()
         correctCollectionSections()
+        for index in indexes {
+            cellTypes.append(Array<Int>(repeating: 0, count: (result[index]?.count)!))
+        }
         collectionIndexView.indexes = self.indexes
         collectionIndexView.collectionView = self.collectionView
         collectionIndexView.setup()
+        gesture = UILongPressGestureRecognizer(target: self, action: #selector(longPress(_:)))
+        gesture.minimumPressDuration = 0.3
+        gesture.numberOfTouchesRequired = 1
+        collectionView.addGestureRecognizer(gesture)
         self.view.addSubview(collectionIndexView)
     }
     
@@ -142,7 +153,7 @@ extension PlaylistsVC: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension PlaylistsVC: UICollectionViewDelegate, UICollectionViewDataSource {
+extension PlaylistsVC: UICollectionViewDelegate, UICollectionViewDataSource, CollectionActionCellDelegate, UIGestureRecognizerDelegate {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return indexes.count
@@ -153,9 +164,15 @@ extension PlaylistsVC: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "playlistCell", for: indexPath) as! PlaylistCell
-        cell.setup(list: (result[indexes[indexPath.section]]?[indexPath.row])!)
-        return cell
+        if cellTypes[indexPath.section][indexPath.row] != 0 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "queueCell", for: indexPath) as! CollectionActionCell
+            cell.delegate = self
+            return cell
+        }else{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "playlistCell", for: indexPath) as! PlaylistCell
+            cell.setup(list: (result[indexes[indexPath.section]]?[indexPath.row])!)
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -163,6 +180,51 @@ extension PlaylistsVC: UICollectionViewDelegate, UICollectionViewDataSource {
         pickedList = item
         performSegue(withIdentifier: "playlist", sender: nil)
     }
+    
+    func cell(_ cell: CollectionActionCell, action: CollectionAction) {
+        switch action {
+        case .next:
+            playNext()
+        case .now:
+            playNow()
+        case .shuffle:
+            shuffle()
+        }
+        cellTypes[activeSection][activeRow] = 0
+        let path = IndexPath(row: activeRow, section: activeSection)
+        collectionView.reloadItems(at: [path])
+        collectionView.deselectItem(at: path, animated: true)
+        gesture.addTarget(self, action: #selector(longPress(_:)))
+    }
+    
+    @objc func longPress(_ sender: UILongPressGestureRecognizer) {
+        if cellTypes[activeSection][activeRow] != 0 {
+            cellTypes[activeSection][activeRow] = 0
+            collectionView.reloadItems(at: [IndexPath(row: activeRow, section: activeSection)])
+        }
+        if sender.state == .began {
+            let point = sender.location(in: collectionView)
+            if let path = collectionView.indexPathForItem(at: point) {
+                activeRow = path.row
+                activeSection = path.section
+                cellTypes[activeSection][activeRow] = 1
+                pickedList = result[indexes[activeSection]]?[activeRow]
+                collectionView.reloadItems(at: [path])
+                sender.removeTarget(self, action: #selector(longPress(_:)))
+            }
+        }
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        if grid {
+            cellTypes[activeSection][activeRow] = 0
+            let path = IndexPath(row: activeRow, section: activeSection)
+            collectionView.reloadItems(at: [path])
+            collectionView.deselectItem(at: path, animated: true)
+            gesture.addTarget(self, action: #selector(longPress(_:)))
+        }
+    }
+    
 }
 
 extension PlaylistsVC {
@@ -224,9 +286,12 @@ extension PlaylistsVC {
     
     func playNow() {
         let items = pickedList.items
+        if player.isShuffle {
+            player.disableShuffle()
+        }
         player.createDefQueue(items: items)
-        player.defIndex = 0
         player.playFromDefQueue(index: 0, new: true)
+        player.isShuffle = false
         player.play()
     }
     

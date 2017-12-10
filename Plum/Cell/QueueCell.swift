@@ -43,7 +43,24 @@ class QueueCell: UITableViewCell {
     
     func setup(item: MPMediaItem){
         self.title.text = item.title
-        self.artist.text = item.artist
+        if GlobalSettings.rating {
+            switch item.rating {
+            case 1:
+                self.artist.text = "\(item.artist ?? "Unknown artist") - ★☆☆☆☆"
+            case 2:
+                self.artist.text = "\(item.artist ?? "Unknown artist") - ★★☆☆☆"
+            case 3:
+                self.artist.text = "\(item.artist ?? "Unknown artist") - ★★★☆☆"
+            case 4:
+                self.artist.text = "\(item.artist ?? "Unknown artist") - ★★★★☆"
+            case 5:
+                self.artist.text = "\(item.artist ?? "Unknown artist") - ★★★★★"
+            default:
+                self.artist.text = "\(item.artist ?? "Unknown artist")"
+            }
+        }else{
+            self.artist.text = item.artist ?? "Unknown artist"
+        }
         self.artwork.image = item.artwork?.image(at: artwork.bounds.size) ?? UIImage(named: "no_music.jpg")
     }
     

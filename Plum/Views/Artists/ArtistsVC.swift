@@ -28,6 +28,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     var pickedID: MPMediaEntityPersistentID!
     var result = [String:[Artist]]()
     var artists = [Artist]()
+    var gesture: UILongPressGestureRecognizer!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,14 +72,13 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         collectionView.delegate = self
         collectionView.dataSource = self
         self.view.addSubview(collectionView)
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPress(_:)))
-        longPress.minimumPressDuration = 0.2
-        longPress.numberOfTouchesRequired = 1
-        collectionView.addGestureRecognizer(longPress)
+        gesture = UILongPressGestureRecognizer(target: self, action: #selector(longPress(_:)))
+        gesture.minimumPressDuration = 0.2
+        gesture.numberOfTouchesRequired = 1
+        collectionView.addGestureRecognizer(gesture)
         for i in 0 ..< collectionView.numberOfSections {
             collectionTypes.append(Array<Int>(repeating: 0, count: collectionView.numberOfItems(inSection: i)))
         }
-        //correctCollectionSections()
         collectionIndexView.indexes = self.indexes
         collectionIndexView.collectionView = self.collectionView
         collectionIndexView.setup()
@@ -196,7 +196,7 @@ extension ArtistsVC: UICollectionViewDelegate, UICollectionViewDataSource, Colle
             collectionTypes[activeSection][activeRow] = 0
             collectionView.reloadItems(at: [IndexPath(row: activeRow, section: activeSection)])
         }
-        if sender.state == .recognized {
+        if sender.state == .began {
             let point = sender.location(in: collectionView)
             if let path = collectionView.indexPathForItem(at: point) {
                 activeRow = path.row
@@ -204,6 +204,7 @@ extension ArtistsVC: UICollectionViewDelegate, UICollectionViewDataSource, Colle
                 collectionTypes[activeSection][activeRow] = 1
                 pickedID = result[indexes[activeSection]]?[activeRow].ID
                 collectionView.reloadItems(at: [path])
+                gesture.removeTarget(self, action: #selector(longPress(_:)))
             }
         }
     }
@@ -217,6 +218,11 @@ extension ArtistsVC: UICollectionViewDelegate, UICollectionViewDataSource, Colle
         case .shuffle:
             shuffleBtn()
         }
+        collectionTypes[activeSection][activeRow] = 0
+        let path = IndexPath(row: activeRow, section: activeSection)
+        collectionView.reloadItems(at: [path])
+        collectionView.deselectItem(at: path, animated: true)
+        gesture.addTarget(self, action: #selector(longPress(_:)))
     }
     
 }
@@ -225,13 +231,12 @@ extension ArtistsVC{    //Other functions
     
     func playNowBtn() {
         let songs = musicQuery.shared.songsByArtistID(artist: pickedID)
+        if player.isShuffle {
+            player.disableShuffle()
+        }
         player.createDefQueue(items: songs)
         player.playFromDefQueue(index: 0, new: true)
         player.play()
-        let path = IndexPath(row: activeRow, section: activeSection)
-        if grid {
-            collectionView.reloadItems(at: [path])
-        }
     }
     
     func playNextBtn() {
@@ -240,10 +245,6 @@ extension ArtistsVC{    //Other functions
         while i > -1 {
             player.addNext(item: songs[i])
             i -= 1
-        }
-        let path = IndexPath(row: activeRow, section: activeSection)
-        if grid {
-            collectionView.reloadItems(at: [path])
         }
     }
     
@@ -254,10 +255,6 @@ extension ArtistsVC{    //Other functions
         player.shuffleCurrent()
         player.playFromShufQueue(index: 0, new: true)
         player.play()
-        let path = IndexPath(row: activeRow, section: activeSection)
-        if grid {
-            collectionView.reloadItems(at: [path])
-        }
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -266,11 +263,7 @@ extension ArtistsVC{    //Other functions
             let path = IndexPath(row: activeRow, section: activeSection)
             collectionView.reloadItems(at: [path])
             collectionView.deselectItem(at: path, animated: true)
-        }else{
-            tableTypes[activeSection][activeRow] = 0
-            let path = IndexPath(row: activeRow, section: activeSection)
-            tableView.reloadRows(at: [path], with: .fade)
-            tableView.deselectRow(at: path, animated: true)
+            gesture.addTarget(self, action: #selector(longPress(_:)))
         }
     }
     
