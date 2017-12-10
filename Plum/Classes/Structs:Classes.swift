@@ -9,7 +9,7 @@
 import Foundation
 import MediaPlayer
 
-struct Artist{
+@objcMembers class Artist: NSObject{
     let collection: MPMediaItemCollection
     let ID: MPMediaEntityPersistentID!
     let name: String!
@@ -72,7 +72,7 @@ struct Artist{
     }
 }*/
 
-struct AlbumB{
+@objcMembers class AlbumB: NSObject{
     let items: [MPMediaItem]
     let ID: MPMediaEntityPersistentID
     let name: String?

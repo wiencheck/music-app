@@ -48,8 +48,12 @@ class ArtistSongs: UIViewController {
         absoluteIndex = 0
         if sort == .album {
             sort = .alphabetically
+            alpIndexView.isHidden = false
+            albIndexView.isHidden = true
         }else{
             sort = .album
+            alpIndexView.isHidden = true
+            albIndexView.isHidden = false
         }
         GlobalSettings.changeArtistSort(sort)
         setup()
@@ -292,6 +296,7 @@ extension ArtistSongs {
             songs = musicQuery.shared.songsByArtistID(artist: receivedID)
             upperBar.title = songs[0].albumArtist
             setupDict()
+            typesSongs = [[Int]]()
             for index in indexes {
                 typesSongs.append(Array<Int>(repeating: 0, count: (result[index]?.count)!))
             }

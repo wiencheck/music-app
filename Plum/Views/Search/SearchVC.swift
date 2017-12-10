@@ -9,8 +9,15 @@
 import UIKit
 import MediaPlayer
 
-class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchResultsUpdating {
+class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchResultsUpdating, QueueCellDelegate {
     
+    enum Content {
+        case song
+        case album
+        case artist
+    }
+    
+    let player = Plum.shared
     var titles = ["Artists", "Albums", "Songs", "Playlists"]
     @IBOutlet weak var tableView: UITableView!
     var songs: [MPMediaItem]?
@@ -21,6 +28,7 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     var shouldCompactArtists: Bool!
     var albums: [AlbumB]?
     var filteredAlbums: [AlbumB]?
+    var playlists: [Playlist]?
     var shouldCompactAlbums: Bool!
     var searchController: UISearchController!
     var shouldShowResults: Bool!
@@ -29,6 +37,8 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     var pickedSong: MPMediaItem!
     var searchHistory: [String]!
     var headers = [UIView]()
+    var cellTypes = [Int]()
+    var activeRow = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,11 +59,6 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             self.searchController.searchBar.becomeFirstResponder()
             UIApplication.shared.sendAction(#selector(self.selectAll(_:)), to: nil, from: nil, for: nil)
         }
-        /*if searchController.searchBar.text != ""{
-            //[[UIApplication sharedApplication] sendAction:@selector(selectAll:) to:nil from:nil forEvent:nil]
-            searchController.searchBar.becomeFirstResponder()
-            UIApplication.shared.sendAction(#selector(selectAll(_:)), to: nil, from: nil, for: nil)
-        }*/
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -149,7 +154,60 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             return nil
         }
     }
-
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if indexPath.section == 2 && filteredSongs?.count != 0 {
+            return false
+        }else{
+            return true
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        if indexPath.section == 0 && filteredArtists?.count != 0 {
+            let play = UITableViewRowAction(style: .default, title: "Play Now", handler: {_,path in
+                self.pickedArtistID = self.filteredArtists![path.row].ID
+                self.playNow(content: .artist)
+                self.tableView.setEditing(false, animated: true)
+            })
+            let next = UITableViewRowAction(style: .default, title: "Play Next", handler: {_,path in
+                self.pickedArtistID = self.filteredArtists![path.row].ID
+                self.playNext(content: .artist)
+                self.tableView.setEditing(false, animated: true)
+            })
+            let shuffle = UITableViewRowAction(style: .default, title: "Shuffle", handler: {_,path in
+                self.pickedArtistID = self.filteredArtists![path.row].ID
+                self.shuffle(content: .artist)
+                self.tableView.setEditing(false, animated: true)
+            })
+            play.backgroundColor = .red
+            next.backgroundColor = .orange
+            shuffle.backgroundColor = .purple
+            return [shuffle, next, play]
+        }else if indexPath.section == 1 && filteredAlbums?.count != 0 {
+            let play = UITableViewRowAction(style: .default, title: "Play Now", handler: {_,path in
+                self.pickedAlbum = self.filteredAlbums![path.row]
+                self.playNow(content: .album)
+                self.tableView.setEditing(false, animated: true)
+            })
+            let next = UITableViewRowAction(style: .default, title: "Play Next", handler: {_,path in
+                self.pickedAlbum = self.filteredAlbums![path.row]
+                self.playNext(content: .album)
+                self.tableView.setEditing(false, animated: true)
+            })
+            let shuffle = UITableViewRowAction(style: .default, title: "Shuffle", handler: {_,path in
+                self.pickedAlbum = self.filteredAlbums![path.row]
+                self.shuffle(content: .album)
+                self.tableView.setEditing(false, animated: true)
+            })
+            play.backgroundColor = .red
+            next.backgroundColor = .orange
+            shuffle.backgroundColor = .purple
+            return [shuffle, next, play]
+        }else{
+            return [UITableViewRowAction]()
+        }
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell: SearchCell!
@@ -157,18 +215,28 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             if indexPath.section == 0 && filteredArtists?.count != 0{
                 cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SearchCell
                 cell.setup(artist: filteredArtists![indexPath.row])
+                cell.accessoryType = .disclosureIndicator
                 cell.backgroundColor = .clear
                 return cell
             }else if indexPath.section == 1 && filteredAlbums?.count != 0 {
                 cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SearchCell
                 cell.setup(album: filteredAlbums![indexPath.row])
+                cell.accessoryType = .disclosureIndicator
                 cell.backgroundColor = .clear
                 return cell
             }else if indexPath.section == 2 && filteredSongs?.count != 0 {
-                cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SearchCell
-                cell.setup(song: filteredSongs![indexPath.row])
-                cell.backgroundColor = .clear
-                return cell
+                if cellTypes[indexPath.row] != 0 {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as! QueueActionsCell
+                    cell.delegate = self
+                    cell.accessoryType = .none
+                    return cell
+                }else{
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SearchCell
+                    cell.setup(song: filteredSongs![indexPath.row])
+                    cell.accessoryType = .none
+                    cell.backgroundColor = .clear
+                    return cell
+                }
             }else {
                 return UITableViewCell()
             }
@@ -184,15 +252,22 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             performSegue(withIdentifier: "artist", sender: nil)
         }else if indexPath.section == 2{
             let song = filteredSongs?[indexPath.row]
-            switch GlobalSettings.deployIn {
-            case .artist:
-                Plum.shared.landInArtist(song!, new: true)
-            case .album:
-                Plum.shared.landInAlbum(song!, new: true)
-            default:
-                print("wyladuje w piosenkach")
+            if player.isPlayin() {
+                cellTypes[indexPath.row] = 1
+                tableView.reloadRows(at: [indexPath], with: .fade)
+                pickedSong = song
+                activeRow = indexPath.row
+            }else{
+                switch GlobalSettings.deployIn {
+                case .artist:
+                    player.landInArtist(song!, new: true)
+                case .album:
+                    player.landInAlbum(song!, new: true)
+                default:
+                    print("wyladuje w piosenkach")
+                }
+                player.play()
             }
-            Plum.shared.play()
         }else{
             let album = filteredAlbums?[indexPath.row]
             self.pickedAlbum = album
@@ -213,6 +288,12 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         }else if let destination = segue.destination as? AlbumVC{
             destination.received = self.pickedAlbum
         }
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        let path = IndexPath(row: activeRow, section: 2)
+        cellTypes[activeRow] = 0
+        tableView.reloadRows(at: [path], with: .fade)
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -247,42 +328,45 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             shouldShowResults = true
             self.tableView.separatorStyle = .singleLine
         }
-        //let words = searchString?.components(separatedBy: " ")
-        filteredArtists = artists?.filter{
-//            $0.name.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "-", with: "").replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "$", with: "").replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: "'", with: "").replacingOccurrences(of: "_", with: "").lowercased().range(of: (searchString?.lowercased())!) != nil
-            $0.name.lowercased().range(of: (searchString?.lowercased())!) != nil
-        }
-        filteredAlbums = albums?.filter{
-//            $0.name?.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "-", with: "").replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "$", with: "").replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: "'", with: "").replacingOccurrences(of: "_", with: "").lowercased().range(of: (searchString?.lowercased())!) != nil
-            $0.name?.lowercased().range(of: (searchString?.lowercased())!) != nil
-        }
-        filteredSongs = songs?.filter{
-            $0.title?.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "-", with: "").replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "").replacingOccurrences(of: "'", with: "").lowercased().range(of: (searchString?.lowercased())!) != nil
-        }
-        /*let filteredStrings : [String] = myArr.filter({ (aString) in
+        let whitespaceCharacterSet = CharacterSet.whitespaces
+        let strippedString = searchString!.trimmingCharacters(in: whitespaceCharacterSet)
+        let searchItems = strippedString.components(separatedBy: " ") as [String]
+        var searchItemsPredicate = [NSPredicate]()
+        
+        let songsMatchPredicates: [NSPredicate] = searchItems.map { searchString in
+            let titleExpression = NSExpression(forKeyPath: "title")
+            let searchStringExpression = NSExpression(forConstantValue: searchString)
             
-            let hasChars = findChrs.filter({(bString) in
-                return aString.contains(bString)
-            })
+            let titleSearchComparisonPredicate = NSComparisonPredicate(leftExpression: titleExpression, rightExpression: searchStringExpression, modifier: .direct, type: .contains, options: .caseInsensitive)
             
-            print(hasChars)
+            searchItemsPredicate.append(titleSearchComparisonPredicate)
             
-            return hasChars.count == findChrs.count
-        })*/
-        /*filteredSongs = songs?.filter{
-            $0.title?.replacingOccurrences(of: "-", with: "").replacingOccurrences(of: " ", with: "").lowercased().range(of: (words![0].lowercased())) != nil
+            let orMatchPredicate = NSCompoundPredicate(orPredicateWithSubpredicates:searchItemsPredicate)
+            
+            return orMatchPredicate
         }
-        if words?.count == 2{
-            filteredSongs = songs?.filter{
-                $0.title?.lowercased().range(of: (words![1].lowercased())) != nil
-            }
+        let finalCompoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: songsMatchPredicates)
+        
+        searchItemsPredicate = [NSPredicate]()
+        
+        let restMatchPredicates: [NSPredicate] = searchItems.map { searchString in
+            let titleExpression = NSExpression(forKeyPath: "name")
+            let searchStringExpression = NSExpression(forConstantValue: searchString)
+            
+            let titleSearchComparisonPredicate = NSComparisonPredicate(leftExpression: titleExpression, rightExpression: searchStringExpression, modifier: .direct, type: .contains, options: .caseInsensitive)
+            
+            searchItemsPredicate.append(titleSearchComparisonPredicate)
+            
+            let orMatchPredicate = NSCompoundPredicate(orPredicateWithSubpredicates:searchItemsPredicate)
+            
+            return orMatchPredicate
         }
-        filteredArtists = artists?.filter{
-            $0.name.lowercased().range(of: (searchString?.lowercased())!) != nil
-        }
-        filteredAlbums = albums?.filter{
-            $0.name?.lowercased().range(of: (searchString?.lowercased())!) != nil
-        }*/
+        let finalRestCompoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: restMatchPredicates)
+        
+        filteredSongs = songs?.filter { finalCompoundPredicate.evaluate(with: $0) }
+        filteredArtists = artists?.filter { finalRestCompoundPredicate.evaluate(with: $0) }
+        filteredAlbums = albums?.filter { finalRestCompoundPredicate.evaluate(with: $0) }
+        cellTypes = Array<Int>(repeating: 0, count: (filteredSongs?.count)!)
         self.tableView.reloadData()
     }
  
@@ -347,16 +431,95 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         var header: SearchHeader!
         header = tableView.dequeueReusableCell(withIdentifier: "header") as! SearchHeader
         header.setup(title: "artists", count: (filteredArtists?.count)!)
-        headers.append(header)
+        headers.append(header.contentView)
         header.setup(title: "albums", count: (filteredAlbums?.count)!)
-        headers.append(header)
+        headers.append(header.contentView)
         header.setup(title: "songs", count: (filteredSongs?.count)!)
-        headers.append(header)
+        headers.append(header.contentView)
     }
     
-    func removeSpecialCharsFromString(text: String) -> String {
-        let okayChars : Set<Character> =
-            Set("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLKMNOPQRSTUVWXYZ1234567890+-*=(),.:!_".characters)
-        return String(text.characters.filter {okayChars.contains($0) })
+    func cell(_ cell: QueueActionsCell, action: SongAction) {
+        switch action {
+        case .playNow:
+            playNow(content: .song)
+        case .playNext:
+            playNext(content: .song)
+        case .playLast:
+            playLast()
+        }
+        if let path = tableView.indexPath(for: cell) {
+            cellTypes[path.row] = 0
+            tableView.reloadRows(at: [path], with: .right)
+        }
+    }
+    
+    func playNow(content: Content) {
+        switch content {
+        case .song:
+            player.landInAlbum(pickedSong, new: true)
+            player.play()
+        case .artist:
+            let songs = musicQuery.shared.songsByArtistID(artist: pickedArtistID)
+            if player.isShuffle {
+                player.disableShuffle()
+            }
+            player.createDefQueue(items: songs)
+            player.playFromDefQueue(index: 0, new: true)
+            player.play()
+        case .album:
+            let items = pickedAlbum.items
+            if player.isShuffle {
+                player.disableShuffle()
+            }
+            player.createDefQueue(items: items)
+            player.playFromDefQueue(index: 0, new: true)
+            player.play()
+        }
+    }
+    
+    func playNext(content: Content) {
+        switch content {
+        case .song:
+            player.addNext(item: pickedSong)
+        case .artist:
+            let songs = musicQuery.shared.songsByArtistID(artist: pickedArtistID)
+            var i = songs.count - 1
+            while i > -1 {
+                player.addNext(item: songs[i])
+                i -= 1
+            }
+        case .album:
+            let items = pickedAlbum.items
+            var i = items.count - 1
+            while i > -1 {
+                player.addNext(item: items[i])
+                i -= 1
+            }
+        }
+    }
+    
+    func shuffle(content: Content) {
+        switch content {
+        case .artist:
+            let songs = musicQuery.shared.songsByArtistID(artist: pickedArtistID)
+            player.createDefQueue(items: songs)
+            player.defIndex = Int(arc4random_uniform(UInt32(songs.count)))
+            player.shuffleCurrent()
+            player.playFromShufQueue(index: 0, new: true)
+            player.play()
+        case .album:
+            let items = pickedAlbum.items
+            player.createDefQueue(items: items)
+            player.defIndex = Int(arc4random_uniform(UInt32(items.count)))
+            player.shuffleCurrent()
+            player.playFromShufQueue(index: 0, new: true)
+            player.play()
+        default:
+            print("default")
+        }
+    }
+    
+    func playLast() {
+        player.addLast(item: pickedSong)
     }
 }

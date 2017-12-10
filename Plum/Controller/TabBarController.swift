@@ -20,7 +20,14 @@ class TabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        color()
+    }
+    
+    func color() {
+        let more = moreNavigationController.topViewController
+        if let tab = moreNavigationController.topViewController as? UITableViewController {
+            print("jest tab")
+        }
     }
 
 }

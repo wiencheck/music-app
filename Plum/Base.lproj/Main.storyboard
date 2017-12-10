@@ -1075,6 +1075,81 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="queueCell" rowHeight="62" id="dIP-Ti-sDz" customClass="QueueActionsCell" customModule="Plum" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="154" width="320" height="62"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dIP-Ti-sDz" id="ecY-NI-IwL">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="61.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="0Oa-sx-hnU">
+                                                    <rect key="frame" x="7" y="6" width="306" height="49.5"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lFM-7a-i90">
+                                                            <rect key="frame" x="0.0" y="0.0" width="92" height="49.5"/>
+                                                            <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="92" id="i3t-kK-rNL"/>
+                                                            </constraints>
+                                                            <state key="normal" title="Play Now">
+                                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                    <integer key="value" value="4"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                            <connections>
+                                                                <action selector="playNowClicked:" destination="dIP-Ti-sDz" eventType="touchUpInside" id="zO8-TW-oll"/>
+                                                            </connections>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nq1-bo-IoT">
+                                                            <rect key="frame" x="107" y="0.0" width="92" height="49.5"/>
+                                                            <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="92" id="3qg-3C-4xX"/>
+                                                            </constraints>
+                                                            <state key="normal" title="Play Next">
+                                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                    <integer key="value" value="4"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                            <connections>
+                                                                <action selector="playNextClicked:" destination="dIP-Ti-sDz" eventType="touchUpInside" id="UrB-VD-izt"/>
+                                                            </connections>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uwE-h9-zyX">
+                                                            <rect key="frame" x="214" y="0.0" width="92" height="49.5"/>
+                                                            <color key="backgroundColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="92" id="wIo-ZA-c1U"/>
+                                                            </constraints>
+                                                            <state key="normal" title="Play Last">
+                                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                    <integer key="value" value="4"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                            <connections>
+                                                                <action selector="playLastClicked:" destination="dIP-Ti-sDz" eventType="touchUpInside" id="C8q-Lj-NJv"/>
+                                                            </connections>
+                                                        </button>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="0Oa-sx-hnU" firstAttribute="top" secondItem="ecY-NI-IwL" secondAttribute="top" constant="6" id="Dzv-fQ-Ou3"/>
+                                                <constraint firstAttribute="bottom" secondItem="0Oa-sx-hnU" secondAttribute="bottom" constant="6" id="HtE-tj-upA"/>
+                                                <constraint firstItem="0Oa-sx-hnU" firstAttribute="leading" secondItem="ecY-NI-IwL" secondAttribute="leading" constant="7" id="NbS-Ni-CjD"/>
+                                                <constraint firstAttribute="trailing" secondItem="0Oa-sx-hnU" secondAttribute="trailing" constant="7" id="lLF-ml-9o6"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </prototypes>
                             </tableView>
                         </subviews>
@@ -4858,7 +4933,7 @@
         <image name="zeroVol" width="175" height="298"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="nEJ-vd-Vba"/>
-        <segue reference="uGV-fK-q4R"/>
+        <segue reference="YN1-uv-N46"/>
+        <segue reference="7Xq-dO-ndj"/>
     </inferredMetricsTieBreakers>
 </document>
