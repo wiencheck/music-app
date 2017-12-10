@@ -176,8 +176,10 @@ class EightNowPlayingVC: UIViewController {
     @IBAction func shuffleBtn(_ sender: Any) {
         if(player.isShuffle){
             player.disableShuffle()
+            shufBtn.setTitle("Shuffle off", for: .normal)
         }else{
             player.shuffleCurrent()
+            shufBtn.setTitle("Shuffle on", for: .normal)
         }
         outOfLabel.text = player.labelString(type: "out of")
         setColors()
@@ -402,22 +404,18 @@ extension EightNowPlayingVC: UpNextDelegate {
     
     func realPresent(){
         pickedID = player.currentItem?.albumPersistentID
-        let tbvc = storyboard?.instantiateViewController(withIdentifier: "GOGOGO") as! UITabBarController
-        //tbvc.tabBar.tintColor = GlobalSettings.tint.color
-        //tbvc.tabBar.unselectedItemTintColor = .gray
+        let tbvc = storyboard?.instantiateViewController(withIdentifier: "GOGOGO") as! UpNextTabBarController
+        tbvc.upDelegate = self
         if let upvc = tbvc.viewControllers?[0] as? QueueVC{
             upvc.lightTheme = lightStyle
-            upvc.delegate = self
         }
         if let alvc = tbvc.viewControllers?[1] as? AlbumUpVC{
             alvc.receivedID = pickedID
             alvc.lightTheme = lightStyle
-            alvc.delegate = self
         }
         if let arvc = tbvc.viewControllers?[2] as? ArtistUpVCB{
             arvc.receivedID = pickedID
             arvc.lightTheme = lightStyle
-            arvc.delegate = self
         }
         tbvc.modalPresentationStyle = .overCurrentContext
         tbvc.modalTransitionStyle = .coverVertical
@@ -448,6 +446,11 @@ extension EightNowPlayingVC {       //Kolory i UI
             self.playbackBtn.setImage(#imageLiteral(resourceName: "pause-butt"), for: .normal)
         }else{
             self.playbackBtn.setImage(#imageLiteral(resourceName: "play-butt"), for: .normal)
+        }
+        if player.isShuffle {
+            shufBtn.setTitle("Shuffle on", for: .normal)
+        }else{
+            shufBtn.setTitle("Shuffle off", for: .normal)
         }
         self.artworkImage.image = self.image
         self.outOfLabel.text = self.player.labelString(type: "out of")

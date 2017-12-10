@@ -17,12 +17,10 @@ class ArtistUpVCB: UIViewController {
     @IBOutlet weak var indexView: TableIndexView!
     @IBOutlet weak var upperBar: UIView!
     @IBOutlet weak var shufBtn: UIButton!
-    @IBOutlet weak var doneBtn: UIButton!
     @IBOutlet weak var artistLabel: UILabel!
     
     var result = [String: [MPMediaItem]]()
     var indexes = [String]()
-    var delegate: UpNextDelegate?
     var cellTypes = [[Int]]()
     var songs = [MPMediaItem]()
     var activeRow = 0
@@ -316,9 +314,9 @@ extension ArtistUpVCB {
         tableView.reloadRows(at: [IndexPath(row: activeRow, section: activeSection)], with: .fade)
     }
     
-    @IBAction func doneBtnPressed(){
-        self.delegate?.backFromUpNext()
-        dismiss(animated: true, completion: nil)
+    func doneBtnPressed(){
+        let bar = self.tabBarController as! UpNextTabBarController
+        bar.finish()
         //dismissDetail()
     }
     
@@ -343,7 +341,6 @@ extension ArtistUpVCB {
     func dark() {
         upperBar.backgroundColor = UIColor(red: 0.105882352941176, green: 0.105882352941176, blue: 0.105882352941176, alpha: 0.8)
         artistLabel.textColor = .white
-        doneBtn.setTitleColor(GlobalSettings.tint.color, for: .normal)
         shufBtn.setTitleColor(GlobalSettings.tint.color, for: .normal)
         UIApplication.shared.statusBarStyle = .lightContent
         fxView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
@@ -355,7 +352,6 @@ extension ArtistUpVCB {
     func light() {
         upperBar.backgroundColor = UIColor(red: 0.972549019607843, green: 0.972549019607843, blue: 0.972549019607843, alpha: 0.8)
         artistLabel.textColor = .black
-        doneBtn.setTitleColor(GlobalSettings.tint.color, for: .normal)
         shufBtn.setTitleColor(GlobalSettings.tint.color, for: .normal)
         UIApplication.shared.statusBarStyle = .default
         fxView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))

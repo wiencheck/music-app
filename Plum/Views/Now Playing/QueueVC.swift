@@ -27,13 +27,11 @@ class QueueVC: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var upperBar: UIView!
     @IBOutlet weak var addBtn: UIButton!
-    @IBOutlet weak var doneBtn: UIButton!
     @IBOutlet weak var mainLabel: UILabel!
     
     let player = Plum.shared
     var sections: [Section]!
     var mediaPicker: MPMediaPickerController!
-    var delegate: UpNextDelegate?
     var lightTheme: Bool!
     var fxView: UIVisualEffectView!
     var headers: [UIView]!
@@ -45,7 +43,10 @@ class QueueVC: UIViewController {
         setupTable()
         setColors()
         NotificationCenter.default.addObserver(self, selector: #selector(reload), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
-        
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "playBackStateChanged"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -55,10 +56,9 @@ class QueueVC: UIViewController {
         tableView.scrollToRow(at: IndexPath(row: 0, section: 1), at: .top, animated: false)
     }
     
-    @IBAction func doneBtnPressed(_ sender: Any){
-        self.delegate?.backFromUpNext()
-        dismiss(animated: true, completion: nil)
-        //dismissDetail()
+    func doneBtnPressed(){
+        let bar = self.tabBarController as! UpNextTabBarController
+        bar.finish()
     }
     
     @objc func reload() {
@@ -337,6 +337,13 @@ extension QueueVC: UITableViewDelegate, UITableViewDataSource {     //TableView 
             return true
         }
     }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        upperBar.alpha = 1 + scrollView.contentOffset.y/100
+        if scrollView.contentOffset.y < -120 {
+            doneBtnPressed()
+        }
+    }
 }
 
 extension QueueVC {     //Ustawianie kolejek
@@ -495,7 +502,6 @@ extension QueueVC: MPMediaPickerControllerDelegate {    //Media Picker
     func dark() {
         upperBar.backgroundColor = UIColor(red: 0.105882352941176, green: 0.105882352941176, blue: 0.105882352941176, alpha: 0.8)
         mainLabel.textColor = .white
-        doneBtn.setTitleColor(GlobalSettings.tint.color, for: .normal)
         addBtn.setTitleColor(GlobalSettings.tint.color, for: .normal)
         UIApplication.shared.statusBarStyle = .lightContent
         fxView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
@@ -506,7 +512,6 @@ extension QueueVC: MPMediaPickerControllerDelegate {    //Media Picker
     func light() {
         upperBar.backgroundColor = UIColor(red: 0.972549019607843, green: 0.972549019607843, blue: 0.972549019607843, alpha: 0.8)
         mainLabel.textColor = .black
-        doneBtn.setTitleColor(GlobalSettings.tint.color, for: .normal)
         addBtn.setTitleColor(GlobalSettings.tint.color, for: .normal)
         UIApplication.shared.statusBarStyle = .default
         fxView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))

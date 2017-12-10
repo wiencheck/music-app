@@ -48,6 +48,8 @@
 		3878D4FE1FD7F91500A6C42B /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3878D4FD1FD7F91500A6C42B /* TodayViewController.swift */; };
 		3878D5011FD7F91500A6C42B /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3878D4FF1FD7F91500A6C42B /* MainInterface.storyboard */; };
 		3878D5051FD7F91500A6C42B /* PlumWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3878D4F91FD7F91500A6C42B /* PlumWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		387C76B11FDD539300F4964E /* UpNextTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387C76B01FDD539300F4964E /* UpNextTabBarController.swift */; };
+		387C76B31FDD5B5E00F4964E /* DummyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387C76B21FDD5B5E00F4964E /* DummyVC.swift */; };
 		3890B3581F920A6C000198D8 /* Structs:Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3890B3571F920A6C000198D8 /* Structs:Classes.swift */; };
 		38944CA01FA0EFA4005CB30C /* AlbumUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38944C9F1FA0EFA4005CB30C /* AlbumUpVC.swift */; };
 		38944CA31FA0F024005CB30C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38944CA21FA0F024005CB30C /* MediaPlayer.framework */; };
@@ -158,6 +160,8 @@
 		3878D4FD1FD7F91500A6C42B /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		3878D5001FD7F91500A6C42B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		3878D5021FD7F91500A6C42B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		387C76B01FDD539300F4964E /* UpNextTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpNextTabBarController.swift; sourceTree = "<group>"; };
+		387C76B21FDD5B5E00F4964E /* DummyVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyVC.swift; sourceTree = "<group>"; };
 		3890B3571F920A6C000198D8 /* Structs:Classes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Structs:Classes.swift"; sourceTree = "<group>"; };
 		38944C9F1FA0EFA4005CB30C /* AlbumUpVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumUpVC.swift; sourceTree = "<group>"; };
 		38944CA21FA0F024005CB30C /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -278,6 +282,7 @@
 			children = (
 				384BCD4F1F96140600D8ECFD /* PlumTabBarController.swift */,
 				381565241FDAC10E00F11D7F /* TabBarController.swift */,
+				387C76B01FDD539300F4964E /* UpNextTabBarController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -388,6 +393,7 @@
 				38F722EB1FC0409900A45CF9 /* QueueVC.swift */,
 				3801102B1FC4595300B3F35B /* EightNowPlayingVC.swift */,
 				38AC0F4F1FDC54DC0049AD09 /* ArtistUpVCB.swift */,
+				387C76B21FDD5B5E00F4964E /* DummyVC.swift */,
 			);
 			path = "Now Playing";
 			sourceTree = "<group>";
@@ -584,6 +590,7 @@
 				38AF9C791F2F72A800FA73B8 /* Plum.swift in Sources */,
 				3858254F1FA33A2800697186 /* SettingsStructs.swift in Sources */,
 				38C4BCAA1F94BAF700DABE81 /* CollectionViewCell.swift in Sources */,
+				387C76B31FDD5B5E00F4964E /* DummyVC.swift in Sources */,
 				38CC1A151F9CAEA500B2AA8D /* IndexViews.swift in Sources */,
 				3843ADC31FBF44A9005E1C2F /* SetRatingsVC.swift in Sources */,
 				38F0BDAA1FAB2DED0028008B /* PlaylistVC.swift in Sources */,
@@ -602,6 +609,7 @@
 				38E729501F2F40B600F35780 /* musicQuery.swift in Sources */,
 				38345F461FABBBCA003DA1F2 /* PlaylistCell.swift in Sources */,
 				38121E9D1FA07A1700C2A3BD /* AlbumCell.swift in Sources */,
+				387C76B11FDD539300F4964E /* UpNextTabBarController.swift in Sources */,
 				3822211E1FA5EA4000004B21 /* QueueActionsCell.swift in Sources */,
 				38944CA01FA0EFA4005CB30C /* AlbumUpVC.swift in Sources */,
 				3859213F1FA879D900CF9059 /* ArtistsVC.swift in Sources */,

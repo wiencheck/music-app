@@ -14,11 +14,9 @@ class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var upperBar: UIView!
     @IBOutlet weak var shufBtn: UIButton!
-    @IBOutlet weak var doneBtn: UIButton!
     @IBOutlet weak var albumLabel: UILabel!
     @IBOutlet weak var artistLabel: UILabel!
     
-    var delegate: UpNextDelegate?
     var cellTypes = [Int]()
     var songs = [MPMediaItem]()
     var index: Int = 0
@@ -41,6 +39,10 @@ class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
         NotificationCenter.default.addObserver(self, selector: #selector(reload), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "playBackStateChanged"), object: nil)
+    }
+    
     func setup(){
         songs = musicQuery.shared.songsByAlbumID(album: (Plum.shared.currentItem?.albumPersistentID)!)
         cellTypes = Array<Int>(repeating: 0, count: songs.count)
@@ -49,9 +51,9 @@ class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
         albumLabel.text = item.albumTitle ?? "Unknown album"
     }
     
-    @IBAction func doneBtnPressed(){
-        self.delegate?.backFromUpNext()
-        dismiss(animated: true, completion: nil)
+    func doneBtnPressed(){
+        let bar = self.tabBarController as! UpNextTabBarController
+        bar.finish()
         //dismissDetail()
     }
     
@@ -254,7 +256,6 @@ extension AlbumUpVC: UITableViewDelegate, UITableViewDataSource{
         upperBar.backgroundColor = UIColor(red: 0.105882352941176, green: 0.105882352941176, blue: 0.105882352941176, alpha: 0.8)
         artistLabel.textColor = .white
         albumLabel.textColor = .white
-        doneBtn.setTitleColor(GlobalSettings.tint.color, for: .normal)
         shufBtn.setTitleColor(GlobalSettings.tint.color, for: .normal)
         UIApplication.shared.statusBarStyle = .lightContent
         fxView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
@@ -266,7 +267,6 @@ extension AlbumUpVC: UITableViewDelegate, UITableViewDataSource{
         upperBar.backgroundColor = UIColor(red: 0.972549019607843, green: 0.972549019607843, blue: 0.972549019607843, alpha: 0.8)
         artistLabel.textColor = .black
         albumLabel.textColor = .black
-        doneBtn.setTitleColor(GlobalSettings.tint.color, for: .normal)
         shufBtn.setTitleColor(GlobalSettings.tint.color, for: .normal)
         UIApplication.shared.statusBarStyle = .default
         fxView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))

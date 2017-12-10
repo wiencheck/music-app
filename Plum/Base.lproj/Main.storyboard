@@ -2693,7 +2693,7 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DBI-ta-HPe">
+                                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DBI-ta-HPe">
                                         <rect key="frame" x="278" y="26" width="30" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="1c8-v0-Kfe"/>
@@ -3037,17 +3037,6 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZvP-5O-Amm">
-                                        <rect key="frame" x="270" y="31" width="46" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="XU6-7V-YOz"/>
-                                            <constraint firstAttribute="width" constant="46" id="Yg8-aP-6lA"/>
-                                        </constraints>
-                                        <state key="normal" title="Done"/>
-                                        <connections>
-                                            <action selector="doneBtnPressed:" destination="JFZ-Pw-iWO" eventType="touchUpInside" id="Eu4-3d-Te7"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5ER-zk-H3Q">
                                         <rect key="frame" x="4" y="30" width="46" height="30"/>
                                         <constraints>
@@ -3066,9 +3055,7 @@
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="CwN-Tj-Ckz" secondAttribute="bottom" constant="6.5" id="6Rv-8r-Dk8"/>
                                     <constraint firstItem="5ER-zk-H3Q" firstAttribute="leading" secondItem="gAk-GD-dog" secondAttribute="leading" constant="4" id="FaZ-ir-LIF"/>
-                                    <constraint firstAttribute="trailing" secondItem="ZvP-5O-Amm" secondAttribute="trailing" constant="4" id="bzA-5f-foO"/>
                                     <constraint firstAttribute="height" constant="64" id="cIC-LL-Ssd"/>
-                                    <constraint firstAttribute="bottom" secondItem="ZvP-5O-Amm" secondAttribute="bottom" constant="3" id="hff-Xs-uiC"/>
                                     <constraint firstItem="CwN-Tj-Ckz" firstAttribute="centerX" secondItem="gAk-GD-dog" secondAttribute="centerX" id="i7q-LH-dNk"/>
                                     <constraint firstAttribute="bottom" secondItem="5ER-zk-H3Q" secondAttribute="bottom" constant="4" id="tQ9-rJ-mqF"/>
                                 </constraints>
@@ -3089,7 +3076,6 @@
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
                         <outlet property="addBtn" destination="5ER-zk-H3Q" id="evn-Vp-vwZ"/>
-                        <outlet property="doneBtn" destination="ZvP-5O-Amm" id="zen-8w-sld"/>
                         <outlet property="mainLabel" destination="CwN-Tj-Ckz" id="fDQ-ww-RFK"/>
                         <outlet property="tableView" destination="edQ-8x-7ty" id="fkU-al-4mj"/>
                         <outlet property="upperBar" destination="gAk-GD-dog" id="FRN-PD-kI8"/>
@@ -3260,17 +3246,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ITq-Lf-agF" userLabel="UpperBar">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ggH-rn-MCr">
-                                        <rect key="frame" x="270" y="31" width="46" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="Myc-5Y-eKC"/>
-                                            <constraint firstAttribute="width" constant="46" id="nAX-aS-Ym9"/>
-                                        </constraints>
-                                        <state key="normal" title="Done"/>
-                                        <connections>
-                                            <action selector="doneBtnPressed" destination="iom-mG-mvn" eventType="touchUpInside" id="RVJ-nX-NcO"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fK2-ql-fuA">
                                         <rect key="frame" x="4" y="31" width="46" height="30"/>
                                         <constraints>
@@ -3309,12 +3284,10 @@
                                 <constraints>
                                     <constraint firstItem="zuM-rV-dYZ" firstAttribute="top" secondItem="rOo-0H-f5V" secondAttribute="bottom" id="AYs-qk-zhj"/>
                                     <constraint firstItem="zuM-rV-dYZ" firstAttribute="centerX" secondItem="ITq-Lf-agF" secondAttribute="centerX" id="BJb-dr-omD"/>
-                                    <constraint firstAttribute="trailing" secondItem="ggH-rn-MCr" secondAttribute="trailing" constant="4" id="Ckq-YF-mCW"/>
                                     <constraint firstAttribute="bottom" secondItem="fK2-ql-fuA" secondAttribute="bottom" constant="3" id="Ocp-p5-s1n"/>
                                     <constraint firstItem="rOo-0H-f5V" firstAttribute="centerX" secondItem="ITq-Lf-agF" secondAttribute="centerX" id="fpB-3C-t2c"/>
                                     <constraint firstItem="fK2-ql-fuA" firstAttribute="leading" secondItem="ITq-Lf-agF" secondAttribute="leading" constant="4" id="hni-mB-G2f"/>
                                     <constraint firstAttribute="bottom" secondItem="zuM-rV-dYZ" secondAttribute="bottom" constant="2" id="kQO-C6-uSU"/>
-                                    <constraint firstAttribute="bottom" secondItem="ggH-rn-MCr" secondAttribute="bottom" constant="3" id="tcw-gS-VgD"/>
                                     <constraint firstItem="rOo-0H-f5V" firstAttribute="top" secondItem="ITq-Lf-agF" secondAttribute="top" constant="18" id="z9g-TR-LGW"/>
                                 </constraints>
                             </view>
@@ -3334,7 +3307,6 @@
                     <connections>
                         <outlet property="albumLabel" destination="zuM-rV-dYZ" id="Oxz-Ej-s75"/>
                         <outlet property="artistLabel" destination="rOo-0H-f5V" id="8l2-xi-ojm"/>
-                        <outlet property="doneBtn" destination="ggH-rn-MCr" id="K2v-Tn-CCS"/>
                         <outlet property="shufBtn" destination="fK2-ql-fuA" id="dtW-iU-F4l"/>
                         <outlet property="tableView" destination="OZM-u5-tVu" id="7Cs-rJ-veu"/>
                         <outlet property="upperBar" destination="ITq-Lf-agF" id="GpM-On-6sX"/>
@@ -3508,17 +3480,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="be3-Sp-y8O" userLabel="UpperBar">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dOH-kL-lU3">
-                                        <rect key="frame" x="270" y="31" width="46" height="30"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="Wkb-D8-czq"/>
-                                            <constraint firstAttribute="width" constant="46" id="zbk-0I-yiG"/>
-                                        </constraints>
-                                        <state key="normal" title="Done"/>
-                                        <connections>
-                                            <action selector="doneBtnPressed" destination="dQw-Ml-Zsz" eventType="touchUpInside" id="lxb-2M-AMp"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dkL-Ec-7vr">
                                         <rect key="frame" x="4" y="31" width="46" height="30"/>
                                         <constraints>
@@ -3544,15 +3505,13 @@
                                     </label>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="dOH-kL-lU3" secondAttribute="trailing" constant="4" id="4Mg-O3-1rC"/>
                                     <constraint firstItem="dkL-Ec-7vr" firstAttribute="leading" secondItem="be3-Sp-y8O" secondAttribute="leading" constant="4" id="4Zw-7s-tsJ"/>
-                                    <constraint firstItem="dOH-kL-lU3" firstAttribute="leading" secondItem="czz-WR-vev" secondAttribute="trailing" constant="4" id="9yU-dM-yQZ"/>
+                                    <constraint firstItem="czz-WR-vev" firstAttribute="centerX" secondItem="be3-Sp-y8O" secondAttribute="centerX" id="8BI-um-i8N"/>
                                     <constraint firstAttribute="height" constant="64" id="UD3-r9-4mA"/>
                                     <constraint firstAttribute="bottom" secondItem="dkL-Ec-7vr" secondAttribute="bottom" constant="3" id="WBL-Q5-hVm"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="64" id="aaM-4g-5w7"/>
                                     <constraint firstItem="czz-WR-vev" firstAttribute="leading" secondItem="dkL-Ec-7vr" secondAttribute="trailing" constant="4" id="dlu-4F-Gsr"/>
                                     <constraint firstAttribute="bottom" secondItem="czz-WR-vev" secondAttribute="bottom" constant="6.5" id="iyT-Lk-wbT"/>
-                                    <constraint firstAttribute="bottom" secondItem="dOH-kL-lU3" secondAttribute="bottom" constant="3" id="neo-Pb-Vmt"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nLi-CZ-ImR" customClass="TableIndexView" customModule="Plum" customModuleProvider="target">
@@ -3580,7 +3539,6 @@
                     <tabBarItem key="tabBarItem" title="Artist" image="tab_guitar" id="2TC-fA-qvN"/>
                     <connections>
                         <outlet property="artistLabel" destination="czz-WR-vev" id="6Z0-H8-gap"/>
-                        <outlet property="doneBtn" destination="dOH-kL-lU3" id="5mM-TR-geG"/>
                         <outlet property="indexView" destination="nLi-CZ-ImR" id="EjE-lb-zSo"/>
                         <outlet property="shufBtn" destination="dkL-Ec-7vr" id="SG9-3C-HHC"/>
                         <outlet property="tableView" destination="CIa-fU-VW9" id="PdX-nz-C8P"/>
@@ -3590,6 +3548,27 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e47-gs-H8F" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="7291.875" y="1745.0704225352113"/>
+        </scene>
+        <!--Now Playing-->
+        <scene sceneID="hyY-dw-JqY">
+            <objects>
+                <viewController id="c5S-xX-XtE" customClass="DummyVC" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="YRz-Ik-lgg"/>
+                        <viewControllerLayoutGuide type="bottom" id="JAq-c9-Pzd"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="4Li-gB-c97">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Now Playing" image="tab_play" id="VH5-uH-kw7"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cO9-Nr-4Ad" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7303" y="2422"/>
         </scene>
         <!--Songs-->
         <scene sceneID="N7O-uL-XhI">
@@ -4215,10 +4194,10 @@
             </objects>
             <point key="canvasLocation" x="1061" y="-494"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Up Next Tab Bar Controller-->
         <scene sceneID="tvI-yJ-52F">
             <objects>
-                <tabBarController storyboardIdentifier="GOGOGO" automaticallyAdjustsScrollViewInsets="NO" id="QzZ-N6-rDK" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="GOGOGO" automaticallyAdjustsScrollViewInsets="NO" id="QzZ-N6-rDK" customClass="UpNextTabBarController" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="YTL-71-Puh">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
@@ -4229,6 +4208,7 @@
                         <segue destination="JFZ-Pw-iWO" kind="relationship" relationship="viewControllers" id="dJ9-oQ-VOL"/>
                         <segue destination="iom-mG-mvn" kind="relationship" relationship="viewControllers" id="Ban-qL-aWj"/>
                         <segue destination="dQw-Ml-Zsz" kind="relationship" relationship="viewControllers" id="J39-bv-sdp"/>
+                        <segue destination="c5S-xX-XtE" kind="relationship" relationship="viewControllers" id="TJl-eX-CAU"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SGd-gW-IdZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4868,6 +4848,7 @@
         <image name="tab_album_selected" width="25" height="25"/>
         <image name="tab_guitar" width="25" height="25"/>
         <image name="tab_next_icon" width="25" height="25"/>
+        <image name="tab_play" width="25" height="25"/>
         <image name="tab_playlists" width="25" height="25"/>
         <image name="tab_search" width="25" height="25"/>
         <image name="tab_settings" width="25" height="25"/>
