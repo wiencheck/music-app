@@ -2540,11 +2540,16 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="25" id="GWp-51-VsG"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="2"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="zeroVol" translatesAutoresizingMaskIntoConstraints="NO" id="C2i-CI-Vnq">
-                                <rect key="frame" x="30" y="519" width="10" height="15"/>
+                                <rect key="frame" x="30" y="518" width="10" height="18"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="15" id="1kA-PS-6mL"/>
+                                    <constraint firstAttribute="height" constant="18" id="1kA-PS-6mL"/>
                                     <constraint firstAttribute="width" constant="10" id="l4U-RS-PJg"/>
                                 </constraints>
                             </imageView>
@@ -2696,7 +2701,7 @@
                                 </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="maxVol" translatesAutoresizingMaskIntoConstraints="NO" id="wT7-lt-rH4">
-                                <rect key="frame" x="276" y="517" width="18" height="18"/>
+                                <rect key="frame" x="276" y="518" width="18" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="CIu-gc-vXR"/>
                                     <constraint firstAttribute="width" constant="18" id="sGj-nl-j2y"/>
@@ -2769,8 +2774,8 @@
                             <constraint firstItem="dHj-fO-0oP" firstAttribute="leading" secondItem="1rc-sd-IRz" secondAttribute="trailing" constant="8" id="LEf-Qq-gcg"/>
                             <constraint firstItem="HsT-F6-cUw" firstAttribute="top" secondItem="S1m-tk-j5M" secondAttribute="bottom" id="N0r-sF-GOH"/>
                             <constraint firstItem="mtA-3f-Qpe" firstAttribute="top" secondItem="ln5-qL-Pwg" secondAttribute="bottom" id="PON-uQ-3u4"/>
-                            <constraint firstItem="C2i-CI-Vnq" firstAttribute="top" secondItem="S1m-tk-j5M" secondAttribute="bottom" constant="55" id="QBv-22-buA"/>
-                            <constraint firstItem="wT7-lt-rH4" firstAttribute="top" secondItem="S1m-tk-j5M" secondAttribute="bottom" constant="53" id="Se0-Xi-6ef"/>
+                            <constraint firstItem="C2i-CI-Vnq" firstAttribute="top" secondItem="S1m-tk-j5M" secondAttribute="bottom" constant="54" id="QBv-22-buA"/>
+                            <constraint firstItem="wT7-lt-rH4" firstAttribute="top" secondItem="S1m-tk-j5M" secondAttribute="bottom" constant="54" id="Se0-Xi-6ef"/>
                             <constraint firstItem="mtA-3f-Qpe" firstAttribute="top" secondItem="fsy-i5-bCI" secondAttribute="bottom" constant="2" id="T3K-DT-KpX"/>
                             <constraint firstItem="cd1-e2-oey" firstAttribute="top" secondItem="HsT-F6-cUw" secondAttribute="bottom" constant="1" id="TSi-T8-oCb"/>
                             <constraint firstItem="1rc-sd-IRz" firstAttribute="top" secondItem="FJj-8i-9gq" secondAttribute="bottom" constant="11" id="UhH-k2-3w0"/>

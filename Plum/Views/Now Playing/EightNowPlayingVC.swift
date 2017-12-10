@@ -399,7 +399,6 @@ extension EightNowPlayingVC {
         mpVolView = MPVolumeView(frame: volView.bounds)
         mpVolView.showsVolumeSlider = true
         mpVolView.showsRouteButton = false
-        mpVolView.setVolumeThumbImage(#imageLiteral(resourceName: "thumb"), for: .normal)
         volView.addSubview(mpVolView)
     }
     
@@ -512,8 +511,11 @@ extension EightNowPlayingVC {       //Kolory i UI
     func setImages() {
         prevBtn.setImage(#imageLiteral(resourceName: "prev-butt"), for: .normal)
         nextBtn.setImage(#imageLiteral(resourceName: "next-butt"), for: .normal)
-        minVolImg.image = #imageLiteral(resourceName: "zeroVol")
-        maxVolImg.image = #imageLiteral(resourceName: "maxVol")
+        // 10 18 18 18
+        let min = #imageLiteral(resourceName: "zeroVol").imageScaled(toFit: CGSize(width: 10, height: 18))
+        let max = #imageLiteral(resourceName: "maxVol").imageScaled(toFit: CGSize(width: 18, height: 18))
+        minVolImg.image = min?.withRenderingMode(.alwaysTemplate)
+        maxVolImg.image = max?.withRenderingMode(.alwaysTemplate)
         if player.isPlayin() {
             playbackBtn.setImage(#imageLiteral(resourceName: "pause-butt"), for: .normal)
         }else{
@@ -692,9 +694,13 @@ extension EightNowPlayingVC {       //Kolory i UI
         for current in temp {
             if current.isKind(of: UISlider.self) {
                 let tempSlider = current as! UISlider
-                tempSlider.setMinimumTrackImage(#imageLiteral(resourceName: "volumetrack").tintPictogram(with: min), for: .normal)
-                tempSlider.setMaximumTrackImage(#imageLiteral(resourceName: "volumetrack").tintPictogram(with: max), for: .normal)
-                tempSlider.setThumbImage(thumbImg.tintPictogram(with: thumb), for: .normal)
+                let minT = #imageLiteral(resourceName: "minVolTrack").imageScaled(toFit: CGSize(width: 100, height: 4))
+                let maxT = #imageLiteral(resourceName: "maxVolTrack").imageScaled(toFit: CGSize(width: 100, height: 4))
+                tempSlider.setMinimumTrackImage(minT?.tintPictogram(with: min), for: .normal)
+                tempSlider.setMaximumTrackImage(maxT?.tintPictogram(with: max), for: .normal)
+                let size = CGSize(width: 20, height: 20)
+                let t = #imageLiteral(resourceName: "volumeThumb").imageScaled(toFit: size)
+                tempSlider.setThumbImage(t?.tintPictogram(with: thumb), for: .normal)
             }
         }
     }
@@ -741,7 +747,6 @@ extension EightNowPlayingVC {       //Kolory i UI
             GlobalSettings.changeLyrics(false)
         }
     }
-    
 }
 /*
 extension UIViewController {

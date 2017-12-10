@@ -50,9 +50,12 @@
 		387C76B11FDD539300F4964E /* UpNextTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387C76B01FDD539300F4964E /* UpNextTabBarController.swift */; };
 		387C76B31FDD5B5E00F4964E /* DummyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387C76B21FDD5B5E00F4964E /* DummyVC.swift */; };
 		3890B3581F920A6C000198D8 /* Structs:Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3890B3571F920A6C000198D8 /* Structs:Classes.swift */; };
+		389333AE1FDDC118004A071B /* UIImage+ProportionalFill.m in Sources */ = {isa = PBXBuildFile; fileRef = 389333AC1FDDC118004A071B /* UIImage+ProportionalFill.m */; };
+		389333AF1FDDC118004A071B /* UIImage+Tint.m in Sources */ = {isa = PBXBuildFile; fileRef = 389333AD1FDDC118004A071B /* UIImage+Tint.m */; };
 		38944CA01FA0EFA4005CB30C /* AlbumUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38944C9F1FA0EFA4005CB30C /* AlbumUpVC.swift */; };
 		38944CA31FA0F024005CB30C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38944CA21FA0F024005CB30C /* MediaPlayer.framework */; };
 		38944CA51FA0F031005CB30C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38944CA41FA0F031005CB30C /* AVFoundation.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		389859ED1FDDB89700E54E55 /* PlumVolumeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 389859EC1FDDB89700E54E55 /* PlumVolumeView.swift */; };
 		389A24781FD8872D0092F979 /* QueueCellLite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 389A24761FD8871B0092F979 /* QueueCellLite.swift */; };
 		389A24791FD8874E0092F979 /* QueueCellLite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 389A24761FD8871B0092F979 /* QueueCellLite.swift */; };
 		38A12EA61F7270DB00E3E53E /* AlbumInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38A12EA51F7270DB00E3E53E /* AlbumInfoCell.swift */; };
@@ -160,9 +163,15 @@
 		387C76B01FDD539300F4964E /* UpNextTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpNextTabBarController.swift; sourceTree = "<group>"; };
 		387C76B21FDD5B5E00F4964E /* DummyVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DummyVC.swift; sourceTree = "<group>"; };
 		3890B3571F920A6C000198D8 /* Structs:Classes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Structs:Classes.swift"; sourceTree = "<group>"; };
+		389333A91FDDC117004A071B /* Plum-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Plum-Bridging-Header.h"; sourceTree = "<group>"; };
+		389333AA1FDDC118004A071B /* UIImage+ProportionalFill.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ProportionalFill.h"; sourceTree = "<group>"; };
+		389333AB1FDDC118004A071B /* UIImage+Tint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Tint.h"; sourceTree = "<group>"; };
+		389333AC1FDDC118004A071B /* UIImage+ProportionalFill.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ProportionalFill.m"; sourceTree = "<group>"; };
+		389333AD1FDDC118004A071B /* UIImage+Tint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Tint.m"; sourceTree = "<group>"; };
 		38944C9F1FA0EFA4005CB30C /* AlbumUpVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumUpVC.swift; sourceTree = "<group>"; };
 		38944CA21FA0F024005CB30C /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		38944CA41FA0F031005CB30C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		389859EC1FDDB89700E54E55 /* PlumVolumeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlumVolumeView.swift; sourceTree = "<group>"; };
 		389A24731FD87A7E0092F979 /* PlumWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PlumWidget.entitlements; sourceTree = "<group>"; };
 		389A24741FD87AC00092F979 /* Plum.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Plum.entitlements; sourceTree = "<group>"; };
 		389A24761FD8871B0092F979 /* QueueCellLite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueueCellLite.swift; sourceTree = "<group>"; };
@@ -227,6 +236,18 @@
 			path = PlumWidget;
 			sourceTree = "<group>";
 		};
+		389333A81FDDC109004A071B /* MGImage */ = {
+			isa = PBXGroup;
+			children = (
+				389333AA1FDDC118004A071B /* UIImage+ProportionalFill.h */,
+				389333AC1FDDC118004A071B /* UIImage+ProportionalFill.m */,
+				389333AB1FDDC118004A071B /* UIImage+Tint.h */,
+				389333AD1FDDC118004A071B /* UIImage+Tint.m */,
+				389333A91FDDC117004A071B /* Plum-Bridging-Header.h */,
+			);
+			path = MGImage;
+			sourceTree = "<group>";
+		};
 		38944CA11FA0F024005CB30C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -279,6 +300,7 @@
 				384BCD4F1F96140600D8ECFD /* PlumTabBarController.swift */,
 				381565241FDAC10E00F11D7F /* TabBarController.swift */,
 				387C76B01FDD539300F4964E /* UpNextTabBarController.swift */,
+				389859EC1FDDB89700E54E55 /* PlumVolumeView.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -301,6 +323,7 @@
 		38BB69301FC5F0C20097F6E7 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				389333A81FDDC109004A071B /* MGImage */,
 				38E7294F1F2F40B600F35780 /* musicQuery.swift */,
 				38AF9C781F2F72A800FA73B8 /* Plum.swift */,
 				384F9BF01F7A647D0053E22C /* RemoteCommandManager.swift */,
@@ -572,9 +595,11 @@
 				386CD58D1F6FC3560075EFD9 /* artistAlbumCell.swift in Sources */,
 				38D142571FB367CF003F08F5 /* SearchHeader.swift in Sources */,
 				386CD58F1F6FC4350075EFD9 /* AlbumsByVC.swift in Sources */,
+				389333AE1FDDC118004A071B /* UIImage+ProportionalFill.m in Sources */,
 				3859DFE31FC4B5EC00F188CE /* ScaleVC.swift in Sources */,
 				384BCD501F96140600D8ECFD /* PlumTabBarController.swift in Sources */,
 				3871BC261FBC42A30027CA2A /* ColorCell.swift in Sources */,
+				389333AF1FDDC118004A071B /* UIImage+Tint.m in Sources */,
 				3843ADBF1FBF39EA005E1C2F /* LyricsVC.swift in Sources */,
 				385825521FA33C8600697186 /* ArtistUpCell.swift in Sources */,
 				38C83D5D1FDBFBD600C7D94E /* ArtistSongs.swift in Sources */,
@@ -602,6 +627,7 @@
 				38345F461FABBBCA003DA1F2 /* PlaylistCell.swift in Sources */,
 				38121E9D1FA07A1700C2A3BD /* AlbumCell.swift in Sources */,
 				387C76B11FDD539300F4964E /* UpNextTabBarController.swift in Sources */,
+				389859ED1FDDB89700E54E55 /* PlumVolumeView.swift in Sources */,
 				3822211E1FA5EA4000004B21 /* QueueActionsCell.swift in Sources */,
 				38944CA01FA0EFA4005CB30C /* AlbumUpVC.swift in Sources */,
 				3859213F1FA879D900CF9059 /* ArtistsVC.swift in Sources */,
@@ -830,7 +856,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adw.plum;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Plum/Classes/MGImage/Plum-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
@@ -854,7 +880,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adw.plum;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Plum/Classes/MGImage/Plum-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
 			};
