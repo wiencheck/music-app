@@ -16,6 +16,8 @@ class PlaylistsVC: UIViewController {
     let defaults = UserDefaults.standard
     
     var cellTypes = [[Int]]()
+    var searchCellTypes = [Int]()
+    var searchActiveRow = 0
     var activeSection = 0
     var activeRow = 0
     var indexes = [String]()
@@ -28,6 +30,9 @@ class PlaylistsVC: UIViewController {
     var pickedID: MPMediaEntityPersistentID!
     var pickedList: Playlist!
     var gesture: UILongPressGestureRecognizer!
+    var filteredPlaylists = [Playlist]()
+    var searchController: UISearchController!
+    var shouldShowResults = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,14 +44,21 @@ class PlaylistsVC: UIViewController {
         }else{
             setTable()
         }
+        configureSearchController()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
+        self.definesPresentationContext = true
         if grid != GlobalSettings.playlistsGrid{
             self.viewDidLoad()
         }
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.definesPresentationContext = false
+    }
+    
     
     func setTable(){
         self.tableView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
@@ -59,6 +71,8 @@ class PlaylistsVC: UIViewController {
         tableIndexView.tableView = self.tableView
         tableIndexView.setup()
         self.view.addSubview(tableIndexView)
+        tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0)
     }
     
     func setCollection(){
@@ -81,6 +95,8 @@ class PlaylistsVC: UIViewController {
         gesture.numberOfTouchesRequired = 1
         collectionView.addGestureRecognizer(gesture)
         self.view.addSubview(collectionIndexView)
+        collectionView.contentInset = UIEdgeInsetsMake(74, 0, 0, 0)
+        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -98,24 +114,44 @@ class PlaylistsVC: UIViewController {
 extension PlaylistsVC: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return indexes.count
+        if shouldShowResults {
+            return 1
+        }else{
+            return indexes.count
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (result[indexes[section]]?.count)!
+        if shouldShowResults {
+            return filteredPlaylists.count
+        }else{
+            return (result[indexes[section]]?.count)!
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "playlistCell", for: indexPath) as! ArtistCell
-        let item = result[indexes[indexPath.section]]?[indexPath.row]
-        cell.setup(list: item!)
-        cell.backgroundColor = .clear
-        return cell
+        if shouldShowResults {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "playlistCell", for: indexPath) as! ArtistCell
+            let item = filteredPlaylists[indexPath.row]
+            cell.setup(list: item)
+            cell.backgroundColor = .clear
+            return cell
+        }else{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "playlistCell", for: indexPath) as! ArtistCell
+            let item = result[indexes[indexPath.section]]?[indexPath.row]
+            cell.setup(list: item!)
+            cell.backgroundColor = .clear
+            return cell
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let item = result[indexes[indexPath.section]]?[indexPath.row]
-        pickedList = item
+        if shouldShowResults {
+            pickedList = filteredPlaylists[indexPath.row]
+        }else{
+            let item = result[indexes[indexPath.section]]?[indexPath.row]
+            pickedList = item
+        }
         performSegue(withIdentifier: "playlist", sender: nil)
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -129,53 +165,99 @@ extension PlaylistsVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let play = UITableViewRowAction(style: .default, title: "Play Now", handler: {_,path in
-            self.pickedList = self.result[self.indexes[path.section]]?[path.row]
-            self.playNow()
-            self.tableView.setEditing(false, animated: true)
-        })
-        play.backgroundColor = .red
-        let next = UITableViewRowAction(style: .default, title: "Play Next", handler: {_,path in
-            self.pickedList = self.result[self.indexes[path.section]]?[path.row]
-            self.playNext()
-            self.tableView.setEditing(false, animated: true)
-        })
-        next.backgroundColor = .orange
-        let shuffle = UITableViewRowAction(style: .default, title: "Shuffle", handler: {_,path in
-            self.pickedList = self.result[self.indexes[path.section]]?[path.row]
-            self.shuffle()
-            self.tableView.setEditing(false, animated: true)
-        })
-        shuffle.backgroundColor = .purple
-        return [shuffle, next, play]
+        if shouldShowResults {
+            let play = UITableViewRowAction(style: .default, title: "Play Now", handler: {_,path in
+                self.pickedList = self.filteredPlaylists[path.row]
+                self.playNow()
+                self.tableView.setEditing(false, animated: true)
+            })
+            play.backgroundColor = .red
+            let next = UITableViewRowAction(style: .default, title: "Play Next", handler: {_,path in
+                self.pickedList = self.filteredPlaylists[path.row]
+                self.playNext()
+                self.tableView.setEditing(false, animated: true)
+            })
+            next.backgroundColor = .orange
+            let shuffle = UITableViewRowAction(style: .default, title: "Shuffle", handler: {_,path in
+                self.pickedList = self.filteredPlaylists[path.row]
+                self.shuffle()
+                self.tableView.setEditing(false, animated: true)
+            })
+            shuffle.backgroundColor = .purple
+            return [shuffle, next, play]
+        }else{
+            let play = UITableViewRowAction(style: .default, title: "Play Now", handler: {_,path in
+                self.pickedList = self.result[self.indexes[path.section]]?[path.row]
+                self.playNow()
+                self.tableView.setEditing(false, animated: true)
+            })
+            play.backgroundColor = .red
+            let next = UITableViewRowAction(style: .default, title: "Play Next", handler: {_,path in
+                self.pickedList = self.result[self.indexes[path.section]]?[path.row]
+                self.playNext()
+                self.tableView.setEditing(false, animated: true)
+            })
+            next.backgroundColor = .orange
+            let shuffle = UITableViewRowAction(style: .default, title: "Shuffle", handler: {_,path in
+                self.pickedList = self.result[self.indexes[path.section]]?[path.row]
+                self.shuffle()
+                self.tableView.setEditing(false, animated: true)
+            })
+            shuffle.backgroundColor = .purple
+            return [shuffle, next, play]
+        }
     }
 }
 
 extension PlaylistsVC: UICollectionViewDelegate, UICollectionViewDataSource, CollectionActionCellDelegate, UIGestureRecognizerDelegate {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return indexes.count
+        if shouldShowResults {
+            return 1
+        }else{
+            return indexes.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return (result[indexes[section]]?.count)!
+        if shouldShowResults {
+            return filteredPlaylists.count
+        }else{
+            return (result[indexes[section]]?.count)!
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if cellTypes[indexPath.section][indexPath.row] != 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "queueCell", for: indexPath) as! CollectionActionCell
-            cell.delegate = self
-            return cell
+        if shouldShowResults {
+            if searchCellTypes[indexPath.row] != 0 {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "queueCell", for: indexPath) as! CollectionActionCell
+                cell.delegate = self
+                return cell
+            }else{
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "playlistCell", for: indexPath) as! PlaylistCell
+                cell.setup(list: filteredPlaylists[indexPath.row])
+                return cell
+            }
         }else{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "playlistCell", for: indexPath) as! PlaylistCell
-            cell.setup(list: (result[indexes[indexPath.section]]?[indexPath.row])!)
-            return cell
+            if cellTypes[indexPath.section][indexPath.row] != 0 {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "queueCell", for: indexPath) as! CollectionActionCell
+                cell.delegate = self
+                return cell
+            }else{
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "playlistCell", for: indexPath) as! PlaylistCell
+                cell.setup(list: (result[indexes[indexPath.section]]?[indexPath.row])!)
+                return cell
+            }
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let item = result[indexes[indexPath.section]]?[indexPath.row]
-        pickedList = item
+        if shouldShowResults {
+            pickedList = filteredPlaylists[indexPath.row]
+        }else{
+            let item = result[indexes[indexPath.section]]?[indexPath.row]
+            pickedList = item
+        }
         performSegue(withIdentifier: "playlist", sender: nil)
     }
     
@@ -188,38 +270,72 @@ extension PlaylistsVC: UICollectionViewDelegate, UICollectionViewDataSource, Col
         case .shuffle:
             shuffle()
         }
-        cellTypes[activeSection][activeRow] = 0
-        let path = IndexPath(row: activeRow, section: activeSection)
-        collectionView.reloadItems(at: [path])
-        collectionView.deselectItem(at: path, animated: true)
+        if shouldShowResults {
+            searchCellTypes[searchActiveRow] = 0
+            let path = IndexPath(row: searchActiveRow, section: 0)
+            collectionView.reloadItems(at: [path])
+            collectionView.deselectItem(at: path, animated: true)
+        }else{
+            cellTypes[activeSection][activeRow] = 0
+            let path = IndexPath(row: activeRow, section: activeSection)
+            collectionView.reloadItems(at: [path])
+            collectionView.deselectItem(at: path, animated: true)
+        }
         gesture.addTarget(self, action: #selector(longPress(_:)))
     }
     
     @objc func longPress(_ sender: UILongPressGestureRecognizer) {
-        if cellTypes[activeSection][activeRow] != 0 {
-            cellTypes[activeSection][activeRow] = 0
-            collectionView.reloadItems(at: [IndexPath(row: activeRow, section: activeSection)])
-        }
-        if sender.state == .began {
-            let point = sender.location(in: collectionView)
-            if let path = collectionView.indexPathForItem(at: point) {
-                activeRow = path.row
-                activeSection = path.section
-                cellTypes[activeSection][activeRow] = 1
-                pickedList = result[indexes[activeSection]]?[activeRow]
-                collectionView.reloadItems(at: [path])
-                sender.removeTarget(self, action: #selector(longPress(_:)))
+        if shouldShowResults {
+            if searchCellTypes[searchActiveRow] != 0 {
+                searchCellTypes[searchActiveRow] = 0
+                collectionView.reloadItems(at: [IndexPath(row: searchActiveRow, section: 0)])
+            }
+            if sender.state == .began {
+                let point = sender.location(in: collectionView)
+                if let path = collectionView.indexPathForItem(at: point) {
+                    searchActiveRow = path.row
+                    searchCellTypes[searchActiveRow] = 1
+                    pickedList = filteredPlaylists[searchActiveRow]
+                    collectionView.reloadItems(at: [path])
+                    sender.removeTarget(self, action: #selector(longPress(_:)))
+                }
+            }
+        }else{
+            if cellTypes[activeSection][activeRow] != 0 {
+                cellTypes[activeSection][activeRow] = 0
+                collectionView.reloadItems(at: [IndexPath(row: activeRow, section: activeSection)])
+            }
+            if sender.state == .began {
+                let point = sender.location(in: collectionView)
+                if let path = collectionView.indexPathForItem(at: point) {
+                    activeRow = path.row
+                    activeSection = path.section
+                    cellTypes[activeSection][activeRow] = 1
+                    pickedList = result[indexes[activeSection]]?[activeRow]
+                    collectionView.reloadItems(at: [path])
+                    sender.removeTarget(self, action: #selector(longPress(_:)))
+                }
             }
         }
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        if grid {
-            cellTypes[activeSection][activeRow] = 0
-            let path = IndexPath(row: activeRow, section: activeSection)
-            collectionView.reloadItems(at: [path])
-            collectionView.deselectItem(at: path, animated: true)
-            gesture.addTarget(self, action: #selector(longPress(_:)))
+        if shouldShowResults {
+            if grid {
+                searchCellTypes[searchActiveRow] = 0
+                let path = IndexPath(row: searchActiveRow, section: 0)
+                collectionView.reloadItems(at: [path])
+                collectionView.deselectItem(at: path, animated: true)
+                gesture.addTarget(self, action: #selector(longPress(_:)))
+            }
+        }else{
+            if grid {
+                cellTypes[activeSection][activeRow] = 0
+                let path = IndexPath(row: activeRow, section: activeSection)
+                collectionView.reloadItems(at: [path])
+                collectionView.deselectItem(at: path, animated: true)
+                gesture.addTarget(self, action: #selector(longPress(_:)))
+            }
         }
     }
     
@@ -313,4 +429,116 @@ extension PlaylistsVC: UITabBarControllerDelegate {
             }
         }
     }
+}
+
+extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
+    
+    func configureSearchController(){
+        searchController = UISearchController(searchResultsController: nil)
+        definesPresentationContext = true
+        searchController.definesPresentationContext = true
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search for playlists"
+        searchController.searchBar.delegate = self
+        searchController.searchBar.sizeToFit()
+        searchController.searchBar.tintColor = GlobalSettings.tint.color
+        self.searchController.hidesNavigationBarDuringPresentation = false;
+        if #available(iOS 11.0, *) {
+            navigationItem.searchController = searchController
+        } else {
+            // Fallback on earlier versions
+            navigationItem.titleView = searchController?.searchBar
+        }
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        if grid {
+            collectionView.reloadData()
+            if filteredPlaylists.count != 0 {
+                collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+            }
+        }else{
+            tableView.reloadData()
+            if filteredPlaylists.count != 0 {
+                tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+            }
+        }
+    }
+    
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        shouldShowResults = false
+        tableView.reloadData()
+        if grid {
+            collectionIndexView.isHidden = false
+        }else{
+            tableIndexView.isHidden = false
+        }
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if !shouldShowResults {
+            shouldShowResults = true
+            tableView.reloadData()
+        }
+        searchController.searchBar.resignFirstResponder()
+    }
+    
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchString = searchController.searchBar.text
+        if searchString == ""{
+            shouldShowResults = false
+        }else{
+            shouldShowResults = true
+            self.tableView.separatorStyle = .singleLine
+        }
+        let whitespaceCharacterSet = CharacterSet.whitespaces
+        let strippedString = searchString!.trimmingCharacters(in: whitespaceCharacterSet)
+        let searchItems = strippedString.components(separatedBy: " ") as [String]
+        var searchItemsPredicate = [NSPredicate]()
+        
+        let songsMatchPredicates: [NSPredicate] = searchItems.map { searchString in
+            let titleExpression = NSExpression(forKeyPath: "name")
+            let searchStringExpression = NSExpression(forConstantValue: searchString)
+            
+            let titleSearchComparisonPredicate = NSComparisonPredicate(leftExpression: titleExpression, rightExpression: searchStringExpression, modifier: .direct, type: .contains, options: .caseInsensitive)
+            
+            searchItemsPredicate.append(titleSearchComparisonPredicate)
+            
+            let orMatchPredicate = NSCompoundPredicate(orPredicateWithSubpredicates:searchItemsPredicate)
+            
+            return orMatchPredicate
+        }
+        let finalCompoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: songsMatchPredicates)
+        
+        
+        filteredPlaylists = (playlists.filter { finalCompoundPredicate.evaluate(with: $0) })
+        self.tableView.reloadData()
+        if filteredPlaylists.count != 0 {
+            tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y < -104 {
+            searchController.searchBar.becomeFirstResponder()
+        }else if scrollView.contentOffset.y > 1 {
+            searchController.searchBar.resignFirstResponder()
+        }
+    }
+    
+}
+
+extension PlaylistsVC: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let height = self.view.frame.size.height
+        let width = self.view.frame.size.width
+        let Waspect: CGFloat = 0.45
+        let Haspect: CGFloat = 0.35
+        return CGSize(width: width*Waspect, height: height*Haspect)
+    }
+    
 }

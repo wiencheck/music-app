@@ -21,6 +21,11 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     let defaults = UserDefaults.standard
     var pickedAlbumID: MPMediaEntityPersistentID!
     var pickedArtistID: MPMediaEntityPersistentID!
+    var searchController: UISearchController!
+    var filteredSongs = [MPMediaItem]()
+    var shouldShowResults = false
+    var cellTypesSearch = [Int]()
+    var searchActiveRow = 0
     
     let backround = #imageLiteral(resourceName: "background_se")
     @IBOutlet weak var tableView: UITableView!
@@ -44,11 +49,13 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         }
         self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
         tableView.backgroundView = UIImageView(image: backround)
-        //view.addSubview(tableView)
         indexView.indexes = self.indexes
         indexView.tableView = self.tableView
         indexView.setup()
         view.addSubview(indexView)
+        configureSearchController()
+        tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0)
     }
     
     deinit {
@@ -60,126 +67,208 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return result.keys.count
+        if shouldShowResults {
+            return 1
+        }else{
+            return result.keys.count
+        }
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
-            return String()
+        if shouldShowResults {
+            return ""
         }else{
-            return indexes[section]
+            if section == 0 {
+                return String()
+            }else{
+                return indexes[section]
+            }
         }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return 1
+        if shouldShowResults {
+            return filteredSongs.count
         }else{
-            return (result[indexes[section]]?.count)!
+            if section == 0 {
+                return 1
+            }else{
+                return (result[indexes[section]]?.count)!
+            }
         }
     }
-
-    /*func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        if cellTypes[indexPath.section-1][indexPath.row] != 0{
-            return nil
-        }else{
-            return indexPath
-        }
-    }*/
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let album = UITableViewRowAction(style: .default, title: "Album", handler: {_,path in
-            let item = self.result[self.indexes[path.section-1]]?[path.row]
-            self.pickedAlbumID = item?.albumPersistentID
-            self.albumBtn()
-        })
-        album.backgroundColor = .albumGreen
-        let artist = UITableViewRowAction(style: .default, title: "Artist", handler: {_,path in
-            let item = self.result[self.indexes[path.section-1]]?[path.row]
-            self.pickedArtistID = item?.albumArtistPersistentID
-            self.pickedAlbumID = item?.albumPersistentID
-            self.artistBtn()
-        })
-        artist.backgroundColor = .artistBlue
-        return [album, artist]
+        if shouldShowResults {
+            let album = UITableViewRowAction(style: .default, title: "Album", handler: {_,path in
+                let item = self.filteredSongs[path.row]
+                self.pickedAlbumID = item.albumPersistentID
+                self.albumBtn()
+            })
+            album.backgroundColor = .albumGreen
+            let artist = UITableViewRowAction(style: .default, title: "Artist", handler: {_,path in
+                let item = self.filteredSongs[path.row]
+                self.pickedArtistID = item.albumArtistPersistentID
+                self.pickedAlbumID = item.albumPersistentID
+                self.artistBtn()
+            })
+            artist.backgroundColor = .artistBlue
+            return [album, artist]
+        }else{
+            let album = UITableViewRowAction(style: .default, title: "Album", handler: {_,path in
+                let item = self.result[self.indexes[path.section]]?[path.row]
+                self.pickedAlbumID = item?.albumPersistentID
+                self.albumBtn()
+            })
+            album.backgroundColor = .albumGreen
+            let artist = UITableViewRowAction(style: .default, title: "Artist", handler: {_,path in
+                let item = self.result[self.indexes[path.section]]?[path.row]
+                self.pickedArtistID = item?.albumArtistPersistentID
+                self.pickedAlbumID = item?.albumPersistentID
+                self.artistBtn()
+            })
+            artist.backgroundColor = .artistBlue
+            return [album, artist]
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath)
-            cell.textLabel?.text = "Shuffle"
-            cell.backgroundColor = .clear
-            return cell
+        if shouldShowResults {
+            if cellTypesSearch[indexPath.row] != 0 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as! QueueActionsCell
+                cell.delegate = self
+                cell.backgroundColor = .clear
+                return cell
+            }else{
+                let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! SongCell
+                let item = filteredSongs[indexPath.row]
+                cell.setup(item: item)
+                cell.backgroundColor = .clear
+                return cell
+            }
         }else{
-            if(cellTypes[indexPath.section][indexPath.row] == 0){
-                let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as? SongCell
-                let item = result[indexes[indexPath.section]]?[indexPath.row]
-                if(item != Plum.shared.currentItem){
-                    cell?.setup(item: item!)
-                }else{
-                    cell?.setup(item: item!)
+            if indexPath.section == 0 {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath)
+                cell.textLabel?.text = "Shuffle"
+                cell.backgroundColor = .clear
+                return cell
+            }else{
+                if(cellTypes[indexPath.section][indexPath.row] == 0){
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as? SongCell
+                    let item = result[indexes[indexPath.section]]?[indexPath.row]
+                    if(item != Plum.shared.currentItem){
+                        cell?.setup(item: item!)
+                    }else{
+                        cell?.setup(item: item!)
+                    }
+                    cell?.backgroundColor = .clear
+                    return cell!
+                }else {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as? QueueActionsCell
+                    cell?.delegate = self
+                    cell?.backgroundColor = .clear
+                    return cell!
                 }
-                cell?.backgroundColor = .clear
-                return cell!
-            }else {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as? QueueActionsCell
-                cell?.delegate = self
-                cell?.backgroundColor = .clear
-                return cell!
             }
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 {
-            return 44
-        }else{
+        if shouldShowResults {
             return 62
+        }else{
+            if indexPath.section == 0 {
+                return 44
+            }else{
+                return 62
+            }
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if cellTypes[activeIndexSection][activeIndexRow] != 0 {
-            cellTypes[activeIndexSection][activeIndexRow] = 0
-            tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection+1)], with: .fade)
-        }
-        if indexPath.section == 0 {
-            shuffleAll()
-        }else{
-            absoluteIndex = indexPath.absoluteRow(tableView) - 1
-            activeIndexRow = indexPath.row
-            activeIndexSection = indexPath.section
-            print(result[indexes[activeIndexSection]]![activeIndexRow].title)
-            if(cellTypes[activeIndexSection][activeIndexRow] == 0){
-                if(Plum.shared.isPlayin()){
-                    cellTypes[activeIndexSection][activeIndexRow] = 1
-                    tableView.reloadRows(at: [indexPath], with: .fade)
-                }else{
-                    if(Plum.shared.isShuffle){
-                        Plum.shared.disableShuffle()
-                        Plum.shared.createDefQueue(items: songs)
-                        Plum.shared.defIndex = absoluteIndex
-                        Plum.shared.shuffleCurrent()
-                        Plum.shared.playFromShufQueue(index: 0, new: true)
-                    }else{
-                        Plum.shared.createDefQueue(items: songs)
-                        Plum.shared.playFromDefQueue(index: absoluteIndex, new: true)
-                    }
-                    Plum.shared.play()
-                }
+        if shouldShowResults {
+            if cellTypesSearch[searchActiveRow] != 0 {
+                cellTypesSearch[searchActiveRow] = 0
+                tableView.reloadRows(at: [IndexPath(row: searchActiveRow, section: 0)], with: .fade)
             }else{
+                searchActiveRow = indexPath.row
+                if cellTypesSearch[searchActiveRow] == 0 {
+                    if Plum.shared.isPlayin() {
+                        cellTypesSearch[searchActiveRow] = 1
+                        tableView.reloadRows(at: [indexPath], with: .fade)
+                    }else{
+                        if Plum.shared.isShuffle {
+                            Plum.shared.disableShuffle()
+                            Plum.shared.createDefQueue(items: songs)
+                            let item = filteredSongs[searchActiveRow]
+                            for i in 0 ..< songs.count {
+                                if item == songs[i] {
+                                    absoluteIndex = i
+                                    break
+                                }
+                            }
+                            Plum.shared.defIndex = absoluteIndex
+                            Plum.shared.shuffleCurrent()
+                            Plum.shared.playFromShufQueue(index: 0, new: true)
+                        }else{
+                            Plum.shared.createDefQueue(items: songs)
+                            let item = filteredSongs[searchActiveRow]
+                            for i in 0 ..< songs.count {
+                                if item == songs[i] {
+                                    absoluteIndex = i
+                                    break
+                                }
+                            }
+                            Plum.shared.playFromDefQueue(index: absoluteIndex, new: true)
+                        }
+                        Plum.shared.play()
+                    }
+                }else{
+                    cellTypesSearch[searchActiveRow] = 0
+                    tableView.reloadRows(at: [indexPath], with: .right)
+                }
+            }
+        }else{
+            if cellTypes[activeIndexSection][activeIndexRow] != 0 {
                 cellTypes[activeIndexSection][activeIndexRow] = 0
-                tableView.reloadRows(at: [indexPath], with: .right)
+                tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection+1)], with: .fade)
+            }
+            if indexPath.section == 0 {
+                shuffleAll()
+            }else{
+                absoluteIndex = indexPath.absoluteRow(tableView) - 1
+                activeIndexRow = indexPath.row
+                activeIndexSection = indexPath.section
+                print(result[indexes[activeIndexSection]]![activeIndexRow].title)
+                if(cellTypes[activeIndexSection][activeIndexRow] == 0){
+                    if(Plum.shared.isPlayin()){
+                        cellTypes[activeIndexSection][activeIndexRow] = 1
+                        tableView.reloadRows(at: [indexPath], with: .fade)
+                    }else{
+                        if(Plum.shared.isShuffle){
+                            Plum.shared.disableShuffle()
+                            Plum.shared.createDefQueue(items: songs)
+                            Plum.shared.defIndex = absoluteIndex
+                            Plum.shared.shuffleCurrent()
+                            Plum.shared.playFromShufQueue(index: 0, new: true)
+                        }else{
+                            Plum.shared.createDefQueue(items: songs)
+                            Plum.shared.playFromDefQueue(index: absoluteIndex, new: true)
+                        }
+                        Plum.shared.play()
+                    }
+                }else{
+                    cellTypes[activeIndexSection][activeIndexRow] = 0
+                    tableView.reloadRows(at: [indexPath], with: .right)
+                }
             }
         }
+        
         tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-    @IBAction func NPBtnPressed(_ sender: Any) {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -201,30 +290,73 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         case.playLast:
             playLastBtn()
         }
-        cellTypes[activeIndexSection][activeIndexRow] = 0
-        tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .right)
+        if shouldShowResults {
+            cellTypesSearch[searchActiveRow] = 0
+            tableView.reloadRows(at: [IndexPath(row: searchActiveRow, section: 0)], with: .right)
+        }else{
+            cellTypes[activeIndexSection][activeIndexRow] = 0
+            tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .right)
+        }
     }
     
     func playNextBtn() {
-        Plum.shared.addNext(item: songs[absoluteIndex])
+        if shouldShowResults {
+            Plum.shared.addNext(item: filteredSongs[searchActiveRow])
+        }else{
+            Plum.shared.addNext(item: songs[absoluteIndex])
+        }
     }
     func playLastBtn() {
-        Plum.shared.addLast(item: songs[absoluteIndex])
+        if shouldShowResults {
+            Plum.shared.addLast(item: filteredSongs[searchActiveRow])
+        }else{
+            Plum.shared.addLast(item: songs[absoluteIndex])
+        }
     }
     func playNowBtn() {
-        if(Plum.shared.isUsrQueue){
-            Plum.shared.clearQueue()
-        }
-        if(Plum.shared.isShuffle){
-            Plum.shared.disableShuffle()
-            Plum.shared.defIndex = absoluteIndex
-            Plum.shared.createDefQueue(items: songs)
-            Plum.shared.shuffleCurrent()
-            Plum.shared.playFromShufQueue(index: 0, new: true)
+        if shouldShowResults {
+            if Plum.shared.isUsrQueue {
+                Plum.shared.clearQueue()
+            }
+            if Plum.shared.isShuffle {
+                let item = filteredSongs[searchActiveRow]
+                for i in 0 ..< songs.count {
+                    if songs[i] == item {
+                        absoluteIndex = i
+                        break
+                    }
+                }
+                Plum.shared.disableShuffle()
+                Plum.shared.defIndex = absoluteIndex
+                Plum.shared.createDefQueue(items: songs)
+                Plum.shared.shuffleCurrent()
+                Plum.shared.playFromShufQueue(index: 0, new: true)
+            }else{
+                let item = filteredSongs[searchActiveRow]
+                for i in 0 ..< songs.count {
+                    if songs[i] == item {
+                        absoluteIndex = i
+                        break
+                    }
+                }
+                Plum.shared.createDefQueue(items: songs)
+                Plum.shared.playFromDefQueue(index: absoluteIndex, new: true)
+            }
+        }else{
+            if(Plum.shared.isUsrQueue){
+                Plum.shared.clearQueue()
+            }
+            if(Plum.shared.isShuffle){
+                Plum.shared.disableShuffle()
+                Plum.shared.defIndex = absoluteIndex
+                Plum.shared.createDefQueue(items: songs)
+                Plum.shared.shuffleCurrent()
+                Plum.shared.playFromShufQueue(index: 0, new: true)
             }else{
                 Plum.shared.createDefQueue(items: songs)
                 Plum.shared.playFromDefQueue(index: absoluteIndex, new: true)
             }
+        }
         Plum.shared.play()
     }
     func albumBtn(){
@@ -235,11 +367,18 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        cellTypes[activeIndexSection][activeIndexRow] = 0
-        print("section \(activeIndexSection) row \(activeIndexRow)")
-        let indexPath = IndexPath(row: activeIndexRow, section: activeIndexSection)
-        self.tableView.deselectRow(at: indexPath, animated: true)
-        self.tableView.reloadRows(at: [indexPath], with: .fade)
+        if shouldShowResults {
+            cellTypesSearch[searchActiveRow] = 0
+            let indexPath = IndexPath(row: searchActiveRow, section: 0)
+            self.tableView.deselectRow(at: indexPath, animated: true)
+            self.tableView.reloadRows(at: [indexPath], with: .fade)
+        }else{
+            cellTypes[activeIndexSection][activeIndexRow] = 0
+            print("section \(activeIndexSection) row \(activeIndexRow)")
+            let indexPath = IndexPath(row: activeIndexRow, section: activeIndexSection)
+            self.tableView.deselectRow(at: indexPath, animated: true)
+            self.tableView.reloadRows(at: [indexPath], with: .fade)
+        }
     }
 }
 
@@ -341,4 +480,96 @@ extension SongsVC: UITabBarControllerDelegate {
             }
         }
     }
+}
+
+extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
+    
+    func configureSearchController(){
+        searchController = UISearchController(searchResultsController: nil)
+        definesPresentationContext = true
+        searchController.definesPresentationContext = true
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search for songs"
+        searchController.searchBar.delegate = self
+        searchController.searchBar.sizeToFit()
+        searchController.searchBar.tintColor = GlobalSettings.tint.color
+        self.searchController.hidesNavigationBarDuringPresentation = false;
+        if #available(iOS 11.0, *) {
+            navigationItem.searchController = searchController
+        } else {
+            // Fallback on earlier versions
+            navigationItem.titleView = searchController?.searchBar
+        }
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        tableView.reloadData()
+        if filteredSongs.count != 0 {
+            tableView.scrollToRow(at: IndexPath(row: 0 , section: 0), at: .top, animated: false)
+        }
+    }
+    
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        shouldShowResults = false
+        tableView.reloadData()
+        indexView.isHidden = false
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if !shouldShowResults {
+            shouldShowResults = true
+            tableView.reloadData()
+        }
+        searchController.searchBar.resignFirstResponder()
+    }
+    
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchString = searchController.searchBar.text
+        if searchString == ""{
+            shouldShowResults = false
+            indexView.isHidden = false
+        }else{
+            shouldShowResults = true
+            self.tableView.separatorStyle = .singleLine
+            indexView.isHidden = true
+        }
+        let whitespaceCharacterSet = CharacterSet.whitespaces
+        let strippedString = searchString!.trimmingCharacters(in: whitespaceCharacterSet)
+        let searchItems = strippedString.components(separatedBy: " ") as [String]
+        var searchItemsPredicate = [NSPredicate]()
+        
+        let songsMatchPredicates: [NSPredicate] = searchItems.map { searchString in
+            let titleExpression = NSExpression(forKeyPath: "title")
+            let searchStringExpression = NSExpression(forConstantValue: searchString)
+            
+            let titleSearchComparisonPredicate = NSComparisonPredicate(leftExpression: titleExpression, rightExpression: searchStringExpression, modifier: .direct, type: .contains, options: .caseInsensitive)
+            
+            searchItemsPredicate.append(titleSearchComparisonPredicate)
+            
+            let orMatchPredicate = NSCompoundPredicate(orPredicateWithSubpredicates:searchItemsPredicate)
+            
+            return orMatchPredicate
+        }
+        let finalCompoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: songsMatchPredicates)
+        
+        
+        filteredSongs = (songs.filter { finalCompoundPredicate.evaluate(with: $0) })
+        cellTypesSearch = Array<Int>(repeating: 0, count: filteredSongs.count)
+        self.tableView.reloadData()
+        if filteredSongs.count != 0 {
+            tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y < -104 {
+            searchController.searchBar.becomeFirstResponder()
+        }else if scrollView.contentOffset.y > 2 {
+            searchController.searchBar.resignFirstResponder()
+        }
+    }
+    
 }

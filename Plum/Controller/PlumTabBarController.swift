@@ -25,7 +25,8 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         _ = viewControllers?.first
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         self.tabBar.tintColor = GlobalSettings.tint.color
-        self.tabBarController?.moreNavigationController.navigationBar.tintColor = GlobalSettings.tint.color
+        moreNavigationController.navigationBar.tintColor = GlobalSettings.tint.color
+        moreNavigationController.topViewController?.navigationItem.backBarButtonItem?.title = "Kurwa"
         //moreNavigationController.topViewController?.view 
         //self.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color], for: UIControlState.normal)
         //self.tabBar.unselectedItemTintColor = UIColor.gray

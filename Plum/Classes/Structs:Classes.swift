@@ -114,7 +114,7 @@ import MediaPlayer
     }
 }
 
-struct Playlist {
+@objcMembers class Playlist: NSObject {
     let items: [MPMediaItem]
     let ID: MPMediaEntityPersistentID
     let name: String

@@ -27,6 +27,11 @@ class AlbumsVC: UIViewController {
     var cellTypes = [[Int]]()
     var activeSection = 0
     var activeRow = 0
+    var searchActiveRow = 0
+    var searchController: UISearchController!
+    var filteredAlbums = [AlbumB]()
+    var cellTypesSearch = [Int]()
+    var shouldShowResults = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +43,7 @@ class AlbumsVC: UIViewController {
         }else{
             setTable()
         }
+        configureSearchController()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,6 +63,8 @@ class AlbumsVC: UIViewController {
         tableIndexView.tableView = self.tableView
         tableIndexView.setup()
         self.view.addSubview(tableIndexView)
+        tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0)
     }
     
     func setCollection(){
@@ -77,6 +85,8 @@ class AlbumsVC: UIViewController {
         self.collectionIndexView.collectionView = self.collectionView
         self.collectionIndexView.setup()
         self.view.addSubview(collectionIndexView)
+        collectionView.contentInset = UIEdgeInsetsMake(74, 0, 0, 0)
+        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -94,7 +104,11 @@ class AlbumsVC: UIViewController {
 extension AlbumsVC: UITableViewDelegate, UITableViewDataSource{     //Table
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return indexes.count
+        if shouldShowResults {
+            return 1
+        }else{
+            return indexes.count
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -102,23 +116,40 @@ extension AlbumsVC: UITableViewDelegate, UITableViewDataSource{     //Table
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (result[indexes[section]]?.count)!
+        if shouldShowResults {
+            return filteredAlbums.count
+        }else{
+            return (result[indexes[section]]?.count)!
+        }
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return indexes[section]
+        if shouldShowResults {
+            return ""
+        }else{
+            return indexes[section]
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "albumCell", for: indexPath) as! AlbumCell
-        cell.setup(album: (result[indexes[indexPath.section]]?[indexPath.row])!)
+        if shouldShowResults {
+            cell.setup(album: filteredAlbums[indexPath.row])
+        }else{
+            cell.setup(album: (result[indexes[indexPath.section]]?[indexPath.row])!)
+        }
         cell.backgroundColor = .clear
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let album = result[indexes[indexPath.section]]?[indexPath.row]
-        picked = album
+        if shouldShowResults {
+            let album = filteredAlbums[indexPath.row]
+            picked = album
+        }else{
+            let album = result[indexes[indexPath.section]]?[indexPath.row]
+            picked = album
+        }
         performSegue(withIdentifier: "album", sender: nil)
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -128,25 +159,47 @@ extension AlbumsVC: UITableViewDelegate, UITableViewDataSource{     //Table
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let play = UITableViewRowAction(style: .default, title: "Play Now", handler: {_,path in
-            self.picked = self.result[self.indexes[path.section]]?[path.row]
-            self.playNow()
-            self.tableView.setEditing(false, animated: true)
-        })
-        play.backgroundColor = .red
-        let next = UITableViewRowAction(style: .default, title: "Play Next", handler: {_,path in
-            self.picked = self.result[self.indexes[path.section]]?[path.row]
-            self.playNext()
-            self.tableView.setEditing(false, animated: true)
-        })
-        next.backgroundColor = .orange
-        let shuffle = UITableViewRowAction(style: .default, title: "Shuffle", handler: {_,path in
-            self.picked = self.result[self.indexes[path.section]]?[path.row]
-            self.shuffle()
-            self.tableView.setEditing(false, animated: true)
-        })
-        shuffle.backgroundColor = .purple
-        return [shuffle, next, play]
+        if shouldShowResults {
+            let play = UITableViewRowAction(style: .default, title: "Play Now", handler: {_,path in
+                self.picked = self.filteredAlbums[indexPath.row]
+                self.playNow()
+                self.tableView.setEditing(false, animated: true)
+            })
+            play.backgroundColor = .red
+            let next = UITableViewRowAction(style: .default, title: "Play Next", handler: {_,path in
+                self.picked = self.filteredAlbums[indexPath.row]
+                self.playNext()
+                self.tableView.setEditing(false, animated: true)
+            })
+            next.backgroundColor = .orange
+            let shuffle = UITableViewRowAction(style: .default, title: "Shuffle", handler: {_,path in
+                self.picked = self.filteredAlbums[indexPath.row]
+                self.shuffle()
+                self.tableView.setEditing(false, animated: true)
+            })
+            shuffle.backgroundColor = .purple
+            return [shuffle, next, play]
+        }else{
+            let play = UITableViewRowAction(style: .default, title: "Play Now", handler: {_,path in
+                self.picked = self.result[self.indexes[path.section]]?[path.row]
+                self.playNow()
+                self.tableView.setEditing(false, animated: true)
+            })
+            play.backgroundColor = .red
+            let next = UITableViewRowAction(style: .default, title: "Play Next", handler: {_,path in
+                self.picked = self.result[self.indexes[path.section]]?[path.row]
+                self.playNext()
+                self.tableView.setEditing(false, animated: true)
+            })
+            next.backgroundColor = .orange
+            let shuffle = UITableViewRowAction(style: .default, title: "Shuffle", handler: {_,path in
+                self.picked = self.result[self.indexes[path.section]]?[path.row]
+                self.shuffle()
+                self.tableView.setEditing(false, animated: true)
+            })
+            shuffle.backgroundColor = .purple
+            return [shuffle, next, play]
+        }
     }
 
 }
@@ -154,60 +207,108 @@ extension AlbumsVC: UITableViewDelegate, UITableViewDataSource{     //Table
 extension AlbumsVC: UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate, CollectionActionCellDelegate{       //Collection
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return indexes.count
+        if shouldShowResults {
+            return 1
+        }else{
+            return indexes.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return (result[indexes[section]]?.count)!
+        if shouldShowResults {
+            return filteredAlbums.count
+        }else{
+            return (result[indexes[section]]?.count)!
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        if cellTypes[indexPath.section][indexPath.row] == 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! AlbumsCollectionCell
-            cell.setup(album: (result[indexes[indexPath.section]]?[indexPath.row])!)
-            return cell
+        if shouldShowResults {
+            if cellTypesSearch[indexPath.row] != 0 {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "queueCell", for: indexPath) as! CollectionActionCell
+                cell.delegate = self
+                return cell
+            }else{
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! AlbumsCollectionCell
+                cell.setup(album: filteredAlbums[indexPath.row])
+                return cell
+            }
         }else{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "queueCell", for: indexPath) as! CollectionActionCell
-            cell.delegate = self
-            return cell
+            if cellTypes[indexPath.section][indexPath.row] == 0 {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! AlbumsCollectionCell
+                cell.setup(album: (result[indexes[indexPath.section]]?[indexPath.row])!)
+                return cell
+            }else{
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "queueCell", for: indexPath) as! CollectionActionCell
+                cell.delegate = self
+                return cell
+            }
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        let album = result[indexes[indexPath.section]]?[indexPath.row]
-        picked = album
+        if shouldShowResults {
+            picked = filteredAlbums[indexPath.row]
+        }else{
+            let album = result[indexes[indexPath.section]]?[indexPath.row]
+            picked = album
+        }
+        collectionView.deselectItem(at: indexPath, animated: true)
         performSegue(withIdentifier: "album", sender: nil)
     }
     
     @objc func longPress(_ sender: UILongPressGestureRecognizer) {
-        if cellTypes[activeSection][activeRow] != 0 {
-            cellTypes[activeSection][activeRow] = 0
-            collectionView.reloadItems(at: [IndexPath(row: activeRow, section: activeSection)])
-        }
-        if sender.state == .began {
-            let point = sender.location(in: collectionView)
-            if let path = collectionView.indexPathForItem(at: point) {
-                activeRow = path.row
-                activeSection = path.section
-                cellTypes[activeSection][activeRow] = 1
-                picked = result[indexes[activeSection]]?[activeRow]
-                collectionView.reloadItems(at: [path])
-                gesture.removeTarget(self, action: #selector(longPress(_:)))
+        if shouldShowResults {
+            if cellTypesSearch[searchActiveRow] != 0 {
+                cellTypesSearch[searchActiveRow] = 0
+                collectionView.reloadItems(at: [IndexPath(row: searchActiveRow, section: 0)])
             }
-        }else if sender.state == .ended {
-            print("ended")
+            if sender.state == .began {
+                let point = sender.location(in: collectionView)
+                if let path = collectionView.indexPathForItem(at: point) {
+                    searchActiveRow = path.row
+                    cellTypesSearch[searchActiveRow] = 1
+                    picked = filteredAlbums[searchActiveRow]
+                    collectionView.reloadItems(at: [path])
+                    gesture.removeTarget(self, action: #selector(longPress(_:)))
+                }
+            }
+        }else{
+            if cellTypes[activeSection][activeRow] != 0 {
+                cellTypes[activeSection][activeRow] = 0
+                collectionView.reloadItems(at: [IndexPath(row: activeRow, section: activeSection)])
+            }
+            if sender.state == .began {
+                let point = sender.location(in: collectionView)
+                if let path = collectionView.indexPathForItem(at: point) {
+                    activeRow = path.row
+                    activeSection = path.section
+                    cellTypes[activeSection][activeRow] = 1
+                    picked = result[indexes[activeSection]]?[activeRow]
+                    collectionView.reloadItems(at: [path])
+                    gesture.removeTarget(self, action: #selector(longPress(_:)))
+                }
+            }
         }
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        if grid {
-            cellTypes[activeSection][activeRow] = 0
-            let path = IndexPath(row: activeRow, section: activeSection)
-            collectionView.reloadItems(at: [path])
-            collectionView.deselectItem(at: path, animated: true)
-            gesture.addTarget(self, action: #selector(longPress(_:)))
+        if shouldShowResults {
+            if grid {
+                cellTypesSearch[searchActiveRow] = 0
+                let path = IndexPath(row: searchActiveRow, section: 0)
+                collectionView.reloadItems(at: [path])
+                collectionView.deselectItem(at: path, animated: true)
+                gesture.addTarget(self, action: #selector(longPress(_:)))
+            }
+        }else{
+            if grid {
+                cellTypes[activeSection][activeRow] = 0
+                let path = IndexPath(row: activeRow, section: activeSection)
+                collectionView.reloadItems(at: [path])
+                collectionView.deselectItem(at: path, animated: true)
+                gesture.addTarget(self, action: #selector(longPress(_:)))
+            }
         }
     }
     
@@ -220,11 +321,19 @@ extension AlbumsVC: UICollectionViewDelegate, UICollectionViewDataSource, UIGest
         case .shuffle:
             shuffle()
         }
-        cellTypes[activeSection][activeRow] = 0
-        let path = IndexPath(row: activeRow, section: activeSection)
-        collectionView.reloadItems(at: [path])
-        collectionView.deselectItem(at: path, animated: true)
-        gesture.addTarget(self, action: #selector(longPress(_:)))
+        if shouldShowResults {
+            cellTypesSearch[searchActiveRow] = 0
+            let path = IndexPath(row: searchActiveRow, section: 0)
+            collectionView.reloadItems(at: [path])
+            collectionView.deselectItem(at: path, animated: true)
+            gesture.addTarget(self, action: #selector(longPress(_:)))
+        }else{
+            cellTypes[activeSection][activeRow] = 0
+            let path = IndexPath(row: activeRow, section: activeSection)
+            collectionView.reloadItems(at: [path])
+            collectionView.deselectItem(at: path, animated: true)
+            gesture.addTarget(self, action: #selector(longPress(_:)))
+        }
     }
     
 }
@@ -345,3 +454,123 @@ extension AlbumsVC: UITabBarControllerDelegate {
         }
     }
 }
+
+extension AlbumsVC: UISearchBarDelegate, UISearchResultsUpdating {
+    
+    func configureSearchController(){
+        searchController = UISearchController(searchResultsController: nil)
+        definesPresentationContext = true
+        searchController.definesPresentationContext = true
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search for album"
+        searchController.searchBar.delegate = self
+        searchController.searchBar.sizeToFit()
+        searchController.searchBar.tintColor = GlobalSettings.tint.color
+        self.searchController.hidesNavigationBarDuringPresentation = false;
+        if #available(iOS 11.0, *) {
+            navigationItem.searchController = searchController
+        } else {
+            // Fallback on earlier versions
+            navigationItem.titleView = searchController?.searchBar
+        }
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        if grid {
+            collectionView.reloadData()
+            if filteredAlbums.count != 0 {
+                collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+            }
+        }else{
+            tableView.reloadData()
+            if filteredAlbums.count != 0 {
+                tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+            }
+        }
+        tableIndexView.isHidden = true
+    }
+    
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        shouldShowResults = false
+        if grid {
+            collectionView.reloadData()
+        }else{
+            tableView.reloadData()
+        }
+        tableIndexView.isHidden = false
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        if !shouldShowResults {
+            shouldShowResults = true
+            if grid {
+                collectionView.reloadData()
+            }else{
+                tableView.reloadData()
+            }
+        }
+        searchController.searchBar.resignFirstResponder()
+    }
+    
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchString = searchController.searchBar.text
+        if searchString == ""{
+            shouldShowResults = false
+        }else{
+            shouldShowResults = true
+            self.tableView.separatorStyle = .singleLine
+        }
+        let whitespaceCharacterSet = CharacterSet.whitespaces
+        let strippedString = searchString!.trimmingCharacters(in: whitespaceCharacterSet)
+        let searchItems = strippedString.components(separatedBy: " ") as [String]
+        var searchItemsPredicate = [NSPredicate]()
+        
+        let songsMatchPredicates: [NSPredicate] = searchItems.map { searchString in
+            let titleExpression = NSExpression(forKeyPath: "name")
+            let searchStringExpression = NSExpression(forConstantValue: searchString)
+            
+            let titleSearchComparisonPredicate = NSComparisonPredicate(leftExpression: titleExpression, rightExpression: searchStringExpression, modifier: .direct, type: .contains, options: .caseInsensitive)
+            
+            searchItemsPredicate.append(titleSearchComparisonPredicate)
+            
+            let orMatchPredicate = NSCompoundPredicate(orPredicateWithSubpredicates:searchItemsPredicate)
+            
+            return orMatchPredicate
+        }
+        let finalCompoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: songsMatchPredicates)
+        
+        
+        filteredAlbums = (albums.filter { finalCompoundPredicate.evaluate(with: $0) })
+        cellTypesSearch = Array<Int>(repeating: 0, count: filteredAlbums.count)
+        if grid {
+            collectionView.reloadData()
+        }else{
+            tableView.reloadData()
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y < -104 {
+            searchController.searchBar.becomeFirstResponder()
+        }else if scrollView.contentOffset.y > 1 {
+            searchController.searchBar.resignFirstResponder()
+        }
+    }
+    
+}
+
+extension AlbumsVC: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let height = self.view.frame.size.height
+        let width = self.view.frame.size.width
+        let Waspect: CGFloat = 0.29
+        let Haspect: CGFloat = 0.22
+        return CGSize(width: width*Waspect, height: height*Haspect)
+    }
+    
+}
+

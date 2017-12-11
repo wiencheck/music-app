@@ -11,6 +11,7 @@ import MediaPlayer
 
 class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDelegate {
     
+    let player = Plum.shared
     let defaults = UserDefaults.standard
     var rating: Bool!
     var bigAssQuery = musicQuery.shared
@@ -78,7 +79,7 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
                 if(cellTypes[indexPath.row] == 0){
                     let cell = tableView.dequeueReusableCell(withIdentifier: "extendedSongCell", for: indexPath) as? SongInAlbumCell
                     let item = songs[indexPath.row-1]
-                    if(item != Plum.shared.currentItem){
+                    if(item != player.currentItem){
                         cell?.setupA(item: item)
                     }else{
                         cell?.setupA(item: item)
@@ -96,7 +97,7 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
                 if(cellTypes[indexPath.row-1] == 0){
                     let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as? SongInAlbumCell
                     let item = songs[indexPath.row-1]
-                    if(item != Plum.shared.currentItem){
+                    if(item != player.currentItem){
                         cell?.setup(item: item)
                     }else{
                         cell?.setup(item: item)
@@ -144,26 +145,30 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
         }
         
         if indexPath.row == 0 {
-            
+            let items = songs
+            player.defIndex = Int(arc4random_uniform(UInt32(items.count)))
+            player.shuffleCurrent()
+            player.playFromShufQueue(index: 0, new: true)
+            player.play()
         }else{
             activeIndexRow = indexPath.row - 1
             absoluteIndex = indexPath.absoluteRow(tableView) - 1
             if(cellTypes[activeIndexRow] == 0){
-                if(Plum.shared.isPlayin()){
+                if(player.isPlayin()){
                     cellTypes[activeIndexRow] = 1
                     tableView.reloadRows(at: [indexPath], with: .fade)
                 }else{
-                    if(Plum.shared.isShuffle){
-                        Plum.shared.disableShuffle()
-                        Plum.shared.createDefQueue(items: songs)
-                        Plum.shared.defIndex = absoluteIndex
-                        Plum.shared.shuffleCurrent()
-                        Plum.shared.playFromShufQueue(index: 0, new: true)
+                    if(player.isShuffle){
+                        player.disableShuffle()
+                        player.createDefQueue(items: songs)
+                        player.defIndex = absoluteIndex
+                        player.shuffleCurrent()
+                        player.playFromShufQueue(index: 0, new: true)
                     }else{
-                        Plum.shared.createDefQueue(items: songs)
-                        Plum.shared.playFromDefQueue(index: absoluteIndex, new: true)
+                        player.createDefQueue(items: songs)
+                        player.playFromDefQueue(index: absoluteIndex, new: true)
                     }
-                    Plum.shared.play()
+                    player.play()
                 }
             }else{
                 cellTypes[activeIndexRow] = 0
@@ -201,30 +206,30 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
     }
     
     func playNextBtn() {
-        Plum.shared.addNext(item: songs[absoluteIndex])
+        player.addNext(item: songs[absoluteIndex])
         cellTypes[activeIndexRow] = 0
         tableView.reloadRows(at: [IndexPath(row: activeIndexRow+1, section: 0)], with: .right)
     }
     func playLastBtn() {
-        Plum.shared.addLast(item: songs[absoluteIndex])
+        player.addLast(item: songs[absoluteIndex])
         cellTypes[activeIndexRow] = 0
         tableView.reloadRows(at: [IndexPath(row: activeIndexRow+1, section: 0)], with: .right)
     }
     func playNowBtn() {
-        if(Plum.shared.isUsrQueue){
-            Plum.shared.clearQueue()
+        if(player.isUsrQueue){
+            player.clearQueue()
         }
-        if(Plum.shared.isShuffle){
-            Plum.shared.disableShuffle()
-            Plum.shared.defIndex = absoluteIndex
-            Plum.shared.createDefQueue(items: songs)
-            Plum.shared.shuffleCurrent()
-            Plum.shared.playFromShufQueue(index: 0, new: true)
+        if(player.isShuffle){
+            player.disableShuffle()
+            player.defIndex = absoluteIndex
+            player.createDefQueue(items: songs)
+            player.shuffleCurrent()
+            player.playFromShufQueue(index: 0, new: true)
         }else{
-            Plum.shared.createDefQueue(items: songs)
-            Plum.shared.playFromDefQueue(index: absoluteIndex, new: true)
+            player.createDefQueue(items: songs)
+            player.playFromDefQueue(index: absoluteIndex, new: true)
         }
-        Plum.shared.play()
+        player.play()
         cellTypes[activeIndexRow] = 0
         tableView.reloadRows(at: [IndexPath(row: activeIndexRow+1, section: 0)], with: .right)
     }
@@ -261,11 +266,11 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
     }
     
     func shuffleAll() {
-        Plum.shared.createDefQueue(items: songs)
-        Plum.shared.defIndex = Int(arc4random_uniform(UInt32(songs.count)))
-        Plum.shared.shuffleCurrent()
-        Plum.shared.playFromShufQueue(index: 0, new: true)
-        Plum.shared.play()
+        player.createDefQueue(items: songs)
+        player.defIndex = Int(arc4random_uniform(UInt32(songs.count)))
+        player.shuffleCurrent()
+        player.playFromShufQueue(index: 0, new: true)
+        player.play()
     }
 }
 

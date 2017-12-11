@@ -66,6 +66,8 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
             tableIndexView.setup()
             view.addSubview(tableIndexView)
         }
+        tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0)
     }
 
 }
@@ -316,7 +318,6 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
             let indexPath = IndexPath(row: activeIndexRow, section: 0)
             self.tableView.deselectRow(at: indexPath, animated: true)
             self.tableView.reloadRows(at: [indexPath], with: .fade)
-            searchController.searchBar.resignFirstResponder()
         }else{
             cellTypes[activeIndexSection]?[activeIndexRow] = 0
             let indexPath = IndexPath(row: activeIndexRow, section: activeIndexSection+1)
@@ -378,7 +379,7 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchController.definesPresentationContext = true
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search in \(receivedList.name)"
+        searchController.searchBar.placeholder = "Search in list"
         searchController.searchBar.delegate = self
         searchController.searchBar.sizeToFit()
         searchController.searchBar.tintColor = GlobalSettings.tint.color
@@ -393,7 +394,6 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         tableView.reloadData()
-        tableIndexView.isHidden = true
     }
     
     
@@ -416,9 +416,11 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
         let searchString = searchController.searchBar.text
         if searchString == ""{
             shouldShowResults = false
+            tableIndexView.isHidden = false
         }else{
             shouldShowResults = true
             self.tableView.separatorStyle = .singleLine
+            tableIndexView.isHidden = true
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces
         let strippedString = searchString!.trimmingCharacters(in: whitespaceCharacterSet)
@@ -439,15 +441,16 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
         }
         let finalCompoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: songsMatchPredicates)
         
-        
         filteredSongs = (songs?.filter { finalCompoundPredicate.evaluate(with: $0) })!
         cellTypesSearch = Array<Int>(repeating: 0, count: filteredSongs.count)
         self.tableView.reloadData()
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y < -40 {
+        if scrollView.contentOffset.y < -104 {
             searchController.searchBar.becomeFirstResponder()
+        }else if scrollView.contentOffset.y > 2 {
+            searchController.searchBar.resignFirstResponder()
         }
     }
     

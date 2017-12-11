@@ -43,6 +43,8 @@ class ArtistSongs: UIViewController {
         tabBarController?.delegate = self
         sort = GlobalSettings.artistSort
         setup()
+        tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0)
     }
     
     @IBAction func sortBtnPressed() {
@@ -191,7 +193,12 @@ extension ArtistSongs: UITableViewDelegate, UITableViewDataSource {
                     tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .fade)
                 }
                 if indexPath.row == 0 {
-                    print("Shuffle")
+                    let items = albums[indexPath.section-1].items
+                    player.createDefQueue(items: items)
+                    player.defIndex = Int(arc4random_uniform(UInt32(items.count)))
+                    player.shuffleCurrent()
+                    player.playFromShufQueue(index: 0, new: true)
+                    player.play()
                 }else{
                     activeIndexSection = indexPath.section
                     activeIndexRow = indexPath.row - 1

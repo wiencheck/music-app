@@ -52,6 +52,8 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         tableView.dataSource = self
         tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
         shouldShowResults = false
+        tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0)
     }
     
     override func viewDidAppear(_ animated: Bool) {
