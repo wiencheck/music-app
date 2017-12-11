@@ -541,7 +541,9 @@
                             <outlet property="delegate" destination="qgd-sT-oCw" id="JfT-X8-8Va"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="V5B-k0-gXh"/>
+                    <navigationItem key="navigationItem" id="V5B-k0-gXh">
+                        <barButtonItem key="backBarButtonItem" title=" " id="EWZ-sN-TRl"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="albumsGridSwitch" destination="5uk-ns-ZAH" id="gqV-36-UEd"/>
                         <outlet property="artistsGridSwitch" destination="qe4-LX-7dX" id="xrK-GI-sxl"/>
@@ -990,6 +992,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Search" id="vaz-fj-GUk">
+                        <barButtonItem key="backBarButtonItem" title=" " id="Muy-Ik-pjq"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="play" id="QOl-IX-ZBi"/>
                     </navigationItem>
                     <connections>
@@ -1187,7 +1190,9 @@
                             <constraint firstAttribute="trailing" secondItem="alO-IS-L7N" secondAttribute="trailing" id="vDY-0g-mZ7"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Songs" id="ibe-pj-ewc"/>
+                    <navigationItem key="navigationItem" title="Songs" id="ibe-pj-ewc">
+                        <barButtonItem key="backBarButtonItem" title=" " id="eBr-KL-zlB"/>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="indexView" destination="alO-IS-L7N" id="Ce3-Lu-bRX"/>
@@ -1277,7 +1282,7 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Title" id="Jr6-xk-5aV">
-                        <barButtonItem key="backBarButtonItem" title=" " id="WWt-ls-wMq"/>
+                        <barButtonItem key="backBarButtonItem" title="  " id="WWt-ls-wMq"/>
                     </navigationItem>
                     <connections>
                         <outlet property="upperBar" destination="Jr6-xk-5aV" id="H5W-F3-fQ0"/>
@@ -2076,7 +2081,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Title" id="w0R-qv-uCC">
-                        <barButtonItem key="backBarButtonItem" title=" " id="u9b-hh-84G"/>
+                        <barButtonItem key="backBarButtonItem" title="  " id="u9b-hh-84G"/>
                     </navigationItem>
                     <connections>
                         <outlet property="upperBar" destination="w0R-qv-uCC" id="cuE-7v-MYX"/>
@@ -3451,7 +3456,9 @@
                             <constraint firstItem="fag-51-C1W" firstAttribute="top" secondItem="XQM-35-a8d" secondAttribute="bottom" id="yqN-LN-f7e"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Albums" id="SLf-ki-WSm"/>
+                    <navigationItem key="navigationItem" title="Albums" id="SLf-ki-WSm">
+                        <barButtonItem key="backBarButtonItem" title=" " id="KwD-X9-HnG"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="collectionIndexView" destination="GFy-Gk-tEH" id="WLb-WC-5kR"/>
                         <outlet property="collectionView" destination="XQM-35-a8d" id="gQN-Qw-WmK"/>
@@ -3700,7 +3707,9 @@
                             <constraint firstItem="wyJ-xZ-gty" firstAttribute="leading" secondItem="s3Y-2v-Hq4" secondAttribute="leading" id="ymH-ro-Swx"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Artists" id="9Td-7z-NV6"/>
+                    <navigationItem key="navigationItem" title="Artists" id="9Td-7z-NV6">
+                        <barButtonItem key="backBarButtonItem" title=" " id="TNb-jH-sp1"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="collectionIndexView" destination="w8H-Hw-z20" id="M7S-eg-bfb"/>
                         <outlet property="collectionView" destination="u4E-gz-Vk9" id="v8e-z4-kDg"/>
@@ -4008,7 +4017,7 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Playlists" id="Pze-Cv-mhi">
-                        <barButtonItem key="backBarButtonItem" title=" " id="Gxe-rd-9vD"/>
+                        <barButtonItem key="backBarButtonItem" title="  " id="Gxe-rd-9vD"/>
                     </navigationItem>
                     <connections>
                         <outlet property="collectionIndexView" destination="QS8-dg-1mN" id="Wa1-H2-vwO"/>
@@ -4207,7 +4216,9 @@
                             <constraint firstItem="wgF-PA-wdY" firstAttribute="leading" secondItem="sVI-N1-xDZ" secondAttribute="leading" id="woB-iF-6X9"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Title" id="uMd-5u-tgY"/>
+                    <navigationItem key="navigationItem" title="Title" id="uMd-5u-tgY">
+                        <barButtonItem key="backBarButtonItem" title=" " id="VZH-wd-dLR"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableIndexView" destination="CJs-jX-kTO" id="WUL-XZ-lb0"/>
                         <outlet property="tableView" destination="wgF-PA-wdY" id="Ycl-t2-7rE"/>
@@ -4282,7 +4293,7 @@
         <image name="zeroVol" width="175" height="298"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="g4J-C0-9Kx"/>
-        <segue reference="GRh-Pt-2wL"/>
+        <segue reference="LCY-3G-uHV"/>
+        <segue reference="uGV-fK-q4R"/>
     </inferredMetricsTieBreakers>
 </document>

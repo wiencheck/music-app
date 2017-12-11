@@ -379,7 +379,7 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchController.definesPresentationContext = true
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search in list"
+        searchController.searchBar.placeholder = "Search in \(receivedList.name)"
         searchController.searchBar.delegate = self
         searchController.searchBar.sizeToFit()
         searchController.searchBar.tintColor = GlobalSettings.tint.color

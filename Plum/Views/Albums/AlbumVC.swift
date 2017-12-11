@@ -146,6 +146,7 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
         
         if indexPath.row == 0 {
             let items = songs
+            player.createDefQueue(items: items)
             player.defIndex = Int(arc4random_uniform(UInt32(items.count)))
             player.shuffleCurrent()
             player.playFromShufQueue(index: 0, new: true)
