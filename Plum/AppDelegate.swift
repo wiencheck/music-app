@@ -39,22 +39,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         setCustomizing()
 
         // Getting access to your tabBarController
-        let tabBar: UITabBarController = self.window?.rootViewController as! UITabBarController
+        let tabBar = self.window?.rootViewController as! PlumTabBarController
         
         var junkViewControllers = [UIViewController]()
-        
         // returns 0 if not set, hence having the tabItem's tags starting at 1.
         var tagNumber : Int = defaults.integer(forKey: "0")
-        
         if (tagNumber != 0) {
             for i in 0 ..< (tabBar.viewControllers?.count)! {
                 // the tags are between 1-6 but the order of the
                 // viewControllers in the array are between 0-5
                 // hence the "-1" below.
+                print(i)
                 tagNumber = defaults.integer( forKey: String(i) ) - 1
                 junkViewControllers.append(tabBar.viewControllers![tagNumber])
             }
-            
+
             tabBar.viewControllers = junkViewControllers
         }
         

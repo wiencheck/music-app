@@ -10,7 +10,7 @@ import UIKit
 import MediaPlayer
 import UserNotifications
 
-class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlightDelegate {
+class SettingsVC: UITableViewController, MySpotlightDelegate {
 
     let defaults = UserDefaults.standard
     @IBOutlet weak var colorFlowSwitch: UISwitch!
@@ -210,18 +210,6 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
         roundSwitch.isOn = GlobalSettings.round
     }
     
-    func tabBarController(_ tabBarController: UITabBarController, didEndCustomizing viewControllers: [UIViewController], changed: Bool) {
-        if (changed) {
-            print("New tab order:")
-            for i in 0 ..< viewControllers.count {
-                defaults.set(viewControllers[i].tabBarItem.tag, forKey: String(i))
-                print("\(i): \(viewControllers[i].tabBarItem.title!) (\(viewControllers[i].tabBarItem.tag))")
-            }
-        }
-    }
-    
-    //0 - light, 1 - dark, 2 - adaptive
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let identifier = tableView.cellForRow(at: indexPath)?.reuseIdentifier
             else { return }
@@ -239,7 +227,7 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
         case "rating":
             explainrating()
         case "ratingset":
-            performSegue(withIdentifier: "setratings", sender: nil)
+            performSegue(withIdentifier: "ratings", sender: nil)
         case "lyrics":
             explainLyrics()
         case "lyricset":
@@ -385,5 +373,17 @@ class SettingsVC: UITableViewController, UITabBarControllerDelegate, MySpotlight
         alert.addAction(ok)
         present(alert, animated: true, completion: nil)
         
+    }
+}
+
+extension SettingsVC: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, didEndCustomizing viewControllers: [UIViewController], changed: Bool) {
+        if (changed) {
+            print("New tab order:")
+            for i in 0 ..< viewControllers.count {
+                defaults.set(viewControllers[i].tabBarItem.tag, forKey: String(i))
+                print("\(i): \(viewControllers[i].tabBarItem.title!) (\(viewControllers[i].tabBarItem.tag))")
+            }
+        }
     }
 }

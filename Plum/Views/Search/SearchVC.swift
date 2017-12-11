@@ -17,6 +17,7 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         case artist
     }
     
+    let defaults = UserDefaults.standard
     let player = Plum.shared
     var titles = ["Artists", "Albums", "Songs", "Playlists"]
     @IBOutlet weak var tableView: UITableView!
@@ -42,6 +43,7 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tabBarController?.delegate = self
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         searchHistory = UserDefaults.standard.array(forKey: "searchHistory") as! [String]
         loadArrays()
@@ -529,5 +531,17 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     
     func playLast() {
         player.addLast(item: pickedSong)
+    }
+}
+
+extension SearchVC: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, didEndCustomizing viewControllers: [UIViewController], changed: Bool) {
+        if (changed) {
+            print("New tab order:")
+            for i in 0 ..< viewControllers.count {
+                defaults.set(viewControllers[i].tabBarItem.tag, forKey: String(i))
+                print("\(i): \(viewControllers[i].tabBarItem.title!) (\(viewControllers[i].tabBarItem.tag))")
+            }
+        }
     }
 }

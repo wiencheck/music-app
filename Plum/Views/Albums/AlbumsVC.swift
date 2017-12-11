@@ -13,6 +13,7 @@ class AlbumsVC: UIViewController {
     
     var grid: Bool!
     let player = Plum.shared
+    let defaults = UserDefaults.standard
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableIndexView: TableIndexView!
@@ -29,6 +30,7 @@ class AlbumsVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tabBarController?.delegate = self
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         grid = GlobalSettings.albumsGrid
         if grid{
@@ -329,6 +331,17 @@ extension AlbumsVC{     //Other functions
             inLetters += 1
         }
     }
-
     
+}
+
+extension AlbumsVC: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, didEndCustomizing viewControllers: [UIViewController], changed: Bool) {
+        if (changed) {
+            print("New tab order:")
+            for i in 0 ..< viewControllers.count {
+                defaults.set(viewControllers[i].tabBarItem.tag, forKey: String(i))
+                print("\(i): \(viewControllers[i].tabBarItem.title!) (\(viewControllers[i].tabBarItem.tag))")
+            }
+        }
+    }
 }

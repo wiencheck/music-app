@@ -28,11 +28,17 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     override func viewDidLoad() {
         super.viewDidLoad()
+        tabBarController?.delegate = self
         navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         tableView.delegate = self
         tableView.dataSource = self
         setupDict()
         print(songs.count)
+//        for i in 1 ..< indexes.count {
+//            cellTypes.append(Array<Int>(repeating: 0, count: (result[indexes[i]]?.count)!))
+//        }
+        indexes.insert("", at: 0)
+        result[""] = [MPMediaItem()]
         for index in indexes {
             cellTypes.append(Array<Int>(repeating: 0, count: (result[index]?.count)!))
         }
@@ -54,14 +60,14 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return result.keys.count + 1
+        return result.keys.count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if section == 0 {
             return String()
         }else{
-            return indexes[section-1]
+            return indexes[section]
         }
     }
     
@@ -69,7 +75,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         if section == 0 {
             return 1
         }else{
-            return (result[indexes[section-1]]?.count)!
+            return (result[indexes[section]]?.count)!
         }
     }
 
@@ -109,9 +115,9 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             cell.backgroundColor = .clear
             return cell
         }else{
-            if(cellTypes[indexPath.section-1][indexPath.row] == 0){
+            if(cellTypes[indexPath.section][indexPath.row] == 0){
                 let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as? SongCell
-                let item = result[indexes[indexPath.section-1]]?[indexPath.row]
+                let item = result[indexes[indexPath.section]]?[indexPath.row]
                 if(item != Plum.shared.currentItem){
                     cell?.setup(item: item!)
                 }else{
@@ -141,13 +147,12 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             cellTypes[activeIndexSection][activeIndexRow] = 0
             tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection+1)], with: .fade)
         }
-        print("Absolute index = \(absoluteIndex)")
         if indexPath.section == 0 {
-            print("Shuffle")
+            shuffleAll()
         }else{
             absoluteIndex = indexPath.absoluteRow(tableView) - 1
             activeIndexRow = indexPath.row
-            activeIndexSection = indexPath.section - 1
+            activeIndexSection = indexPath.section
             print(result[indexes[activeIndexSection]]![activeIndexRow].title)
             if(cellTypes[activeIndexSection][activeIndexRow] == 0){
                 if(Plum.shared.isPlayin()){
@@ -197,7 +202,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             playLastBtn()
         }
         cellTypes[activeIndexSection][activeIndexRow] = 0
-        tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection+1)], with: .right)
+        tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .right)
     }
     
     func playNextBtn() {
@@ -232,7 +237,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         cellTypes[activeIndexSection][activeIndexRow] = 0
         print("section \(activeIndexSection) row \(activeIndexRow)")
-        let indexPath = IndexPath(row: activeIndexRow, section: activeIndexSection+1)
+        let indexPath = IndexPath(row: activeIndexRow, section: activeIndexSection)
         self.tableView.deselectRow(at: indexPath, animated: true)
         self.tableView.reloadRows(at: [indexPath], with: .fade)
     }
@@ -295,6 +300,14 @@ extension SongsVC {
         }
         //songs = result.flatMap(){ $0.1 }
     }
+    
+    func shuffleAll() {
+        Plum.shared.createDefQueue(items: songs)
+        Plum.shared.defIndex = Int(arc4random_uniform(UInt32(songs.count)))
+        Plum.shared.shuffleCurrent()
+        Plum.shared.playFromShufQueue(index: 0, new: true)
+        Plum.shared.play()
+    }
 }
 
 extension String {
@@ -315,5 +328,17 @@ public extension LazyMapCollection  {
     
     func toArray() -> [Element]{
         return Array(self)
+    }
+}
+
+extension SongsVC: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, didEndCustomizing viewControllers: [UIViewController], changed: Bool) {
+        if (changed) {
+            print("New tab order:")
+            for i in 0 ..< viewControllers.count {
+                defaults.set(viewControllers[i].tabBarItem.tag, forKey: String(i))
+                print("\(i): \(viewControllers[i].tabBarItem.title!) (\(viewControllers[i].tabBarItem.tag))")
+            }
+        }
     }
 }

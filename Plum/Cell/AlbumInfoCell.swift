@@ -31,10 +31,10 @@ class AlbumInfoCell: UITableViewCell {
 
     func setup(album: AlbumB, play: Bool){
         self.album = album
-        playBtn.isHidden = play
-        shufBtn.setImage(#imageLiteral(resourceName: "shuffle").imageScaled(toFit: CGSize(width: 28, height: 22)).tintPictogram(with: GlobalSettings.tint.color), for: .normal)
-        playBtn.setImage(#imageLiteral(resourceName: "play-butt").imageScaled(toFit: CGSize(width: 36, height: 24)), for: .normal)
-        playBtn.tintColor = GlobalSettings.tint.color
+        //playBtn.isHidden = play
+        //shufBtn.setImage(#imageLiteral(resourceName: "shuffle").imageScaled(toFit: CGSize(width: 28, height: 22)).tintPictogram(with: GlobalSettings.tint.color), for: .normal)
+        //playBtn.setImage(#imageLiteral(resourceName: "album_play").imageScaled(toFit: artwork.frame.size), for: .normal)
+        //playBtn.tintColor = GlobalSettings.tint.color
         songs = album.items
         titleLabel.text = album.name
         yearLabel.text = album.year
@@ -52,7 +52,7 @@ class AlbumInfoCell: UITableViewCell {
     }
     
     @IBAction func playBtnPressed(_ sender: UIButton){
-        Plum.shared.disableShuffle()
+        Plum.shared.isShuffle = false
         Plum.shared.createDefQueue(items: songs)
         if Plum.shared.currentItem?.albumTitle == album.name{
             var i = 0

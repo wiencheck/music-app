@@ -13,6 +13,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     
     var grid: Bool!
     let player = Plum.shared
+    let defaults = UserDefaults.standard
     
     var collectionTypes = [[Int]]()
     var tableTypes = [[Int]]()
@@ -31,6 +32,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        tabBarController?.delegate = self
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         grid = GlobalSettings.artistsGrid
         if grid{
@@ -353,4 +355,16 @@ extension ArtistsVC{    //Other functions
         }
     }
 
+}
+
+extension ArtistsVC: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, didEndCustomizing viewControllers: [UIViewController], changed: Bool) {
+        if (changed) {
+            print("New tab order:")
+            for i in 0 ..< viewControllers.count {
+                defaults.set(viewControllers[i].tabBarItem.tag, forKey: String(i))
+                print("\(i): \(viewControllers[i].tabBarItem.title!) (\(viewControllers[i].tabBarItem.tag))")
+            }
+        }
+    }
 }

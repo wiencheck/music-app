@@ -14,10 +14,12 @@ class AlbumsByVC: UITableViewController {
     var receivedID: MPMediaEntityPersistentID!
     var als: [AlbumB]!
     var pickedID: MPMediaEntityPersistentID!
+    let defaults = UserDefaults.standard
 
     @IBOutlet weak var upperBar: UINavigationItem!
     override func viewDidLoad() {
         super.viewDidLoad()
+        tabBarController?.delegate = self
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
@@ -88,4 +90,16 @@ class AlbumsByVC: UITableViewController {
         
     }
 
+}
+
+extension AlbumsByVC: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, didEndCustomizing viewControllers: [UIViewController], changed: Bool) {
+        if (changed) {
+            print("New tab order:")
+            for i in 0 ..< viewControllers.count {
+                defaults.set(viewControllers[i].tabBarItem.tag, forKey: String(i))
+                print("\(i): \(viewControllers[i].tabBarItem.title!) (\(viewControllers[i].tabBarItem.tag))")
+            }
+        }
+    }
 }

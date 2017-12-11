@@ -32,6 +32,7 @@ class EightNowPlayingVC: UIViewController {
     @IBOutlet weak var maxVolImg: UIImageView!
     @IBOutlet weak var upperBar: UIView!
     @IBOutlet weak var upNextBtn: UIButton!
+    @IBOutlet weak var addNextBtn: UIButton!
     @IBOutlet weak var outOfLabel: UILabel!
     @IBOutlet weak var ratingsView: UIView!
     @IBOutlet weak var titleView: UIView!
@@ -526,6 +527,7 @@ extension EightNowPlayingVC {       //Kolory i UI
         ratingButton.layer.cornerRadius = 3
         lyricsButton.layer.cornerRadius = 3
         upNextBtn.setImage(#imageLiteral(resourceName: "Ulist_icon"), for: .normal)
+        addNextBtn.setImage(#imageLiteral(resourceName: "addList"), for: .normal)
     }
     
     func setColors() {
@@ -553,6 +555,7 @@ extension EightNowPlayingVC {       //Kolory i UI
         customTrackSlider(slider: timeSlider, min: colors.primaryColor, max: colors.detailColor, thumb: colors.primaryColor)
         customVolumeSlider(min: colors.primaryColor, max: colors.detailColor, thumb: colors.detailColor, thumbImg: #imageLiteral(resourceName: "thumb"))
         upNextBtn.tintColor = colors.detailColor
+        addNextBtn.tintColor = colors.detailColor
         outOfLabel.textColor = colors.primaryColor
         ratingLabel.textColor = colors.primaryColor
         ratingButton.tintColor = colors.detailColor
@@ -587,7 +590,7 @@ extension EightNowPlayingVC {       //Kolory i UI
             repBtn.setTitleColor(colors.detailColor, for: .normal)
             repView.backgroundColor = colors.primaryColor.withAlphaComponent(0.3)
         }else{
-            repBtn.setTitleColor(colors.detailColor, for: .normal)
+            repBtn.setTitleColor(colors.primaryColor, for: .normal)
             repView.backgroundColor = .clear
         }
     }
@@ -611,6 +614,7 @@ extension EightNowPlayingVC {       //Kolory i UI
         maxVolImg.tintColor = UIColor.white.withAlphaComponent(0.3)
         upperBar.backgroundColor = .clear
         upNextBtn.tintColor = .white
+        addNextBtn.tintColor = .white
         outOfLabel.textColor = UIColor.white.withAlphaComponent(0.3)
         ratingsView.backgroundColor = .clear
         titleView.backgroundColor = .clear
@@ -650,6 +654,7 @@ extension EightNowPlayingVC {       //Kolory i UI
         maxVolImg.tintColor = UIColor.white.withAlphaComponent(0.5)
         upperBar.backgroundColor = .clear
         upNextBtn.tintColor = .white
+        addNextBtn.tintColor = .white
         outOfLabel.textColor = UIColor.white.withAlphaComponent(0.5)
         ratingsView.backgroundColor = .clear
         titleView.backgroundColor = .clear
@@ -678,6 +683,7 @@ extension EightNowPlayingVC {       //Kolory i UI
         maxVolImg.tintColor = UIColor.black.withAlphaComponent(0.5)
         upperBar.backgroundColor = .clear
         upNextBtn.tintColor = GlobalSettings.tint.color
+        addNextBtn.tintColor = GlobalSettings.tint.color
         outOfLabel.textColor = .black
         ratingsView.backgroundColor = .clear
         titleView.backgroundColor = .clear
@@ -708,7 +714,7 @@ extension EightNowPlayingVC {       //Kolory i UI
     func customTrackSlider(slider: UISlider, min: UIColor, max: UIColor, thumb: UIColor) {
         var thumbImg: UIImage
         if GlobalSettings.round {
-            thumbImg = #imageLiteral(resourceName: "thumb")
+            thumbImg = #imageLiteral(resourceName: "volumeThumb").imageScaled(toFit: CGSize(width: 18, height: 18)).tintPictogram(with: .white)
             slider.setThumbImage(thumbImg, for: .normal)
         }else{
             thumbImg = #imageLiteral(resourceName: "thumb2")
@@ -747,6 +753,36 @@ extension EightNowPlayingVC {       //Kolory i UI
             GlobalSettings.changeLyrics(false)
         }
     }
+}
+
+extension EightNowPlayingVC: MPMediaPickerControllerDelegate {
+    
+    @IBAction func pickerBtnPressed() {
+        presentPicker()
+    }
+    
+    func presentPicker() {
+        let mediaPicker = MPMediaPickerController(mediaTypes: .music)
+        mediaPicker.delegate = self
+        mediaPicker.allowsPickingMultipleItems = true
+        mediaPicker.showsCloudItems = false
+        mediaPicker.prompt = "Please Pick a Song"
+        mediaPicker.modalTransitionStyle = .coverVertical
+        present(mediaPicker, animated: true, completion: nil)
+    }
+    
+    func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
+        for picked in mediaItemCollection.items{
+            player.addLast(item: picked)
+        }
+        mediaPicker.dismiss(animated: true, completion: nil)
+        outOfLabel.text = player.labelString(type: "out of")
+    }
+    
+    func mediaPickerDidCancel(_ mediaPicker: MPMediaPickerController) {
+        mediaPicker.dismiss(animated: true, completion: nil)
+    }
+    
 }
 /*
 extension UIViewController {

@@ -12,6 +12,8 @@ import MediaPlayer
 class ArtistSongs: UIViewController {
     
     let player = Plum.shared
+    var searchController: UISearchController!
+    let defaults = UserDefaults.standard
     
     var typesSongs = [[Int]]()
     var typesAlbums = [[Int]]()
@@ -38,6 +40,7 @@ class ArtistSongs: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tabBarController?.delegate = self
         sort = GlobalSettings.artistSort
         setup()
     }
@@ -59,20 +62,30 @@ class ArtistSongs: UIViewController {
         setup()
         tableView.reloadData()
     }
+    
+    @IBAction func shufBtnPressed() {
+        
+    }
+    
+    @IBAction func playBtnPressed() {
+        
+    }
 
 }
 
 extension ArtistSongs: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return indexes.count + 1
+        return indexes.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             return 1
-        }else{
+        }else if sort == .alphabetically{
             return (result[indexes[section-1]]?.count)!
+        }else{
+            return (result[indexes[section]]?.count)! + 1
         }
     }
     
@@ -137,25 +150,32 @@ extension ArtistSongs: UITableViewDelegate, UITableViewDataSource {
                     return cell
                 }
             }else{
-                if typesAlbums[indexPath.section-1][indexPath.row] == 0 {
-                    if albums[indexPath.section-1].manyArtists {
-                        let cell = tableView.dequeueReusableCell(withIdentifier: "extendedSongCell", for: indexPath) as! SongInAlbumCell
-                        let item = result[indexes[indexPath.section-1]]?[indexPath.row]
-                        cell.setupA(item: item!)
-                        cell.backgroundColor = .clear
-                        return cell
+                if indexPath.row == 0 {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath)
+                    cell.textLabel?.text = "Shuffle"
+                    cell.backgroundColor = .clear
+                    return cell
+                }else{
+                    if typesAlbums[indexPath.section][indexPath.row-1] == 0 {
+                        if albums[indexPath.section-1].manyArtists {
+                            let cell = tableView.dequeueReusableCell(withIdentifier: "extendedSongCell", for: indexPath) as! SongInAlbumCell
+                            let item = result[indexes[indexPath.section]]?[indexPath.row-1]
+                            cell.setupA(item: item!)
+                            cell.backgroundColor = .clear
+                            return cell
+                        }else{
+                            let cell = tableView.dequeueReusableCell(withIdentifier: "albumSongCell", for: indexPath) as! SongInAlbumCell
+                            let item = result[indexes[indexPath.section]]?[indexPath.row-1]
+                            cell.setup(item: item!)
+                            cell.backgroundColor = .clear
+                            return cell
+                        }
                     }else{
-                        let cell = tableView.dequeueReusableCell(withIdentifier: "albumSongCell", for: indexPath) as! SongInAlbumCell
-                        let item = result[indexes[indexPath.section-1]]?[indexPath.row]
-                        cell.setup(item: item!)
+                        let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as! QueueActionsCell
+                        cell.delegate = self
                         cell.backgroundColor = .clear
                         return cell
                     }
-                }else{
-                    let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as! QueueActionsCell
-                    cell.delegate = self
-                    cell.backgroundColor = .clear
-                    return cell
                 }
             }
         }
@@ -163,32 +183,36 @@ extension ArtistSongs: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
-            print("Shuffle")
+            shuffleAll()
         }else{
             if sort == .album {
                 if typesAlbums[activeIndexSection][activeIndexRow] != 0 {
                     typesAlbums[activeIndexSection][activeIndexRow] = 0
                     tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .fade)
                 }
-                activeIndexSection = indexPath.section - 1
-                activeIndexRow = indexPath.row
-                absoluteIndex = indexPath.absoluteRow(tableView) - 1
-                if typesAlbums[activeIndexSection][activeIndexRow] == 0 {
-                    if player.isPlayin() {
-                        typesAlbums[activeIndexSection][activeIndexRow] = 1
-                        tableView.reloadRows(at: [indexPath], with: .fade)
-                    }else{
-                        if player.isShuffle {
-                            player.disableShuffle()
-                            player.createDefQueue(items: songsByAlbums)
-                            player.defIndex = absoluteIndex
-                            player.shuffleCurrent()
-                            player.playFromShufQueue(index: 0, new: true)
+                if indexPath.row == 0 {
+                    print("Shuffle")
+                }else{
+                    activeIndexSection = indexPath.section
+                    activeIndexRow = indexPath.row - 1
+                    absoluteIndex = indexPath.absoluteRow(tableView) - indexPath.section - 1
+                    if typesAlbums[activeIndexSection][activeIndexRow] == 0 {
+                        if player.isPlayin() {
+                            typesAlbums[activeIndexSection][activeIndexRow] = 1
+                            tableView.reloadRows(at: [indexPath], with: .fade)
                         }else{
-                            player.createDefQueue(items: songsByAlbums)
-                            player.playFromDefQueue(index: absoluteIndex, new: true)
+                            if player.isShuffle {
+                                player.disableShuffle()
+                                player.createDefQueue(items: songsByAlbums)
+                                player.defIndex = absoluteIndex
+                                player.shuffleCurrent()
+                                player.playFromShufQueue(index: 0, new: true)
+                            }else{
+                                player.createDefQueue(items: songsByAlbums)
+                                player.playFromDefQueue(index: absoluteIndex, new: true)
+                            }
+                            player.play()
                         }
-                        player.play()
                     }
                 }
             }else{
@@ -235,7 +259,11 @@ extension ArtistSongs: UIGestureRecognizerDelegate, QueueCellDelegate {
         case.playLast:
             playLastBtn()
         }
-        tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection+1)], with: .right)
+        if sort == .album {
+            tableView.reloadRows(at: [IndexPath(row: activeIndexRow+1, section: activeIndexSection)], with: .right)
+        }else{
+            tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection+1)], with: .right)
+        }
     }
     
     func playNextBtn() {
@@ -289,7 +317,7 @@ extension ArtistSongs: UIGestureRecognizerDelegate, QueueCellDelegate {
         if sort == .album{
             if typesAlbums[activeIndexSection][activeIndexRow] != 0 {
                 typesAlbums[activeIndexSection][activeIndexRow] = 0
-                let indexPath = IndexPath(row: activeIndexRow, section: activeIndexSection+1)
+                let indexPath = IndexPath(row: activeIndexRow+1, section: activeIndexSection)
                 self.tableView.deselectRow(at: indexPath, animated: true)
                 self.tableView.reloadRows(at: [indexPath], with: .fade)
             }
@@ -309,6 +337,7 @@ extension ArtistSongs {
     
     func setup() {
         if sort == .alphabetically {
+            result = [String: [MPMediaItem]]()
             songs = musicQuery.shared.songsByArtistID(artist: receivedID)
             upperBar.title = songs[0].albumArtist
             setupDict()
@@ -323,8 +352,11 @@ extension ArtistSongs {
             albIndexView.isHidden = true
             alpIndexView.isHidden = false
         }else if sort == .album {
+            result = [String: [MPMediaItem]]()
             albums = musicQuery.shared.artistAlbumsID(artist: receivedID)
             byAlbum()
+            indexes.insert("Shuffle", at: 0)
+            result["Shuffle"] = [MPMediaItem()]
             for index in indexes {
                 typesAlbums.append(Array<Int>(repeating: 0, count: (result[index]?.count)!))
             }
@@ -344,6 +376,7 @@ extension ArtistSongs {
                 v.layer.borderColor = tableView.separatorColor?.cgColor
                 headers.append(v)
             }
+            songs = songsByAlbums
             upperBar.title = songsByAlbums[0].albumArtist
             albIndexView.indexes = self.indexes
             albIndexView.tableView = self.tableView
@@ -396,6 +429,7 @@ extension ArtistSongs {
         let articles = ["The","A","An"]
         var anyNumber = false
         var anySpecial = false
+        indexes = [String]()
         for song in songs {
             let objStr = song.title!
             let article = objStr.components(separatedBy: " ").first!
@@ -475,6 +509,26 @@ extension ArtistSongs {
             albums.sort { Int($0.year)! > Int($1.year)! }
         default:
             print("sortAlbums default")
+        }
+    }
+    
+    func shuffleAll() {
+        Plum.shared.createDefQueue(items: songs)
+        Plum.shared.defIndex = Int(arc4random_uniform(UInt32(songs.count)))
+        Plum.shared.shuffleCurrent()
+        Plum.shared.playFromShufQueue(index: 0, new: true)
+        Plum.shared.play()
+    }
+}
+
+extension ArtistSongs: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, didEndCustomizing viewControllers: [UIViewController], changed: Bool) {
+        if (changed) {
+            print("New tab order:")
+            for i in 0 ..< viewControllers.count {
+                defaults.set(viewControllers[i].tabBarItem.tag, forKey: String(i))
+                print("\(i): \(viewControllers[i].tabBarItem.title!) (\(viewControllers[i].tabBarItem.tag))")
+            }
         }
     }
 }
