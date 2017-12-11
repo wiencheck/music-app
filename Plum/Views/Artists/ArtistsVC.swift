@@ -240,7 +240,7 @@ extension ArtistsVC: UICollectionViewDelegate, UICollectionViewDataSource, Colle
             }
         }else{
             if collectionTypes[indexPath.section][indexPath.row] != 0 {
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "actionscell", for: indexPath) as! CollectionActionCell
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "actionsCell", for: indexPath) as! CollectionActionCell
                 cell.delegate = self
                 return cell
             }else {

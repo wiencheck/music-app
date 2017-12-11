@@ -3349,73 +3349,63 @@
                                             <rect key="frame" x="0.0" y="0.0" width="92" height="125"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ye9-mJ-Oo0">
-                                                    <rect key="frame" x="4" y="47.5" width="84" height="30"/>
-                                                    <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="30" id="wfK-Gt-1U7"/>
-                                                    </constraints>
-                                                    <state key="normal" title="Play Next">
-                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                            <integer key="value" value="4"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
-                                                    <connections>
-                                                        <action selector="playNext" destination="Lm9-rR-n6v" eventType="touchUpInside" id="4sA-gM-vrJ"/>
-                                                    </connections>
-                                                </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4aZ-pD-mvk">
-                                                    <rect key="frame" x="4" y="91" width="84" height="30"/>
-                                                    <color key="backgroundColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="30" id="8V0-ZH-COF"/>
-                                                    </constraints>
-                                                    <state key="normal" title="Shuffle">
-                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                            <integer key="value" value="4"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
-                                                    <connections>
-                                                        <action selector="Shuffle" destination="Lm9-rR-n6v" eventType="touchUpInside" id="VEa-Pn-1f6"/>
-                                                    </connections>
-                                                </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EuT-6q-IDk">
-                                                    <rect key="frame" x="4" y="4" width="84" height="30"/>
-                                                    <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="30" id="MRg-xk-mYB"/>
-                                                    </constraints>
-                                                    <state key="normal" title="Play Now">
-                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                            <integer key="value" value="4"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
-                                                    <connections>
-                                                        <action selector="playNow" destination="Lm9-rR-n6v" eventType="touchUpInside" id="SDM-9a-Bdq"/>
-                                                    </connections>
-                                                </button>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="gMj-K0-p1B">
+                                                    <rect key="frame" x="7" y="4" width="79" height="121"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EuT-6q-IDk">
+                                                            <rect key="frame" x="0.0" y="0.0" width="84" height="31"/>
+                                                            <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <state key="normal" title="Play Now">
+                                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                    <integer key="value" value="4"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                            <connections>
+                                                                <action selector="playNow" destination="Lm9-rR-n6v" eventType="touchUpInside" id="SDM-9a-Bdq"/>
+                                                            </connections>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ye9-mJ-Oo0">
+                                                            <rect key="frame" x="0.0" y="43" width="84" height="31"/>
+                                                            <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <state key="normal" title="Play Next">
+                                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                    <integer key="value" value="4"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                            <connections>
+                                                                <action selector="playNext" destination="Lm9-rR-n6v" eventType="touchUpInside" id="4sA-gM-vrJ"/>
+                                                            </connections>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4aZ-pD-mvk">
+                                                            <rect key="frame" x="0.0" y="86" width="84" height="31"/>
+                                                            <color key="backgroundColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <state key="normal" title="Shuffle">
+                                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                    <integer key="value" value="4"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                            <connections>
+                                                                <action selector="Shuffle" destination="Lm9-rR-n6v" eventType="touchUpInside" id="VEa-Pn-1f6"/>
+                                                            </connections>
+                                                        </button>
+                                                    </subviews>
+                                                </stackView>
                                             </subviews>
                                         </view>
                                         <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="EuT-6q-IDk" secondAttribute="trailing" constant="4" id="Aoa-ew-0i8"/>
-                                            <constraint firstAttribute="trailing" secondItem="4aZ-pD-mvk" secondAttribute="trailing" constant="4" id="CRh-6o-6ga"/>
-                                            <constraint firstItem="EuT-6q-IDk" firstAttribute="top" secondItem="Lm9-rR-n6v" secondAttribute="top" constant="4" id="GTA-LZ-5fu"/>
-                                            <constraint firstItem="Ye9-mJ-Oo0" firstAttribute="top" secondItem="EuT-6q-IDk" secondAttribute="bottom" constant="13.5" id="HcJ-sY-r2l"/>
-                                            <constraint firstAttribute="bottom" secondItem="4aZ-pD-mvk" secondAttribute="bottom" constant="4" id="Hsn-hA-wwP"/>
-                                            <constraint firstAttribute="trailing" secondItem="Ye9-mJ-Oo0" secondAttribute="trailing" constant="4" id="L9J-ug-Cgw"/>
-                                            <constraint firstItem="Ye9-mJ-Oo0" firstAttribute="leading" secondItem="Lm9-rR-n6v" secondAttribute="leading" constant="4" id="Oia-s3-g9n"/>
-                                            <constraint firstItem="4aZ-pD-mvk" firstAttribute="top" secondItem="Ye9-mJ-Oo0" secondAttribute="bottom" constant="13.5" id="Sov-2T-l7S"/>
-                                            <constraint firstItem="EuT-6q-IDk" firstAttribute="leading" secondItem="Lm9-rR-n6v" secondAttribute="leading" constant="4" id="h9U-dh-5eY"/>
-                                            <constraint firstItem="4aZ-pD-mvk" firstAttribute="leading" secondItem="Lm9-rR-n6v" secondAttribute="leading" constant="4" id="vO1-1F-Swe"/>
+                                            <constraint firstAttribute="trailing" secondItem="gMj-K0-p1B" secondAttribute="trailing" constant="4" id="OYA-SZ-saL"/>
+                                            <constraint firstAttribute="bottom" secondItem="gMj-K0-p1B" secondAttribute="bottom" constant="8" id="RX5-7I-6fH"/>
+                                            <constraint firstItem="gMj-K0-p1B" firstAttribute="top" secondItem="Lm9-rR-n6v" secondAttribute="top" id="WVp-pz-EGZ"/>
+                                            <constraint firstItem="gMj-K0-p1B" firstAttribute="leading" secondItem="Lm9-rR-n6v" secondAttribute="leading" constant="4" id="rmc-wL-4AU"/>
                                         </constraints>
                                         <size key="customSize" width="92" height="125"/>
                                     </collectionViewCell>
@@ -3536,86 +3526,77 @@
                                             <outlet property="mainLabel" destination="e3B-7a-EVg" id="wGM-qv-cGE"/>
                                         </connections>
                                     </collectionViewCell>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="actionscell" id="iJS-C0-tvV" customClass="CollectionActionCell" customModule="Plum" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="actionsCell" id="Qk4-JZ-kSC" customClass="CollectionActionCell" customModule="Plum" customModuleProvider="target">
                                         <rect key="frame" x="114" y="0.0" width="92" height="125"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                             <rect key="frame" x="0.0" y="0.0" width="92" height="125"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z2d-eK-5sU">
-                                                    <rect key="frame" x="4" y="4" width="84" height="30"/>
-                                                    <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="30" id="hfY-rE-Ixq"/>
-                                                    </constraints>
-                                                    <state key="normal" title="Play Now">
-                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                            <integer key="value" value="4"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
-                                                    <connections>
-                                                        <action selector="playNow" destination="iJS-C0-tvV" eventType="touchUpInside" id="9OV-Ub-91f"/>
-                                                    </connections>
-                                                </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yxv-k0-8Mo">
-                                                    <rect key="frame" x="4" y="47.5" width="84" height="30"/>
-                                                    <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="30" id="RkQ-4h-Ye8"/>
-                                                    </constraints>
-                                                    <state key="normal" title="Play Next">
-                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                            <integer key="value" value="4"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
-                                                    <connections>
-                                                        <action selector="playNext" destination="iJS-C0-tvV" eventType="touchUpInside" id="gTy-kx-alE"/>
-                                                    </connections>
-                                                </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wib-ze-gmS">
-                                                    <rect key="frame" x="4" y="91" width="84" height="30"/>
-                                                    <color key="backgroundColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="30" id="3s5-Kc-Nfz"/>
-                                                    </constraints>
-                                                    <state key="normal" title="Shuffle">
-                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    </state>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                            <integer key="value" value="4"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
-                                                    <connections>
-                                                        <action selector="Shuffle" destination="iJS-C0-tvV" eventType="touchUpInside" id="kec-bK-wgU"/>
-                                                    </connections>
-                                                </button>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="OQL-F5-JJh">
+                                                    <rect key="frame" x="7" y="4" width="79" height="121"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vhc-iu-kcL">
+                                                            <rect key="frame" x="0.0" y="0.0" width="84" height="31"/>
+                                                            <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <state key="normal" title="Play Now">
+                                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                    <integer key="value" value="4"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                            <connections>
+                                                                <action selector="playNow" destination="Qk4-JZ-kSC" eventType="touchUpInside" id="B5j-08-1Cw"/>
+                                                            </connections>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JJV-2B-AbX">
+                                                            <rect key="frame" x="0.0" y="43" width="84" height="31"/>
+                                                            <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <state key="normal" title="Play Next">
+                                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                    <integer key="value" value="4"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                            <connections>
+                                                                <action selector="playNext" destination="Qk4-JZ-kSC" eventType="touchUpInside" id="MJi-Uh-FZ0"/>
+                                                            </connections>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="my8-uk-Ceo">
+                                                            <rect key="frame" x="0.0" y="86" width="84" height="31"/>
+                                                            <color key="backgroundColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <state key="normal" title="Shuffle">
+                                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                    <integer key="value" value="4"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                            <connections>
+                                                                <action selector="Shuffle" destination="Qk4-JZ-kSC" eventType="touchUpInside" id="hSS-8a-U4x"/>
+                                                            </connections>
+                                                        </button>
+                                                    </subviews>
+                                                </stackView>
                                             </subviews>
                                         </view>
                                         <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="yxv-k0-8Mo" secondAttribute="trailing" constant="4" id="1H7-YZ-DB1"/>
-                                            <constraint firstItem="yxv-k0-8Mo" firstAttribute="leading" secondItem="iJS-C0-tvV" secondAttribute="leading" constant="4" id="Nd6-cG-zEM"/>
-                                            <constraint firstAttribute="bottom" secondItem="wib-ze-gmS" secondAttribute="bottom" constant="4" id="SBB-XT-Rtm"/>
-                                            <constraint firstItem="wib-ze-gmS" firstAttribute="top" secondItem="yxv-k0-8Mo" secondAttribute="bottom" constant="13.5" id="Xm7-7c-wYl"/>
-                                            <constraint firstAttribute="trailing" secondItem="wib-ze-gmS" secondAttribute="trailing" constant="4" id="aOc-5T-uGB"/>
-                                            <constraint firstItem="z2d-eK-5sU" firstAttribute="top" secondItem="iJS-C0-tvV" secondAttribute="top" constant="4" id="phB-Ni-Jyc"/>
-                                            <constraint firstAttribute="trailing" secondItem="z2d-eK-5sU" secondAttribute="trailing" constant="4" id="s2g-K4-5Wd"/>
-                                            <constraint firstItem="wib-ze-gmS" firstAttribute="leading" secondItem="iJS-C0-tvV" secondAttribute="leading" constant="4" id="sFE-yg-BId"/>
-                                            <constraint firstItem="z2d-eK-5sU" firstAttribute="leading" secondItem="iJS-C0-tvV" secondAttribute="leading" constant="4" id="yOp-fo-7RR"/>
+                                            <constraint firstAttribute="bottom" secondItem="OQL-F5-JJh" secondAttribute="bottom" constant="8" id="4ru-I6-V5u"/>
+                                            <constraint firstItem="OQL-F5-JJh" firstAttribute="top" secondItem="Qk4-JZ-kSC" secondAttribute="top" id="Jx8-Aa-lnm"/>
+                                            <constraint firstAttribute="trailing" secondItem="OQL-F5-JJh" secondAttribute="trailing" constant="4" id="kt6-sS-chN"/>
+                                            <constraint firstItem="OQL-F5-JJh" firstAttribute="leading" secondItem="Qk4-JZ-kSC" secondAttribute="leading" constant="4" id="qwZ-lF-1DZ"/>
                                         </constraints>
                                         <size key="customSize" width="92" height="125"/>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="wyJ-xZ-gty">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="wyJ-xZ-gty">
+                                <rect key="frame" x="0.0" y="321" width="320" height="198"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="artistCell" rowHeight="94" id="RKI-SV-8ff" customClass="ArtistCell" customModule="Plum" customModuleProvider="target">
@@ -4293,7 +4274,7 @@
         <image name="zeroVol" width="175" height="298"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="LCY-3G-uHV"/>
-        <segue reference="uGV-fK-q4R"/>
+        <segue reference="rwj-QE-6F9"/>
+        <segue reference="GRh-Pt-2wL"/>
     </inferredMetricsTieBreakers>
 </document>
