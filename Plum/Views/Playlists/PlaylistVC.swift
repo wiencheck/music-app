@@ -44,6 +44,14 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
         tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        definesPresentationContext = false
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        definesPresentationContext = true
+    }
+    
     func setTable(){
         self.tableView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
         self.tableView.backgroundColor = .clear
@@ -111,7 +119,6 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
         }else{
             if indexPath.section == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath)
-                cell.textLabel?.text = "Shuffle"
                 cell.backgroundColor = .clear
                 return cell
             }else{
@@ -421,6 +428,9 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
             shouldShowResults = true
             self.tableView.separatorStyle = .singleLine
             tableIndexView.isHidden = true
+            if filteredSongs.count != 0 {
+                tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+            }
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces
         let strippedString = searchString!.trimmingCharacters(in: whitespaceCharacterSet)

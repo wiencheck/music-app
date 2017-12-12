@@ -34,6 +34,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     var result = [String:[Artist]]()
     var artists = [Artist]()
     var gesture: UILongPressGestureRecognizer!
+    var headers: [UIView]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,6 +46,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         }else{
             setTable()
         }
+        setHeaders()
         configureSearchController()
     }
     
@@ -85,11 +87,13 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         for i in 0 ..< collectionView.numberOfSections {
             collectionTypes.append(Array<Int>(repeating: 0, count: collectionView.numberOfItems(inSection: i)))
         }
+        let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout
+        layout?.sectionHeadersPinToVisibleBounds = true
         collectionIndexView.indexes = self.indexes
         collectionIndexView.collectionView = self.collectionView
         collectionIndexView.setup()
         self.view.addSubview(collectionIndexView)
-        collectionView.contentInset = UIEdgeInsetsMake(74, 0, 0, 0)
+        collectionView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0)
         collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0)
     }
     
@@ -105,11 +109,19 @@ extension ArtistsVC: UITableViewDelegate, UITableViewDataSource{    //Table
         }
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if shouldShowResults {
-            return ""
+            return UIView()
         }else{
-            return indexes[section]
+            return headers[section]
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if shouldShowResults {
+            return 0
+        }else{
+            return 27
         }
     }
     
@@ -207,6 +219,22 @@ extension ArtistsVC: UICollectionViewDelegate, UICollectionViewDataSource, Colle
     
     func indexTitles(for collectionView: UICollectionView) -> [String]? {
         return indexes
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        if shouldShowResults {
+            let u = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "header", for: indexPath)
+            u.alpha = 0.0
+            return u
+        }else{
+            if kind == UICollectionElementKindSectionHeader {
+                let u = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "header", for: indexPath)
+                u.addSubview(headers[indexPath.section])
+                return u
+            }else{
+                return UICollectionReusableView()
+            }
+        }
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -502,14 +530,8 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         if grid {
             collectionView.reloadData()
-            if filteredArtists.count != 0 {
-                collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-            }
         }else{
             tableView.reloadData()
-            if filteredArtists.count != 0 {
-                tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-            }
         }
         tableIndexView.isHidden = true
     }
@@ -545,6 +567,13 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         }else{
             shouldShowResults = true
             self.tableView.separatorStyle = .singleLine
+            if grid && filteredArtists.count != 0 {
+                if filteredArtists.count != 0 {
+                    collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                }else if !grid && filteredArtists.count != 0 {
+                    tableView.scrollToRow(at: IndexPath(row:0, section: 0), at: .top, animated: false)
+                }
+            }
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces
         let strippedString = searchString!.trimmingCharacters(in: whitespaceCharacterSet)
@@ -595,4 +624,20 @@ extension ArtistsVC: UICollectionViewDelegateFlowLayout {
         return CGSize(width: width*Waspect, height: height*Haspect)
     }
     
+    func setHeaders() {
+        headers = [UIView]()
+        for index in indexes {
+            let v = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 27))
+            v.backgroundColor = .clear
+            let label = UILabel(frame: CGRect(x: 12, y: 3, width: v.frame.width, height: 21))
+            let imv = UIImageView(frame: v.frame)
+            imv.contentMode = .scaleToFill
+            imv.image = #imageLiteral(resourceName: "headerBack")
+            v.addSubview(imv)
+            label.text = index
+            label.textColor = .black
+            v.addSubview(label)
+            headers.append(v)
+        }
+    }
 }

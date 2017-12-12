@@ -26,6 +26,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     var shouldShowResults = false
     var cellTypesSearch = [Int]()
     var searchActiveRow = 0
+    var headers: [UIView]!
     
     let backround = #imageLiteral(resourceName: "background_se")
     @IBOutlet weak var tableView: UITableView!
@@ -38,6 +39,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         tableView.delegate = self
         tableView.dataSource = self
         setupDict()
+        setHeaders()
         print(songs.count)
 //        for i in 1 ..< indexes.count {
 //            cellTypes.append(Array<Int>(repeating: 0, count: (result[indexes[i]]?.count)!))
@@ -74,7 +76,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         }
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    /*func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if shouldShowResults {
             return ""
         }else{
@@ -83,6 +85,26 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             }else{
                 return indexes[section]
             }
+        }
+    }*/
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if shouldShowResults {
+            return UIView()
+        }else{
+            if section == 0 {
+                return UIView()
+            }else{
+                return headers[section-1]
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 0 {
+            return 0
+        }else{
+            return 27
         }
     }
     
@@ -153,7 +175,6 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         }else{
             if indexPath.section == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath)
-                cell.textLabel?.text = "Shuffle"
                 cell.backgroundColor = .clear
                 return cell
             }else{
@@ -505,9 +526,6 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         tableView.reloadData()
-        if filteredSongs.count != 0 {
-            tableView.scrollToRow(at: IndexPath(row: 0 , section: 0), at: .top, animated: false)
-        }
     }
     
     
@@ -535,6 +553,9 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
             shouldShowResults = true
             self.tableView.separatorStyle = .singleLine
             indexView.isHidden = true
+            if filteredSongs.count != 0 {
+                tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+            }
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces
         let strippedString = searchString!.trimmingCharacters(in: whitespaceCharacterSet)
@@ -569,6 +590,23 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
             searchController.searchBar.becomeFirstResponder()
         }else if scrollView.contentOffset.y > 2 {
             searchController.searchBar.resignFirstResponder()
+        }
+    }
+    
+    func setHeaders() {
+        headers = [UIView]()
+        for index in indexes {
+            let v = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 27))
+            v.backgroundColor = .clear
+            let label = UILabel(frame: CGRect(x: 12, y: 3, width: v.frame.width, height: 21))
+            let imv = UIImageView(frame: v.frame)
+            imv.contentMode = .scaleToFill
+            imv.image = #imageLiteral(resourceName: "headerBack")
+            v.addSubview(imv)
+            label.text = index
+            label.textColor = .black
+            v.addSubview(label)
+            headers.append(v)
         }
     }
     

@@ -26,6 +26,9 @@ class SearchHeader: UITableViewCell {
         }else{
             moreBtn.isHidden = true
         }
+        let imv = UIImageView(image: #imageLiteral(resourceName: "headerBack"))
+        imv.contentMode = .scaleAspectFill
+        backgroundView = imv
     }
     
     @objc func buttonPressed(_ sender: UIButton){

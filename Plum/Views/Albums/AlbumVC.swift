@@ -70,7 +70,6 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath)
-            cell.textLabel?.text = "Shuffle"
             cell.backgroundColor = .clear
             return cell
         }else{

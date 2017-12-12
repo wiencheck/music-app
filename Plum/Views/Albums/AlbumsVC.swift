@@ -32,6 +32,7 @@ class AlbumsVC: UIViewController {
     var filteredAlbums = [AlbumB]()
     var cellTypesSearch = [Int]()
     var shouldShowResults = false
+    var headers: [UIView]!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +44,7 @@ class AlbumsVC: UIViewController {
         }else{
             setTable()
         }
+        setHeaders()
         configureSearchController()
     }
     
@@ -77,6 +79,8 @@ class AlbumsVC: UIViewController {
             cellTypes.append(Array<Int>(repeating: 0, count: (result[index]?.count)!))
         }
         self.view.addSubview(collectionView)
+        let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout
+        layout?.sectionHeadersPinToVisibleBounds = true
         gesture = UILongPressGestureRecognizer(target: self, action: #selector(longPress(_:)))
         gesture.minimumPressDuration = 0.2
         gesture.numberOfTouchesRequired = 1
@@ -85,7 +89,7 @@ class AlbumsVC: UIViewController {
         self.collectionIndexView.collectionView = self.collectionView
         self.collectionIndexView.setup()
         self.view.addSubview(collectionIndexView)
-        collectionView.contentInset = UIEdgeInsetsMake(74, 0, 0, 0)
+        collectionView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0)
         collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0)
     }
     
@@ -123,11 +127,19 @@ extension AlbumsVC: UITableViewDelegate, UITableViewDataSource{     //Table
         }
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if shouldShowResults {
-            return ""
+            return 0
         }else{
-            return indexes[section]
+            return 27
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if shouldShowResults {
+            return UIView()
+        }else{
+            return headers[section]
         }
     }
     
@@ -479,14 +491,8 @@ extension AlbumsVC: UISearchBarDelegate, UISearchResultsUpdating {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         if grid {
             collectionView.reloadData()
-            if filteredAlbums.count != 0 {
-                collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-            }
         }else{
             tableView.reloadData()
-            if filteredAlbums.count != 0 {
-                tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-            }
         }
         tableIndexView.isHidden = true
     }
@@ -522,6 +528,13 @@ extension AlbumsVC: UISearchBarDelegate, UISearchResultsUpdating {
         }else{
             shouldShowResults = true
             self.tableView.separatorStyle = .singleLine
+            if grid && filteredAlbums.count != 0 {
+                if filteredAlbums.count != 0 {
+                    collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                }else if !grid && filteredAlbums.count != 0 {
+                    tableView.scrollToRow(at: IndexPath(row:0, section: 0), at: .top, animated: false)
+                }
+            }
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces
         let strippedString = searchString!.trimmingCharacters(in: whitespaceCharacterSet)
@@ -570,6 +583,39 @@ extension AlbumsVC: UICollectionViewDelegateFlowLayout {
         let Waspect: CGFloat = 0.29
         let Haspect: CGFloat = 0.22
         return CGSize(width: width*Waspect, height: height*Haspect)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        if shouldShowResults {
+            let u = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "header", for: indexPath)
+            u.alpha = 0.0
+            return u
+        }else{
+            if kind == UICollectionElementKindSectionHeader {
+                let u = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "header", for: indexPath)
+                u.addSubview(headers[indexPath.section])
+                return u
+            }else{
+                return UICollectionReusableView()
+            }
+        }
+    }
+    
+    func setHeaders() {
+        headers = [UIView]()
+        for index in indexes {
+            let v = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 27))
+            v.backgroundColor = .clear
+            let label = UILabel(frame: CGRect(x: 12, y: 3, width: v.frame.width, height: 21))
+            let imv = UIImageView(frame: v.frame)
+            imv.contentMode = .scaleToFill
+            imv.image = #imageLiteral(resourceName: "headerBack")
+            v.addSubview(imv)
+            label.text = index
+            label.textColor = .black
+            v.addSubview(label)
+            headers.append(v)
+        }
     }
     
 }
