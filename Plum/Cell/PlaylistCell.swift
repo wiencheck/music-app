@@ -15,6 +15,8 @@ class PlaylistCell: UICollectionViewCell {
     @IBOutlet weak var artwork: UIImageView!
     
     func setup(list: Playlist){
+        title.lineBreakMode = .byWordWrapping
+        title.numberOfLines = 1
         title.text = list.name
         detail.text = "\(list.songsIn) songs"
         artwork.image = list.image

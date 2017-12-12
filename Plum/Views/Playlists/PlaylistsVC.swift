@@ -40,6 +40,7 @@ class PlaylistsVC: UIViewController {
         tabBarController?.delegate = self
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         grid = GlobalSettings.playlistsGrid
+        setupDict()
         if grid{
             setCollection()
         }else{
@@ -68,7 +69,6 @@ class PlaylistsVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         self.view.addSubview(tableView)
-        setup()
         tableIndexView.indexes = self.indexes
         tableIndexView.tableView = self.tableView
         tableIndexView.setup()
@@ -84,7 +84,7 @@ class PlaylistsVC: UIViewController {
         collectionView.dataSource = self
         self.view.addSubview(collectionView)
         print(GlobalSettings.slider.rawValue)
-        setup()
+        //setup()
         correctCollectionSections()
         for index in indexes {
             cellTypes.append(Array<Int>(repeating: 0, count: (result[index]?.count)!))
@@ -407,6 +407,61 @@ extension PlaylistsVC {
         }
     }
     
+    func setupDict() {
+        playlists = musicQuery.shared.playlists
+        let articles = ["The","A","An"]
+        var anyNumber = false
+        var anySpecial = false
+        for song in playlists {
+            let objStr = song.name
+            let article = objStr.components(separatedBy: " ").first!
+            if articles.contains(article) {
+                if objStr.components(separatedBy: " ").count > 1 {
+                    let secondStr = objStr.components(separatedBy: " ")[1]
+                    if result["\(secondStr.first!)"] != nil {
+                        result["\(secondStr.first!)"]?.append(song)
+                    }else{
+                        result.updateValue([song], forKey: "\(secondStr.first!)")
+                        indexes.append("\(secondStr.uppercased().first!)")
+                    }
+                }
+            }else{
+                let prefix = "\(article.first!)".uppercased()
+                if Int(prefix) != nil {
+                    if result["#"] != nil {
+                        result["#"]?.append(song)
+                    }else{
+                        result.updateValue([song], forKey: "#")
+                        anyNumber = true
+                    }
+                }else if prefix.firstSpecial() {
+                    if result["?"] != nil {
+                        result["?"]?.append(song)
+                    }else{
+                        result.updateValue([song], forKey: "?")
+                        anySpecial = true
+                    }
+                }else if result[prefix] != nil {
+                    result[prefix]?.append(song)
+                }else{
+                    result.updateValue([song], forKey: prefix)
+                    indexes.append(prefix)
+                }
+            }
+        }
+        //indexes = Array(result.keys).sorted(by: <)
+        if anyNumber {
+            indexes.append("#")
+        }
+        if anySpecial {
+            indexes.append("?")
+        }
+        playlists.removeAll()
+        for index in indexes {
+            playlists.append(contentsOf: result[index]!)
+        }
+    }
+    
     func playNow() {
         let items = pickedList.items
         if player.isShuffle {
@@ -476,6 +531,7 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         }else{
             tableView.reloadData()
         }
+        tableIndexView.isHidden = true
     }
     
     
@@ -505,12 +561,12 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         }else{
             shouldShowResults = true
             self.tableView.separatorStyle = .singleLine
-            if grid && filteredPlaylists.count != 0 {
-                if filteredPlaylists.count != 0 {
-                    collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-                }else if !grid && filteredPlaylists.count != 0 {
-                    tableView.scrollToRow(at: IndexPath(row:0, section: 0), at: .top, animated: false)
-                }
+            if grid {
+                collectionIndexView.isHidden = true
+                //collectionView.contentOffset.y = 0
+            }else{
+                tableIndexView.isHidden = true
+                //tableView.contentOffset.y = 0
             }
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces

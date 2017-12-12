@@ -200,6 +200,18 @@ class EightNowPlayingVC: UIViewController {
 
 extension EightNowPlayingVC: UIGestureRecognizerDelegate {
     
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if lyricsTextView.contentOffset.y <= 0 {
+            return false
+        }else{
+            return true
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        print(scrollView.contentOffset.y)
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let location = touches.first?.location(in: view)
         if !ratingsView.frame.contains(location!){
@@ -378,7 +390,7 @@ extension EightNowPlayingVC: UIGestureRecognizerDelegate {
     
 }
 
-extension EightNowPlayingVC {
+extension EightNowPlayingVC: UITextViewDelegate {
     
     func setLyricsView(){
         lyricsView.alpha = 0.0
@@ -389,9 +401,10 @@ extension EightNowPlayingVC {
         lyricsView.addGestureRecognizer(lyricsTap)
         setLyricsDoubleTap()
         lyricsTap.require(toFail: doubleTapLyr)
-        lyricsView.backgroundColor = UIColor.black.withAlphaComponent(0.4)
+        lyricsView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         lyricsTextView.backgroundColor = .clear
         lyricsTextView.isScrollEnabled = true
+        lyricsTextView.delegate = self
         lyricsView.addSubview(lyricsTextView)
         view.superview?.addSubview(lyricsView)
     }
@@ -527,7 +540,6 @@ extension EightNowPlayingVC {       //Kolory i UI
         ratingButton.layer.cornerRadius = 3
         lyricsButton.layer.cornerRadius = 3
         upNextBtn.setImage(#imageLiteral(resourceName: "Ulist_icon"), for: .normal)
-        addNextBtn.setImage(#imageLiteral(resourceName: "addList"), for: .normal)
     }
     
     func setColors() {
@@ -555,7 +567,7 @@ extension EightNowPlayingVC {       //Kolory i UI
         customTrackSlider(slider: timeSlider, min: colors.primaryColor, max: colors.detailColor, thumb: colors.primaryColor)
         customVolumeSlider(min: colors.primaryColor, max: colors.detailColor, thumb: colors.detailColor, thumbImg: #imageLiteral(resourceName: "thumb"))
         upNextBtn.tintColor = colors.detailColor
-        addNextBtn.tintColor = colors.detailColor
+        addNextBtn.setTitleColor(colors.detailColor, for: .normal)
         outOfLabel.textColor = colors.primaryColor
         ratingLabel.textColor = colors.primaryColor
         ratingButton.tintColor = colors.detailColor
@@ -614,7 +626,7 @@ extension EightNowPlayingVC {       //Kolory i UI
         maxVolImg.tintColor = UIColor.white.withAlphaComponent(0.3)
         upperBar.backgroundColor = .clear
         upNextBtn.tintColor = .white
-        addNextBtn.tintColor = .white
+        addNextBtn.setTitleColor(.white, for: .normal)
         outOfLabel.textColor = UIColor.white.withAlphaComponent(0.3)
         ratingsView.backgroundColor = .clear
         titleView.backgroundColor = .clear
@@ -654,7 +666,7 @@ extension EightNowPlayingVC {       //Kolory i UI
         maxVolImg.tintColor = UIColor.white.withAlphaComponent(0.5)
         upperBar.backgroundColor = .clear
         upNextBtn.tintColor = .white
-        addNextBtn.tintColor = .white
+        addNextBtn.setTitleColor(.white, for: .normal)
         outOfLabel.textColor = UIColor.white.withAlphaComponent(0.5)
         ratingsView.backgroundColor = .clear
         titleView.backgroundColor = .clear

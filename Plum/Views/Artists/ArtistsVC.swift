@@ -41,6 +41,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         tabBarController?.delegate = self
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         grid = GlobalSettings.artistsGrid
+        setupDict()
         if grid{
             setCollection()
         }else{
@@ -59,7 +60,6 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     
     func setTable(){
         self.tableView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
-        setupDict()
         tableView.delegate = self
         tableView.dataSource = self
         view.addSubview(tableView)
@@ -76,7 +76,6 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     
     func setCollection(){
         self.collectionView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
-        setupDict()
         collectionView.delegate = self
         collectionView.dataSource = self
         self.view.addSubview(collectionView)
@@ -257,7 +256,7 @@ extension ArtistsVC: UICollectionViewDelegate, UICollectionViewDataSource, Colle
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if shouldShowResults {
             if cellTypesSearch[indexPath.row] != 0 {
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "actionscell", for: indexPath) as! CollectionActionCell
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "actionsCell", for: indexPath) as! CollectionActionCell
                 cell.delegate = self
                 return cell
             }else{
@@ -533,7 +532,6 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         }else{
             tableView.reloadData()
         }
-        tableIndexView.isHidden = true
     }
     
     
@@ -567,12 +565,12 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         }else{
             shouldShowResults = true
             self.tableView.separatorStyle = .singleLine
-            if grid && filteredArtists.count != 0 {
-                if filteredArtists.count != 0 {
-                    collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-                }else if !grid && filteredArtists.count != 0 {
-                    tableView.scrollToRow(at: IndexPath(row:0, section: 0), at: .top, animated: false)
-                }
+            if grid {
+                collectionIndexView.isHidden = true
+                //collectionView.contentOffset.y = 64
+            }else{
+                tableIndexView.isHidden = true
+                //tableView.contentOffset.y = 0
             }
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces

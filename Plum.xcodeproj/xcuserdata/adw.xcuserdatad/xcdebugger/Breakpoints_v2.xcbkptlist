@@ -1450,11 +1450,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Plum/Cell/AlbumInfoCell.swift"
-            timestampString = "534697284.723131"
+            timestampString = "534776150.65232"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "73"
-            endingLineNumber = "73"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
             landmarkName = "shufBtnPressed(_:)"
             landmarkType = "7">
          </BreakpointContent>

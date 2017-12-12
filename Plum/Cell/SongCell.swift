@@ -33,20 +33,16 @@ class SongCell: UITableViewCell {
         }else{
             artworkView.image = #imageLiteral(resourceName: "no_music")
         }
-        /*let artistLetters = (item.albumArtist?.characters.count)! + 1
-        let albumLetters = item.albumTitle?.characters.count
-        let artAl = "\(item.albumArtist ?? "Unknown artist") \(item.albumTitle ?? "Unknown album")"
-        artAlLabel.attributedText = editString(artAl: artAl, artistLetters: artistLetters, albumLetters: albumLetters!)*/
-        let art = "\(item.albumArtist ?? "Unknown")" as NSString
-        let text = "\(item.albumArtist ?? "Unknown") \(item.albumTitle ?? "Unknown")"
-        let toColor = "\(item.albumTitle ?? "Unknown")"
-        let range = (text as NSString).range(of: toColor)
-        let att = NSMutableAttributedString(string: text)
-        let front = text.index(text.startIndex, offsetBy: art.length)
-        let end = text.index(text.endIndex, offsetBy: 0)
-        let r = front..<end
-        att.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.lightGray , range: range)
-        artAlLabel.attributedText = att
+        let art = item.albumArtist ?? "Unknown"
+        let alb = " " + (item.albumTitle ?? "Unknown")
+        let range = NSRange(location: 0, length: art.count)
+        let nart = NSMutableAttributedString(string: art)
+        nart.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.black, range: range)
+        let nalb = NSMutableAttributedString(string: alb)
+        let range2 = NSRange(location: 0, length: alb.count)
+        nalb.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.lightGray, range: range2)
+        nart.append(nalb)
+        artAlLabel.attributedText = nart
     }
     
     func artSetup(item: MPMediaItem){

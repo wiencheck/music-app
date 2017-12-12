@@ -15,17 +15,22 @@ class AlbumsCollectionCell: UICollectionViewCell {
     @IBOutlet weak var artwork: UIImageView!
     
     func setup(album: AlbumB){
+        mainLabel.lineBreakMode = .byWordWrapping
+        mainLabel.numberOfLines = 1
         mainLabel.text = album.name
         let count = album.songsIn
-        if album.isCloud{
-            detailLabel.text = "Cloud item"
-        }else{
-            if count == 1{
-                detailLabel.text = "1 song"
+        var st = ""
+        let genre = album.items[0].genre ?? ""
+        if genre != "" {
+            if count > 1 {
+                st = "\(genre) ･ \(count)"
             }else{
-                detailLabel.text = "\(count) songs"
+                st = "\(genre) ･ 1 song"
             }
+        }else{
+            st = "\(count) songs"
         }
+        detailLabel.text = st
         let art = album.artwork?.image(at: CGSize(width: 50, height: 50))
         if art == nil{
             artwork.image = #imageLiteral(resourceName: "no_music")

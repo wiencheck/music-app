@@ -31,16 +31,34 @@ class AlbumInfoCell: UITableViewCell {
 
     func setup(album: AlbumB, play: Bool){
         self.album = album
-        //playBtn.isHidden = play
-        //shufBtn.setImage(#imageLiteral(resourceName: "shuffle").imageScaled(toFit: CGSize(width: 28, height: 22)).tintPictogram(with: GlobalSettings.tint.color), for: .normal)
-        //playBtn.setImage(#imageLiteral(resourceName: "album_play").imageScaled(toFit: artwork.frame.size), for: .normal)
-        //playBtn.tintColor = GlobalSettings.tint.color
         songs = album.items
         titleLabel.text = album.name
         yearLabel.text = album.year
         artwork.image = album.artwork?.image(at: artwork.bounds.size) ?? #imageLiteral(resourceName: "no_music")
         artwork.layer.cornerRadius = 6.0
-        songsLabel.text = "\(album.songsIn) songs, \(calcDuration(items: songs)) minutes"
+        let count = NSMutableAttributedString(string: "\(album.songsIn)")
+        let countR = NSRange(location: 0, length: count.length)
+        count.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 15, weight: .medium), range: countR)
+        var songsL = ""
+        if album.songsIn == 1 {
+            songsL = " song, "
+        }else{
+            songsL = " songs, "
+        }
+        let songsAtt = NSMutableAttributedString(string: songsL)
+        let songsR = NSRange(location: 0, length: songsAtt.length)
+        songsAtt.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 13), range: songsR)
+        let minutes = "\(calcDuration(items: songs))"
+        let minutesAtt = NSMutableAttributedString(string: minutes)
+        let minR = NSRange(location: 0, length: minutesAtt.length)
+        minutesAtt.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 15, weight: .medium), range: minR)
+        let minAtt = NSMutableAttributedString(string: " minutes")
+        let mineR = NSRange(location: 0, length: minAtt.length)
+        minAtt.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 13), range: mineR)
+        count.append(songsAtt)
+        count.append(minutesAtt)
+        count.append(minAtt)
+        songsLabel.attributedText = count
     }
     
     func calcDuration(items: [MPMediaItem]) -> String{

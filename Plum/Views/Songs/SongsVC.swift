@@ -447,7 +447,6 @@ extension SongsVC {
                 }
             }
         }
-        //indexes = Array(result.keys).sorted(by: <)
         if anyNumber {
             indexes.append("#")
         }
@@ -458,7 +457,6 @@ extension SongsVC {
         for index in indexes {
             songs.append(contentsOf: result[index]!)
         }
-        //songs = result.flatMap(){ $0.1 }
     }
     
     func shuffleAll() {
@@ -552,10 +550,8 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         }else{
             shouldShowResults = true
             self.tableView.separatorStyle = .singleLine
+            //tableView.contentOffset.y = 0
             indexView.isHidden = true
-            if filteredSongs.count != 0 {
-                tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-            }
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces
         let strippedString = searchString!.trimmingCharacters(in: whitespaceCharacterSet)

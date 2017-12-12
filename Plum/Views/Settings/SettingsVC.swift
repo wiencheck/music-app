@@ -295,13 +295,8 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
             GlobalSettings.changeDeploy(Deploy(rawValue: "Artist")!)
             self.reload()
         })
-        let playlist = UIAlertAction(title: "Songs", style: .default, handler: {(action) in
-            self.defaults.set("Songs", forKey: "deploy")
-            self.reload()
-        })
         alert.addAction(album)
         alert.addAction(artist)
-        //alert.addAction(playlist)
         present(alert, animated: true, completion: nil)
     }
     

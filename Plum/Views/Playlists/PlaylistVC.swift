@@ -86,7 +86,7 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
         if shouldShowResults {
             return 1
         }else{
-            return indexesInt.count + 1
+            return indexesInt.count
         }
     }
     
@@ -97,7 +97,7 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
             if section == 0 {
                 return 1
             }else{
-                return (result[indexes[section-1]]?.count)!
+                return (result[indexes[section]]?.count)!
             }
         }
     }
@@ -122,9 +122,9 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
                 cell.backgroundColor = .clear
                 return cell
             }else{
-                if(cellTypes[indexPath.section-1]?[indexPath.row] == 0){
+                if(cellTypes[indexPath.section]?[indexPath.row] == 0){
                     let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as? SongCell
-                    let item = result[indexes[indexPath.section-1]]?[indexPath.row]
+                    let item = result[indexes[indexPath.section]]?[indexPath.row]
                     if(item != Plum.shared.currentItem){
                         cell?.setup(item: item!)
                     }else{
@@ -190,7 +190,7 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
             }else{
                 absoluteIndex = indexPath.absoluteRow(tableView) - 1
                 activeIndexRow = indexPath.row
-                activeIndexSection = indexPath.section - 1
+                activeIndexSection = indexPath.section
                 if(cellTypes[activeIndexSection]?[activeIndexRow] == 0){
                     if(Plum.shared.isPlayin()){
                         cellTypes[activeIndexSection]?[activeIndexRow] = 1
@@ -217,13 +217,6 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    @IBAction func NPBtnPressed(_ sender: Any) {
-        Plum.shared.createDefQueue(items: songs)
-        Plum.shared.defIndex = Int(arc4random_uniform(UInt32(songs.count)))
-        Plum.shared.shuffleCurrent()
-        Plum.shared.playFromShufQueue(index: 0, new: true)
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? AlbumVC{
             destination.receivedID = pickedAlbumID
@@ -246,7 +239,7 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
             tableView.reloadRows(at: [IndexPath(row: searchRow, section: 0)], with: .right)
         }else{
             cellTypes[activeIndexSection]?[activeIndexRow] = 0
-            tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection+1)], with: .right)
+            tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .right)
         }
     }
     
@@ -306,12 +299,12 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
     }
     func albumBtn(){
         cellTypes[activeIndexSection]?[activeIndexRow] = 0
-        self.tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection + 1)], with: .fade)
+        self.tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .fade)
         performSegue(withIdentifier: "album", sender: nil)
     }
     func artistBtn(){
         cellTypes[activeIndexSection]?[activeIndexRow] = 0
-        self.tableView.reloadRows(at: [IndexPath(row: self.activeIndexRow, section: activeIndexSection+1)], with: .fade)
+        self.tableView.reloadRows(at: [IndexPath(row: self.activeIndexRow, section: activeIndexSection)], with: .fade)
         if musicQuery.shared.artistAlbumsID(artist: (result[indexes[activeIndexSection]]?[activeIndexRow].albumArtistPersistentID)!).count == 1 {
             performSegue(withIdentifier: "album", sender: nil)
         }else{
@@ -327,7 +320,7 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
             self.tableView.reloadRows(at: [indexPath], with: .fade)
         }else{
             cellTypes[activeIndexSection]?[activeIndexRow] = 0
-            let indexPath = IndexPath(row: activeIndexRow, section: activeIndexSection+1)
+            let indexPath = IndexPath(row: activeIndexRow, section: activeIndexSection)
             self.tableView.deselectRow(at: indexPath, animated: true)
             self.tableView.reloadRows(at: [indexPath], with: .fade)
         }
@@ -340,6 +333,9 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
     
     func setup(){
         let bcount = receivedList.songsIn
+        indexes.append("")
+        indexesInt.append(0)
+        result[""] = [MPMediaItem()]
         if bcount > 11 {
             let difference: Int = bcount / 12
             var index = difference
@@ -351,7 +347,7 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
                 index += difference
             }
             var stoppedAt = 0
-            for i in 0 ..< indexes.count{
+            for i in 1 ..< indexes.count{
                 result[indexes[i]] = []
                 for j in stoppedAt ..< bcount{
                     if j > indexesInt[i]{
@@ -401,6 +397,7 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         tableView.reloadData()
+        tableView.reloadData()
     }
     
     
@@ -426,11 +423,9 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
             tableIndexView.isHidden = false
         }else{
             shouldShowResults = true
-            self.tableView.separatorStyle = .singleLine
             tableIndexView.isHidden = true
-            if filteredSongs.count != 0 {
-                tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-            }
+            //tableView.contentOffset.y = 0
+            self.tableView.separatorStyle = .singleLine
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces
         let strippedString = searchString!.trimmingCharacters(in: whitespaceCharacterSet)

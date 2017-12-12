@@ -262,6 +262,7 @@
 				386CD58C1F6FC3560075EFD9 /* artistAlbumCell.swift */,
 				38A12EA71F72834E00E3E53E /* QueueCell.swift */,
 				3812DEEC1F7D2E5600DA9840 /* AlbumSectionCell.swift */,
+				38345F451FABBBCA003DA1F2 /* PlaylistCell.swift */,
 				387678E41F7E99CE00F1AFD7 /* SongInAlbumCell.swift */,
 				385825511FA33C8600697186 /* ArtistUpCell.swift */,
 				38FFA1371F83DD950079FF4B /* ArtistCell.swift */,
@@ -365,7 +366,6 @@
 			children = (
 				38F0BDA61FAB1CA90028008B /* PlaylistsVC.swift */,
 				38F0BDA91FAB2DED0028008B /* PlaylistVC.swift */,
-				38345F451FABBBCA003DA1F2 /* PlaylistCell.swift */,
 			);
 			path = Playlists;
 			sourceTree = "<group>";

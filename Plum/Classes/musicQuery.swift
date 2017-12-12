@@ -37,27 +37,17 @@ class musicQuery{
     
     func allSongs() -> [MPMediaItem]{
         detailQuery = mainQuery
-        filterCloudItems()
+        filterCloudItems(detailQuery)
         let songs = detailQuery?.items
         currentSongsCount = songs?.count
         return songs!
     }
     
-    func songsByArtist(artist: String) -> [MPMediaItem]{
-        detailQuery = mainQuery
-        filterCloudItems()
-       let predicate = MPMediaPropertyPredicate(value: artist, forProperty: MPMediaItemPropertyArtist)
-       detailQuery?.addFilterPredicate(predicate)
-        return detailQuery.items!
-    }
-    
     func songsByArtistID(artist: MPMediaEntityPersistentID) -> [MPMediaItem]{
         detailQuery = MPMediaQuery.songs()
-        //filterCloudItems()
+        filterCloudItems(detailQuery)
         let predicate = MPMediaPropertyPredicate(value: artist, forProperty: MPMediaItemPropertyAlbumArtistPersistentID, comparisonType: .equalTo)
         detailQuery?.addFilterPredicate(predicate)
-        /*predicate = MPMediaPropertyPredicate(value: false, forProperty: MPMediaItemPropertyIsCloudItem, comparisonType: .equalTo)
-        detailQuery?.addFilterPredicate(predicate)*/
         return detailQuery.items!
     }
     
@@ -74,19 +64,11 @@ class musicQuery{
         return artists
     }
     
-    func artistAlbums(artist: String) -> [MPMediaItemCollection]{
-        detailQuery = MPMediaQuery.albums()
-        let predicate = MPMediaPropertyPredicate(value: artist, forProperty: MPMediaItemPropertyAlbumArtist)
-        detailQuery?.addFilterPredicate(predicate)
-        filterCloudItems()
-        return detailQuery.collections!
-    }
-    
     func artistAlbumsID(artist: MPMediaEntityPersistentID) -> [AlbumB]{
         detailQuery = MPMediaQuery.albums()
         let predicate = MPMediaPropertyPredicate(value: artist, forProperty: MPMediaItemPropertyAlbumArtistPersistentID, comparisonType: .equalTo)
         detailQuery?.addFilterPredicate(predicate)
-        filterCloudItems()
+        filterCloudItems(detailQuery)
         var albums = [AlbumB]()
         if let det = detailQuery.collections{
             for i in 0 ..< det.count{
@@ -96,20 +78,16 @@ class musicQuery{
         return albums
     }
     
-    func album(album: String) -> [MPMediaItem]{
-        detailQuery = MPMediaQuery.albums()
-        let predicate = MPMediaPropertyPredicate(value: album, forProperty: MPMediaItemPropertyAlbumTitle)
-        detailQuery?.addFilterPredicate(predicate)
-        filterCloudItems()
-        return detailQuery.items!
-    }
-    
     func allAlbums() -> [AlbumB]{
         detailQuery = MPMediaQuery.albums()
         var albums = [AlbumB]()
         for album in detailQuery.collections!{
-            albums.append(AlbumB(collection: album))
+            let a = AlbumB(collection: album)
+            if !a.isCloud {
+                albums.append(a)
+            }
         }
+        filterCloudItems(detailQuery)
         return albums
     }
     
@@ -124,6 +102,7 @@ class musicQuery{
         detailQuery = MPMediaQuery.songs()
         let predicate = MPMediaPropertyPredicate(value: album, forProperty: MPMediaItemPropertyAlbumPersistentID, comparisonType: .equalTo)
         detailQuery.addFilterPredicate(predicate)
+        filterCloudItems(detailQuery)
         return detailQuery.items!
     }
     
@@ -142,7 +121,8 @@ class musicQuery{
     }
     
     func allPlaylists() -> [Playlist] {
-        detailQuery = MPMediaQuery.playlists()
+        detailQuery = MPMediaQuery.songs()
+        detailQuery.groupingType = .playlist
         var playlists = [Playlist]()
         for collection in detailQuery.collections!{
             playlists.append(Playlist(collection: collection))
@@ -151,7 +131,8 @@ class musicQuery{
     }
     
     func playlistsIncluding(artist: MPMediaEntityPersistentID) -> [Playlist]{
-        detailQuery = MPMediaQuery.playlists()
+        detailQuery = MPMediaQuery.songs()
+        detailQuery.groupingType = .playlist
         var playlists = [Playlist]()
         for collection in detailQuery.collections!{
             let items = collection.items
@@ -174,9 +155,9 @@ class musicQuery{
         return list
     }
     
-    func filterCloudItems(){
+    func filterCloudItems(_ q: MPMediaQuery){
         let cloudPredicate = MPMediaPropertyPredicate(value: NSNumber(value: false), forProperty: MPMediaItemPropertyIsCloudItem)
-        detailQuery.addFilterPredicate(cloudPredicate)
+        q.addFilterPredicate(cloudPredicate)
     }
     
     func songForID(ID: MPMediaEntityPersistentID) -> MPMediaItem{
@@ -184,70 +165,6 @@ class musicQuery{
         let predicate = MPMediaPropertyPredicate(value: ID, forProperty: MPMediaItemPropertyPersistentID, comparisonType: .equalTo)
         detailQuery.addFilterPredicate(predicate)
         return (detailQuery.items?.first)!
-    }
-    
-    func hasLibraryChanged() -> Bool{
-        if currentSongsCount != previousLibraryState(){
-            return true
-        }else{
-            return false
-        }
-    }
-    
-    func wereSongsRemoved() -> Bool{
-        if previousLibraryState() < currentSongsCount{
-            print("Byly usuniete")
-            saveCurrentLibraryState()
-            return true
-        }else{
-            return false
-        }
-    }
-    
-    func wereSongsAdded() -> Bool{
-        if previousLibraryState() > currentSongsCount{
-            print("Byly dodane")
-            saveCurrentLibraryState()
-            return true
-        }else{
-            return false
-        }
-    }
-    
-    func previousLibraryState() -> Int{
-        let defaults = UserDefaults.standard
-        let previous = defaults.integer(forKey: "previousCount")
-        return previous
-    }
-    
-    func saveCurrentLibraryState(){
-        print("Zapisuje obecny stan (\(currentSongsCount))")
-        let defaults = UserDefaults.standard
-        defaults.set(currentSongsCount, forKey: "previousCount")
-    }
-    
-    func index(){
-        let items = allSongs()
-        for i in 0 ..< items.count{
-            let project = items[i]
-            
-            let attributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeText as String)
-            attributeSet.title = project.title
-            attributeSet.contentDescription = project.albumArtist
-            attributeSet.album = project.albumTitle
-            attributeSet.rating = project.rating as NSNumber
-            let art = project.artwork?.image(at: CGSize(width: 30, height: 30)) ?? #imageLiteral(resourceName: "no_music")
-            let data = UIImagePNGRepresentation(art)
-            attributeSet.thumbnailData = data
-            let item = CSSearchableItem(uniqueIdentifier: String(project.persistentID), domainIdentifier: "com.hackingwithswift", attributeSet: attributeSet)
-            CSSearchableIndex.default().indexSearchableItems([item]) { error in
-                if let error = error {
-                    print("Indexing error: \(error.localizedDescription)")
-                } else {
-                    print("Search item successfully indexed!")
-                }
-            }
-        }
     }
     
     func addToSpotlight(){
@@ -258,7 +175,7 @@ class musicQuery{
         var searchableItems = [CSSearchableItem]()
         var i: Float = 0.0
         spotlightProgress = 0
-        var tmp = Float(currentSongsCount + lists.count)
+        let tmp = Float(currentSongsCount + lists.count)
         DispatchQueue.global().async(execute: {
             for item in items{
                 let attributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeText as String)
