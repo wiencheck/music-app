@@ -29,12 +29,13 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var collectionIndexView: CollectionIndexView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableIndexView: TableIndexView!
-    @IBOutlet weak var NPBtn: UIBarButtonItem!
+    @IBOutlet weak var searchView: BlurView!
     var pickedID: MPMediaEntityPersistentID!
     var result = [String:[Artist]]()
     var artists = [Artist]()
     var gesture: UILongPressGestureRecognizer!
     var headers: [UIView]!
+    var heightInset: CGFloat!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,6 +57,11 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         if grid != GlobalSettings.artistsGrid{
             viewDidLoad()
         }
+        if grid {
+            collectionView.reloadData()
+        }else{
+            tableView.reloadData()
+        }
     }
     
     func setTable(){
@@ -70,8 +76,6 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         tableIndexView.tableView = self.tableView
         tableIndexView.setup()
         self.view.addSubview(tableIndexView)
-        tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0)
-        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0)
     }
     
     func setCollection(){
@@ -92,8 +96,6 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         collectionIndexView.collectionView = self.collectionView
         collectionIndexView.setup()
         self.view.addSubview(collectionIndexView)
-        collectionView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0)
-        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0)
     }
     
 }
@@ -104,7 +106,7 @@ extension ArtistsVC: UITableViewDelegate, UITableViewDataSource{    //Table
         if shouldShowResults {
             return 1
         }else{
-            return indexes.count
+            return result.keys.count
         }
     }
     
@@ -223,7 +225,6 @@ extension ArtistsVC: UICollectionViewDelegate, UICollectionViewDataSource, Colle
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if shouldShowResults {
             let u = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "header", for: indexPath)
-            u.alpha = 0.0
             return u
         }else{
             if kind == UICollectionElementKindSectionHeader {
@@ -272,7 +273,6 @@ extension ArtistsVC: UICollectionViewDelegate, UICollectionViewDataSource, Colle
                 return cell
             }else {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
-                print("\(indexPath.section) - \(indexPath.row) - \(indexes[indexPath.section])")
                 let item = result[indexes[indexPath.section]]?[indexPath.row]
                 cell.setup(artist: item!)
                 return cell
@@ -409,7 +409,6 @@ extension ArtistsVC{    //Other functions
         var anySpecial = false
         for artist in artists {
             let objStr = artist.name!
-            print(objStr)
             let article = objStr.components(separatedBy: " ").first!
             if articles.contains(article) {
                 if objStr.components(separatedBy: " ").count > 1 {
@@ -513,46 +512,40 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchController.definesPresentationContext = true
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search for artist"
+        searchController.searchBar.placeholder = "Search for artists"
         searchController.searchBar.delegate = self
         searchController.searchBar.sizeToFit()
         searchController.searchBar.tintColor = GlobalSettings.tint.color
-        self.searchController.hidesNavigationBarDuringPresentation = false;
-        if #available(iOS 11.0, *) {
-            navigationItem.searchController = searchController
-        } else {
-            // Fallback on earlier versions
-            navigationItem.titleView = searchController?.searchBar
-        }
+        self.searchController.hidesNavigationBarDuringPresentation = false
+        searchController.searchBar.searchBarStyle = .minimal
+        searchView.addSubview(searchController.searchBar)
+        let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
+        NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
+        heightInset = 56
+//        if grid {
+//            collectionView.contentInset = UIEdgeInsetsMake(heightInset, 0, 0, 0)
+//            collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, 0, 0)
+//        }else{
+//            tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, 0, 0)
+//            tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, 0, 0)
+//        }
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        if grid {
-            collectionView.reloadData()
-        }else{
-            tableView.reloadData()
-        }
+        tableView.reloadData()
     }
     
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         shouldShowResults = false
-        if grid {
-            collectionView.reloadData()
-        }else{
-            tableView.reloadData()
-        }
+        tableView.reloadData()
         tableIndexView.isHidden = false
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if !shouldShowResults {
             shouldShowResults = true
-            if grid {
-                collectionView.reloadData()
-            }else{
-                tableView.reloadData()
-            }
+            tableView.reloadData()
         }
         searchController.searchBar.resignFirstResponder()
     }
@@ -562,16 +555,12 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         let searchString = searchController.searchBar.text
         if searchString == ""{
             shouldShowResults = false
+            tableIndexView.isHidden = false
         }else{
             shouldShowResults = true
             self.tableView.separatorStyle = .singleLine
-            if grid {
-                collectionIndexView.isHidden = true
-                //collectionView.contentOffset.y = 64
-            }else{
-                tableIndexView.isHidden = true
-                //tableView.contentOffset.y = 0
-            }
+            //tableView.contentOffset.y = 0
+            tableIndexView.isHidden = true
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces
         let strippedString = searchString!.trimmingCharacters(in: whitespaceCharacterSet)
@@ -600,14 +589,15 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         }else{
             tableView.reloadData()
         }
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y < -104 {
-            searchController.searchBar.becomeFirstResponder()
-        }else if scrollView.contentOffset.y > 2 {
-            searchController.searchBar.resignFirstResponder()
-        }
+//        if filteredArtists.count != 0 {
+//            if grid {
+//                collectionView.reloadData()
+//                collectionView.contentOffset.y = heightInset
+//            }else{
+//                tableView.reloadData()
+//                tableView.contentOffset.y = heightInset
+//            }
+//        }
     }
     
 }

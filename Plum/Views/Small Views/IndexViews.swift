@@ -178,7 +178,6 @@ class CollectionIndexView: UIView {
             let index = max(min(Int(point.y / frame.height * CGFloat(indexes.count)), indexes.count-1), 0)
             let percentInSection = max(point.y / frame.height * CGFloat(indexes.count) - CGFloat(index), 0)
             scrollToIndex(index, percentInSection: percentInSection)
-            print(index)
         }
     }
     

@@ -96,8 +96,6 @@ class EightNowPlayingVC: UIViewController {
         GlobalSettings.changeColor(true)
         setColors()
         NotificationCenter.default.addObserver(self, selector: #selector(updateUI), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         timer.fire()
     }
     
@@ -122,8 +120,6 @@ class EightNowPlayingVC: UIViewController {
             playbackBtn.isEnabled = false
         }
         updateUI()
-        //timer.fire()
-        print("Scale = \(GlobalSettings.scale)")
     }
     
     @IBAction func presentQueue(_ sender: Any){
@@ -206,10 +202,6 @@ extension EightNowPlayingVC: UIGestureRecognizerDelegate {
         }else{
             return true
         }
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print(scrollView.contentOffset.y)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -307,7 +299,6 @@ extension EightNowPlayingVC: UIGestureRecognizerDelegate {
     @objc func panOnRatings(_ sender: UIPanGestureRecognizer){
         let location = sender.location(in: ratingLabel)
         let procent = location.x / ratingLabel.bounds.maxX * 100
-        print(procent)
         if procent <= 0.0{
             rateItem(rating: 0)
         }
@@ -331,7 +322,6 @@ extension EightNowPlayingVC: UIGestureRecognizerDelegate {
     @objc func tapOnRatings(_ sender: UITapGestureRecognizer){
         let location = sender.location(in: ratingLabel)
         let procent = location.x / ratingLabel.bounds.maxX * 100
-        print(procent)
         if procent <= 0.0{
             rateItem(rating: 0)
         }
@@ -459,11 +449,11 @@ extension EightNowPlayingVC {       //Kolory i UI
         if(self.player.currentItem != nil){
             self.titleLabel.text = self.player.labelString(type: "title")
             self.detailLabel.text = self.player.labelString(type: "detail")
-            self.image = self.player.currentItem?.artwork?.image(at: self.artworkImage.bounds.size) ?? #imageLiteral(resourceName: "no_music")
+            self.image = self.player.currentItem?.artwork?.image(at: self.artworkImage.bounds.size) ?? #imageLiteral(resourceName: "no_now")
         }else{
             self.titleLabel.text = "Choose a song"
             self.detailLabel.text = "to play"
-            self.image = #imageLiteral(resourceName: "no_music")
+            self.image = #imageLiteral(resourceName: "no_now")
         }
         if(self.player.isPlayin()){
             self.playbackBtn.setImage(#imageLiteral(resourceName: "pause-butt"), for: .normal)
@@ -552,6 +542,8 @@ extension EightNowPlayingVC {       //Kolory i UI
             case .dark:
                 dark()
             case .light:
+                light()
+            case .adaptive:
                 light()
             }
         }

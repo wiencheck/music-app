@@ -36,7 +36,7 @@ class musicQuery{
     }
     
     func allSongs() -> [MPMediaItem]{
-        detailQuery = mainQuery
+        detailQuery = MPMediaQuery.songs()
         filterCloudItems(detailQuery)
         let songs = detailQuery?.items
         currentSongsCount = songs?.count
@@ -151,7 +151,6 @@ class musicQuery{
         let predicate = MPMediaPropertyPredicate(value: playlist, forProperty: MPMediaPlaylistPropertyPersistentID, comparisonType: .equalTo)
         detailQuery.addFilterPredicate(predicate)
         let list = Playlist(collection: detailQuery.collections![0])
-        print(list.name)
         return list
     }
     

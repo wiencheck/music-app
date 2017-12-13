@@ -75,24 +75,24 @@ extension MPMediaItemCollection{
 
 
 extension String{
-    func firstLetter() -> Character{
-        var tmp = self.lowercased()
-        if tmp.hasPrefix("the "){
-            tmp = String(tmp.characters.dropFirst(4))
-        }else if tmp.hasPrefix("a "){
-            tmp = String(tmp.characters.dropFirst(2))
-        }else if tmp.hasPrefix("an "){
-            tmp = String(tmp.characters.dropFirst(3))
-        }
-        let hmm = "aąbcćdeęfghijklmnoópqrsśtuvwxyzżź0123456789"
-        let letters = Array(hmm.characters)
-        for index in characters.indices{
-            if letters.contains(tmp[index]){
-                return tmp[index]
-            }
-        }
-        return "_"
-    }
+//    func firstLetter() -> Character{
+//        var tmp = self.lowercased()
+//        if tmp.hasPrefix("the "){
+//            tmp = String(tmp.characters.dropFirst(4))
+//        }else if tmp.hasPrefix("a "){
+//            tmp = String(tmp.characters.dropFirst(2))
+//        }else if tmp.hasPrefix("an "){
+//            tmp = String(tmp.characters.dropFirst(3))
+//        }
+//        let hmm = "aąbcćdeęfghijklmnoópqrsśtuvwxyzżź0123456789"
+//        let letters = Array(hmm.characters)
+//        for index in characters.indices{
+//            if letters.contains(tmp[index]){
+//                return tmp[index]
+//            }
+//        }
+//        return "_"
+//    }
 }
 
 extension IndexPath{

@@ -11,8 +11,10 @@ import MediaPlayer
 
 class AlbumsByVC: UITableViewController {
     
+    let player = Plum.shared
     var receivedID: MPMediaEntityPersistentID!
     var als: [AlbumB]!
+    var picked: AlbumB!
     var pickedID: MPMediaEntityPersistentID!
     let defaults = UserDefaults.standard
 
@@ -36,6 +38,32 @@ class AlbumsByVC: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return als.count + 1
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let play = UITableViewRowAction(style: .default, title: "Play Now", handler: {_,path in
+            self.picked = self.als[path.row-1]
+            self.playNow()
+            self.tableView.setEditing(false, animated: true)
+        })
+        let next = UITableViewRowAction(style: .default, title: "Play Next", handler: {_,path in
+            self.picked = self.als[path.row-1]
+            self.playNext()
+            self.tableView.setEditing(false, animated: true)
+        })
+        let shuffle = UITableViewRowAction(style: .default, title: "Shuffle", handler: {_,path in
+            self.picked = self.als[path.row-1]
+            self.shuffle()
+            self.tableView.setEditing(false, animated: true)
+        })
+        play.backgroundColor = .red
+        next.backgroundColor = .orange
+        shuffle.backgroundColor = .purple
+        return [shuffle, next, play]
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -86,8 +114,33 @@ class AlbumsByVC: UITableViewController {
             destination.receivedID = receivedID
         }
     }
-    @IBAction func NPBtnPressed(_ sender: Any) {
-        
+    
+    func playNow() {
+        let items = picked.items
+        if player.isShuffle {
+            player.disableShuffle()
+        }
+        player.createDefQueue(items: items)
+        player.playFromDefQueue(index: 0, new: true)
+        player.play()
+    }
+    
+    func playNext() {
+        let items = picked.items
+        var i = items.count - 1
+        while i > -1 {
+            player.addNext(item: items[i])
+            i -= 1
+        }
+    }
+    
+    func shuffle() {
+        let items = picked.items
+        player.createDefQueue(items: items)
+        player.defIndex = Int(arc4random_uniform(UInt32(items.count)))
+        player.shuffleCurrent()
+        player.playFromShufQueue(index: 0, new: true)
+        player.play()
     }
 
 }

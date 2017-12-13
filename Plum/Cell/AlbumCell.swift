@@ -28,10 +28,19 @@ class AlbumCell: UITableViewCell {
     func setup(album: AlbumB){
         let songsCount = album.songsIn
         self.artworkImage.image = album.artwork?.image(at: artworkImage.bounds.size) ?? #imageLiteral(resourceName: "no_music")
-        if songsCount > 1{
-            detailLabel.text = "\(songsCount) songs"
+        let genre = album.items[0].genre ?? ""
+        if genre != "" {
+            if songsCount > 1{
+                detailLabel.text = "\(genre) ･ \(songsCount) songs"
+            }else{
+                detailLabel.text = "\(genre) ･ 1 song"
+            }
         }else{
-            detailLabel.text = "1 song"
+            if songsCount > 1{
+                detailLabel.text = "\(songsCount) songs"
+            }else{
+                detailLabel.text = "1 song"
+            }
         }
         titleLabel.text = album.name
     }

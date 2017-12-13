@@ -22,7 +22,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        _ = viewControllers?.first
+        //_ = viewControllers?.first
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         self.tabBar.tintColor = GlobalSettings.tint.color
         moreNavigationController.navigationBar.tintColor = GlobalSettings.tint.color
@@ -59,8 +59,20 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         }
     }
     
-    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        return true
+    fileprivate func displayPermissionsError() {
+        let alertVC = UIAlertController(title: "This is a demo", message: "Unauthorized or restricted access. Cannot play media. Fix in Settings?" , preferredStyle: .alert)
+        
+        //cancel
+        if let settingsURL = URL(string: UIApplicationOpenSettingsURLString), UIApplication.shared.canOpenURL(settingsURL) {
+            alertVC.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
+            let settingsAction = UIAlertAction(title: "Settings", style: .default, handler: { (action) in
+                UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: nil)
+            })
+            alertVC.addAction(settingsAction)
+        } else {
+            alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler:nil))
+        }
+        present(alertVC, animated: true, completion: nil)
     }
     
     @objc func updateProgress() {
@@ -118,15 +130,15 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         player.play()
     }
     
-    func loadAllViews() {
-        self.viewControllers?.forEach {
-            if let navController = $0 as? UINavigationController {
-                let _ = navController.topViewController?.view
-            } else {
-                let _ = $0.view.description
-            }
-        }
-    }
+//    func loadAllViews() {
+//        self.viewControllers?.forEach {
+//            if let navController = $0 as? UINavigationController {
+//                let _ = navController.topViewController?.view
+//            } else {
+//                let _ = $0.view.description
+//            }
+//        }
+//    }
     
     func setPopup() {
         if GlobalSettings.popupStyle == .classic {

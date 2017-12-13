@@ -19,6 +19,7 @@ class AlbumsVC: UIViewController {
     @IBOutlet weak var tableIndexView: TableIndexView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionIndexView: CollectionIndexView!
+    @IBOutlet weak var searchView: BlurView!
     var albums: [AlbumB]!
     var indexes = [String]()
     var result = [String: [AlbumB]]()
@@ -33,6 +34,7 @@ class AlbumsVC: UIViewController {
     var cellTypesSearch = [Int]()
     var shouldShowResults = false
     var headers: [UIView]!
+    var heightInset: CGFloat!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,8 +67,6 @@ class AlbumsVC: UIViewController {
         tableIndexView.tableView = self.tableView
         tableIndexView.setup()
         self.view.addSubview(tableIndexView)
-        tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0)
-        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0)
     }
     
     func setCollection(){
@@ -88,8 +88,6 @@ class AlbumsVC: UIViewController {
         self.collectionIndexView.collectionView = self.collectionView
         self.collectionIndexView.setup()
         self.view.addSubview(collectionIndexView)
-        collectionView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0)
-        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -397,59 +395,6 @@ extension AlbumsVC{     //Other functions
                 result[indexes[sect]]?.removeLast()
             }
         }
-        
-//        var tmp: Artist!
-//        for sect in 0 ..< indexes.count{
-//            if (result[indexes[sect]]?.count)! % 3 == 1{
-//                if sect != indexes.count-1{
-//                    tmp = result[indexes[sect]]?.last
-//                    result[indexes[sect + 1]]?.insert(tmp!, at: 0)
-//                    result[indexes[sect]]?.removeLast()
-//                }
-//            }else if (result[indexes[sect]]?.count)! % 3 == 2{
-//                tmp = result[indexes[sect]]?.last
-//                result[indexes[sect + 1]]?.insert(tmp!, at: 0)
-//                result[indexes[sect]]?.removeLast()
-//                tmp = result[indexes[sect]]?.last
-//                result[indexes[sect + 1]]?.insert(tmp!, at: 0)
-//                result[indexes[sect]]?.removeLast()
-//            }
-//        }
-    }
-    
-    func setup(){
-        let letters = Array("aąbcćdeęfghijklmnoópqrsśtuvwxyzżź".characters)
-        let numbers = Array("0123456789".characters)
-        albums = musicQuery.shared.albums
-        let bcount = albums.count
-        result["#"] = []
-        result["?"] = []
-        var inLetters = 0
-        var stoppedAt = 0
-        while inLetters < letters.count{
-            let smallLetter = letters[inLetters]
-            let letter = String(letters[inLetters]).uppercased()
-            result[letter] = []
-            for i in stoppedAt ..< bcount{
-                let curr = albums[i]
-                let layLow = curr.name?.lowercased()
-                if layLow?.firstLetter() == smallLetter{
-                    result[letter]?.append(curr)
-                    if !indexes.contains(letter) {indexes.append(letter)}
-                }else if numbers.contains((layLow!.firstLetter())){
-                    result["#"]?.append(curr)
-                    if !indexes.contains("#") {indexes.append("#")}
-                }else if layLow?.firstLetter() == "_"{
-                    result["?"]?.append(curr)
-                    if !indexes.contains("?") {indexes.append("?")}
-                }else{
-                    //print("stopped at: \(curr.name)")
-                    stoppedAt = i
-                    break
-                }
-            }
-            inLetters += 1
-        }
     }
     
 }
@@ -479,12 +424,18 @@ extension AlbumsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchController.searchBar.sizeToFit()
         searchController.searchBar.tintColor = GlobalSettings.tint.color
         self.searchController.hidesNavigationBarDuringPresentation = false;
-        if #available(iOS 11.0, *) {
-            navigationItem.searchController = searchController
-        } else {
-            // Fallback on earlier versions
-            navigationItem.titleView = searchController?.searchBar
-        }
+        searchController.searchBar.searchBarStyle = .minimal
+        searchView.addSubview(searchController.searchBar)
+        let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
+        NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
+        heightInset = searchView.frame.height
+//        if grid {
+//            collectionView.contentInset = UIEdgeInsetsMake(heightInset, 0, 0, 0)
+//            collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, 0, 0)
+//        }else{
+//            tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, 0, 0)
+//            tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, 0, 0)
+//        }
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -562,14 +513,15 @@ extension AlbumsVC: UISearchBarDelegate, UISearchResultsUpdating {
         }else{
             tableView.reloadData()
         }
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y < -104 {
-            searchController.searchBar.becomeFirstResponder()
-        }else if scrollView.contentOffset.y > 1 {
-            searchController.searchBar.resignFirstResponder()
-        }
+//        if filteredAlbums.count != 0 {
+//            if grid {
+//                collectionView.reloadData()
+//                collectionView.contentOffset.y = heightInset
+//            }else{
+//                tableView.reloadData()
+//                tableView.contentOffset.y = heightInset
+//            }
+//        }
     }
     
 }

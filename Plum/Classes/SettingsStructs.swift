@@ -29,19 +29,15 @@ enum styles: String {
 }
 
 enum Theme: String {
-    case light = "light"
-    case dark = "dark"
+    case light = "Light"
+    case dark = "Dark"
+    case adaptive = "Adaptive"
 }
 
 enum Deploy: String {
     case artist = "Artist"
     case album = "Album"
     case songs = "Songs"
-}
-
-enum Slider: String {
-    case alphabetical = "Alphabetical"
-    case smooth = "Smooth"
 }
 
 struct GlobalSettings{
@@ -58,9 +54,6 @@ struct GlobalSettings{
         }
         self.rating = t
         self.full = full
-//        if full {
-//            self.remote.switchRatingCommands(t)
-//        }
         if t { actions = ratings }
         remote.switchRatingCommands(t)
         print("Rating mode is \(rating)")
@@ -118,12 +111,6 @@ struct GlobalSettings{
         UserDefaults.standard.set(t.rawValue, forKey: "artistSort")
     }
     
-    static var slider: Slider = .alphabetical                                       //UI
-    static func changeSlider(_ t: Slider) {
-        slider = t
-        defaults.set(t.rawValue, forKey: "slider")
-    }
-    
     static var popupStyle: styles = .classic
     static func changePopupStyle(_ t: styles) {
         self.popupStyle = t
@@ -142,30 +129,30 @@ struct GlobalSettings{
         defaults.set(t, forKey: "popupDrag")
     }
     
-    static func changeFeedbackContent(which: String, message: String, value: Int) {
-        switch which {
-        case "Like":
-            remote.toggleLikeCommand(self.rating)
-            defaults.set(message, forKey: "likeMessage")
-            defaults.set(value, forKey: "likeValue")
-        case "Dislike":
-            remote.toggleDislikeCommand(self.rating)
-            defaults.set(message, forKey: "dislikeMessage")
-            defaults.set(value, forKey: "dislikeValue")
-        case "Bookmark":
-            remote.toggleBookmarkCommand(self.rating)
-            defaults.set(message, forKey: "bookmarkMessage")
-            defaults.set(value, forKey: "bookmarkValue")
-        default:
-            print("Zla nazwa feedbacku")
-        }
-        remote.switchRatingCommands(self.rating)
-    }
-    static var compact = true
-    static func changeCompact(_ t: Bool){
-        self.compact = t
-        defaults.set(t, forKey: "compact")
-    }
+//    static func changeFeedbackContent(which: String, message: String, value: Int) {
+//        switch which {
+//        case "Like":
+//            remote.toggleLikeCommand(self.rating)
+//            defaults.set(message, forKey: "likeMessage")
+//            defaults.set(value, forKey: "likeValue")
+//        case "Dislike":
+//            remote.toggleDislikeCommand(self.rating)
+//            defaults.set(message, forKey: "dislikeMessage")
+//            defaults.set(value, forKey: "dislikeValue")
+//        case "Bookmark":
+//            remote.toggleBookmarkCommand(self.rating)
+//            defaults.set(message, forKey: "bookmarkMessage")
+//            defaults.set(value, forKey: "bookmarkValue")
+//        default:
+//            print("Zla nazwa feedbacku")
+//        }
+//        remote.switchRatingCommands(self.rating)
+//    }
+//    static var compact = true
+//    static func changeCompact(_ t: Bool){
+//        self.compact = t
+//        defaults.set(t, forKey: "compact")
+//    }
     static var deployIn: Deploy = .album
     static func changeDeploy(_ t: Deploy) {
         self.deployIn = t

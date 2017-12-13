@@ -216,8 +216,11 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         switch identifier {
         case "colorflow":
             performSegue(withIdentifier: "scale", sender: nil)
+        case "blur":
+            later()
         case "theme":
-            explainStyle()
+            //explainStyle()
+            later()
         case "miniplayer":
             explainMiniPlayer()
         case "tint":
@@ -255,6 +258,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         colorView.backgroundColor = GlobalSettings.tint.color
         spotlightButton.setTitleColor(GlobalSettings.tint.color, for: .normal)
         deployLabel.text = GlobalSettings.deployIn.rawValue
+        blurSwitch.isEnabled = false
     }
     
     func selfExplanatory() {
@@ -368,6 +372,13 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         alert.addAction(ok)
         present(alert, animated: true, completion: nil)
         
+    }
+    
+    func later() {
+        let alert = UIAlertController(title: "😓", message: "Unfortunately this feature is not yet available, it will be enabled in near future!", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "Can't wait!", style: .default, handler: nil)
+        alert.addAction(ok)
+        present(alert, animated: true, completion: nil)
     }
 }
 

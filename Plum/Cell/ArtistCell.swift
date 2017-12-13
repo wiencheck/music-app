@@ -28,11 +28,11 @@ class ArtistCell: UITableViewCell {
         let songsCount = artist.songsIn
         self.artistLabel.text = artist.name
         if(albumsCount == 1 && songsCount == 1){
-            self.detailLabel.text = "1 album 1 song"
+            self.detailLabel.text = "1 album ･ 1 song"
         }else if(albumsCount == 1 && songsCount > 1){
-            self.detailLabel.text = "1 album \(songsCount) songs"
+            self.detailLabel.text = "1 album ･ \(songsCount) songs"
         }else if(albumsCount > 1 && songsCount > 1){
-            self.detailLabel.text = "\(albumsCount) albums \(songsCount) songs"
+            self.detailLabel.text = "\(albumsCount) albums ･ \(songsCount) songs"
         }
         let image = artist.artwork
         artistImage.image = image?.image(at: CGSize(width: 50, height: 50)) ?? #imageLiteral(resourceName: "no_music")

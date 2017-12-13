@@ -27,23 +27,21 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     var cellTypesSearch = [Int]()
     var searchActiveRow = 0
     var headers: [UIView]!
+    var heightInset: CGFloat!
     
     let backround = #imageLiteral(resourceName: "background_se")
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var indexView: TableIndexView!
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var searchView: BlurView!
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBarController?.delegate = self
         navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
+        //navigationController?.interactivePopGestureRecognizer?.delegate = nil
         tableView.delegate = self
         tableView.dataSource = self
         setupDict()
         setHeaders()
-        print(songs.count)
-//        for i in 1 ..< indexes.count {
-//            cellTypes.append(Array<Int>(repeating: 0, count: (result[indexes[i]]?.count)!))
-//        }
         indexes.insert("", at: 0)
         result[""] = [MPMediaItem()]
         for index in indexes {
@@ -56,8 +54,6 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         indexView.setup()
         view.addSubview(indexView)
         configureSearchController()
-        tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0)
-        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0)
     }
     
     deinit {
@@ -75,18 +71,6 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             return result.keys.count
         }
     }
-    
-    /*func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if shouldShowResults {
-            return ""
-        }else{
-            if section == 0 {
-                return String()
-            }else{
-                return indexes[section]
-            }
-        }
-    }*/
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if shouldShowResults {
@@ -264,7 +248,6 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
                 absoluteIndex = indexPath.absoluteRow(tableView) - 1
                 activeIndexRow = indexPath.row
                 activeIndexSection = indexPath.section
-                print(result[indexes[activeIndexSection]]![activeIndexRow].title)
                 if(cellTypes[activeIndexSection][activeIndexRow] == 0){
                     if(Plum.shared.isPlayin()){
                         cellTypes[activeIndexSection][activeIndexRow] = 1
@@ -513,13 +496,16 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchController.searchBar.delegate = self
         searchController.searchBar.sizeToFit()
         searchController.searchBar.tintColor = GlobalSettings.tint.color
-        self.searchController.hidesNavigationBarDuringPresentation = false;
-        if #available(iOS 11.0, *) {
-            navigationItem.searchController = searchController
-        } else {
-            // Fallback on earlier versions
-            navigationItem.titleView = searchController?.searchBar
-        }
+        searchController.searchBar.contentMode = .scaleAspectFill
+        searchController.hidesNavigationBarDuringPresentation = false;
+        searchController.searchBar.searchBarStyle = .minimal
+        searchView.frame.size.height = searchController.searchBar.frame.size.height
+        searchView.addSubview(searchController.searchBar)
+        let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
+        NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
+        heightInset = searchView.frame.height
+        //tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, 0, 0)
+        //tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, 0, 0)
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -550,7 +536,6 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         }else{
             shouldShowResults = true
             self.tableView.separatorStyle = .singleLine
-            //tableView.contentOffset.y = 0
             indexView.isHidden = true
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces
@@ -575,18 +560,11 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         
         filteredSongs = (songs.filter { finalCompoundPredicate.evaluate(with: $0) })
         cellTypesSearch = Array<Int>(repeating: 0, count: filteredSongs.count)
-        self.tableView.reloadData()
-        if filteredSongs.count != 0 {
-            tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-        }
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y < -104 {
-            searchController.searchBar.becomeFirstResponder()
-        }else if scrollView.contentOffset.y > 2 {
-            searchController.searchBar.resignFirstResponder()
-        }
+        tableView.reloadData()
+//        if filteredSongs.count != 0 {
+//            tableView.reloadData()
+//            tableView.contentOffset.y = heightInset
+//        }
     }
     
     func setHeaders() {

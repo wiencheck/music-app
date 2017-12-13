@@ -285,7 +285,6 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
                 }
             }
         postPlaybackStateChanged()
-        //print("nextnext")
     }
     
     func prev(){
@@ -382,28 +381,19 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         isShuffle = true
         shufIndex = 0
         shufQueue = defQueue
-        print("shufcount = \(shufQueue.count) a defIndex jest = \(defIndex)")
         if(defIndex != 0){
             (shufQueue[0], shufQueue[defIndex]) = (shufQueue[defIndex], shufQueue[0])
         }
-        print("shufQueue.count = \(shufQueue.count)")
         shufQueue.shuffle()
         writeQueue()
     }
 
     func disableShuffle(){
-        print("Kliknales disableShuffle")
         isShuffle = false
         shufIndex = 0
         defIndex = currentItem?.index
-        print("defindex = \(defIndex)")
         shufQueue.removeAll()
         writeQueue()
-    }
-    
-    func nowPlayingItem() -> MPMediaItem{
-        print("Now playing: \(currentItem?.value(forProperty: MPMediaItemPropertyTitle))")
-        return currentItem!
     }
     
     func isPlayin() -> Bool{
@@ -488,7 +478,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         
         switch interruptionType{
         case .began:
-            playbackState.interrupted
+            state = .interrupted
         case .ended:
             do{
                 try AVAudioSession.sharedInstance().setActive(true)
@@ -597,7 +587,6 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     
     func rateItem(rating: Int){
         currentItem?.setValue(rating, forKey: MPMediaItemPropertyRating)
-        print("Rated \(rating) for Awesome")
     }
     
     func calculateFromTimeInterval(_ interval: TimeInterval) ->(minute:String, second:String){
@@ -652,9 +641,6 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         switch audioRouteChangeReason {
         case AVAudioSessionRouteChangeReason.newDeviceAvailable.rawValue:
             print("headphone plugged in")
-//        case AVAudioSessionRouteChangeReason.oldDeviceUnavailable.rawValue:
-//            print("headphone pulled out")
-//            self.pause()
         default:
             print("Route changed")
             pause()
@@ -759,7 +745,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
                 postLyrics()
             }
         }else{
-            //print("unlocked")
+            //shouldPost = false
         }
     }
     
@@ -774,7 +760,6 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
             let content = UNMutableNotificationContent()
             let ass = AVAsset(url: (currentItem?.assetURL)!)
             if let lyr = ass.lyrics {
-                print(lyr.isEmpty)
                 if !lyr.isEmpty {
                     content.title = currentItem?.title ?? "Unknown title"
                     content.subtitle = currentItem?.artist ?? "Unknown artist"
@@ -923,7 +908,6 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     @objc func handleTodayRatingNotification(_ notification: NSNotification) {
         if let rat = notification.userInfo?["rating"] as? Int {
             rateItem(rating: rat)
-            print("Rating: \(rat)")
         }
     }
     

@@ -43,8 +43,8 @@ class ArtistSongs: UIViewController {
         tabBarController?.delegate = self
         sort = GlobalSettings.artistSort
         setup()
-        tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0)
-        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0)
+//        tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0)
+//        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0)
     }
     
     @IBAction func sortBtnPressed() {

@@ -39,7 +39,7 @@ class PermissionVC: UIViewController {
         if let settingsURL = URL(string: UIApplicationOpenSettingsURLString), UIApplication.shared.canOpenURL(settingsURL) {
             alertVC.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
             let settingsAction = UIAlertAction(title: "Settings", style: .default, handler: { (action) in
-                UIApplication.shared.openURL(settingsURL)
+                UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: nil)
             })
             alertVC.addAction(settingsAction)
         } else {

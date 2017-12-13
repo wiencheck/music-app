@@ -205,9 +205,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: "scale") == nil {
             defaults.set(20, forKey: "scale")
         }
-        if defaults.value(forKey: "slider") == nil {
-            defaults.set("Alphabetical", forKey: "slider")
-        }
         if defaults.value(forKey: "playlistsGrid") == nil{
             defaults.set(true, forKey: "playlistsGrid")
         }
@@ -271,9 +268,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         if let sca = defaults.value(forKey: "scale") as? Double {
             GlobalSettings.changeScale(sca)
-        }
-        if let slid = defaults.value(forKey: "slider") as? String {
-            GlobalSettings.changeSlider(Slider(rawValue: slid)!)
         }
         if defaults.bool(forKey: "rating") {
             GlobalSettings.changeRating(defaults.bool(forKey: "rating"))

@@ -21,6 +21,7 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     let player = Plum.shared
     var titles = ["Artists", "Albums", "Songs", "Playlists"]
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var searchView: BlurView!
     var songs: [MPMediaItem]?
     var filteredSongs: [MPMediaItem]?
     var shouldCompactSongs: Bool!
@@ -52,8 +53,6 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         tableView.dataSource = self
         tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
         shouldShowResults = false
-        tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0)
-        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -136,7 +135,6 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             }else if section == 2 && filteredSongs?.count != 0{
                 header.setup(title: "songs", count: (filteredSongs?.count)!)
             }else{
-                print("viewForHeader else")
                 return UIView()
             }
             
@@ -264,8 +262,10 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
             }else{
                 switch GlobalSettings.deployIn {
                 case .artist:
+                    player.isShuffle = true
                     player.landInArtist(song!, new: true)
                 case .album:
+                    player.isShuffle = true
                     player.landInAlbum(song!, new: true)
                 default:
                     print("wyladuje w piosenkach")
@@ -279,7 +279,7 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         }
         searchHistory.insert(searchController.searchBar.text!, at: 0)
         if searchHistory.count > 20{
-            searchHistory.dropLast()
+            searchHistory.removeLast()
             UserDefaults.standard.set(searchHistory, forKey: "searchHistory")
         }
         tableView.deselectRow(at: indexPath, animated: true)
@@ -386,12 +386,13 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         searchController.searchBar.sizeToFit()
         searchController.searchBar.tintColor = GlobalSettings.tint.color
         self.searchController.hidesNavigationBarDuringPresentation = false;
-        if #available(iOS 11.0, *) {
-            navigationItem.searchController = searchController
-        } else {
-            // Fallback on earlier versions
-            navigationItem.titleView = searchController?.searchBar
-        }
+        searchController.searchBar.searchBarStyle = .minimal
+        searchView.addSubview(searchController.searchBar)
+        let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
+        NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
+//        let heightInset = searchView.frame.height
+//        tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, 0, 0)
+//        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, 0, 0)
     }
     
     func loadArrays(){
@@ -463,10 +464,13 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         case .song:
             switch GlobalSettings.deployIn {
             case .album:
+                player.isShuffle = true
                 player.landInAlbum(pickedSong, new: true)
             case .artist:
+                player.isShuffle = true
                 player.landInArtist(pickedSong, new: true)
             case .songs:
+                player.isShuffle = true
                 player.landInAlbum(pickedSong, new: true)
             }
             player.play()

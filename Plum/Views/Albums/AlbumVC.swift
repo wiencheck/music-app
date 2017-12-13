@@ -20,7 +20,6 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
     var received: AlbumB!
     var receivedID: MPMediaEntityPersistentID!
     var pickedArtistID: MPMediaEntityPersistentID!
-    var indexes = [Int]()
     var cellTypes = [Int]()
     var absoluteIndex = 0
     var activeIndexRow = 0
@@ -44,7 +43,7 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
         for i in 0..<songs.count{
             songs[i].index = i
         }
-        upperBar.title = album.name
+        upperBar.title = album.artist
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -75,9 +74,9 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
         }else{
             if album.manyArtists{
                 absoluteIndex = indexPath.absoluteRow(tableView) - 1
-                if(cellTypes[indexPath.row] == 0){
+                if(cellTypes[absoluteIndex] == 0){
                     let cell = tableView.dequeueReusableCell(withIdentifier: "extendedSongCell", for: indexPath) as? SongInAlbumCell
-                    let item = songs[indexPath.row-1]
+                    let item = songs[absoluteIndex]
                     if(item != player.currentItem){
                         cell?.setupA(item: item)
                     }else{
@@ -93,9 +92,9 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
                 }
             }else{
                 absoluteIndex = indexPath.absoluteRow(tableView)-1
-                if(cellTypes[indexPath.row-1] == 0){
+                if(cellTypes[absoluteIndex] == 0){
                     let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as? SongInAlbumCell
-                    let item = songs[indexPath.row-1]
+                    let item = songs[absoluteIndex]
                     if(item != player.currentItem){
                         cell?.setup(item: item)
                     }else{

@@ -5,12 +5,13 @@
 //  Copyright 2008 Instinctive Code.
 //
 
+
 #import "UIImage+ProportionalFill.h"
 
 
 @implementation UIImage (MGProportionalFill)
 
-
+#pragma GCC diagnostic ignored "-Wdeprecated"
 - (UIImage *)imageToFitSize:(CGSize)fitSize method:(MGImageResizingMethod)resizeMethod
 {
 	float imageScaleFactor = 1.0;
@@ -52,7 +53,7 @@
 	CGRect sourceRect, destRect;
 	if (cropping) {
 		destRect = CGRectMake(0, 0, targetWidth, targetHeight);
-		float destX, destY;
+        float destX = 0.0, destY = 0.0;
 		if (resizeMethod == MGImageResizeCrop) {
 			// Crop center
 			destX = round((scaledWidth - targetWidth) / 2.0);
@@ -127,6 +128,7 @@
 	return image;
 }
 
+#pragma GCC diagnostic pop
 
 - (UIImage *)imageCroppedToFitSize:(CGSize)fitSize
 {

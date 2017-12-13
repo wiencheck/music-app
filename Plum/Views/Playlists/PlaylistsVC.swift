@@ -27,6 +27,7 @@ class PlaylistsVC: UIViewController {
     @IBOutlet weak var tableIndexView: TableIndexView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionIndexView: CollectionIndexView!
+    @IBOutlet weak var searchView: BlurView!
     var pickedID: MPMediaEntityPersistentID!
     var pickedList: Playlist!
     var gesture: UILongPressGestureRecognizer!
@@ -34,6 +35,7 @@ class PlaylistsVC: UIViewController {
     var searchController: UISearchController!
     var shouldShowResults = false
     var headers: [UIView]!
+    var heightInset: CGFloat!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,11 +54,19 @@ class PlaylistsVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
-        self.definesPresentationContext = true
+        //self.definesPresentationContext = true
         if grid != GlobalSettings.playlistsGrid{
             self.viewDidLoad()
         }
     }
+    
+//    override func viewDidAppear(_ animated: Bool) {
+//        if grid {
+//            collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+//        }else{
+//            tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+//        }
+//    }
     
     override func viewWillDisappear(_ animated: Bool) {
         self.definesPresentationContext = false
@@ -73,8 +83,6 @@ class PlaylistsVC: UIViewController {
         tableIndexView.tableView = self.tableView
         tableIndexView.setup()
         self.view.addSubview(tableIndexView)
-        tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0)
-        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0)
     }
     
     func setCollection(){
@@ -83,9 +91,7 @@ class PlaylistsVC: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         self.view.addSubview(collectionView)
-        print(GlobalSettings.slider.rawValue)
-        //setup()
-        correctCollectionSections()
+        //correctCollectionSections()
         for index in indexes {
             cellTypes.append(Array<Int>(repeating: 0, count: (result[index]?.count)!))
         }
@@ -97,8 +103,6 @@ class PlaylistsVC: UIViewController {
         gesture.numberOfTouchesRequired = 1
         collectionView.addGestureRecognizer(gesture)
         self.view.addSubview(collectionIndexView)
-        collectionView.contentInset = UIEdgeInsetsMake(74, 0, 0, 0)
-        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -373,40 +377,6 @@ extension PlaylistsVC {
         }
     }
     
-    func setup(){
-        let letters = Array("aąbcćdeęfghijklmnoópqrsśtuvwxyzżź".characters)
-        let numbers = Array("0123456789".characters)
-        playlists = musicQuery.shared.playlists
-        let bcount = playlists.count
-        result["#"] = []
-        result["?"] = []
-        var inLetters = 0
-        var stoppedAt = 0
-        while inLetters < letters.count{
-            let smallLetter = letters[inLetters]
-            let letter = String(letters[inLetters]).uppercased()
-            result[letter] = []
-            for i in stoppedAt ..< bcount{
-                let curr = playlists[i]
-                let layLow = curr.name.lowercased()
-                if layLow.firstLetter() == smallLetter{
-                    result[letter]?.append(curr)
-                    if !indexes.contains(letter) {indexes.append(letter)}
-                }else if numbers.contains((layLow.firstLetter())){
-                    result["#"]?.append(curr)
-                    if !indexes.contains("#") {indexes.append("#")}
-                }else if layLow.firstLetter() == "_"{
-                    result["?"]?.append(curr)
-                    if !indexes.contains("?") {indexes.append("?")}
-                }else{
-                    stoppedAt = i
-                    break
-                }
-            }
-            inLetters += 1
-        }
-    }
-    
     func setupDict() {
         playlists = musicQuery.shared.playlists
         let articles = ["The","A","An"]
@@ -517,37 +487,49 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchController.searchBar.sizeToFit()
         searchController.searchBar.tintColor = GlobalSettings.tint.color
         self.searchController.hidesNavigationBarDuringPresentation = false;
-        if #available(iOS 11.0, *) {
-            navigationItem.searchController = searchController
-        } else {
-            // Fallback on earlier versions
-            navigationItem.titleView = searchController?.searchBar
-        }
+        searchController.searchBar.searchBarStyle = .minimal
+        searchView.addSubview(searchController.searchBar)
+        let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
+        NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
+        heightInset = searchView.frame.height
+//        if grid {
+//            collectionView.contentInset = UIEdgeInsetsMake(heightInset, 0, 0, 0)
+//            collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, 0, 0)
+//        }else{
+//            tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, 0, 0)
+//            tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, 0, 0)
+//        }
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         if grid {
             collectionView.reloadData()
+            collectionIndexView.isHidden = true
         }else{
             tableView.reloadData()
+            tableIndexView.isHidden = true
         }
-        tableIndexView.isHidden = true
     }
     
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         shouldShowResults = false
-        tableView.reloadData()
         if grid {
             collectionIndexView.isHidden = false
+            collectionView.reloadData()
         }else{
             tableIndexView.isHidden = false
+            tableView.reloadData()
         }
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if !shouldShowResults {
             shouldShowResults = true
+        }
+        if grid {
+            collectionView.reloadData()
+        }else{
             tableView.reloadData()
         }
         searchController.searchBar.resignFirstResponder()
@@ -590,18 +572,20 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         
         
         filteredPlaylists = (playlists.filter { finalCompoundPredicate.evaluate(with: $0) })
-        self.tableView.reloadData()
-        if filteredPlaylists.count != 0 {
-            tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+        if grid {
+            collectionView.reloadData()
+        }else{
+            tableView.reloadData()
         }
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y < -104 {
-            searchController.searchBar.becomeFirstResponder()
-        }else if scrollView.contentOffset.y > 1 {
-            searchController.searchBar.resignFirstResponder()
-        }
+//        if filteredPlaylists.count != 0 {
+//            if grid {
+//                collectionView.reloadData()
+//                collectionView.contentOffset.y = heightInset
+//            }else{
+//                tableView.reloadData()
+//                tableView.contentOffset.y = heightInset
+//            }
+//        }
     }
     
 }

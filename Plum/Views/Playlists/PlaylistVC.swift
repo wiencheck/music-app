@@ -31,8 +31,10 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var upperBar: UINavigationItem!
     @IBOutlet weak var tableIndexView: TableIndexView!
+    @IBOutlet weak var searchView: BlurView!
     var filteredSongs = [MPMediaItem]()
     var shouldShowResults = false
+    var heightInset: CGFloat!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,8 +76,6 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
             tableIndexView.setup()
             view.addSubview(tableIndexView)
         }
-        tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0)
-        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0)
     }
 
 }
@@ -387,12 +387,13 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchController.searchBar.sizeToFit()
         searchController.searchBar.tintColor = GlobalSettings.tint.color
         self.searchController.hidesNavigationBarDuringPresentation = false;
-        if #available(iOS 11.0, *) {
-            navigationItem.searchController = searchController
-        } else {
-            // Fallback on earlier versions
-            navigationItem.titleView = searchController?.searchBar
-        }
+        searchController.searchBar.searchBarStyle = .minimal
+        searchView.addSubview(searchController.searchBar)
+        let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
+        NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
+        heightInset = searchView.frame.height
+//        tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, 0, 0)
+//        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, 0, 0)
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -449,14 +450,10 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
         filteredSongs = (songs?.filter { finalCompoundPredicate.evaluate(with: $0) })!
         cellTypesSearch = Array<Int>(repeating: 0, count: filteredSongs.count)
         self.tableView.reloadData()
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y < -104 {
-            searchController.searchBar.becomeFirstResponder()
-        }else if scrollView.contentOffset.y > 2 {
-            searchController.searchBar.resignFirstResponder()
-        }
+//        if filteredSongs.count != 0 {
+//            tableView.reloadData()
+//            tableView.contentOffset.y = heightInset
+//        }
     }
     
 }
