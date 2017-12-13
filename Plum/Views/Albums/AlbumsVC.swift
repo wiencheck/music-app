@@ -35,6 +35,7 @@ class AlbumsVC: UIViewController {
     var shouldShowResults = false
     var headers: [UIView]!
     var heightInset: CGFloat!
+    var controllerSet = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,13 +43,26 @@ class AlbumsVC: UIViewController {
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         grid = GlobalSettings.albumsGrid
         setupDict()
+        if !controllerSet {
+            configureSearchController()
+            controllerSet = true
+        }
         if grid{
             setCollection()
+            self.collectionIndexView.indexes = self.indexes
+            self.collectionIndexView.collectionView = self.collectionView
+            self.collectionIndexView.setup()
+            view.bringSubview(toFront: searchView)
+            view.bringSubview(toFront: collectionIndexView)
         }else{
             setTable()
+            tableIndexView.indexes = self.indexes
+            tableIndexView.tableView = self.tableView
+            tableIndexView.setup()
+            view.bringSubview(toFront: searchView)
+            view.bringSubview(toFront: tableIndexView)
         }
         setHeaders()
-        configureSearchController()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,10 +77,6 @@ class AlbumsVC: UIViewController {
         tableView.dataSource = self
         tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
         self.view.addSubview(tableView)
-        tableIndexView.indexes = self.indexes
-        tableIndexView.tableView = self.tableView
-        tableIndexView.setup()
-        self.view.addSubview(tableIndexView)
     }
     
     func setCollection(){
@@ -84,10 +94,6 @@ class AlbumsVC: UIViewController {
         gesture.minimumPressDuration = 0.2
         gesture.numberOfTouchesRequired = 1
         collectionView.addGestureRecognizer(gesture)
-        self.collectionIndexView.indexes = self.indexes
-        self.collectionIndexView.collectionView = self.collectionView
-        self.collectionIndexView.setup()
-        self.view.addSubview(collectionIndexView)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -428,14 +434,17 @@ extension AlbumsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchView.addSubview(searchController.searchBar)
         let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
         NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
-        heightInset = searchView.frame.height
-//        if grid {
-//            collectionView.contentInset = UIEdgeInsetsMake(heightInset, 0, 0, 0)
-//            collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, 0, 0)
-//        }else{
-//            tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, 0, 0)
-//            tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, 0, 0)
-//        }
+        heightInset = 120
+        let bottomInset = 49 + GlobalSettings.bottomInset
+        automaticallyAdjustsScrollViewInsets = false
+        collectionView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        if #available(iOS 11.0, *) {
+            tableView.contentInsetAdjustmentBehavior = .never
+            collectionView.contentInsetAdjustmentBehavior = .never
+        }
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {

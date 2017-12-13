@@ -52,7 +52,6 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         indexView.indexes = self.indexes
         indexView.tableView = self.tableView
         indexView.setup()
-        view.addSubview(indexView)
         configureSearchController()
     }
     
@@ -503,9 +502,18 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchView.addSubview(searchController.searchBar)
         let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
         NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
-        heightInset = searchView.frame.height
-        //tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, 0, 0)
-        //tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, 0, 0)
+        heightInset = 64 + searchView.frame.height
+        let bottomInset = 49 + GlobalSettings.bottomInset
+        tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        automaticallyAdjustsScrollViewInsets = false
+        if #available(iOS 11.0, *) {
+            tableView.contentInsetAdjustmentBehavior = .never
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        print(scrollView.contentOffset.y)
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {

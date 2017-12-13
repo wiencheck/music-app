@@ -59,7 +59,6 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
         self.tableView.backgroundColor = .clear
         tableView.delegate = self
         tableView.dataSource = self
-        self.view.addSubview(tableView)
         songs = receivedList.items
         setup()
         var iterator = 0
@@ -74,7 +73,6 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
             tableIndexView.indexes = self.indexes
             tableIndexView.tableView = self.tableView
             tableIndexView.setup()
-            view.addSubview(tableIndexView)
         }
     }
 
@@ -391,13 +389,17 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchView.addSubview(searchController.searchBar)
         let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
         NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
-        heightInset = searchView.frame.height
-//        tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, 0, 0)
-//        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, 0, 0)
+        heightInset = 120
+        let bottomInset = 49 + GlobalSettings.bottomInset
+        tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        automaticallyAdjustsScrollViewInsets = false
+        if #available(iOS 11.0, *) {
+            tableView.contentInsetAdjustmentBehavior = .never
+        }
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        tableView.reloadData()
         tableView.reloadData()
     }
     
