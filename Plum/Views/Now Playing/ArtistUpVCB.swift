@@ -56,6 +56,11 @@ class ArtistUpVCB: UIViewController {
         tableView.scrollToRow(at: toScroll, at: .top, animated: false)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        instruct("deploy", message: "Tap on now playing song to to immediately set current playing queue to the artist", completion: nil)
+        instruct("upslider", message: "Slider on the right edge of the screen works even here!", completion: nil)
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         UIApplication.shared.statusBarStyle = statusBarStyle
     }

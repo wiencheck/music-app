@@ -39,6 +39,10 @@ class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
         NotificationCenter.default.addObserver(self, selector: #selector(reload), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        instruct("deploy", message: "Tap on now playing song to to immediately set current playing queue to the album", completion: nil)
+    }
+    
     deinit {
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "playBackStateChanged"), object: nil)
     }

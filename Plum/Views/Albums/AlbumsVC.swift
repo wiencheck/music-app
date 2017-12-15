@@ -73,6 +73,10 @@ class AlbumsVC: UIViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        instruct("grid", message: "As you can see this screen is organized in grid, but you can easily change it in settings!\nPress and hold on any item to see more options", completion: nil)
+    }
+    
     func setTable(){
         tableView.delegate = self
         tableView.dataSource = self

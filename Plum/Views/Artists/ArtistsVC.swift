@@ -67,6 +67,10 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         print("Artists loaded")
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        instruct("list", message: "Swipe left on any cell to show more options", completion: nil)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
         if grid != GlobalSettings.artistsGrid{
@@ -651,6 +655,24 @@ extension ArtistsVC: UICollectionViewDelegateFlowLayout {
             label.textColor = .black
             v.addSubview(label)
             headers.append(v)
+        }
+    }
+}
+
+extension UIViewController {
+    
+    func instruct(_ key: String, message: String, completion: (() -> Void)?) {
+        if !UserDefaults.standard.bool(forKey: key) {
+            let a = UIAlertController(title: "Pro tip", message: message, preferredStyle: .alert)
+            let got = UIAlertAction(title: "Got it", style: .default, handler: { _ in
+                UserDefaults.standard.set(true, forKey: key)
+            })
+            let remind = UIAlertAction(title: "Remind me", style: .default, handler: { _ in
+                UserDefaults.standard.set(false, forKey: key)
+            })
+            a.addAction(got)
+            a.addAction(remind)
+            present(a, animated: true, completion: completion)
         }
     }
 }

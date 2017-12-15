@@ -128,6 +128,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         setInitialSettings()
         readSettings()
         setCustomizing()
+        setInitialInstructions()
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         let initialViewController = storyboard.instantiateViewController(withIdentifier: "plumTab")
@@ -167,22 +168,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             defaults.set(1.0, forKey: "tintAlpha")
         }
         if defaults.value(forKey: "artistsGrid") == nil{
-            defaults.set(true, forKey: "artistsGrid")
+            defaults.set(false, forKey: "artistsGrid")
         }
         if defaults.value(forKey: "albumsGrid") == nil{
-            defaults.set(false, forKey: "albumsGrid")
+            defaults.set(true, forKey: "albumsGrid")
         }
         if defaults.value(forKey: "playlistsGrid") == nil{
             defaults.set(false, forKey: "playlistsGrid")
-        }
-        if defaults.value(forKey: "bigGrid") == nil{
-            defaults.set(true, forKey: "bigGrid")
-        }
-        if defaults.value(forKey: "spotlightActive") == nil{
-            defaults.set(false, forKey: "spotlightActive")
-        }
-        if defaults.value(forKey: "style") == nil{
-            defaults.set(2, forKey: "style")
         }
         if defaults.value(forKey: "rating") == nil {
             defaults.set(false, forKey: "rating")
@@ -298,6 +290,58 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
         UISwitch.appearance().tintColor = GlobalSettings.tint.color
         UISwitch.appearance().onTintColor = GlobalSettings.tint.color
+    }
+    
+    func setInitialInstructions() {
+        if defaults.value(forKey: "greeting") == nil {
+            defaults.set(false, forKey: "greeting")
+        }
+        if defaults.value(forKey: "index") == nil {
+            defaults.set(false, forKey: "index")
+        }
+        if defaults.value(forKey: "list") == nil {
+            defaults.set(false, forKey: "list")
+        }
+        if defaults.value(forKey: "grid") == nil {
+            defaults.set(false, forKey: "grid")
+        }
+        if defaults.value(forKey: "songs") == nil {
+            defaults.set(false, forKey: "songs")
+        }
+        if defaults.value(forKey: "playing") == nil {
+            defaults.set(false, forKey: "playing")
+        }
+        if defaults.value(forKey: "swipe") == nil {
+            defaults.set(false, forKey: "swipe")
+        }
+        if defaults.value(forKey: "add") == nil {
+            defaults.set(false, forKey: "add")
+        }
+        if defaults.value(forKey: "tap") == nil {
+            defaults.set(false, forKey: "tap")
+        }
+        if defaults.value(forKey: "delete") == nil {
+            defaults.set(false, forKey: "delete")
+        }
+        if defaults.value(forKey: "deploy") == nil {
+            defaults.set(false, forKey: "deploy")
+        }
+        if defaults.value(forKey: "lyrics") == nil {
+            defaults.set(false, forKey: "lyrics")
+        }
+        if defaults.value(forKey: "rating") == nil {
+            defaults.set(false, forKey: "rating")
+        }
+        if defaults.value(forKey: "spotlight") == nil {
+            defaults.set(false, forKey: "spotlight")
+        }
+        if defaults.value(forKey: "upslider") == nil {
+            defaults.set(false, forKey: "upslider")
+        }
+        if defaults.value(forKey: "artistslider") == nil {
+            defaults.set(false, forKey: "artistslider")
+        }
+
     }
 }
 

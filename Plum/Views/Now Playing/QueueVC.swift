@@ -49,6 +49,14 @@ class QueueVC: UIViewController {
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "playBackStateChanged"), object: nil)
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "playBackStateChanged"), object: nil)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        instruct("delete", message: "Tap on song's artwork to quickly delete it from queue or drag it to change queue's order", completion: nil)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         setupQueue()
         setHeaders()

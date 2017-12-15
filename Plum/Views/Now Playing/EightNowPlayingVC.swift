@@ -109,6 +109,8 @@ class EightNowPlayingVC: UIViewController {
             UIApplication.shared.statusBarStyle = .lightContent
         }
         viewActive = true
+        instruct("tap", message: "Tap on title to show rating and toggles for lyrics and rating mode", completion: nil)
+        self.instruct("swipe", message: "Tap twice on artwork or press Up Next button to show next playing songs", completion: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -125,6 +127,7 @@ class EightNowPlayingVC: UIViewController {
     }
     
     @IBAction func ratingPressed() {
+        instruct("rating", message: "When enabled, you will see ratings for every song in app and on lock screen. Go to settings to change options available on lock screen", completion: nil)
         GlobalSettings.changeRating(!GlobalSettings.rating)
         if GlobalSettings.rating {
             ratingButton.setImage(#imageLiteral(resourceName: "ratingsbutton"), for: .normal)
@@ -136,7 +139,9 @@ class EightNowPlayingVC: UIViewController {
     
     @IBAction func lyricsModePressed() {
         GlobalSettings.changeLyrics(!GlobalSettings.lyrics)
-        askNotification()
+        instruct("lyrics", message: "When enabled, lyrics will be presented on your lock screen automatically and outside the app by pressing the button in control center", completion: {
+            self.askNotification()
+        })
         if GlobalSettings.lyrics {
             lyricsButton.setImage(#imageLiteral(resourceName: "lyricsbutton"), for: .normal)
             ratingButton.setImage(#imageLiteral(resourceName: "noratingsbutton"), for: .normal)
@@ -256,7 +261,6 @@ extension EightNowPlayingVC: UIGestureRecognizerDelegate {
         doubleTapLyr.numberOfTapsRequired = 2
         doubleTapLyr.numberOfTouchesRequired = 1
         lyricsView.addGestureRecognizer(doubleTapLyr)
-        lyricsTextView.contentInset = UIEdgeInsetsMake(10, 0, 10, 0)
     }
     
     /////////////////// Handlery

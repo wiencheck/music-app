@@ -3284,10 +3284,10 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="LNm-yY-Eqp" kind="relationship" relationship="viewControllers" id="gwD-vT-CZq"/>
-                        <segue destination="B7G-bC-pbZ" kind="relationship" relationship="viewControllers" id="enx-bi-oOS"/>
-                        <segue destination="4F7-2F-KRE" kind="relationship" relationship="viewControllers" id="zGC-Tg-RjS"/>
                         <segue destination="PAF-8f-MLq" kind="relationship" relationship="viewControllers" id="dRo-Rt-SWg"/>
+                        <segue destination="B7G-bC-pbZ" kind="relationship" relationship="viewControllers" id="enx-bi-oOS"/>
+                        <segue destination="LNm-yY-Eqp" kind="relationship" relationship="viewControllers" id="gwD-vT-CZq"/>
+                        <segue destination="4F7-2F-KRE" kind="relationship" relationship="viewControllers" id="zGC-Tg-RjS"/>
                         <segue destination="YLr-Do-JGN" kind="relationship" relationship="viewControllers" id="tgs-cc-b3P"/>
                         <segue destination="b7e-kU-LMv" kind="relationship" relationship="viewControllers" id="5wF-6Y-C73"/>
                     </connections>

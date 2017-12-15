@@ -48,6 +48,10 @@ class ArtistSongs: UIViewController {
 //        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        instruct("artistslider", message: "Slider on the right edge of the screen works even here!", completion: nil)
+    }
+    
     @IBAction func sortBtnPressed() {
         activeIndexRow = 0
         activeIndexSection = 0

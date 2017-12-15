@@ -57,8 +57,8 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         print("Songs loaded")
     }
     
-    deinit {
-        
+    override func viewDidAppear(_ animated: Bool) {
+        instruct("songs", message: "Swipe left on a song to quickly go to corresponding album or artist page", completion: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -379,7 +379,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             self.tableView.reloadRows(at: [indexPath], with: .fade)
         }else{
             cellTypes[activeIndexSection][activeIndexRow] = 0
-            print("section \(activeIndexSection) row \(activeIndexRow)")
+            //print("section \(activeIndexSection) row \(activeIndexRow)")
             let indexPath = IndexPath(row: activeIndexRow, section: activeIndexSection)
             self.tableView.deselectRow(at: indexPath, animated: true)
             self.tableView.reloadRows(at: [indexPath], with: .fade)
@@ -523,7 +523,7 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print(scrollView.contentOffset.y)
+        //print(scrollView.contentOffset.y)
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
