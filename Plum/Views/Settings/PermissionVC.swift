@@ -11,41 +11,44 @@ import MediaPlayer
 
 class PermissionVC: UIViewController {
     
-    var query: MPMediaQuery?
-
+    var timet: Timer!
+    @IBOutlet weak var text: UITextView!
+    @IBOutlet weak var thumb: UIImageView!
+    @IBOutlet weak var loading: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
-        self.view.backgroundColor = .red
-        displayPermissionsError()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        thumb.isHidden = true
+        loading.isHidden = true
+        text.isHidden = false
+        timet = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(check), userInfo: nil, repeats: true)
+        timet.fire()
     }
     
     @IBAction func doneBtn(_ sender: Any){
-        performSegue(withIdentifier: "done", sender: nil)
+        UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: nil)
     }
     
-    fileprivate func displayPermissionsError() {
-        let alertVC = UIAlertController(title: "This is a demo", message: "Unauthorized or restricted access. Cannot play media. Fix in Settings?" , preferredStyle: .alert)
-        
-        //cancel
-        if let settingsURL = URL(string: UIApplicationOpenSettingsURLString), UIApplication.shared.canOpenURL(settingsURL) {
-            alertVC.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
-            let settingsAction = UIAlertAction(title: "Settings", style: .default, handler: { (action) in
-                UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: nil)
-            })
-            alertVC.addAction(settingsAction)
-        } else {
-            alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler:nil))
+    @objc func check() {
+        if checkPermissionForMusic() {
+            thumb.isHidden = false
+            loading.isHidden = false
+            text.isHidden = true
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.letGo()
+            performSegue(withIdentifier: "granted", sender: nil)
+            timet.invalidate()
+        }else{
+            print("Waiting for permission...")
         }
-        present(alertVC, animated: true, completion: nil)
     }
-
+    
+    private func checkPermissionForMusic() -> Bool {
+        switch MPMediaLibrary.authorizationStatus() {
+        case .authorized:
+            return true
+        default:
+            return false
+        }
+    }
 }

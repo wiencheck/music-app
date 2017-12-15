@@ -279,7 +279,7 @@
                                         <rect key="frame" x="0.0" y="519.5" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cLp-F1-RTg" id="WdS-T9-zsQ">
-                                            <rect key="frame" x="0.0" y="0.0" width="286" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gT8-hN-2cY">
@@ -3193,24 +3193,85 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F3j-Xy-F2J">
-                                <rect key="frame" x="137" y="269" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="plum" translatesAutoresizingMaskIntoConstraints="NO" id="NOx-Xt-l3E">
+                                <rect key="frame" x="65" y="38" width="191" height="173"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="191" id="9G4-cd-LGh"/>
+                                    <constraint firstAttribute="height" constant="173" id="9hj-ox-zl0"/>
+                                </constraints>
+                            </imageView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="PuL-KR-d1W">
+                                <rect key="frame" x="32" y="219" width="256" height="150"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="150" id="NQm-yi-3u2"/>
+                                </constraints>
+                                <string key="text">It seems that Plum doesn't have access to your music library. Please press the button below to open settings and grant Plum permission to play your music.</string>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F3j-Xy-F2J">
+                                <rect key="frame" x="95" y="369" width="131" height="30"/>
+                                <color key="backgroundColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="131" id="3T2-5M-pWR"/>
+                                    <constraint firstAttribute="height" constant="30" id="Y9C-pk-ecj"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                <state key="normal" title="Open settings">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="doneBtn:" destination="vT4-wa-bno" eventType="touchUpInside" id="h9F-4A-fnF"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thumbsUp" translatesAutoresizingMaskIntoConstraints="NO" id="bMF-Wt-oF1">
+                                <rect key="frame" x="205" y="71" width="93" height="113"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NqR-Bs-EjJ">
+                                <rect key="frame" x="72" y="219" width="177" height="44"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="31"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="F3j-Xy-F2J" firstAttribute="centerY" secondItem="JeS-nA-gTN" secondAttribute="centerY" id="cib-MH-6Ss"/>
-                            <constraint firstItem="F3j-Xy-F2J" firstAttribute="centerX" secondItem="JeS-nA-gTN" secondAttribute="centerX" id="iTO-Jp-T73"/>
+                            <constraint firstItem="bMF-Wt-oF1" firstAttribute="leading" secondItem="JeS-nA-gTN" secondAttribute="leadingMargin" constant="189" id="3Bo-6h-sTi"/>
+                            <constraint firstItem="NqR-Bs-EjJ" firstAttribute="top" secondItem="NOx-Xt-l3E" secondAttribute="bottom" constant="8" id="4nM-Oh-uRn"/>
+                            <constraint firstItem="NqR-Bs-EjJ" firstAttribute="leading" secondItem="JeS-nA-gTN" secondAttribute="leadingMargin" constant="56" id="A35-Dr-w8X"/>
+                            <constraint firstItem="bMF-Wt-oF1" firstAttribute="top" secondItem="PM5-80-QJ1" secondAttribute="bottom" constant="51" id="Bkl-9d-2GM"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="NOx-Xt-l3E" secondAttribute="trailing" constant="48" id="CCP-t6-TlO"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="bMF-Wt-oF1" secondAttribute="trailing" constant="6" id="DBN-QM-787"/>
+                            <constraint firstItem="PuL-KR-d1W" firstAttribute="top" secondItem="NOx-Xt-l3E" secondAttribute="bottom" constant="8" id="M9G-9c-etA"/>
+                            <constraint firstItem="PuL-KR-d1W" firstAttribute="leading" secondItem="JeS-nA-gTN" secondAttribute="leadingMargin" constant="16" id="Osd-S5-cIf"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="PuL-KR-d1W" secondAttribute="trailing" constant="16" id="VaY-Dg-Obg"/>
+                            <constraint firstItem="F3j-Xy-F2J" firstAttribute="leading" secondItem="JeS-nA-gTN" secondAttribute="leadingMargin" constant="79" id="Xus-kz-T9H"/>
+                            <constraint firstItem="NOx-Xt-l3E" firstAttribute="leading" secondItem="JeS-nA-gTN" secondAttribute="leadingMargin" constant="49" id="aJo-eh-a9Y"/>
+                            <constraint firstItem="F3j-Xy-F2J" firstAttribute="top" secondItem="PuL-KR-d1W" secondAttribute="bottom" id="gD6-h3-uI9"/>
+                            <constraint firstItem="PuL-KR-d1W" firstAttribute="top" secondItem="bMF-Wt-oF1" secondAttribute="bottom" constant="35" id="i6K-8F-yf4"/>
+                            <constraint firstItem="NOx-Xt-l3E" firstAttribute="top" secondItem="PM5-80-QJ1" secondAttribute="bottom" constant="18" id="lOF-Rj-zYN"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="NqR-Bs-EjJ" secondAttribute="trailing" constant="55" id="q1d-k1-5rL"/>
+                            <constraint firstItem="F3j-Xy-F2J" firstAttribute="top" secondItem="NqR-Bs-EjJ" secondAttribute="bottom" constant="106" id="ybA-bz-hvr"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="F3j-Xy-F2J" secondAttribute="trailing" constant="78" id="z7W-7f-3Gj"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="loading" destination="NqR-Bs-EjJ" id="Nfv-hi-C84"/>
+                        <outlet property="text" destination="PuL-KR-d1W" id="DUl-35-pF6"/>
+                        <outlet property="thumb" destination="bMF-Wt-oF1" id="PK7-I6-Jfl"/>
+                        <segue destination="dzu-j1-vt0" kind="show" identifier="granted" id="ro4-lc-jLg"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sPy-Um-Bax" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1217" y="1081"/>
+            <point key="canvasLocation" x="-1042.5" y="826.05633802816908"/>
         </scene>
         <!--Plum Tab Bar Controller-->
         <scene sceneID="c4l-QS-WOd">
@@ -4482,6 +4543,7 @@
         <image name="maxVol" width="300" height="300"/>
         <image name="next-butt" width="43" height="47"/>
         <image name="play-butt" width="45" height="53"/>
+        <image name="plum" width="500" height="500"/>
         <image name="prev-butt" width="43" height="47"/>
         <image name="shuffle" width="170" height="94"/>
         <image name="tab_album" width="25" height="25"/>
@@ -4493,6 +4555,7 @@
         <image name="tab_search" width="25" height="25"/>
         <image name="tab_settings" width="25" height="25"/>
         <image name="tab_songs" width="25" height="25"/>
+        <image name="thumbsUp" width="200" height="200"/>
         <image name="zeroVol" width="175" height="298"/>
     </resources>
     <inferredMetricsTieBreakers>

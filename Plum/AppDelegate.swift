@@ -24,39 +24,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var rating: Bool!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        _ = GlobalSettings()
-        //window = UIWindow(frame: UIScreen.main.bounds)
-        //window?.makeKeyAndVisible()
-        //s = UIStoryboard.init(name: "Main", bundle: Bundle.main)
-        //authorized()
-        self.query = musicQuery.shared
-        //self.query.setArrays()
-        //self.remote = RemoteCommandManager()
-        GlobalSettings.remote = RemoteCommandManager()
-        defaults = UserDefaults.standard
-        setInitialSettings()
-        readSettings()
-        setCustomizing()
-
-        // Getting access to your tabBarController
-        let tabBar = self.window?.rootViewController as! PlumTabBarController
-        
-        var junkViewControllers = [UIViewController]()
-        // returns 0 if not set, hence having the tabItem's tags starting at 1.
-        var tagNumber : Int = defaults.integer(forKey: "0")
-        if (tagNumber != 0) {
-            for i in 0 ..< (tabBar.viewControllers?.count)! {
-                // the tags are between 1-6 but the order of the
-                // viewControllers in the array are between 0-5
-                // hence the "-1" below.
-                print(i)
-                tagNumber = defaults.integer( forKey: String(i) ) - 1
-                junkViewControllers.append(tabBar.viewControllers![tagNumber])
-            }
-
-            tabBar.viewControllers = junkViewControllers
+        if let _ = MPMediaQuery.songs().items {
+            letGo()
+        }else{
+            hijack()
         }
-        
         return true
     }
     
@@ -128,24 +100,56 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     fileprivate func authorized() {
         MPMediaLibrary.requestAuthorization { (authStatus) in
             switch authStatus {
-            case .notDetermined:
-                let perm = self.s.instantiateViewController(withIdentifier: "perm") as! PermissionVC
-                self.window?.rootViewController = perm
-                break
             case .authorized:
-                let bar = self.s.instantiateViewController(withIdentifier: "plumTab") as! PlumTabBarController
-                self.window?.rootViewController = bar
-                break
+                self.letGo()
             default:
-                let perm = self.s.instantiateViewController(withIdentifier: "perm") as! PermissionVC
-                self.window?.rootViewController = perm
-                break
+                self.hijack()
             }
         }
     }
 
     func setAuth(_ auth: Bool){
         self.auth = auth
+    }
+    
+    func hijack() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        let initialViewController = storyboard.instantiateViewController(withIdentifier: "perm")
+        
+        self.window?.rootViewController = initialViewController
+    }
+    
+    func letGo() {
+        _ = GlobalSettings()
+        self.query = musicQuery.shared
+        GlobalSettings.remote = RemoteCommandManager()
+        defaults = UserDefaults.standard
+        setInitialSettings()
+        readSettings()
+        setCustomizing()
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        let initialViewController = storyboard.instantiateViewController(withIdentifier: "plumTab")
+        
+        self.window?.rootViewController = initialViewController
+        let tabBar = self.window?.rootViewController as! PlumTabBarController
+        
+        var junkViewControllers = [UIViewController]()
+        // returns 0 if not set, hence having the tabItem's tags starting at 1.
+        var tagNumber : Int = defaults.integer(forKey: "0")
+        if (tagNumber != 0) {
+            for i in 0 ..< (tabBar.viewControllers?.count)! {
+                // the tags are between 1-6 but the order of the
+                // viewControllers in the array are between 0-5
+                // hence the "-1" below.
+                print(i)
+                tagNumber = defaults.integer( forKey: String(i) ) - 1
+                junkViewControllers.append(tabBar.viewControllers![tagNumber])
+            }
+            
+            tabBar.viewControllers = junkViewControllers
+        }
     }
     
     func setInitialSettings(){

@@ -34,7 +34,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>Demo</string>
+	<string>Plum needs access to your library to be able to play music</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
