@@ -13,7 +13,6 @@ import UserNotifications
 class SettingsVC: UITableViewController, MySpotlightDelegate {
 
     let defaults = UserDefaults.standard
-    @IBOutlet weak var colorFlowSwitch: UISwitch!
     @IBOutlet weak var artistsGridSwitch: UISwitch!
     @IBOutlet weak var albumsGridSwitch: UISwitch!
     @IBOutlet weak var playlistsGridSwitch: UISwitch!
@@ -25,16 +24,8 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     @IBOutlet weak var roundSwitch: UISwitch!
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var lyricsSwitch: UISwitch!
-    @IBOutlet weak var blurSwitch: UISwitch!
     @IBOutlet weak var colorView: UIView!
     @IBOutlet weak var deployLabel: UILabel!
-    var colorFlowStatus: Bool!
-    var artistsGridStatus: Bool!
-    var albumsGridStatus: Bool!
-    var playlistsGridStatus: Bool!
-    var ratingStatus: Bool!
-    var lyricsStatus: Bool!
-    var blurStatus: Bool!
     var timer: Timer!
 
     override func viewDidLoad() {
@@ -56,58 +47,32 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     }
     
     func handleSwitches(){
-        colorFlowSwitch.addTarget(self, action: #selector(colorSwitched(_:)), for: .valueChanged)
         artistsGridSwitch.addTarget(self, action: #selector(artistsGrid(_:)), for: .valueChanged)
         albumsGridSwitch.addTarget(self, action: #selector(albumsGrid(_:)), for: .valueChanged)
         playlistsGridSwitch.addTarget(self, action: #selector(playlistsGrid(_:)), for: .valueChanged)
         ratingSwitch.addTarget(self, action: #selector(rating(_:)), for: .valueChanged)
         lyricsSwitch.addTarget(self, action: #selector(lyricsSwitched(_:)), for: .valueChanged)
-        blurSwitch.addTarget(self, action: #selector(blurSwitched(_:)), for: .valueChanged)
         roundSwitch.addTarget(self, action: #selector(roundSwitched(_:)), for: .valueChanged)
     }
     
-    @objc func colorSwitched(_ sender: UISwitch){
-        colorFlowStatus = sender.isOn
-        if GlobalSettings.blur {
-            blurSwitch.isOn = false
-            GlobalSettings.changeBlur(false)
-        }
-        defaults.set(colorFlowStatus, forKey: "colorFlow")
-    }
-    
-    @objc func blurSwitched(_ sender: UISwitch){
-        if GlobalSettings.color {
-            colorFlowSwitch.isOn = false
-            GlobalSettings.changeColor(false)
-        }
-        GlobalSettings.changeBlur(sender.isOn)
-    }
-    
     @objc func artistsGrid(_ sender: UISwitch){
-        artistsGridStatus = sender.isOn
-        GlobalSettings.changeArtists(grid: artistsGridStatus)
+        GlobalSettings.changeArtists(grid: sender.isOn)
     }
     
     @objc func albumsGrid(_ sender: UISwitch){
-        albumsGridStatus = sender.isOn
-        GlobalSettings.changeAlbums(grid: albumsGridStatus)
+        GlobalSettings.changeAlbums(grid: sender.isOn)
     }
     
     @objc func playlistsGrid(_ sender: UISwitch){
-        playlistsGridStatus = sender.isOn
-        GlobalSettings.changePlaylists(grid: playlistsGridStatus)
+        GlobalSettings.changePlaylists(grid: sender.isOn)
     }
     
     @objc func rating(_ sender: UISwitch){
-        ratingStatus = sender.isOn
-        if ratingStatus {
-            lyricsStatus = false
+        if sender.isOn {
             lyricsSwitch.isOn = false
-            //GlobalSettings.changeLyrics(false)
+            GlobalSettings.changeLyrics(false)
         }
-        GlobalSettings.changeRating(ratingStatus)
-        ratingSwitch.isOn = ratingStatus
-        defaults.set(ratingStatus, forKey: "rating")
+        GlobalSettings.changeRating(sender.isOn)
     }
     
     @objc func lyricsSwitched(_ sender: UISwitch) {
@@ -118,11 +83,9 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
                 }
             })
         }
-        self.lyricsStatus = sender.isOn
-        if lyricsStatus {
-            ratingStatus = false
+        if sender.isOn {
             ratingSwitch.isOn = false
-            //GlobalSettings.changeRating(false, full: GlobalSettings.full)
+            GlobalSettings.changeRating(false, full: GlobalSettings.full)
         }
         GlobalSettings.changeLyrics(sender.isOn)
     }
@@ -139,7 +102,6 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         let action = UIAlertAction(title: "OK Computer", style: .default, handler: nil)
         alert.addAction(action)
         present(alert, animated: true) {
-            self.lyricsStatus = false
             self.lyricsSwitch.isOn = false
             GlobalSettings.changeLyrics(false)
         }
@@ -172,42 +134,6 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         })
         self.spotlightButton.setTitle("Done!", for: .disabled)
         timer.invalidate()
-    }
-    
-    func readCurrentSettings(){
-        if let color = defaults.value(forKey: "colorFlow") as? Bool{
-            colorFlowSwitch.isOn = color
-            colorFlowStatus = color
-        }
-        if let artG = defaults.value(forKey: "artistsGrid") as? Bool{
-            artistsGridSwitch.isOn = artG
-            artistsGridStatus = artG
-        }
-        if let albG = defaults.value(forKey: "albumsGrid") as? Bool{
-            albumsGridSwitch.isOn = albG
-            albumsGridStatus = albG
-        }
-        if let playG = defaults.value(forKey: "playlistsGrid") as? Bool{
-            playlistsGridSwitch.isOn = playG
-            playlistsGridStatus = playG
-        }
-        if let spot = defaults.value(forKey: "spotlightActive") as? Bool{
-            spotlightButton.isEnabled = spot
-        }
-        if let rat = defaults.value(forKey: "rating") as? Bool{
-            ratingStatus = rat
-            ratingSwitch.isOn = rat
-        }
-        currentStyle.text = GlobalSettings.theme.rawValue
-        if GlobalSettings.popupStyle == .modern {
-            currentMiniPlayer.text = "Modern"
-        }else{
-            currentMiniPlayer.text = "Classic"
-        }
-        lyricsStatus = GlobalSettings.lyrics
-        lyricsSwitch.isOn = GlobalSettings.lyrics
-        blurSwitch.isOn = GlobalSettings.blur
-        roundSwitch.isOn = GlobalSettings.round
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -252,13 +178,18 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     }
     
     func reload(){
-        readCurrentSettings()
         spotlightButton.setTitle("Reindex Spotlight content", for: .normal)
         progressBar.tintColor = GlobalSettings.tint.color
         colorView.backgroundColor = GlobalSettings.tint.color
         spotlightButton.setTitleColor(GlobalSettings.tint.color, for: .normal)
         deployLabel.text = GlobalSettings.deployIn.rawValue
-        blurSwitch.isEnabled = false
+        artistsGridSwitch.isOn = GlobalSettings.artistsGrid
+        albumsGridSwitch.isOn = GlobalSettings.albumsGrid
+        playlistsGridSwitch.isOn = GlobalSettings.playlistsGrid
+        ratingSwitch.isOn = GlobalSettings.rating
+        lyricsSwitch.isOn = GlobalSettings.lyrics
+        currentMiniPlayer.text = GlobalSettings.popupStyle.rawValue
+        roundSwitch.isOn = GlobalSettings.round
     }
     
     func selfExplanatory() {
@@ -304,12 +235,12 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         present(alert, animated: true, completion: nil)
     }
     
-    func explainColorFlow(){
-        let alert = UIAlertController(title: "Colorflow? What does that mean!?", message: "Easy there, ColorFlow is a cool and one of Plum's unique features that changes colors on now playing screen to match current playing song's artwork. And it looks awesome.", preferredStyle: .alert)
-        let ok = UIAlertAction(title: "Understood, thanks!", style: .default, handler: nil)
-        alert.addAction(ok)
-        present(alert, animated: true, completion: nil)
-    }
+//    func explainColorFlow(){
+//        let alert = UIAlertController(title: "Colorflow? What does that mean!?", message: "Easy there, ColorFlow is a cool and one of Plum's unique features that changes colors on now playing screen to match current playing song's artwork. And it looks awesome.", preferredStyle: .alert)
+//        let ok = UIAlertAction(title: "Understood, thanks!", style: .default, handler: nil)
+//        alert.addAction(ok)
+//        present(alert, animated: true, completion: nil)
+//    }
     
     func explainStyle(){
         let alert = UIAlertController(title: "Time for decision", message: "Light: Certain elements on now playing screen, like lyrics background, UpNext background and upper bar will be white colored\n\nDark: Same as light, only it's totally opossite\n\nAdaptive: Light/Dark style will be enabled base on current artwork", preferredStyle: .actionSheet)

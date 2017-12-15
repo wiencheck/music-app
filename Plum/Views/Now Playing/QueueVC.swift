@@ -63,7 +63,6 @@ class QueueVC: UIViewController {
     
     @objc func reload() {
         setupQueue()
-        setColors()
         tableView.reloadData()
     }
 
@@ -399,16 +398,18 @@ extension QueueVC {     //Ustawianie kolejek
         }else{
             nextMeta = player.defIndex + 40
         }
-        if(!player.isShuffle){
-            for i in nextStart ..< nextMeta{
-                if player.defQueue[i].assetURL != nil {
-                    tmp.append(player.defQueue[i])
+        if nextStart <= nextMeta {
+            if(!player.isShuffle){
+                for i in nextStart ..< nextMeta{
+                    if player.defQueue[i].assetURL != nil {
+                        tmp.append(player.defQueue[i])
+                    }
                 }
-            }
-        }else{
-            for i in nextStart ..< nextMeta{
-                if player.shufQueue[i].assetURL != nil {
-                    tmp.append(player.shufQueue[i])
+            }else{
+                for i in nextStart ..< nextMeta{
+                    if player.shufQueue[i].assetURL != nil {
+                        tmp.append(player.shufQueue[i])
+                    }
                 }
             }
         }

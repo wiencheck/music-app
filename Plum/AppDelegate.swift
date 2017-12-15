@@ -283,6 +283,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let plg = defaults.value(forKey: "playlistsGrid") as? Bool {
             GlobalSettings.changePlaylists(grid: plg)
         }
+        GlobalSettings.changeColor(true)
     }
     
     func setCustomizing() {

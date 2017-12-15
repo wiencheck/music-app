@@ -152,7 +152,7 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
                 }
             }
             header.backgroundColor = .white
-            return header
+            return header.contentView
         }else{
             return nil
         }
@@ -251,8 +251,13 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0{
             let artist = filteredArtists?[indexPath.row]
-            self.pickedArtistID = artist?.ID
-            performSegue(withIdentifier: "artist", sender: nil)
+            pickedArtistID = artist?.ID
+            if musicQuery.shared.artistAlbumsID(artist: (artist?.ID)!).count > 1 {
+                performSegue(withIdentifier: "artist", sender: nil)
+            }else{
+                self.pickedAlbum = musicQuery.shared.artistAlbumsID(artist: pickedArtistID).first
+                performSegue(withIdentifier: "album", sender: nil)
+            }
         }else if indexPath.section == 2{
             let song = filteredSongs?[indexPath.row]
             if player.isPlayin() {

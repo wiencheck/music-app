@@ -84,16 +84,14 @@ class EightNowPlayingVC: UIViewController {
         setSlider()
         shufView.layer.cornerRadius = 6.0
         repView.layer.cornerRadius = 6.0
-        if GlobalSettings.blur {
-            let blur = UIBlurEffect(style: .dark)
-            let fx = UIVisualEffectView(frame: BackgroundView.frame)
-            fx.effect = blur
-            backgroundImgView.contentMode = .scaleAspectFill
-            BackgroundView.addSubview(fx)
-        }
+//        if GlobalSettings.blur {
+//            let blur = UIBlurEffect(style: .dark)
+//            let fx = UIVisualEffectView(frame: BackgroundView.frame)
+//            fx.effect = blur
+//            backgroundImgView.contentMode = .scaleAspectFill
+//            BackgroundView.addSubview(fx)
+//        }
         updateUI()
-        GlobalSettings.changeBlur(false)
-        GlobalSettings.changeColor(true)
         setColors()
         NotificationCenter.default.addObserver(self, selector: #selector(updateUI), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
         timer.fire()
@@ -600,20 +598,24 @@ extension EightNowPlayingVC {       //Kolory i UI
     }
     
     func blur() {
-        titleLabel.textColor = UIColor.white.withAlphaComponent(0.5)
-        detailLabel.textColor = UIColor.white.withAlphaComponent(0.3)
+        titleLabel.textColor = UIColor.white.withAlphaComponent(0.7)
+        detailLabel.textColor = UIColor.white.withAlphaComponent(0.5)
         playbackBtn.tintColor = .white
         nextBtn.tintColor = .white
         prevBtn.tintColor = .white
         shufBtn.tintColor = .clear
         repBtn.tintColor = .clear
-        elapsedLabel.textColor = UIColor.white.withAlphaComponent(0.3)
-        remainingLabel.textColor = UIColor.white.withAlphaComponent(0.3)
+        elapsedLabel.textColor = UIColor.white.withAlphaComponent(0.5)
+        remainingLabel.textColor = UIColor.white.withAlphaComponent(0.5)
         let track = #imageLiteral(resourceName: "track")
-        timeSlider.setMinimumTrackImage(track.tintPictogram(with: UIColor.white.withAlphaComponent(0.5)), for: .normal)
-        timeSlider.setMaximumTrackImage(track.tintPictogram(with: UIColor.white.withAlphaComponent(0.2)), for: .normal)
-        timeSlider.setThumbImage(#imageLiteral(resourceName: "thumb"), for: .normal)
-        timeSlider.tintColor = UIColor.white.withAlphaComponent(0.3)
+        timeSlider.setMinimumTrackImage(track.tintPictogram(with: UIColor.white.withAlphaComponent(0.6)), for: .normal)
+        timeSlider.setMaximumTrackImage(track.tintPictogram(with: UIColor.white.withAlphaComponent(0.3)), for: .normal)
+        if GlobalSettings.round {
+            let size = CGSize(width: 20, height: 20)
+            timeSlider.setThumbImage(#imageLiteral(resourceName: "volumeThumb").imageScaled(toFit: size).tintPictogram(with: .white), for: .normal)
+        }else{
+            timeSlider.setThumbImage(#imageLiteral(resourceName: "thumb2").tintPictogram(with: .white), for: .normal)
+        }
         minVolImg.tintColor = UIColor.white.withAlphaComponent(0.3)
         maxVolImg.tintColor = UIColor.white.withAlphaComponent(0.3)
         upperBar.backgroundColor = .clear
