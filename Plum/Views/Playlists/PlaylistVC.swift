@@ -40,9 +40,11 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidLoad()
         tabBarController?.delegate = self
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
+        receivedList = musicQuery.shared.playlistForID(playlist: receivedID)
         upperBar.title = receivedList.name
         setTable()
         configureSearchController()
+        view.bringSubview(toFront: tableIndexView)
         tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
     }
     
@@ -389,6 +391,7 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchView.addSubview(searchController.searchBar)
         let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
         NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
+        heightInset = (navigationController?.navigationBar.frame.height)! + searchController.searchBar.frame.height
         heightInset = 120
         let bottomInset = 49 + GlobalSettings.bottomInset
         tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)

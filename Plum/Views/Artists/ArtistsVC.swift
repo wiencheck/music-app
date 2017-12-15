@@ -32,7 +32,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var searchView: BlurView!
     var pickedID: MPMediaEntityPersistentID!
     var result = [String:[Artist]]()
-    var artists = [Artist]()
+    var artists: [Artist]!
     var gesture: UILongPressGestureRecognizer!
     var headers: [UIView]!
     var heightInset: CGFloat!
@@ -64,6 +64,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
             view.bringSubview(toFront: tableIndexView)
         }
         setHeaders()
+        print("Artists loaded")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -417,7 +418,13 @@ extension ArtistsVC{    //Other functions
     }
     
     func setupDict() {
-        artists = musicQuery.shared.artists
+        result = [String: [Artist]]()
+        indexes = [String]()
+        if musicQuery.shared.arraysSet {
+            artists = musicQuery.shared.artists
+        }else{
+            artists = musicQuery.shared.allArtists()
+        }
         let articles = ["The","A","An"]
         var anyNumber = false
         var anySpecial = false
@@ -535,6 +542,7 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchView.addSubview(searchController.searchBar)
         let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
         NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
+        heightInset = (navigationController?.navigationBar.frame.height)! + searchController.searchBar.frame.height
         heightInset = 120
         let bottomInset = 49 + GlobalSettings.bottomInset
         automaticallyAdjustsScrollViewInsets = false

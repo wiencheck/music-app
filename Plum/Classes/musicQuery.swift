@@ -23,16 +23,18 @@ class musicQuery{
     var albums: [AlbumB]!
     var playlists: [Playlist]!
     var spotlightProgress: Float = 0
+    var arraysSet = false
     
     init(){
         mainQuery = MPMediaQuery()
     }
     
     func setArrays(){
-        songs = allSongs()
-        artists = allArtists()
-        albums = allAlbums()
-        playlists = allPlaylists()
+        self.songs = self.allSongs()
+        self.artists = self.allArtists()
+        self.albums = self.allAlbums()
+        self.playlists = self.allPlaylists()
+        arraysSet = true
     }
     
     func allSongs() -> [MPMediaItem]{
@@ -121,16 +123,50 @@ class musicQuery{
     }
     
     func allPlaylists() -> [Playlist] {
-        detailQuery = MPMediaQuery.songs()
-        detailQuery.groupingType = .playlist
-        var playlists = [Playlist]()
-        for collection in detailQuery.collections!{
-            playlists.append(Playlist(collection: collection))
+        let query = MPMediaQuery.songs()
+        query.groupingType = .playlist
+        var lists = [Playlist]()
+        for list in query.collections! {
+            if let l = list as? MPMediaPlaylist {
+                lists.append(Playlist(collection: l))
+//                let id = l.persistentID
+//                let parent = l.value(forProperty: "parentPersistentID")
+//                let name = l.name
+//                let folder = l.value(forProperty: "isFolder")
+//                print("Name: \(name), folder: \(folder), id: \(id), parent: \(parent)")
+            }
         }
-        return playlists
+        return lists
     }
     
-    func playlistsIncluding(artist: MPMediaEntityPersistentID) -> [Playlist]{
+//    func playlistsV() -> [Playlist] {
+//        detailQuery = MPMediaQuery.songs()
+//        detailQuery.groupingType = .playlist
+//        var lists = [Playlist]()
+//        for coll in detailQuery.collections! {
+//            if coll.value(forProperty: "isFolder") as! Bool {
+//                lists.append(Playlist(collection: coll))
+//            }else if coll.value(forProperty: "parentPersistentID") as? UInt64 == 0 {
+//                lists.append(Playlist(collection: coll))
+//            }
+//        }
+//        return lists
+//    }
+    
+    func playlistsForParent(_ id: MPMediaEntityPersistentID) -> [Playlist] {
+        detailQuery = MPMediaQuery.playlists()
+        let predicate = MPMediaPropertyPredicate(value: id, forProperty: "parentPersistentID", comparisonType: .equalTo)
+        detailQuery.addFilterPredicate(predicate)
+        var lists = [Playlist]()
+        for coll in detailQuery.collections! {
+            if let list = coll as? MPMediaPlaylist {
+                lists.append(Playlist(collection: list))
+            }
+        }
+        return lists
+    }
+    
+    /*func playlistsIncluding(artist: MPMediaEntityPersistentID) -> [Playlist]{
         detailQuery = MPMediaQuery.songs()
         detailQuery.groupingType = .playlist
         var playlists = [Playlist]()
@@ -144,13 +180,13 @@ class musicQuery{
             }
         }
         return playlists
-    }
+    }*/
     
     func playlistForID(playlist: MPMediaEntityPersistentID) -> Playlist {
         detailQuery = MPMediaQuery.playlists()
         let predicate = MPMediaPropertyPredicate(value: playlist, forProperty: MPMediaPlaylistPropertyPersistentID, comparisonType: .equalTo)
         detailQuery.addFilterPredicate(predicate)
-        let list = Playlist(collection: detailQuery.collections![0])
+        let list = Playlist(collection: detailQuery.collections![0] as! MPMediaPlaylist)
         return list
     }
     
@@ -168,7 +204,7 @@ class musicQuery{
     
     func addToSpotlight(){
         print("Indeksowanie rozpoczete...")
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        self.networkIndicator(true)
         let items = allSongs()
         let lists = allPlaylists()
         var searchableItems = [CSSearchableItem]()
@@ -210,9 +246,17 @@ class musicQuery{
                     print("Search item successfully indexed!")
                 }
             }
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            self.networkIndicator(false)
         })
         print("Indeksowanie zakonczone!")
+    }
+    
+    func networkIndicator(_ enabled: Bool) {
+        if enabled {
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        }else{
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+        }
     }
     
     func removeAllFromSpotlight(){

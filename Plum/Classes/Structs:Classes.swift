@@ -121,8 +121,11 @@ import MediaPlayer
     let songsIn: Int
     let image: UIImage
     private var images: [UIImage]!
+    var isFolder: Bool
+    var isChild: Bool
+    var parentID: UInt64
     
-    init(collection: MPMediaItemCollection){
+    init(collection: MPMediaPlaylist){
         items = collection.items
         ID = collection.persistentID
         if let n = collection.value(forProperty: MPMediaPlaylistPropertyName) as? String{
@@ -143,6 +146,35 @@ import MediaPlayer
             }
         }
         image = combineImages(images: images)
+        parentID = 0
+        if let n = collection.value(forProperty: "parentPersistentID") as? NSNumber {
+            parentID = n.uint64Value
+        }
+        isFolder = collection.value(forProperty: "isFolder") as! Bool
+        if parentID != 0 {
+            isChild = true
+        }else{
+            isChild = false
+        }
+        print("name: \(name)\nfolder: \(isFolder)\nchild: \(isChild)\nparent: \(parentID)\nid: \(ID)\n\n")
+    }
+}
+
+class PlaylistFolder {
+    let name: String
+    let ID: MPMediaEntityPersistentID
+    let listsIn: Int
+    let songsIn: Int
+    
+    init(folder: MPMediaItemCollection) {
+        if let n = folder.value(forProperty: MPMediaPlaylistPropertyName) as? String {
+            name = n
+        }else{
+            name = " - "
+        }
+        ID = folder.persistentID
+        listsIn = 0
+        songsIn = folder.items.count
     }
 }
 

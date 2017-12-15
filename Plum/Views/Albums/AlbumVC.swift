@@ -115,15 +115,7 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableCell(withIdentifier: "infoCell") as! AlbumInfoCell
         header.setup(album: album, play: true)
-        let imv = UIImageView(frame: header.frame)
-        imv.contentMode = .scaleToFill
-        imv.image = #imageLiteral(resourceName: "background_se")
-        header.backgroundView = imv
-        let v = UIView()
-        v.addSubview(header)
-        v.layer.borderWidth = 0.5
-        v.layer.borderColor = tableView.separatorColor?.cgColor
-        return v
+        return header.contentView
     }
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

@@ -402,9 +402,15 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     }
     
     func loadArrays(){
-        songs = musicQuery.shared.songs
-        artists = musicQuery.shared.artists
-        albums = musicQuery.shared.albums
+        if musicQuery.shared.arraysSet {
+            songs = musicQuery.shared.songs
+            artists = musicQuery.shared.artists
+            albums = musicQuery.shared.albums
+        }else{
+            songs = musicQuery.shared.allSongs()
+            artists = musicQuery.shared.allArtists()
+            albums = musicQuery.shared.allAlbums()
+        }
         shouldCompactSongs = true
         shouldCompactAlbums = true
         shouldCompactArtists = true

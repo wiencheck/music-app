@@ -39,10 +39,17 @@ class ArtistCell: UITableViewCell {
     }
     
     func setup(list: Playlist) {
-        let songsCount = list.songsIn
-        artistLabel.text = list.name
-        detailLabel.text = "\(songsCount) songs"
-        artistImage.image = list.image
+        if list.isFolder {
+            //let songsCount = musicQuery.shared.playlistsForParent(list.ID).count
+            artistLabel.text = list.name
+            detailLabel.text = "Folder"
+            artistImage.image = #imageLiteral(resourceName: "folder")
+        }else{
+            let songsCount = list.songsIn
+            artistLabel.text = list.name
+            detailLabel.text = "\(songsCount) songs"
+            artistImage.image = list.image
+        }
     }
 
 }

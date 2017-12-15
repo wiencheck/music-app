@@ -63,6 +63,7 @@ class AlbumsVC: UIViewController {
             view.bringSubview(toFront: tableIndexView)
         }
         setHeaders()
+        print("Albums loaded")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -434,6 +435,7 @@ extension AlbumsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchView.addSubview(searchController.searchBar)
         let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
         NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
+        heightInset = (navigationController?.navigationBar.frame.height)! + searchView.frame.height
         heightInset = 120
         let bottomInset = 49 + GlobalSettings.bottomInset
         automaticallyAdjustsScrollViewInsets = false
@@ -583,7 +585,13 @@ extension AlbumsVC: UICollectionViewDelegateFlowLayout {
 extension AlbumsVC {
     
     func setupDict() {
-        albums = musicQuery.shared.albums
+        result = [String: [AlbumB]]()
+        indexes = [String]()
+        if musicQuery.shared.arraysSet {
+            albums = musicQuery.shared.albums
+        }else{
+            albums = musicQuery.shared.allAlbums()
+        }
         let articles = ["The","A","An"]
         var anyNumber = false
         var anySpecial = false

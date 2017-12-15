@@ -43,6 +43,7 @@ class ArtistSongs: UIViewController {
         tabBarController?.delegate = self
         sort = GlobalSettings.artistSort
         setup()
+        
 //        tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0)
 //        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0)
     }
@@ -371,15 +372,15 @@ extension ArtistSongs {
                 songsByAlbums.append(contentsOf: album.items)
                 let header = tableView.dequeueReusableCell(withIdentifier: "infoCell") as! AlbumInfoCell
                 header.setup(album: album, play: false)
-                let imv = UIImageView(frame: header.frame)
-                imv.contentMode = .scaleToFill
-                imv.image = #imageLiteral(resourceName: "background_se")
-                header.backgroundView = imv
-                let v = UIView()
-                v.addSubview(header)
-                v.layer.borderWidth = 0.5
-                v.layer.borderColor = tableView.separatorColor?.cgColor
-                headers.append(v)
+//                let imv = UIImageView(frame: header.frame)
+//                imv.contentMode = .scaleToFill
+//                imv.image = #imageLiteral(resourceName: "background_se")
+//                header.backgroundView = imv
+//                let v = UIView()
+//                v.addSubview(header)
+//                v.layer.borderWidth = 0.5
+//                v.layer.borderColor = tableView.separatorColor?.cgColor
+                headers.append(header.contentView)
             }
             songs = songsByAlbums
             upperBar.title = songsByAlbums[0].albumArtist

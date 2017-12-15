@@ -5,7 +5,6 @@
 //  Created by Adam Wienconek on 17.10.2017.
 //  Copyright © 2017 Adam Wienconek. All rights reserved.
 //
-
 import UIKit
 
 public var popupPresented = false
@@ -19,7 +18,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     var nextBtn: UIBarButtonItem!
     var elapsed: Float!
     var duration: Float!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //_ = viewControllers?.first
@@ -27,7 +26,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         self.tabBar.tintColor = GlobalSettings.tint.color
         moreNavigationController.navigationBar.tintColor = GlobalSettings.tint.color
         moreNavigationController.topViewController?.navigationItem.backBarButtonItem?.title = "Kurwa"
-        //moreNavigationController.topViewController?.view 
+        //moreNavigationController.topViewController?.view
         //self.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color], for: UIControlState.normal)
         //self.tabBar.unselectedItemTintColor = UIColor.gray
         delegate = self
@@ -35,27 +34,23 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         nextBtn = UIBarButtonItem(barButtonSystemItem: .fastForward, target: self, action: #selector(nextBtnPressed))
         setPopup()
         emptyPopup()
-        //loadAllViews()
-        /*if let firstNav = self.viewControllers?.first as? UINavigationController{
-            if let first = firstNav.viewControllers.first as? SearchVC{
-                self.selectedIndex = 1
-            }else{
-                self.selectedIndex = 0
-            }
-        }*/
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        if let count = UserDefaults.standard.value(forKey: "count") as? Int {
-            if count != (musicQuery.shared.songs.count) {
+        DispatchQueue.global(qos: .background).async {
+            musicQuery.shared.setArrays()
+            self.loadAllViews()
+            if let count = UserDefaults.standard.value(forKey: "count") as? Int {
+                if count != (musicQuery.shared.songs.count) {
+                    musicQuery.shared.removeAllFromSpotlight()
+                    musicQuery.shared.addToSpotlight()
+                    UserDefaults.standard.set(musicQuery.shared.songs.count, forKey: "count")
+                }
+            }else{
+                UserDefaults.standard.set(musicQuery.shared.songs.count, forKey: "count")
                 musicQuery.shared.removeAllFromSpotlight()
                 musicQuery.shared.addToSpotlight()
-                UserDefaults.standard.set(musicQuery.shared.songs.count, forKey: "count")
             }
-        }else{
-            UserDefaults.standard.set(musicQuery.shared.songs.count, forKey: "count")
-            musicQuery.shared.removeAllFromSpotlight()
-            musicQuery.shared.addToSpotlight()
         }
     }
     
@@ -91,7 +86,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         popupPresented = true
         nowPlaying.popupItem.title = "Welcome to Plum"
         nowPlaying.popupItem.subtitle = "Pick some music to play"
-        self.popupBar.isUserInteractionEnabled = false
+        self.popupBar.isUserInteractionEnabled = true
     }
     
     @objc func updatePopup() {
@@ -118,7 +113,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
                 self.popupBar.isUserInteractionEnabled = true
             }
         }
-
+        
     }
     
     @objc func playback() {
@@ -130,15 +125,15 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         player.play()
     }
     
-//    func loadAllViews() {
-//        self.viewControllers?.forEach {
-//            if let navController = $0 as? UINavigationController {
-//                let _ = navController.topViewController?.view
-//            } else {
-//                let _ = $0.view.description
-//            }
-//        }
-//    }
+        func loadAllViews() {
+            self.viewControllers?.forEach {
+                if let navController = $0 as? UINavigationController {
+                    let _ = navController.topViewController?.view
+                } else {
+                    let _ = $0.view.description
+                }
+            }
+        }
     
     func setPopup() {
         if GlobalSettings.popupStyle == .classic {
@@ -158,15 +153,14 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         }
     }
     
-
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }

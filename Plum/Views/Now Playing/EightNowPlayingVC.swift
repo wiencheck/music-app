@@ -114,11 +114,11 @@ class EightNowPlayingVC: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        if(player.wasLoaded == false){
-            nextBtn.isEnabled = false
-            prevBtn.isEnabled = false
-            playbackBtn.isEnabled = false
-        }
+//        if(player.wasLoaded == false){
+//            nextBtn.isEnabled = false
+//            prevBtn.isEnabled = false
+//            playbackBtn.isEnabled = false
+//        }
         updateUI()
     }
     
@@ -565,7 +565,7 @@ extension EightNowPlayingVC {       //Kolory i UI
         ratingButton.tintColor = colors.detailColor
         lyricsButton.tintColor = colors.detailColor
         if(colors.backgroundColor.isDarkColor){
-            if viewActive { UIApplication.shared.statusBarStyle = .lightContent }
+            //if viewActive { UIApplication.shared.statusBarStyle = .lightContent }
             lightBar = true
             prevBtn.tintColor = .white
             playbackBtn.tintColor = .white
@@ -574,7 +574,7 @@ extension EightNowPlayingVC {       //Kolory i UI
             maxVolImg.tintColor = .white
             lightStyle = false
         }else{
-            if viewActive { UIApplication.shared.statusBarStyle = .default }
+            //if viewActive { UIApplication.shared.statusBarStyle = .default }
             lightBar = false
             prevBtn.tintColor = colors.primaryColor
             playbackBtn.tintColor = colors.primaryColor

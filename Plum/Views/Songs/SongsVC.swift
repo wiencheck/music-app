@@ -53,6 +53,8 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         indexView.tableView = self.tableView
         indexView.setup()
         configureSearchController()
+        view.bringSubview(toFront: indexView)
+        print("Songs loaded")
     }
     
     deinit {
@@ -388,7 +390,11 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
 extension SongsVC {
     
     func setupDict() {
-        songs = musicQuery.shared.songs
+        if musicQuery.shared.arraysSet {
+            songs = musicQuery.shared.songs
+        }else{
+            songs = musicQuery.shared.allSongs()
+        }
         let articles = ["The","A","An"]
         var anyNumber = false
         var anySpecial = false
@@ -498,18 +504,22 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchController.searchBar.contentMode = .scaleAspectFill
         searchController.hidesNavigationBarDuringPresentation = false;
         searchController.searchBar.searchBarStyle = .minimal
-        searchView.frame.size.height = searchController.searchBar.frame.size.height
+        searchView.frame.size.height = searchController.searchBar.frame.height
         searchView.addSubview(searchController.searchBar)
         let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
         NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
-        heightInset = 64 + searchView.frame.height
+        heightInset = (navigationController?.navigationBar.frame.height)! + searchController.searchBar.frame.height
+        heightInset = 120
         let bottomInset = 49 + GlobalSettings.bottomInset
+        if #available(iOS 11.0, *) {
+            heightInset = 120
+            tableView.contentInsetAdjustmentBehavior = .never
+        }else{
+            heightInset = 120
+        }
         tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
         tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
         automaticallyAdjustsScrollViewInsets = false
-        if #available(iOS 11.0, *) {
-            tableView.contentInsetAdjustmentBehavior = .never
-        }
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

@@ -109,11 +109,4 @@ class AlbumInfoCell: UITableViewCell {
         Plum.shared.play()
     }
     
-    func background() {
-        let imv = UIImageView(frame: self.frame)
-        imv.image = #imageLiteral(resourceName: "background_se")
-        imv.contentMode = .scaleAspectFill
-        addSubview(imv)
-    }
-    
 }

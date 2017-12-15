@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //s = UIStoryboard.init(name: "Main", bundle: Bundle.main)
         //authorized()
         self.query = musicQuery.shared
-        self.query.setArrays()
+        //self.query.setArrays()
         //self.remote = RemoteCommandManager()
         GlobalSettings.remote = RemoteCommandManager()
         defaults = UserDefaults.standard

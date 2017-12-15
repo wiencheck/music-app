@@ -23,6 +23,7 @@ class PlaylistsVC: UIViewController {
     var indexes = [String]()
     var result = [String: [Playlist]]()
     var playlists: [Playlist]!
+    var all: [Playlist]!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableIndexView: TableIndexView!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -37,13 +38,16 @@ class PlaylistsVC: UIViewController {
     var headers: [UIView]!
     var heightInset: CGFloat!
     var controllerSet = false
+    var pickedName: String!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBarController?.delegate = self
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         grid = GlobalSettings.playlistsGrid
+        setup()
         setupDict()
+        setHeaders()
         if !controllerSet {
             configureSearchController()
             controllerSet = true
@@ -63,7 +67,7 @@ class PlaylistsVC: UIViewController {
             view.bringSubview(toFront: searchView)
             view.bringSubview(toFront: tableIndexView)
         }
-        setHeaders()
+        print("Playlists loaded")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -121,7 +125,10 @@ class PlaylistsVC: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let d = segue.destination as? PlaylistVC{
-            d.receivedList = self.pickedList
+            d.receivedID = self.pickedID
+        }else if let d = segue.destination as? FolderVC {
+            d.barTitle = self.pickedName
+            d.receivedID = self.pickedID
         }
     }
     
@@ -183,12 +190,24 @@ extension PlaylistsVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if shouldShowResults {
-            pickedList = filteredPlaylists[indexPath.row]
+            let item = filteredPlaylists[indexPath.row]
+            pickedID = item.ID
+            if item.isFolder {
+                pickedName = item.name
+                performSegue(withIdentifier: "folder", sender: nil)
+            }else{
+                performSegue(withIdentifier: "playlist", sender: nil)
+            }
         }else{
             let item = result[indexes[indexPath.section]]?[indexPath.row]
-            pickedList = item
+            pickedID = item?.ID
+            if (item?.isFolder)! {
+                pickedName = item?.name
+                performSegue(withIdentifier: "folder", sender: nil)
+            }else{
+                performSegue(withIdentifier: "playlist", sender: nil)
+            }
         }
-        performSegue(withIdentifier: "playlist", sender: nil)
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -289,12 +308,24 @@ extension PlaylistsVC: UICollectionViewDelegate, UICollectionViewDataSource, Col
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if shouldShowResults {
-            pickedList = filteredPlaylists[indexPath.row]
+            let item = filteredPlaylists[indexPath.row]
+            pickedID = item.ID
+            if item.isFolder {
+                pickedName = item.name
+                performSegue(withIdentifier: "folder", sender: nil)
+            }else{
+                performSegue(withIdentifier: "playlist", sender: nil)
+            }
         }else{
             let item = result[indexes[indexPath.section]]?[indexPath.row]
-            pickedList = item
+            pickedID = item?.ID
+            if (item?.isFolder)! {
+                pickedName = item?.name
+                performSegue(withIdentifier: "folder", sender: nil)
+            }else{
+                performSegue(withIdentifier: "playlist", sender: nil)
+            }
         }
-        performSegue(withIdentifier: "playlist", sender: nil)
     }
     
     func cell(_ cell: CollectionActionCell, action: CollectionAction) {
@@ -392,7 +423,8 @@ extension PlaylistsVC {
     }
     
     func setupDict() {
-        playlists = musicQuery.shared.playlists
+        result = [String: [Playlist]]()
+        indexes = [String]()
         let articles = ["The","A","An"]
         var anyNumber = false
         var anySpecial = false
@@ -444,6 +476,7 @@ extension PlaylistsVC {
         for index in indexes {
             playlists.append(contentsOf: result[index]!)
         }
+        if playlists.isEmpty { indexes.append(" ") }
     }
     
     func playNow() {
@@ -505,6 +538,7 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchView.addSubview(searchController.searchBar)
         let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
         NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
+        heightInset = (navigationController?.navigationBar.frame.height)! + searchController.searchBar.frame.height
         heightInset = 120
         let bottomInset = 49 + GlobalSettings.bottomInset
         automaticallyAdjustsScrollViewInsets = false
@@ -588,7 +622,8 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         let finalCompoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: songsMatchPredicates)
         
         
-        filteredPlaylists = (playlists.filter { finalCompoundPredicate.evaluate(with: $0) })
+        filteredPlaylists = (musicQuery.shared.playlists.filter { finalCompoundPredicate.evaluate(with: $0) })
+        searchCellTypes = Array<Int>(repeating: 0, count: filteredPlaylists.count)
         if grid {
             collectionView.reloadData()
         }else{
@@ -647,6 +682,23 @@ extension PlaylistsVC: UICollectionViewDelegateFlowLayout {
             label.textColor = .black
             v.addSubview(label)
             headers.append(v)
+        }
+    }
+    
+    func setup() {
+        playlists = [Playlist]()
+        if musicQuery.shared.arraysSet {
+            for list in musicQuery.shared.playlists {
+                if list.isFolder || !list.isChild {
+                    playlists.append(list)
+                }
+            }
+        }else{
+            for list in musicQuery.shared.allPlaylists() {
+                if list.isFolder || !list.isChild {
+                    playlists.append(list)
+                }
+            }
         }
     }
     
