@@ -476,7 +476,7 @@ extension QueueVC: MPMediaPickerControllerDelegate {    //Media Picker
         mediaPicker.delegate = self
         mediaPicker.allowsPickingMultipleItems = true
         mediaPicker.showsCloudItems = false
-        mediaPicker.prompt = "Please Pick a Song"
+        mediaPicker.prompt = "Add new songs to queue"
         mediaPicker.modalTransitionStyle = .coverVertical
         present(mediaPicker, animated: true, completion: nil)
     }

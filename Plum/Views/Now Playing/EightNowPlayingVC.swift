@@ -45,6 +45,7 @@ class EightNowPlayingVC: UIViewController {
     @IBOutlet weak var lyricsButton: UIButton!
     @IBOutlet weak var ratingButton: UIButton!
     @IBOutlet weak var BackgroundView: UIView!
+    var shoudlChangeBar = false
     var viewActive = false
     
     let modesButtons = [#imageLiteral(resourceName: "lyricsbutton"), #imageLiteral(resourceName: "nolyricsbutton"), #imageLiteral(resourceName: "ratingsbutton"), #imageLiteral(resourceName: "noratingsbutton")]
@@ -98,17 +99,19 @@ class EightNowPlayingVC: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        viewActive = false
+        //viewActive = false
+        shoudlChangeBar = false
         UIApplication.shared.statusBarStyle = .default
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        shoudlChangeBar = true
         if lightStyle {
             UIApplication.shared.statusBarStyle = .default
         }else{
             UIApplication.shared.statusBarStyle = .lightContent
         }
-        viewActive = true
+        //viewActive = true
         instruct("tap", message: "Tap on title to show rating and toggles for lyrics and rating mode", completion: nil)
         self.instruct("swipe", message: "Tap twice on artwork or press Up Next button to show next playing songs", completion: nil)
     }
@@ -532,6 +535,8 @@ extension EightNowPlayingVC {       //Kolory i UI
         ratingButton.layer.cornerRadius = 3
         lyricsButton.layer.cornerRadius = 3
         upNextBtn.setImage(#imageLiteral(resourceName: "Ulist_icon"), for: .normal)
+        upNextBtn.imageView?.contentMode = .scaleAspectFit
+        
     }
     
     func setColors() {
@@ -554,6 +559,7 @@ extension EightNowPlayingVC {       //Kolory i UI
     func color(){
         colors = image.getColors(scaleDownSize: CGSize(width: scale, height: scale))
         BackgroundView.backgroundColor = colors.backgroundColor
+        view.backgroundColor = colors.backgroundColor
         self.titleLabel.textColor = colors.primaryColor
         self.detailLabel.textColor = colors.detailColor
         self.elapsedLabel.textColor = colors.detailColor
@@ -567,7 +573,7 @@ extension EightNowPlayingVC {       //Kolory i UI
         ratingButton.tintColor = colors.detailColor
         lyricsButton.tintColor = colors.detailColor
         if(colors.backgroundColor.isDarkColor){
-            //if viewActive { UIApplication.shared.statusBarStyle = .lightContent }
+            if shoudlChangeBar { UIApplication.shared.statusBarStyle = .lightContent }
             lightBar = true
             prevBtn.tintColor = .white
             playbackBtn.tintColor = .white
@@ -576,7 +582,7 @@ extension EightNowPlayingVC {       //Kolory i UI
             maxVolImg.tintColor = .white
             lightStyle = false
         }else{
-            //if viewActive { UIApplication.shared.statusBarStyle = .default }
+            if shoudlChangeBar { UIApplication.shared.statusBarStyle = .default }
             lightBar = false
             prevBtn.tintColor = colors.primaryColor
             playbackBtn.tintColor = colors.primaryColor
@@ -776,7 +782,7 @@ extension EightNowPlayingVC: MPMediaPickerControllerDelegate {
         mediaPicker.delegate = self
         mediaPicker.allowsPickingMultipleItems = true
         mediaPicker.showsCloudItems = false
-        mediaPicker.prompt = "Please Pick a Song"
+        mediaPicker.prompt = "Add new songs to queue"
         mediaPicker.modalTransitionStyle = .coverVertical
         present(mediaPicker, animated: true, completion: nil)
     }

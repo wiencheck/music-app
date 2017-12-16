@@ -16,6 +16,7 @@ class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
     @IBOutlet weak var shufBtn: UIButton!
     @IBOutlet weak var albumLabel: UILabel!
     @IBOutlet weak var artistLabel: UILabel!
+    @IBOutlet weak var yearLabel: UILabel!
     
     var cellTypes = [Int]()
     var songs = [MPMediaItem]()
@@ -53,6 +54,13 @@ class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
         let item = songs[0]
         artistLabel.text = item.albumArtist ?? "Unknown artist"
         albumLabel.text = item.albumTitle ?? "Unknown album"
+        if let date = item.releaseDate {
+            let calendar = Calendar.current
+            let year = calendar.component(.year, from: date)
+            yearLabel.text = "\(year)"
+        }else{
+            yearLabel.text = ""
+        }
     }
     
     func doneBtnPressed(){
