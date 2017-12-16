@@ -23,7 +23,6 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
     var cellTypes = [Int]()
     var absoluteIndex = 0
     var activeIndexRow = 0
-    @IBOutlet weak var upperBar: UINavigationItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +42,7 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
         for i in 0..<songs.count{
             songs[i].index = i
         }
-        upperBar.title = album.artist
+        title = album.artist
     }
     
     override func viewWillAppear(_ animated: Bool) {

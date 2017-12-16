@@ -1268,11 +1268,7 @@
                         </connections>
                     </tableView>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Title" id="Jr6-xk-5aV">
-                        <barButtonItem key="backBarButtonItem" title="  " id="WWt-ls-wMq"/>
-                    </navigationItem>
                     <connections>
-                        <outlet property="upperBar" destination="Jr6-xk-5aV" id="H5W-F3-fQ0"/>
                         <segue destination="O5b-aR-CcB" kind="show" identifier="album" id="nEJ-vd-Vba"/>
                         <segue destination="Mzv-cc-r99" kind="show" identifier="allSongs" id="Ie0-KC-HP2"/>
                     </connections>
@@ -2118,12 +2114,6 @@
                             <outlet property="delegate" destination="O5b-aR-CcB" id="g05-c5-lRx"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Title" id="w0R-qv-uCC">
-                        <barButtonItem key="backBarButtonItem" title="  " id="u9b-hh-84G"/>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="upperBar" destination="w0R-qv-uCC" id="cuE-7v-MYX"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qDA-K4-kqz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -4401,14 +4391,10 @@
                             <constraint firstItem="gt2-Y2-JRI" firstAttribute="top" secondItem="sVI-N1-xDZ" secondAttribute="top" constant="64" id="xBJ-J8-5cm"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Title" id="uMd-5u-tgY">
-                        <barButtonItem key="backBarButtonItem" title=" " id="VZH-wd-dLR"/>
-                    </navigationItem>
                     <connections>
                         <outlet property="searchView" destination="gt2-Y2-JRI" id="e1j-7c-QmL"/>
                         <outlet property="tableIndexView" destination="CJs-jX-kTO" id="WUL-XZ-lb0"/>
                         <outlet property="tableView" destination="wgF-PA-wdY" id="Ycl-t2-7rE"/>
-                        <outlet property="upperBar" destination="uMd-5u-tgY" id="fL5-em-JsS"/>
                         <segue destination="O5b-aR-CcB" kind="show" identifier="album" id="LCY-3G-uHV"/>
                         <segue destination="Y0c-SE-ysp" kind="show" identifier="artist" id="uGV-fK-q4R"/>
                     </connections>
@@ -4484,11 +4470,7 @@
                             <outlet property="delegate" destination="Jfv-DI-HnR" id="5Sz-42-mCr"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Folder" id="4sj-VA-eqh">
-                        <barButtonItem key="backBarButtonItem" title=" " id="8bZ-v9-Mgc"/>
-                    </navigationItem>
                     <connections>
-                        <outlet property="upperBar" destination="4sj-VA-eqh" id="XBh-5K-FO8"/>
                         <segue destination="3n3-F7-SRO" kind="show" identifier="playlist" id="FjZ-8D-iAU"/>
                     </connections>
                 </tableViewController>
@@ -4560,7 +4542,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="FjZ-8D-iAU"/>
-        <segue reference="LCY-3G-uHV"/>
-        <segue reference="7Xq-dO-ndj"/>
+        <segue reference="nEJ-vd-Vba"/>
+        <segue reference="uGV-fK-q4R"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -29,7 +29,6 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
     var playlist: Playlist!
     var receivedList: Playlist!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var upperBar: UINavigationItem!
     @IBOutlet weak var tableIndexView: TableIndexView!
     @IBOutlet weak var searchView: BlurView!
     var filteredSongs = [MPMediaItem]()
@@ -41,7 +40,7 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
         tabBarController?.delegate = self
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         receivedList = musicQuery.shared.playlistForID(playlist: receivedID)
-        upperBar.title = receivedList.name
+        title = receivedList.name
         setTable()
         configureSearchController()
         view.bringSubview(toFront: tableIndexView)

@@ -18,7 +18,6 @@ class AlbumsByVC: UITableViewController {
     var pickedID: MPMediaEntityPersistentID!
     let defaults = UserDefaults.standard
 
-    @IBOutlet weak var upperBar: UINavigationItem!
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBarController?.delegate = self
@@ -29,7 +28,7 @@ class AlbumsByVC: UITableViewController {
         als = musicQuery.shared.artistAlbumsID(artist: receivedID)
         als = als.sorted(by:{ ($0.name! > $1.name!)})
         als.reverse()
-        upperBar.title = als.first?.artist
+        title = als.first?.artist
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {

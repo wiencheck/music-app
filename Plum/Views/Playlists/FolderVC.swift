@@ -17,11 +17,10 @@ class FolderVC: UITableViewController {
     var playlists: [Playlist]!
     var pickedList: Playlist!
     var barTitle: String!
-    @IBOutlet weak var upperBar: UINavigationItem!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        upperBar.title = barTitle
+        title = barTitle
         print(receivedID)
         setup()
         tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))

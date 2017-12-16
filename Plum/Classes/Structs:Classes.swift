@@ -241,8 +241,10 @@ fileprivate func combineImages(images: [UIImage]) -> UIImage{
         images[8].draw(in: CGRect(x: 600, y: 600, width: 300, height: 300))
         result = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-    default:
+    case 1:
         result = images[0]
+    default:
+        result = #imageLiteral(resourceName: "no_music")
     }
     return result
 }

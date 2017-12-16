@@ -321,8 +321,11 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     
     func play(){
         shouldPlay = true
-        if shouldResumeAfterInterruption == false{
+        if !shouldResumeAfterInterruption{
             shouldResumeAfterInterruption = true
+        }
+        if state == .interrupted {
+            state = .playing
         }
         if !session{
             initSession()
@@ -349,6 +352,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
             print("player is currently not playing")
         }
         postPlaybackStateChanged()
+        state = .paused
     }
     
     func togglePlayPause(){
@@ -458,10 +462,6 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         if shouldPlay { play() }
     }
     
-    func audioSessionInterrupted(_ notification: Notification){
-        print("Interruption received: \(notification)")
-    }
-    
     func initAV(){
         let url = URL(fileURLWithPath: Bundle.main.path(forResource: "change", ofType: "mp3")!)
         do{
@@ -470,31 +470,6 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
             playerFlag = 1
         }catch let error{
             print("chuj nie udalo sie zainicjalizowac \(error)")
-        }
-    }
-    
-    @objc func handleAudioSessionInterruption(notification: Notification){
-        guard let userInfo = notification.userInfo, let typeInt = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt, let interruptionType = AVAudioSessionInterruptionType(rawValue: typeInt) else {return}
-        
-        switch interruptionType{
-        case .began:
-            state = .interrupted
-        case .ended:
-            do{
-                try AVAudioSession.sharedInstance().setActive(true)
-                if (!shouldResumeAfterInterruption){
-                    shouldResumeAfterInterruption = true
-                    return
-                }
-                guard let optionsInt = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else {return}
-                let interruptionOptions = AVAudioSessionInterruptionOptions(rawValue: optionsInt)
-                if (interruptionOptions.contains(.shouldResume)){
-                    player.play()
-                }
-            }
-            catch{
-                print("Blad przy powrocie z przerwania")
-            }
         }
     }
     
@@ -633,17 +608,6 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
             self.playFromShufQueue(index: 0, new: new)
         }else{
             self.playFromDefQueue(index: index, new: new)
-        }
-    }
-    
-    @objc dynamic private func audioRouteChangeListener(notification:NSNotification) {
-        let audioRouteChangeReason = notification.userInfo![AVAudioSessionRouteChangeReasonKey] as! UInt
-        switch audioRouteChangeReason {
-        case AVAudioSessionRouteChangeReason.newDeviceAvailable.rawValue:
-            print("headphone plugged in")
-        default:
-            print("Route changed")
-            pause()
         }
     }
     
@@ -914,4 +878,59 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     func removeTodayObservers() {
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "ratingToday"), object: nil)
     }
+}
+
+extension Plum {    //Interruptions
+    
+    func audioSessionInterrupted(_ notification: Notification){
+        print("Interruption received: \(notification)")
+    }
+    
+    @objc dynamic private func audioRouteChangeListener(notification:NSNotification) {
+        let audioRouteChangeReason = notification.userInfo![AVAudioSessionRouteChangeReasonKey] as! UInt
+        switch audioRouteChangeReason {
+        case AVAudioSessionRouteChangeReason.newDeviceAvailable.rawValue:
+            print("headphone plugged in")
+        case AVAudioSessionRouteChangeReason.oldDeviceUnavailable.rawValue:
+            print("Route changed")
+            pause()
+        case AVAudioSessionRouteChangeReason.routeConfigurationChange.rawValue:
+            print("Route configuration Change")
+        case AVAudioSessionRouteChangeReason.categoryChange.rawValue:
+            print("Category change")
+        case AVAudioSessionRouteChangeReason.noSuitableRouteForCategory.rawValue:
+            print("No suitable Route For Category")
+        default:
+            print("Default reason")
+        }
+    }
+    
+    @objc func handleAudioSessionInterruption(notification: Notification){
+        guard let userInfo = notification.userInfo, let typeInt = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt, let interruptionType = AVAudioSessionInterruptionType(rawValue: typeInt) else {return}
+        
+        switch interruptionType{
+        case .began:
+            state = .interrupted
+            pause()
+        case .ended:
+            do{
+                try AVAudioSession.sharedInstance().setActive(true)
+//                if (shouldResumeAfterInterruption){
+//                    play()
+//                }
+                guard let optionsInt = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else {return}
+                let interruptionOptions = AVAudioSessionInterruptionOptions(rawValue: optionsInt)
+                if (interruptionOptions.contains(.shouldResume)){
+                    print("Should resume")
+                    play()
+                }else{
+                    print("Will not resume")
+                }
+            }
+            catch{
+                print("Blad przy powrocie z przerwania")
+            }
+        }
+    }
+    
 }
