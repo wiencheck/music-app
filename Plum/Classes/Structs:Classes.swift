@@ -138,6 +138,14 @@ import MediaPlayer
         var albums = [String]()
         if images.count < 4{
             for song in items{
+//                if let al = song.albumTitle {
+//                    if !albums.contains(al) {
+//                        if let art = song.artwork?.image(at: CGSize(width: 200, height: 200)) {
+//                            albums.append(al)
+//                            images.append(art)
+//                        }
+//                    }
+//                }
                 if !albums.contains(song.albumTitle!) && song.artwork != nil{
                     albums.append(song.albumTitle!)
                     images.append((song.artwork?.image(at: CGSize(width: 200, height: 200)))!)

@@ -97,7 +97,8 @@ class ArtistUpVCB: UIViewController {
                     if result["\(secondStr.first!)"] != nil {
                         result["\(secondStr.first!)"]?.append(song)
                     }else{
-                        result.updateValue([song], forKey: "\(secondStr.first!)")
+                        result["\(secondStr.first)"] = []
+                        result["\(secondStr.first)"]?.append(song)
                         indexes.append("\(secondStr.uppercased().first!)")
                     }
                 }
@@ -107,20 +108,23 @@ class ArtistUpVCB: UIViewController {
                     if result["#"] != nil {
                         result["#"]?.append(song)
                     }else{
-                        result.updateValue([song], forKey: "#")
+                        result["#"] = []
+                        result["#"]?.append(song)
                         anyNumber = true
                     }
                 }else if prefix.firstSpecial() {
                     if result["?"] != nil {
                         result["?"]?.append(song)
                     }else{
-                        result.updateValue([song], forKey: "?")
+                        result["?"] = []
+                        result["?"]?.append(song)
                         anySpecial = true
                     }
                 }else if result[prefix] != nil {
                     result[prefix]?.append(song)
                 }else{
-                    result.updateValue([song], forKey: prefix)
+                    result[prefix] = []
+                    result[prefix]?.append(song)
                     indexes.append(prefix)
                 }
             }

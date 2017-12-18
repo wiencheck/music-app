@@ -55,6 +55,8 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         configureSearchController()
         view.bringSubview(toFront: indexView)
         print("Songs loaded")
+        print("Nav:\((navigationController?.navigationBar.frame.height)!)")
+        print("search:\(searchView.frame.height)")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -114,6 +116,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             let album = UITableViewRowAction(style: .default, title: "Album", handler: {_,path in
                 let item = self.filteredSongs[path.row]
                 self.pickedAlbumID = item.albumPersistentID
+                tableView.setEditing(false, animated: true)
                 self.albumBtn()
             })
             album.backgroundColor = .albumGreen
@@ -121,6 +124,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
                 let item = self.filteredSongs[path.row]
                 self.pickedArtistID = item.albumArtistPersistentID
                 self.pickedAlbumID = item.albumPersistentID
+                tableView.setEditing(false, animated: true)
                 self.artistBtn()
             })
             artist.backgroundColor = .artistBlue
@@ -129,6 +133,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             let album = UITableViewRowAction(style: .default, title: "Album", handler: {_,path in
                 let item = self.result[self.indexes[path.section]]?[path.row]
                 self.pickedAlbumID = item?.albumPersistentID
+                tableView.setEditing(false, animated: true)
                 self.albumBtn()
             })
             album.backgroundColor = .albumGreen
@@ -136,6 +141,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
                 let item = self.result[self.indexes[path.section]]?[path.row]
                 self.pickedArtistID = item?.albumArtistPersistentID
                 self.pickedAlbumID = item?.albumPersistentID
+                tableView.setEditing(false, animated: true)
                 self.artistBtn()
             })
             artist.backgroundColor = .artistBlue
@@ -390,7 +396,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
 extension SongsVC {
     
     func setupDict() {
-        if musicQuery.shared.arraysSet {
+        if musicQuery.shared.songsSet {
             songs = musicQuery.shared.songs
         }else{
             songs = musicQuery.shared.allSongs()
@@ -404,10 +410,11 @@ extension SongsVC {
             if articles.contains(article) {
                 if objStr.components(separatedBy: " ").count > 1 {
                     let secondStr = objStr.components(separatedBy: " ")[1]
-                    if result["\(secondStr.first!)"] != nil {
-                        result["\(secondStr.first!)"]?.append(song)
+                    if result["\(secondStr.uppercased().first!)"] != nil {
+                        result["\(secondStr.uppercased().first!)"]?.append(song)
                     }else{
-                        result.updateValue([song], forKey: "\(secondStr.first!)")
+                        result["\(secondStr.uppercased().first!)"] = []
+                        result["\(secondStr.uppercased().first!)"]?.append(song)
                         indexes.append("\(secondStr.uppercased().first!)")
                     }
                 }
@@ -417,20 +424,23 @@ extension SongsVC {
                     if result["#"] != nil {
                         result["#"]?.append(song)
                     }else{
-                        result.updateValue([song], forKey: "#")
+                        result["#"] = []
+                        result["#"]?.append(song)
                         anyNumber = true
                     }
                 }else if prefix.firstSpecial() {
                     if result["?"] != nil {
                         result["?"]?.append(song)
                     }else{
-                        result.updateValue([song], forKey: "?")
+                        result["?"] = []
+                        result["?"]?.append(song)
                         anySpecial = true
                     }
                 }else if result[prefix] != nil {
                     result[prefix]?.append(song)
                 }else{
-                    result.updateValue([song], forKey: prefix)
+                    result[prefix] = []
+                    result[prefix]?.append(song)
                     indexes.append(prefix)
                 }
             }
@@ -504,22 +514,20 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchController.searchBar.contentMode = .scaleAspectFill
         searchController.hidesNavigationBarDuringPresentation = false;
         searchController.searchBar.searchBarStyle = .minimal
+        searchController.searchBar.isTranslucent = true
         searchView.frame.size.height = searchController.searchBar.frame.height
         searchView.addSubview(searchController.searchBar)
         let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
         NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
-        heightInset = (navigationController?.navigationBar.frame.height)! + searchController.searchBar.frame.height
-        heightInset = 120
+        //heightInset = (navigationController?.navigationBar.frame.height)! + 58
+        heightInset = 112
+        automaticallyAdjustsScrollViewInsets = false
         let bottomInset = 49 + GlobalSettings.bottomInset
         if #available(iOS 11.0, *) {
-            heightInset = 120
             tableView.contentInsetAdjustmentBehavior = .never
-        }else{
-            heightInset = 120
         }
         tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
         tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
-        automaticallyAdjustsScrollViewInsets = false
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -591,13 +599,12 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
             let v = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 27))
             v.backgroundColor = .clear
             let label = UILabel(frame: CGRect(x: 12, y: 3, width: v.frame.width, height: 21))
-            let imv = UIImageView(frame: v.frame)
-            imv.contentMode = .scaleToFill
-            imv.image = #imageLiteral(resourceName: "headerBack")
-            v.addSubview(imv)
+            let tool = UIToolbar(frame: v.frame)
+            v.addSubview(tool)
             label.text = index
             label.textColor = .black
             v.addSubview(label)
+            v.bringSubview(toFront: label)
             headers.append(v)
         }
     }

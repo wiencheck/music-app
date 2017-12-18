@@ -122,20 +122,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func letGo() {
         _ = GlobalSettings()
-        self.query = musicQuery.shared
         GlobalSettings.remote = RemoteCommandManager()
         defaults = UserDefaults.standard
         setInitialSettings()
         readSettings()
         setCustomizing()
         setInitialInstructions()
+//        DispatchQueue.global(qos: .background).async {
+//            musicQuery.shared.setArrays()
+//        }
+
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         let initialViewController = storyboard.instantiateViewController(withIdentifier: "plumTab")
         
         self.window?.rootViewController = initialViewController
         let tabBar = self.window?.rootViewController as! PlumTabBarController
-        
+        //let tabBar = self.window?.rootViewController as! UITabBarController
         var junkViewControllers = [UIViewController]()
         // returns 0 if not set, hence having the tabItem's tags starting at 1.
         var tagNumber : Int = defaults.integer(forKey: "0")

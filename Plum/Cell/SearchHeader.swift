@@ -26,12 +26,15 @@ class SearchHeader: UITableViewCell {
         }else{
             moreBtn.isHidden = true
         }
-        let imv = UIImageView(image: #imageLiteral(resourceName: "headerBack"))
-        imv.contentMode = .scaleAspectFill
-        backgroundView = imv
+        let tool = UIToolbar(frame: self.frame)
+        tool.barStyle = .default
+        contentView.addSubview(tool)
+        contentView.bringSubview(toFront: label)
+        contentView.bringSubview(toFront: moreBtn)
     }
     
     @objc func buttonPressed(_ sender: UIButton){
+        moreBtn.isHidden = true
         callback?(self)
     }
 

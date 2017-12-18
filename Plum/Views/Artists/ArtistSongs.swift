@@ -449,7 +449,8 @@ extension ArtistSongs {
                     if result["\(secondStr.first!)"] != nil {
                         result["\(secondStr.first!)"]?.append(song)
                     }else{
-                        result.updateValue([song], forKey: "\(secondStr.first!)")
+                        result["\(secondStr.uppercased().first)"] = []
+                        result["\(secondStr.uppercased().first)"]?.append(song)
                         indexes.append("\(secondStr.uppercased().first!)")
                     }
                 }
@@ -459,20 +460,23 @@ extension ArtistSongs {
                     if result["#"] != nil {
                         result["#"]?.append(song)
                     }else{
-                        result.updateValue([song], forKey: "#")
+                        result["#"] = []
+                        result["#"]?.append(song)
                         anyNumber = true
                     }
                 }else if prefix.firstSpecial() {
                     if result["?"] != nil {
                         result["?"]?.append(song)
                     }else{
-                        result.updateValue([song], forKey: "?")
+                        result["?"] = []
+                        result["?"]?.append(song)
                         anySpecial = true
                     }
                 }else if result[prefix] != nil {
                     result[prefix]?.append(song)
                 }else{
-                    result.updateValue([song], forKey: prefix)
+                    result[prefix] = []
+                    result[prefix]?.append(song)
                     indexes.append(prefix)
                 }
             }
@@ -499,11 +503,13 @@ extension ArtistSongs {
             var word = (name?.components(separatedBy: " ").first)!
             if result[word] != nil {
                 word += " "
-                result.updateValue(album.items, forKey: word)
+                result[word] = []
+                result[word]?.append(contentsOf: album.items)
                 indexes.append(word)
                 //result[word]?.append(contentsOf: album.items)
             }else{
-                result.updateValue(album.items, forKey: word)
+                result[word] = []
+                result[word]?.append(contentsOf: album.items)
                 indexes.append(word)
             }
         }

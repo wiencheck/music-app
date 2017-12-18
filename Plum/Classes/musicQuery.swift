@@ -24,17 +24,32 @@ class musicQuery{
     var playlists: [Playlist]!
     var spotlightProgress: Float = 0
     var arraysSet = false
+    var artistsSet = false
+    var albumsSet = false
+    var playlistsSet = false
+    var songsSet = false
     
     init(){
         mainQuery = MPMediaQuery()
     }
     
     func setArrays(){
-        self.songs = self.allSongs()
-        self.artists = self.allArtists()
-        self.albums = self.allAlbums()
-        self.playlists = self.allPlaylists()
-        arraysSet = true
+        if !songsSet{
+            self.songs = self.allSongs()
+            songsSet = true
+        }
+        if !artistsSet{
+            self.artists = self.allArtists()
+            artistsSet = true
+        }
+        if !albumsSet{
+            self.albums = self.allAlbums()
+            albumsSet = true
+        }
+        if !playlistsSet{
+            self.playlists = self.allPlaylists()
+            playlistsSet = true
+        }
     }
     
     func allSongs() -> [MPMediaItem]{
@@ -136,6 +151,7 @@ class musicQuery{
 //                print("Name: \(name), folder: \(folder), id: \(id), parent: \(parent)")
             }
         }
+        playlists = lists
         return lists
     }
     

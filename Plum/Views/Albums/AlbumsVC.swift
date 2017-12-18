@@ -49,6 +49,7 @@ class AlbumsVC: UIViewController {
         }
         if grid{
             setCollection()
+            //correctCollectionSections()
             self.collectionIndexView.indexes = self.indexes
             self.collectionIndexView.collectionView = self.collectionView
             self.collectionIndexView.setup()
@@ -95,6 +96,7 @@ class AlbumsVC: UIViewController {
         self.view.addSubview(collectionView)
         let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout
         layout?.sectionHeadersPinToVisibleBounds = true
+        layout?.headerReferenceSize = CGSize(width: view.frame.width, height: 27)
         gesture = UILongPressGestureRecognizer(target: self, action: #selector(longPress(_:)))
         gesture.minimumPressDuration = 0.2
         gesture.numberOfTouchesRequired = 1
@@ -436,15 +438,16 @@ extension AlbumsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchController.searchBar.tintColor = GlobalSettings.tint.color
         self.searchController.hidesNavigationBarDuringPresentation = false;
         searchController.searchBar.searchBarStyle = .minimal
+        searchController.searchBar.isTranslucent = true
         searchView.addSubview(searchController.searchBar)
         let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
         NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
-        heightInset = (navigationController?.navigationBar.frame.height)! + searchView.frame.height
-        heightInset = 120
+        //heightInset = (navigationController?.navigationBar.frame.height)! + searchView.frame.height
+        heightInset = 112
         let bottomInset = 49 + GlobalSettings.bottomInset
         automaticallyAdjustsScrollViewInsets = false
-        collectionView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
-        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        collectionView.contentInset = UIEdgeInsetsMake(heightInset+6, 0, bottomInset, 0)
+        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset+6, 0, bottomInset, 0)
         tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
         tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
         if #available(iOS 11.0, *) {
@@ -573,13 +576,12 @@ extension AlbumsVC: UICollectionViewDelegateFlowLayout {
             let v = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 27))
             v.backgroundColor = .clear
             let label = UILabel(frame: CGRect(x: 12, y: 3, width: v.frame.width, height: 21))
-            let imv = UIImageView(frame: v.frame)
-            imv.contentMode = .scaleToFill
-            imv.image = #imageLiteral(resourceName: "headerBack")
-            v.addSubview(imv)
+            let tool = UIToolbar(frame: v.frame)
+            v.addSubview(tool)
             label.text = index
             label.textColor = .black
             v.addSubview(label)
+            v.bringSubview(toFront: label)
             headers.append(v)
         }
     }
@@ -591,7 +593,7 @@ extension AlbumsVC {
     func setupDict() {
         result = [String: [AlbumB]]()
         indexes = [String]()
-        if musicQuery.shared.arraysSet {
+        if musicQuery.shared.albumsSet {
             albums = musicQuery.shared.albums
         }else{
             albums = musicQuery.shared.allAlbums()
@@ -606,9 +608,10 @@ extension AlbumsVC {
                 if objStr.components(separatedBy: " ").count > 1 {
                     let secondStr = objStr.components(separatedBy: " ")[1]
                     if result["\(secondStr.first!)"] != nil {
-                        result["\(secondStr.first!)"]?.append(song)
+                        result["\(secondStr.uppercased().first!)"]?.append(song)
                     }else{
-                        result.updateValue([song], forKey: "\(secondStr.first!)")
+                        result["\(secondStr.uppercased().first!)"] = []
+                        result["\(secondStr.uppercased().first!)"]?.append(song)
                         indexes.append("\(secondStr.uppercased().first!)")
                     }
                 }
@@ -618,20 +621,23 @@ extension AlbumsVC {
                     if result["#"] != nil {
                         result["#"]?.append(song)
                     }else{
-                        result.updateValue([song], forKey: "#")
+                        result["#"] = []
+                        result["#"]?.append(song)
                         anyNumber = true
                     }
                 }else if prefix.firstSpecial() {
                     if result["?"] != nil {
                         result["?"]?.append(song)
                     }else{
-                        result.updateValue([song], forKey: "?")
+                        result["?"] = []
+                        result["?"]?.append(song)
                         anySpecial = true
                     }
                 }else if result[prefix] != nil {
                     result[prefix]?.append(song)
                 }else{
-                    result.updateValue([song], forKey: prefix)
+                    result[prefix] = []
+                    result[prefix]?.append(song)
                     indexes.append(prefix)
                 }
             }

@@ -25,10 +25,8 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         self.tabBar.tintColor = GlobalSettings.tint.color
         moreNavigationController.navigationBar.tintColor = GlobalSettings.tint.color
-        moreNavigationController.topViewController?.navigationItem.backBarButtonItem?.title = "Kurwa"
-        //moreNavigationController.topViewController?.view
-        //self.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color], for: UIControlState.normal)
-        //self.tabBar.unselectedItemTintColor = UIColor.gray
+        self.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color], for: UIControlState.normal)
+        self.tabBar.unselectedItemTintColor = UIColor.gray
         delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(updatePopup), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
         nextBtn = UIBarButtonItem(barButtonSystemItem: .fastForward, target: self, action: #selector(nextBtnPressed))
@@ -36,7 +34,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         emptyPopup()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewDidLayoutSubviews() {
         if !UserDefaults.standard.bool(forKey: "greeting") {
             let a = UIAlertController(title: "Hey there!", message: "Welcome to Plum, I hope you will find using it an enjoyable experience :)", preferredStyle: .alert)
             a.addAction(UIAlertAction(title: "Let's go!", style: .default, handler: {_ in
@@ -50,7 +48,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
             musicQuery.shared.setArrays()
             self.loadAllViews()
             if let count = UserDefaults.standard.value(forKey: "count") as? Int {
-                if count != (musicQuery.shared.songs.count) {
+                if count != (musicQuery.shared.allSongs().count) {
                     musicQuery.shared.removeAllFromSpotlight()
                     musicQuery.shared.addToSpotlight()
                     self.instruct("spotlight", message: "Spinning wheel in status bar means that Plum is indexing all your songs and playlists so you will be able to search them from Spotlight\nIf you can't see any results be sure to enable Plum in Spotlight settings and launch indexing from the settings", completion: nil)
@@ -97,7 +95,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         popupPresented = true
         nowPlaying.popupItem.title = "Welcome to Plum"
         nowPlaying.popupItem.subtitle = "Pick some music to play"
-        self.popupBar.isUserInteractionEnabled = true
+        self.popupBar.isUserInteractionEnabled = false
     }
     
     @objc func updatePopup() {
