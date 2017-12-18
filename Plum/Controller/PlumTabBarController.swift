@@ -46,18 +46,18 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         }
         DispatchQueue.global(qos: .background).async {
             musicQuery.shared.setArrays()
-            self.loadAllViews()
+            //self.loadAllViews()
             if let count = UserDefaults.standard.value(forKey: "count") as? Int {
                 if count != (musicQuery.shared.allSongs().count) {
                     musicQuery.shared.removeAllFromSpotlight()
                     musicQuery.shared.addToSpotlight()
-                    self.instruct("spotlight", message: "Spinning wheel in status bar means that Plum is indexing all your songs and playlists so you will be able to search them from Spotlight\nIf you can't see any results be sure to enable Plum in Spotlight settings and launch indexing from the settings", completion: nil)
-                    UserDefaults.standard.set(musicQuery.shared.songs.count, forKey: "count")
+                    /*self.instruct("spotlight", message: "Spinning wheel in status bar means that Plum is indexing all your songs and playlists so you will be able to search them from Spotlight\nIf you can't see any results be sure to enable Plum in Spotlight settings and launch indexing from the settings", completion: nil)
+                    UserDefaults.standard.set(musicQuery.shared.songs.count, forKey: "count")*/
                 }
             }else{
                 UserDefaults.standard.set(musicQuery.shared.songs.count, forKey: "count")
                 musicQuery.shared.removeAllFromSpotlight()
-                self.instruct("spotlight", message: "Spinning wheel in status bar means that Plum is indexing all your songs and playlists so you will be able to search them from Spotlight\nIf you can't see any results be sure to enable Plum in Spotlight settings and launch indexing from the settings", completion: nil)
+                /*self.instruct("spotlight", message: "Spinning wheel in status bar means that Plum is indexing all your songs and playlists so you will be able to search them from Spotlight\nIf you can't see any results be sure to enable Plum in Spotlight settings and launch indexing from the settings", completion: nil)*/
                 musicQuery.shared.addToSpotlight()
             }
         }

@@ -396,7 +396,8 @@ extension ArtistSongs {
         }
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
+        //tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
+        tableView.backgroundColor = UIColor(red: 0.968627450980392, green: 0.968627450980392, blue: 0.968627450980392, alpha: 1.0)
         //tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
         //tableView.scrollIndicatorInsets = tableView.contentInset
     }

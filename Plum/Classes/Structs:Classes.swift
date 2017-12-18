@@ -114,6 +114,17 @@ import MediaPlayer
     }
 }
 
+struct PlaylistKey {
+    static let items = "items"
+    static let id = "id"
+    static let name = "name"
+    static let songsIn = "songsIn"
+    static let image = "image"
+    static let isFolder = "isFolder"
+    static let isChild = "isChild"
+    static let parentID = "parentID"
+}
+
 @objcMembers class Playlist: NSObject {
     let items: [MPMediaItem]
     let ID: MPMediaEntityPersistentID

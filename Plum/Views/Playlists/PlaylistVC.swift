@@ -56,8 +56,8 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func setTable(){
-        self.tableView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
-        self.tableView.backgroundColor = .clear
+        //self.tableView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
+        self.tableView.backgroundColor = UIColor(red: 0.968627450980392, green: 0.968627450980392, blue: 0.968627450980392, alpha: 1.0)
         tableView.delegate = self
         tableView.dataSource = self
         songs = receivedList.items
@@ -398,6 +398,14 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
         automaticallyAdjustsScrollViewInsets = false
         if #available(iOS 11.0, *) {
             tableView.contentInsetAdjustmentBehavior = .never
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y < -160 {
+            searchController.searchBar.becomeFirstResponder()
+        }else if scrollView.contentOffset.y > -80 {
+            searchController.searchBar.resignFirstResponder()
         }
     }
     

@@ -81,14 +81,16 @@ class AlbumsVC: UIViewController {
     func setTable(){
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
+        //tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
+        tableView.backgroundColor = UIColor(red: 0.968627450980392, green: 0.968627450980392, blue: 0.968627450980392, alpha: 1.0)
         self.view.addSubview(tableView)
     }
     
     func setCollection(){
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
-        collectionView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
+        //collectionView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
+        collectionView.backgroundColor = UIColor(red: 0.968627450980392, green: 0.968627450980392, blue: 0.968627450980392, alpha: 1.0)
         //correctCollectionSections()
         for index in indexes {
             cellTypes.append(Array<Int>(repeating: 0, count: (result[index]?.count)!))
@@ -446,8 +448,8 @@ extension AlbumsVC: UISearchBarDelegate, UISearchResultsUpdating {
         heightInset = 112
         let bottomInset = 49 + GlobalSettings.bottomInset
         automaticallyAdjustsScrollViewInsets = false
-        collectionView.contentInset = UIEdgeInsetsMake(heightInset+6, 0, bottomInset, 0)
-        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset+6, 0, bottomInset, 0)
+        collectionView.contentInset = UIEdgeInsetsMake(heightInset+4, 0, bottomInset, 0)
+        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset+4, 0, bottomInset, 0)
         tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
         tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
         if #available(iOS 11.0, *) {
@@ -456,13 +458,22 @@ extension AlbumsVC: UISearchBarDelegate, UISearchResultsUpdating {
         }
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y < -160 {
+            searchController.searchBar.becomeFirstResponder()
+        }else if scrollView.contentOffset.y > -80 {
+            searchController.searchBar.resignFirstResponder()
+        }
+    }
+    
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         if grid {
             collectionView.reloadData()
+            collectionIndexView.isHidden = true
         }else{
             tableView.reloadData()
+            tableIndexView.isHidden = true
         }
-        tableIndexView.isHidden = true
     }
     
     
@@ -470,24 +481,16 @@ extension AlbumsVC: UISearchBarDelegate, UISearchResultsUpdating {
         shouldShowResults = false
         if grid {
             collectionView.reloadData()
+            collectionIndexView.isHidden = false
         }else{
             tableView.reloadData()
+            tableIndexView.isHidden = false
         }
-        tableIndexView.isHidden = false
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if !shouldShowResults {
-            shouldShowResults = true
-            if grid {
-                collectionView.reloadData()
-            }else{
-                tableView.reloadData()
-            }
-        }
         searchController.searchBar.resignFirstResponder()
     }
-    
     
     func updateSearchResults(for searchController: UISearchController) {
         let searchString = searchController.searchBar.text
@@ -495,13 +498,10 @@ extension AlbumsVC: UISearchBarDelegate, UISearchResultsUpdating {
             shouldShowResults = false
         }else{
             shouldShowResults = true
-            self.tableView.separatorStyle = .singleLine
             if grid {
-                collectionIndexView.isHidden = true
-                //collectionView.contentOffset.y = 0
+                collectionView.contentOffset.y = -heightInset
             }else{
-                tableIndexView.isHidden = true
-                //tableView.contentOffset.y = 0
+                tableView.contentOffset.y = -heightInset
             }
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces
@@ -531,15 +531,6 @@ extension AlbumsVC: UISearchBarDelegate, UISearchResultsUpdating {
         }else{
             tableView.reloadData()
         }
-//        if filteredAlbums.count != 0 {
-//            if grid {
-//                collectionView.reloadData()
-//                collectionView.contentOffset.y = heightInset
-//            }else{
-//                tableView.reloadData()
-//                tableView.contentOffset.y = heightInset
-//            }
-//        }
     }
     
 }

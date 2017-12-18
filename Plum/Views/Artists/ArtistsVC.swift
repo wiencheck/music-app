@@ -50,6 +50,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         }
         if grid{
             setCollection()
+            //correctCollectionSections()
             self.collectionIndexView.indexes = self.indexes
             self.collectionIndexView.collectionView = self.collectionView
             self.collectionIndexView.setup()
@@ -84,7 +85,8 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func setTable(){
-        self.tableView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
+        //self.tableView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
+        tableView.backgroundColor = UIColor(red: 0.968627450980392, green: 0.968627450980392, blue: 0.968627450980392, alpha: 1.0)
         tableView.delegate = self
         tableView.dataSource = self
         view.addSubview(tableView)
@@ -98,7 +100,8 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func setCollection(){
-        self.collectionView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
+        //self.collectionView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
+        collectionView.backgroundColor = UIColor(red: 0.968627450980392, green: 0.968627450980392, blue: 0.968627450980392, alpha: 1.0)
         collectionView.delegate = self
         collectionView.dataSource = self
         self.view.addSubview(collectionView)
@@ -486,7 +489,7 @@ extension ArtistsVC{    //Other functions
         }
     }
     
-    func correctCollectionSections(){
+    /*func correctCollectionSections(){
         var tmp: Artist!
         for sect in 0 ..< indexes.count - 1{
             if (result[indexes[sect]]?.count)! % 3 == 1{
@@ -504,6 +507,31 @@ extension ArtistsVC{    //Other functions
                 result[indexes[sect]]?.removeLast()
             }
         }
+    }*/
+    
+    func correctCollectionSections(){
+        for sect in 0 ..< indexes.count{
+            if (result[indexes[sect]]?.count)! % 2 == 1{
+                if sect != indexes.count-1{
+                    let tmp = result[indexes[sect]]?.last
+                    result[indexes[sect + 1]]?.insert(tmp!, at: 0)
+                    result[indexes[sect]]?.removeLast()
+                }
+            }
+        }
+        var to = [String]()
+        for index in indexes {
+            if (result[index]?.isEmpty)! {
+                result.removeValue(forKey: index)
+            }
+        }
+        for index in indexes {
+            if let r = result[index] {
+                collectionTypes.append(Array<Int>(repeating: 0, count: r.count))
+                to.append(index)
+            }
+        }
+        self.indexes = to
     }
     
     @IBAction func NPBtnPressed(_ sender: Any) {
@@ -555,8 +583,8 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         heightInset = 112
         let bottomInset = 49 + GlobalSettings.bottomInset
         automaticallyAdjustsScrollViewInsets = false
-        collectionView.contentInset = UIEdgeInsetsMake(heightInset+6, 0, bottomInset, 0)
-        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset+6, 0, bottomInset, 0)
+        collectionView.contentInset = UIEdgeInsetsMake(heightInset+4, 0, bottomInset, 0)
+        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset+4, 0, bottomInset, 0)
         tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
         tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
         if #available(iOS 11.0, *) {
@@ -565,22 +593,37 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         }
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y < -160 {
+            searchController.searchBar.becomeFirstResponder()
+        }else if scrollView.contentOffset.y > -80 {
+            searchController.searchBar.resignFirstResponder()
+        }
+    }
+    
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        tableView.reloadData()
+        if grid {
+            collectionIndexView.isHidden = true
+            collectionView.reloadData()
+        }else{
+            tableIndexView.isHidden = true
+            tableView.reloadData()
+        }
     }
     
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         shouldShowResults = false
-        tableView.reloadData()
-        tableIndexView.isHidden = false
+        if grid {
+            collectionIndexView.isHidden = false
+            collectionView.reloadData()
+        }else{
+            tableIndexView.isHidden = false
+            tableView.reloadData()
+        }
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if !shouldShowResults {
-            shouldShowResults = true
-            tableView.reloadData()
-        }
         searchController.searchBar.resignFirstResponder()
     }
     
@@ -592,9 +635,11 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
             tableIndexView.isHidden = false
         }else{
             shouldShowResults = true
-            self.tableView.separatorStyle = .singleLine
-            //tableView.contentOffset.y = 0
-            tableIndexView.isHidden = true
+            if grid {
+                collectionView.contentOffset.y = -heightInset
+            }else{
+                tableView.contentOffset.y = -heightInset
+            }
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces
         let strippedString = searchString!.trimmingCharacters(in: whitespaceCharacterSet)

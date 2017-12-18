@@ -47,7 +47,7 @@ class PlaylistsVC: UIViewController {
         grid = GlobalSettings.playlistsGrid
         setup()
         setupDict()
-        setHeaders()
+        //setHeaders()
         if !controllerSet {
             configureSearchController()
             controllerSet = true
@@ -92,8 +92,8 @@ class PlaylistsVC: UIViewController {
     
     
     func setTable(){
-        self.tableView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
-        self.tableView.backgroundColor = .clear
+        //self.tableView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
+        self.tableView.backgroundColor = UIColor(red: 0.968627450980392, green: 0.968627450980392, blue: 0.968627450980392, alpha: 1.0)
         tableView.delegate = self
         tableView.dataSource = self
         self.view.addSubview(tableView)
@@ -104,15 +104,12 @@ class PlaylistsVC: UIViewController {
     }
     
     func setCollection(){
-        self.collectionView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
-        self.collectionView.backgroundColor = .clear
+        //self.collectionView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
+        self.collectionView.backgroundColor = UIColor(red: 0.968627450980392, green: 0.968627450980392, blue: 0.968627450980392, alpha: 1.0)
         collectionView.delegate = self
         collectionView.dataSource = self
         self.view.addSubview(collectionView)
-        //correctCollectionSections()
-        for index in indexes {
-            cellTypes.append(Array<Int>(repeating: 0, count: (result[index]?.count)!))
-        }
+        correctCollectionSections()
         collectionIndexView.indexes = self.indexes
         collectionIndexView.collectionView = self.collectionView
         collectionIndexView.setup()
@@ -156,7 +153,7 @@ extension PlaylistsVC: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    /*func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if shouldShowResults {
             return 0
         }else{
@@ -170,7 +167,7 @@ extension PlaylistsVC: UITableViewDelegate, UITableViewDataSource {
         }else{
             return headers[section]
         }
-    }
+    }*/
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if shouldShowResults {
@@ -420,6 +417,19 @@ extension PlaylistsVC {
                 }
             }
         }
+        var to = [String]()
+        for index in indexes {
+            if (result[index]?.isEmpty)! {
+                result.removeValue(forKey: index)
+            }
+        }
+        for index in indexes {
+            if let r = result[index] {
+                cellTypes.append(Array<Int>(repeating: 0, count: r.count))
+                to.append(index)
+            }
+        }
+        self.indexes = to
     }
     
     func setupDict() {
@@ -547,13 +557,21 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         heightInset = 112
         let bottomInset = 49 + GlobalSettings.bottomInset
         automaticallyAdjustsScrollViewInsets = false
-        collectionView.contentInset = UIEdgeInsetsMake(heightInset+6, 0, bottomInset, 0)
-        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset+6, 0, bottomInset, 0)
+        collectionView.contentInset = UIEdgeInsetsMake(heightInset+14, 0, bottomInset, 0)
+        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset+14, 0, bottomInset, 0)
         tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
         tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
         if #available(iOS 11.0, *) {
             tableView.contentInsetAdjustmentBehavior = .never
             collectionView.contentInsetAdjustmentBehavior = .never
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y < -174 {
+            searchController.searchBar.becomeFirstResponder()
+        }else if scrollView.contentOffset.y > -940 {
+            searchController.searchBar.resignFirstResponder()
         }
     }
     
@@ -571,23 +589,15 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         shouldShowResults = false
         if grid {
-            collectionIndexView.isHidden = false
             collectionView.reloadData()
+            collectionIndexView.isHidden = false
         }else{
-            tableIndexView.isHidden = false
             tableView.reloadData()
+            tableIndexView.isHidden = false
         }
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if !shouldShowResults {
-            shouldShowResults = true
-        }
-        if grid {
-            collectionView.reloadData()
-        }else{
-            tableView.reloadData()
-        }
         searchController.searchBar.resignFirstResponder()
     }
     
@@ -598,13 +608,10 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
             shouldShowResults = false
         }else{
             shouldShowResults = true
-            self.tableView.separatorStyle = .singleLine
             if grid {
-                collectionIndexView.isHidden = true
-                //collectionView.contentOffset.y = 0
+                collectionView.contentOffset.y = -heightInset
             }else{
-                tableIndexView.isHidden = true
-                //tableView.contentOffset.y = 0
+                tableView.contentOffset.y = -heightInset
             }
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces

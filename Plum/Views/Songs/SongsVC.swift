@@ -48,7 +48,8 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             cellTypes.append(Array<Int>(repeating: 0, count: (result[index]?.count)!))
         }
         self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
-        tableView.backgroundView = UIImageView(image: backround)
+        //tableView.backgroundView = UIImageView(image: backround)
+        tableView.backgroundColor = UIColor(red: 0.968627450980392, green: 0.968627450980392, blue: 0.968627450980392, alpha: 1.0)
         indexView.indexes = self.indexes
         indexView.tableView = self.tableView
         indexView.setup()
@@ -166,7 +167,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         }else{
             if indexPath.section == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath)
-                cell.backgroundColor = .clear
+                cell.backgroundColor = UIColor(red: 0.968627450980392, green: 0.968627450980392, blue: 0.968627450980392, alpha: 1.0)
                 return cell
             }else{
                 if(cellTypes[indexPath.section][indexPath.row] == 0){
@@ -531,11 +532,16 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        //print(scrollView.contentOffset.y)
+        if scrollView.contentOffset.y < -160 {
+            searchController.searchBar.becomeFirstResponder()
+        }else if scrollView.contentOffset.y > -80 {
+            searchController.searchBar.resignFirstResponder()
+        }
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         tableView.reloadData()
+        indexView.isHidden = true
     }
     
     
@@ -546,10 +552,6 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if !shouldShowResults {
-            shouldShowResults = true
-            tableView.reloadData()
-        }
         searchController.searchBar.resignFirstResponder()
     }
     
@@ -558,11 +560,8 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         let searchString = searchController.searchBar.text
         if searchString == ""{
             shouldShowResults = false
-            indexView.isHidden = false
         }else{
             shouldShowResults = true
-            self.tableView.separatorStyle = .singleLine
-            indexView.isHidden = true
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces
         let strippedString = searchString!.trimmingCharacters(in: whitespaceCharacterSet)
