@@ -636,9 +636,15 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         }else{
             shouldShowResults = true
             if grid {
-                collectionView.contentOffset.y = -heightInset
+                if filteredArtists.count != 0 {
+                    collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                }
+                //collectionView.contentOffset.y = -heightInset
             }else{
-                tableView.contentOffset.y = -heightInset
+                if filteredArtists.count != 0 {
+                    tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                }
+                //tableView.contentOffset.y = -heightInset
             }
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces

@@ -437,7 +437,9 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
         }else{
             shouldShowResults = true
             tableIndexView.isHidden = true
-            //tableView.contentOffset.y = 0
+            if filteredSongs.count != 0 {
+                tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+            }
             self.tableView.separatorStyle = .singleLine
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces

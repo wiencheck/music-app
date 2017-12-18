@@ -180,9 +180,7 @@ extension PlaylistsVC: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "playlistCell", for: indexPath) as! ArtistCell
             let item = result[indexes[indexPath.section]]?[indexPath.row]
             cell.setup(list: item!)
-            if (item?.isChild)! { cell.backgroundColor = .yellow }
-            else if (item?.isFolder)! { cell.backgroundColor = .red}
-            else { cell.backgroundColor = .clear }
+            cell.backgroundColor = .clear
             return cell
         }
     }
@@ -572,7 +570,7 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y < -174 {
             searchController.searchBar.becomeFirstResponder()
-        }else if scrollView.contentOffset.y > -940 {
+        }else if scrollView.contentOffset.y > -94 {
             searchController.searchBar.resignFirstResponder()
         }
     }
@@ -611,9 +609,15 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         }else{
             shouldShowResults = true
             if grid {
-                collectionView.contentOffset.y = -heightInset
+                if filteredPlaylists.count != 0 {
+                    collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                }
+                //collectionView.contentOffset.y = -heightInset
             }else{
-                tableView.contentOffset.y = -heightInset
+                if filteredPlaylists.count != 0 {
+                    tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+                }
+                //tableView.contentOffset.y = -heightInset
             }
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces
