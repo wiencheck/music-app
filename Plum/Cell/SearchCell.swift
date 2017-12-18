@@ -34,21 +34,13 @@ class SearchCell: UITableViewCell {
     }
     
     func setup(artist: Artist) {
-        if let art = artist.artwork {
-            artwork.image = art.image(at: CGSize(width: 30, height: 30))
-        }else{
-            artwork.image = #imageLiteral(resourceName: "no_music")
-        }
+        artwork.image = artist.artwork
         title.text = artist.name
         detail.text = "\(artist.albumsIn) albums, \(artist.songsIn) songs"
     }
     
     func setup(album: AlbumB) {
-        if let art = album.artwork {
-            artwork.image = art.image(at: CGSize(width: 30, height: 30))
-        }else{
-            artwork.image = #imageLiteral(resourceName: "no_music")
-        }
+        artwork.image = album.artwork
         title.text = album.name
         detail.text = "\(album.year) - \(album.songsIn) songs"
     }

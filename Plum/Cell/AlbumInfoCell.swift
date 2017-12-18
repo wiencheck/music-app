@@ -34,7 +34,7 @@ class AlbumInfoCell: UITableViewCell {
         songs = album.items
         titleLabel.text = album.name
         yearLabel.text = album.year
-        artwork.image = album.artwork?.image(at: artwork.bounds.size) ?? #imageLiteral(resourceName: "no_music")
+        artwork.image = album.artwork
         artwork.layer.cornerRadius = 6.0
         let count = NSMutableAttributedString(string: "\(album.songsIn)")
         let countR = NSRange(location: 0, length: count.length)

@@ -9,31 +9,34 @@
 import Foundation
 import MediaPlayer
 
+struct ArtistKey {
+    static let id = "id"
+    static let name = "name"
+    static let artwork = "artwork"
+    static let albums = "albums"
+    static let songs = "songs"
+    static let cloud = "cloud"
+}
+
 @objcMembers class Artist: NSObject{
-    let collection: MPMediaItemCollection
     let ID: MPMediaEntityPersistentID!
     let name: String!
-    let artwork: MPMediaItemArtwork?
+    let artwork: UIImage
     let albumsIn: Int
     let songsIn: Int
     var isCloud: Bool
     
-    /*init(){
-        collection = MPMediaItemCollection()
-        albumsIn = Int()
-        songsIn = Int()
-        isCloud = Bool()
-        artwork = MPMediaItemArtwork(image: UIImage())
-        
-    }*/
     init(Collection: MPMediaItemCollection){
         let item = Collection.representativeItem
         self.ID = item?.albumArtistPersistentID
-        self.collection = Collection
         self.name = item?.albumArtist ?? "Unknown artist"
-        self.artwork = item?.artwork
+        if let art = item?.artwork?.image(at: CGSize(width: 200, height: 200)) {
+            artwork = art
+        }else{
+            artwork = #imageLiteral(resourceName: "no_music")
+        }
         self.songsIn = Collection.items.count
-        albumsIn = musicQuery().artistAlbumsID(artist: self.ID).count
+        albumsIn = musicQuery.shared.artistAlbumsID(artist: self.ID).count
         isCloud = true
         for song in Collection.items{
             if !song.isCloudItem{
@@ -42,52 +45,128 @@ import MediaPlayer
             }
         }
     }
+    
+    /*func encode(with aCoder: NSCoder) {
+        aCoder.encode(ID, forKey: ArtistKey.id)
+        aCoder.encode(name, forKey: ArtistKey.name)
+        aCoder.encode(artwork, forKey: ArtistKey.artwork)
+        aCoder.encode(albumsIn, forKey: ArtistKey.albums)
+        aCoder.encode(songsIn, forKey: ArtistKey.songs)
+        aCoder.encode(isCloud, forKey: ArtistKey.cloud)
+    }
+    
+    required convenience init?(coder aDecoder: NSCoder) {
+        guard let id = aDecoder.decodeObject(forKey: ArtistKey.id) as? MPMediaEntityPersistentID else {
+            return nil
+        }
+        guard let nam = aDecoder.decodeObject(forKey: ArtistKey.name) as? String else { return nil }
+        guard let art = aDecoder.decodeObject(forKey: ArtistKey.artwork) as? UIImage else { return nil }
+        let alb = aDecoder.decodeInteger(forKey: ArtistKey.albums)
+        let son = aDecoder.decodeInteger(forKey: ArtistKey.songs)
+        let cloud = aDecoder.decodeBool(forKey: ArtistKey.cloud)
+        self.init(id: id, nam: nam, art: art, alb: alb, son: son, cloud: cloud)
+    }
+    
+    init(id: MPMediaEntityPersistentID, nam: String, art: UIImage, alb: Int, son: Int, cloud: Bool) {
+        ID = id
+        name = nam
+        artwork = art
+        albumsIn = alb
+        songsIn = son
+        isCloud = cloud
+    }
+    
+    //MARK: Archiving Paths
+    
+    static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+    static let ArchiveURL = DocumentsDirectory.appendingPathComponent("artists")*/
 }
 
-/*struct Album{
-    let collection: MPMediaItemCollection
-    let ID: MPMediaEntityPersistentID!
-    let name: String!
-    let artwork: MPMediaItemArtwork?
-    let artist: String
-    let songsIn: Int
-    var year: String = "Data nieznana"
-    var discs: Int
-    init(Collection: MPMediaItemCollection){
-        let item = Collection.representativeItem
-        ID = item?.albumPersistentID
-        self.collection = Collection
-        self.name = item?.albumTitle
-        self.artwork = item?.artwork
-        self.artist = (item?.albumArtist)!
-        self.songsIn = Collection.count
-        let yearNumber: NSNumber = item!.value(forProperty: "year") as! NSNumber
-        if (yearNumber.isKind(of: NSNumber.self)) {
-            let _year = yearNumber.intValue
-            if (_year != 0) {
-                self.year = "\(_year)"
-            }
-        }
-        self.discs = item?.discCount ?? 1
-    }
+/*struct AlbumKey {
+    static let items = "items"
+    static let id = "id"
+    static let name = "name"
+    static let artwork = "artwork"
+    static let artist = "artist"
+    static let songs = "songs"
+    static let year = "year"
+    static let cloud = "cloud"
+    static let many = "many"
 }*/
 
 @objcMembers class AlbumB: NSObject{
     let items: [MPMediaItem]
     let ID: MPMediaEntityPersistentID
     let name: String?
-    let artwork: MPMediaItemArtwork?
+    let artwork: UIImage?
     let artist: String?
     let songsIn: Int
-    var year = ""
+    var year: String!
     var isCloud: Bool
     var manyArtists: Bool
+    
+    //MARK: NSCoding
+    
+    /*func encode(with aCoder: NSCoder) {
+        aCoder.encode(items, forKey: AlbumKey.items)
+        aCoder.encode(ID, forKey: AlbumKey.id)
+        aCoder.encode(name, forKey: AlbumKey.name)
+        aCoder.encode(artwork, forKey: AlbumKey.artwork)
+        aCoder.encode(artist, forKey: AlbumKey.artist)
+        aCoder.encode(songsIn, forKey: AlbumKey.songs)
+        aCoder.encode(year, forKey: AlbumKey.year)
+        aCoder.encode(isCloud, forKey: AlbumKey.cloud)
+        aCoder.encode(manyArtists, forKey: AlbumKey.many)
+    }
+    
+    required convenience init?(coder aDecoder: NSCoder) {
+        guard let itemy = aDecoder.decodeObject(forKey: AlbumKey.items) as? [MPMediaItem]
+            else {
+                return nil
+        }
+        guard let id = aDecoder.decodeObject(forKey: AlbumKey.id) as? MPMediaEntityPersistentID else {
+            return nil
+        }
+        guard let nam = aDecoder.decodeObject(forKey: AlbumKey.name) as? String else {
+            return nil
+        }
+        guard let art = aDecoder.decodeObject(forKey: AlbumKey.artwork) as? UIImage else{
+            return nil
+        }
+        let songs = aDecoder.decodeInteger(forKey: AlbumKey.songs)
+        guard let ye = aDecoder.decodeObject(forKey: AlbumKey.year) as? String else {
+            return nil
+        }
+        let cloud = aDecoder.decodeBool(forKey: AlbumKey.cloud)
+        let many = aDecoder.decodeBool(forKey: AlbumKey.many)
+        guard let arti = aDecoder.decodeObject(forKey: AlbumKey.artist) as? String else {
+            return nil
+        }
+        self.init(itemy: itemy, arti: arti, id: id, nam: nam, art: art, songs: songs, ye: ye, cloud: cloud, many: many)
+    }
+    
+    init(itemy: [MPMediaItem], arti: String, id: MPMediaEntityPersistentID, nam: String, art: UIImage, songs: Int, ye: String, cloud: Bool, many: Bool) {
+        self.items = itemy
+        self.ID = id
+        self.name = nam
+        self.artwork = art
+        self.songsIn = songs
+        self.year = ye
+        self.isCloud = cloud
+        self.manyArtists = many
+        self.artist = arti
+    }*/
+    
     init(collection: MPMediaItemCollection){
         items = collection.items
         let item = items[0]
         ID = item.albumPersistentID
         name = item.albumTitle
-        artwork = item.artwork
+        if let img = item.artwork?.image(at: CGSize(width: 200, height: 200)){
+            artwork = img
+        }else{
+            artwork = #imageLiteral(resourceName: "no_music")
+        }
         artist = item.albumArtist
         manyArtists = false
         for item in items{
@@ -112,9 +191,14 @@ import MediaPlayer
             }
         }
     }
+    
+    //MARK: Archiving Paths
+    
+    //static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+    //static let ArchiveURL = DocumentsDirectory.appendingPathComponent("albums")
 }
 
-struct PlaylistKey {
+/*struct PlaylistKey {
     static let items = "items"
     static let id = "id"
     static let name = "name"
@@ -123,7 +207,7 @@ struct PlaylistKey {
     static let isFolder = "isFolder"
     static let isChild = "isChild"
     static let parentID = "parentID"
-}
+}*/
 
 @objcMembers class Playlist: NSObject {
     let items: [MPMediaItem]
@@ -135,6 +219,60 @@ struct PlaylistKey {
     var isFolder: Bool
     var isChild: Bool
     var parentID: UInt64
+    
+    /*init(items: [MPMediaItem], id: MPMediaEntityPersistentID, name: String, songs: Int, image: UIImage?, folder: Bool, child: Bool, parent: UInt64) {
+        self.items = items
+        self.ID = id
+        self.name = name
+        self.songsIn = songs
+        if image != nil {
+            self.image = image!
+        }else{
+            self.image = #imageLiteral(resourceName: "no_music")
+        }
+        self.isFolder = folder
+        self.isChild = child
+        self.parentID = parent
+    }
+    
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(items, forKey: PlaylistKey.items)
+        aCoder.encode(ID, forKey: PlaylistKey.id)
+        aCoder.encode(name, forKey: PlaylistKey.name)
+        aCoder.encode(songsIn, forKey: PlaylistKey.songsIn)
+        aCoder.encode(image, forKey: PlaylistKey.image)
+        aCoder.encode(isFolder, forKey: PlaylistKey.isFolder)
+        aCoder.encode(isChild, forKey: PlaylistKey.isChild)
+        aCoder.encode(parentID, forKey: PlaylistKey.parentID)
+    }
+    
+    required convenience init?(coder aDecoder: NSCoder) {
+        guard let itemy = aDecoder.decodeObject(forKey: PlaylistKey.items) as? [MPMediaItem]
+            else {
+                print("Fail z items")
+                return nil
+        }
+        guard let id = aDecoder.decodeObject(forKey: PlaylistKey.id) as? UInt64
+            else {
+                return nil
+        }
+        guard let nam = aDecoder.decodeObject(forKey: PlaylistKey.name) as? String
+            else {
+                return nil
+        }
+        let songsy = aDecoder.decodeInteger(forKey: PlaylistKey.songsIn)
+        guard let img = aDecoder.decodeObject(forKey: PlaylistKey.image) as? UIImage
+            else {
+                return nil
+        }
+        let folder = aDecoder.decodeBool(forKey: PlaylistKey.isFolder)
+        let child = aDecoder.decodeBool(forKey: PlaylistKey.isChild)
+        guard let parent = aDecoder.decodeObject(forKey: PlaylistKey.parentID) as? UInt64
+            else {
+                return nil
+        }
+        self.init(items: itemy, id: id, name: nam, songs: songsy, image: img, folder: folder, child: child, parent: parent)
+    }*/
     
     init(collection: MPMediaPlaylist){
         items = collection.items
@@ -177,24 +315,14 @@ struct PlaylistKey {
         }
         print("name: \(name)\nfolder: \(isFolder)\nchild: \(isChild)\nparent: \(parentID)\nid: \(ID)\n\n")
     }
-}
-
-class PlaylistFolder {
-    let name: String
-    let ID: MPMediaEntityPersistentID
-    let listsIn: Int
-    let songsIn: Int
     
-    init(folder: MPMediaItemCollection) {
-        if let n = folder.value(forProperty: MPMediaPlaylistPropertyName) as? String {
-            name = n
-        }else{
-            name = " - "
-        }
-        ID = folder.persistentID
-        listsIn = 0
-        songsIn = folder.items.count
-    }
+    //MARK: NSCoding
+    
+    //MARK: Archiving Paths
+    
+    //static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
+    //static let ArchiveURL = DocumentsDirectory.appendingPathComponent("playlists")
+    
 }
 
 extension UIColor{

@@ -221,8 +221,8 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     }
     
     func explainDeploy() {
-        let alert = UIAlertController(title: "Where do we land, general?", message: "You can choose whether you prefer to start playing an album, artist, or all songs, when starting playback from Spotlight or in-app search screen", preferredStyle: .actionSheet)
-        let album = UIAlertAction(title: "Album (default)", style: .default, handler: {(action) in
+        let alert = UIAlertController(title: "Where do we land, general?", message: "You can choose whether you prefer to start playing an album, artist, or all songs, when starting playback from Spotlight or in-app search screen\nIf there is only one song in chosen destination, Plum will start playing all songs", preferredStyle: .actionSheet)
+        let album = UIAlertAction(title: "Album", style: .default, handler: {(action) in
             GlobalSettings.changeDeploy(Deploy(rawValue: "Album")!)
             self.reload()
         })
@@ -230,8 +230,13 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
             GlobalSettings.changeDeploy(Deploy(rawValue: "Artist")!)
             self.reload()
         })
+        let songs = UIAlertAction(title: "Songs", style: .default, handler: {(action) in
+            GlobalSettings.changeDeploy(Deploy(rawValue: "Songs")!)
+            self.reload()
+        })
         alert.addAction(album)
         alert.addAction(artist)
+        alert.addAction(songs)
         present(alert, animated: true, completion: nil)
     }
     

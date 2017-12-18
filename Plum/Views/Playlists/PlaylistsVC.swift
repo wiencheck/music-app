@@ -180,7 +180,9 @@ extension PlaylistsVC: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "playlistCell", for: indexPath) as! ArtistCell
             let item = result[indexes[indexPath.section]]?[indexPath.row]
             cell.setup(list: item!)
-            cell.backgroundColor = .clear
+            if (item?.isChild)! { cell.backgroundColor = .yellow }
+            else if (item?.isFolder)! { cell.backgroundColor = .red}
+            else { cell.backgroundColor = .clear }
             return cell
         }
     }

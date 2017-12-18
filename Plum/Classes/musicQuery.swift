@@ -11,11 +11,12 @@ import AVKit
 import MediaPlayer
 import CoreSpotlight
 import MobileCoreServices
+import os.log
 
 class musicQuery{
     var delegate: MySpotlightDelegate?
     static let shared = musicQuery()
-    let mainQuery: MPMediaQuery
+    //let mainQuery: MPMediaQuery
     var detailQuery: MPMediaQuery!
     var currentSongsCount: Int!
     var songs: [MPMediaItem]!
@@ -29,34 +30,79 @@ class musicQuery{
     var playlistsSet = false
     var songsSet = false
     
-    init(){
-        mainQuery = MPMediaQuery()
+    private init(){
+        //mainQuery = MPMediaQuery()
+        print("Musicquery init start")
+        //setArrays()
+        print("Musicquery init end")
     }
     
     func setArrays(){
-        if !songsSet{
-            self.songs = self.allSongs()
-            songsSet = true
-        }
-        if !artistsSet{
-            self.artists = self.allArtists()
-            artistsSet = true
-        }
-        if !albumsSet{
-            self.albums = self.allAlbums()
-            albumsSet = true
-        }
         if !playlistsSet{
-            self.playlists = self.allPlaylists()
+            playlists = allPlaylists()
             playlistsSet = true
         }
+        if !artistsSet {
+            artists = allArtists()
+            artistsSet = true
+        }
+        if !albumsSet {
+            albums = allAlbums()
+            albumsSet = true
+        }
+        if !songsSet {
+            songs = allSongs()
+            songsSet = true
+        }
+        arraysSet = true
     }
+    
+    /*private func savePlaylists() {
+        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(playlists, toFile: Playlist.ArchiveURL.path)
+        if isSuccessfulSave {
+            print("playlists successfully saved.")
+        } else {
+            print("Failed to save playlists...")
+        }
+    }
+    
+    private func loadPlaylists() -> [Playlist]?  {
+        return NSKeyedUnarchiver.unarchiveObject(withFile: Playlist.ArchiveURL.path) as? [Playlist]
+    }
+    
+    private func saveAlbums() {
+        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(albums, toFile: AlbumB.ArchiveURL.path)
+        if isSuccessfulSave {
+            print("Albums successfully saved.")
+        } else {
+            print("Failed to save albums...")
+        }
+    }
+    
+    private func loadAlbums() -> [AlbumB]? {
+        return NSKeyedUnarchiver.unarchiveObject(withFile: AlbumB.ArchiveURL.path) as? [AlbumB]
+    }
+    
+    private func saveArtists() {
+        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(artists, toFile: Artist.ArchiveURL.path)
+        if isSuccessfulSave {
+            print("Artists successfully saved.")
+        } else {
+            print("Failed to save artists...")
+        }
+    }
+    
+    private func loadArtists() -> [Artist]? {
+        return NSKeyedUnarchiver.unarchiveObject(withFile: Artist.ArchiveURL.path) as? [Artist]
+    }*/
     
     func allSongs() -> [MPMediaItem]{
         detailQuery = MPMediaQuery.songs()
         filterCloudItems(detailQuery)
         let songs = detailQuery?.items
         currentSongsCount = songs?.count
+        self.songs = songs
+        songsSet = true
         return songs!
     }
     
@@ -78,6 +124,8 @@ class musicQuery{
                 artists.append(newArtist)
             }
         }
+        self.artists = artists
+        artistsSet = true
         return artists
     }
     
@@ -97,6 +145,7 @@ class musicQuery{
     
     func allAlbums() -> [AlbumB]{
         detailQuery = MPMediaQuery.albums()
+        filterCloudItems(detailQuery)
         var albums = [AlbumB]()
         for album in detailQuery.collections!{
             let a = AlbumB(collection: album)
@@ -104,7 +153,8 @@ class musicQuery{
                 albums.append(a)
             }
         }
-        filterCloudItems(detailQuery)
+        self.albums = albums
+        albumsSet = true
         return albums
     }
     
@@ -151,7 +201,8 @@ class musicQuery{
 //                print("Name: \(name), folder: \(folder), id: \(id), parent: \(parent)")
             }
         }
-        playlists = lists
+        self.playlists = lists
+        playlistsSet = true
         return lists
     }
     
@@ -221,14 +272,12 @@ class musicQuery{
     func addToSpotlight(){
         print("Indeksowanie rozpoczete...")
         self.networkIndicator(true)
-        let items = allSongs()
-        let lists = allPlaylists()
         var searchableItems = [CSSearchableItem]()
         var i: Float = 0.0
         spotlightProgress = 0
-        let tmp = Float(currentSongsCount + lists.count)
+        let tmp = Float(currentSongsCount + playlists.count)
         DispatchQueue.global().async(execute: {
-            for item in items{
+            for item in self.songs{
                 let attributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeText as String)
                 attributeSet.title = item.title
                 attributeSet.contentDescription = "\(item.albumArtist ?? "Unknown artist") - \(item.albumTitle ?? "Unknown album")"
@@ -242,7 +291,7 @@ class musicQuery{
                 self.spotlightProgress = i / tmp
                 i += 1.0
             }
-            for list in lists {
+            for list in self.playlists {
                 let attributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeText as String)
                 attributeSet.title = list.name
                 attributeSet.contentDescription = "Playlist - \(list.songsIn) songs"

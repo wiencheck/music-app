@@ -450,8 +450,8 @@ extension ArtistSongs {
                     if result["\(secondStr.first!)"] != nil {
                         result["\(secondStr.first!)"]?.append(song)
                     }else{
-                        result["\(secondStr.uppercased().first)"] = []
-                        result["\(secondStr.uppercased().first)"]?.append(song)
+                        result["\(secondStr.uppercased().first!)"] = []
+                        result["\(secondStr.uppercased().first!)"]?.append(song)
                         indexes.append("\(secondStr.uppercased().first!)")
                     }
                 }

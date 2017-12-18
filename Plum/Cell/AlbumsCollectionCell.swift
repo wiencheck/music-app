@@ -31,12 +31,7 @@ class AlbumsCollectionCell: UICollectionViewCell {
             st = "\(count) songs"
         }
         detailLabel.text = st
-        let art = album.artwork?.image(at: CGSize(width: 50, height: 50))
-        if art == nil{
-            artwork.image = #imageLiteral(resourceName: "no_music")
-        }else{
-            artwork.image = art
-        }
+        artwork.image = album.artwork
     }
     
     override func layoutSubviews() {

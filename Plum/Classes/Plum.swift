@@ -599,10 +599,31 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
             artist[i].index = i
             if artist[i].persistentID == item.persistentID{
                 index = i
+                break
             }
         }
         defIndex = index
         self.createDefQueue(items: artist)
+        if isShuffle{
+            shuffleCurrent()
+            self.playFromShufQueue(index: 0, new: new)
+        }else{
+            self.playFromDefQueue(index: index, new: new)
+        }
+    }
+    
+    func landInSongs(_ item: MPMediaItem, new: Bool) {
+        var index: Int!
+        let songs = musicQuery.shared.allSongs()
+        for i in 0 ..< (songs.count) {
+            songs[i].index = i
+            if songs[i].persistentID == item.persistentID {
+                index = i
+                break
+            }
+        }
+        defIndex = index
+        createDefQueue(items: songs)
         if isShuffle{
             shuffleCurrent()
             self.playFromShufQueue(index: 0, new: new)

@@ -35,20 +35,20 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     }
     
     override func viewDidLayoutSubviews() {
-        if !UserDefaults.standard.bool(forKey: "greeting") {
-            let a = UIAlertController(title: "Hey there!", message: "Welcome to Plum, I hope you will find using it an enjoyable experience :)", preferredStyle: .alert)
-            a.addAction(UIAlertAction(title: "Let's go!", style: .default, handler: {_ in
-                self.instruct("index", message: "Drag your finger on the right edge of the screen to quickly scroll through your library", completion: {
-                    UserDefaults.standard.set(true, forKey: "greeting")
-                })
-            }))
-            present(a, animated: true, completion: nil)
-        }
+//        if !UserDefaults.standard.bool(forKey: "greeting") {
+//            let a = UIAlertController(title: "Hey there!", message: "Welcome to Plum, I hope you will find using it an enjoyable experience :)", preferredStyle: .alert)
+//            a.addAction(UIAlertAction(title: "Let's go!", style: .default, handler: {_ in
+//                self.instruct("index", message: "Drag your finger on the right edge of the screen to quickly scroll through your library", completion: {
+//                    UserDefaults.standard.set(true, forKey: "greeting")
+//                })
+//            }))
+//            present(a, animated: true, completion: nil)
+//        }
         DispatchQueue.global(qos: .background).async {
             musicQuery.shared.setArrays()
             //self.loadAllViews()
             if let count = UserDefaults.standard.value(forKey: "count") as? Int {
-                if count != (musicQuery.shared.allSongs().count) {
+                if count != (musicQuery.shared.songs.count) {
                     musicQuery.shared.removeAllFromSpotlight()
                     musicQuery.shared.addToSpotlight()
                     /*self.instruct("spotlight", message: "Spinning wheel in status bar means that Plum is indexing all your songs and playlists so you will be able to search them from Spotlight\nIf you can't see any results be sure to enable Plum in Spotlight settings and launch indexing from the settings", completion: nil)

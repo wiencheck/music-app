@@ -42,12 +42,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     switch GlobalSettings.deployIn {
                     case .artist:
                         Plum.shared.isShuffle = true
-                        Plum.shared.landInArtist(item, new: true)
+                        if musicQuery.shared.songsByArtistID(artist: item.albumArtistPersistentID).count == 1 {
+                            Plum.shared.landInSongs(item, new: true)
+                        }else{
+                            Plum.shared.landInArtist(item, new: true)
+                        }
                     case .album:
                         Plum.shared.isShuffle = true
-                        Plum.shared.landInAlbum(item, new: true)
-                    default:
-                        print("wyladuje w piosenkach")
+                        if musicQuery.shared.albumBy(item: item).songsIn == 1 {
+                            Plum.shared.landInSongs(item, new: true)
+                        }else{
+                            Plum.shared.landInArtist(item, new: true)
+                        }
+                    case .songs:
+                        Plum.shared.isShuffle = true
+                        Plum.shared.landInSongs(item, new: true)
                     }
                 }else if type[0] == "list" {
                     print("spotlight lista")
@@ -131,7 +140,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        DispatchQueue.global(qos: .background).async {
 //            musicQuery.shared.setArrays()
 //        }
-
+        //musicQuery.shared.setArrays()
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         let initialViewController = storyboard.instantiateViewController(withIdentifier: "plumTab")

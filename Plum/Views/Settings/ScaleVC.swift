@@ -69,13 +69,13 @@ class ScaleVC: UIViewController {
         if all.count > 20 {
             while albums.count < 21 {
                 if all[i].artwork != nil {
-                    albums.append((all[i].artwork?.image(at: image.frame.size))!)
+                    albums.append((all[i].artwork)!)
                 }
                 i += 1
             }
         }else{
             for i in 0 ..< all.count {
-                if let img = all[i].artwork?.image(at: image.frame.size) {
+                if let img = all[i].artwork {
                     albums.append(img)
                 }
             }

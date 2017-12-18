@@ -34,8 +34,7 @@ class ArtistCell: UITableViewCell {
         }else if(albumsCount > 1 && songsCount > 1){
             self.detailLabel.text = "\(albumsCount) albums ･ \(songsCount) songs"
         }
-        let image = artist.artwork
-        artistImage.image = image?.image(at: CGSize(width: 50, height: 50)) ?? #imageLiteral(resourceName: "no_music")
+        artistImage.image = artist.artwork
     }
     
     func setup(list: Playlist) {

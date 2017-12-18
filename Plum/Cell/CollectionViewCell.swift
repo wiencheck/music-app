@@ -35,12 +35,7 @@ class CollectionViewCell: UICollectionViewCell {
             }
         }
         detailLabel.text = st
-        let art = artist.artwork?.image(at: artwork.bounds.size)
-        if art == nil{
-            artwork.image = #imageLiteral(resourceName: "no_music")
-        }else{
-            artwork.image = art
-        }
+        artwork.image = artist.artwork
     }
     
     override func layoutSubviews() {

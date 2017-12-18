@@ -119,7 +119,7 @@ class FolderVC: UITableViewController {
     }
     
     func setup() {
-        playlists = [Playlist]()
+        /*playlists = [Playlist]()
         if musicQuery.shared.arraysSet {
             for list in musicQuery.shared.playlists {
                 if list.parentID == receivedID {
@@ -133,6 +133,12 @@ class FolderVC: UITableViewController {
                         playlists.append(list)
                     }
                 }
+            }
+        }*/
+        playlists = [Playlist]()
+        for list in musicQuery.shared.playlists {
+            if list.parentID == receivedID {
+                playlists.append(list)
             }
         }
     }

@@ -97,8 +97,8 @@ class ArtistUpVCB: UIViewController {
                     if result["\(secondStr.first!)"] != nil {
                         result["\(secondStr.first!)"]?.append(song)
                     }else{
-                        result["\(secondStr.first)"] = []
-                        result["\(secondStr.first)"]?.append(song)
+                        result["\(secondStr.first!)"] = []
+                        result["\(secondStr.first!)"]?.append(song)
                         indexes.append("\(secondStr.uppercased().first!)")
                     }
                 }

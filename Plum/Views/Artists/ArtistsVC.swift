@@ -227,10 +227,10 @@ extension ArtistsVC: UITableViewDelegate, UITableViewDataSource{    //Table
         }else{
             pickedID = result[indexes[indexPath.section]]?[indexPath.row].ID
         }
-        if(musicQuery().artistAlbumsID(artist: pickedID).count > 1){
+        if(musicQuery.shared.artistAlbumsID(artist: pickedID).count > 1){
             performSegue(withIdentifier: "artistAlbums", sender: nil)
         }else{
-            pickedID = musicQuery().artistAlbumsID(artist: pickedID).first?.ID
+            pickedID = musicQuery.shared.artistAlbumsID(artist: pickedID).first?.ID
             performSegue(withIdentifier: "album", sender: nil)
         }
         tableView.deselectRow(at: indexPath, animated: true)
@@ -308,10 +308,10 @@ extension ArtistsVC: UICollectionViewDelegate, UICollectionViewDataSource, Colle
         }else{
             pickedID = result[indexes[indexPath.section]]?[indexPath.row].ID
         }
-        if(musicQuery().artistAlbumsID(artist: pickedID).count > 1){
+        if(musicQuery.shared.artistAlbumsID(artist: pickedID).count > 1){
             performSegue(withIdentifier: "artistAlbums", sender: nil)
         }else{
-            pickedID = musicQuery().artistAlbumsID(artist: pickedID).first?.ID
+            pickedID = musicQuery.shared.artistAlbumsID(artist: pickedID).first?.ID
             performSegue(withIdentifier: "album", sender: nil)
         }
     }

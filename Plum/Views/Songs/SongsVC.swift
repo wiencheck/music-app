@@ -397,7 +397,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
 extension SongsVC {
     
     func setupDict() {
-        if musicQuery.shared.songsSet {
+        if musicQuery.shared.songsSet{
             songs = musicQuery.shared.songs
         }else{
             songs = musicQuery.shared.allSongs()
@@ -562,6 +562,7 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
             shouldShowResults = false
         }else{
             shouldShowResults = true
+            tableView.contentOffset.y = heightInset
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces
         let strippedString = searchString!.trimmingCharacters(in: whitespaceCharacterSet)

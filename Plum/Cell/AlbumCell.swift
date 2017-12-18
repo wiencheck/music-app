@@ -27,7 +27,7 @@ class AlbumCell: UITableViewCell {
     
     func setup(album: AlbumB){
         let songsCount = album.songsIn
-        self.artworkImage.image = album.artwork?.image(at: artworkImage.bounds.size) ?? #imageLiteral(resourceName: "no_music")
+        self.artworkImage.image = album.artwork
         let genre = album.items[0].genre ?? ""
         if genre != "" {
             if songsCount > 1{
