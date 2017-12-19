@@ -451,29 +451,31 @@ extension ArtistsVC{    //Other functions
                     }
                 }
             }else{
-                let prefix = "\(article.first!)".uppercased()
-                if Int(prefix) != nil {
-                    if result["#"] != nil {
-                        result["#"]?.append(artist)
+                if let prefi = article.first {
+                    let prefix = "\(prefi)".uppercased()
+                    if Int(prefix) != nil {
+                        if result["#"] != nil {
+                            result["#"]?.append(artist)
+                        }else{
+                            result["#"] = []
+                            result["#"]?.append(artist)
+                            anyNumber = true
+                        }
+                    }else if prefix.firstSpecial() {
+                        if result["?"] != nil {
+                            result["?"]?.append(artist)
+                        }else{
+                            result["?"] = []
+                            result["?"]?.append(artist)
+                            anySpecial = true
+                        }
+                    }else if result[prefix] != nil {
+                        result[prefix]?.append(artist)
                     }else{
-                        result["#"] = []
-                        result["#"]?.append(artist)
-                        anyNumber = true
+                        result[prefix] = []
+                        result[prefix]?.append(artist)
+                        indexes.append(prefix)
                     }
-                }else if prefix.firstSpecial() {
-                    if result["?"] != nil {
-                        result["?"]?.append(artist)
-                    }else{
-                        result["?"] = []
-                        result["?"]?.append(artist)
-                        anySpecial = true
-                    }
-                }else if result[prefix] != nil {
-                    result[prefix]?.append(artist)
-                }else{
-                    result[prefix] = []
-                    result[prefix]?.append(artist)
-                    indexes.append(prefix)
                 }
             }
         }

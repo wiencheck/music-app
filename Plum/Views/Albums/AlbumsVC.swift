@@ -627,29 +627,31 @@ extension AlbumsVC {
                     }
                 }
             }else{
-                let prefix = "\(article.first!)".uppercased()
-                if Int(prefix) != nil {
-                    if result["#"] != nil {
-                        result["#"]?.append(song)
+                if let prefi = article.first {
+                    let prefix = "\(prefi)".uppercased()
+                    if Int(prefix) != nil {
+                        if result["#"] != nil {
+                            result["#"]?.append(song)
+                        }else{
+                            result["#"] = []
+                            result["#"]?.append(song)
+                            anyNumber = true
+                        }
+                    }else if prefix.firstSpecial() {
+                        if result["?"] != nil {
+                            result["?"]?.append(song)
+                        }else{
+                            result["?"] = []
+                            result["?"]?.append(song)
+                            anySpecial = true
+                        }
+                    }else if result[prefix] != nil {
+                        result[prefix]?.append(song)
                     }else{
-                        result["#"] = []
-                        result["#"]?.append(song)
-                        anyNumber = true
+                        result[prefix] = []
+                        result[prefix]?.append(song)
+                        indexes.append(prefix)
                     }
-                }else if prefix.firstSpecial() {
-                    if result["?"] != nil {
-                        result["?"]?.append(song)
-                    }else{
-                        result["?"] = []
-                        result["?"]?.append(song)
-                        anySpecial = true
-                    }
-                }else if result[prefix] != nil {
-                    result[prefix]?.append(song)
-                }else{
-                    result[prefix] = []
-                    result[prefix]?.append(song)
-                    indexes.append(prefix)
                 }
             }
         }
