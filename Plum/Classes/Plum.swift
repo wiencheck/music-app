@@ -36,7 +36,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     var wasLoaded: Bool!
     var defQueue = [MPMediaItem]()
     var defQ = [Int: MPMediaItem]()
-    var defQueueCount: Int!
+    //var defQueueCount: Int!
     var defIndex: Int!
     var isUsrQueue: Bool!
     var usrQueue = [MPMediaItem]()
@@ -45,12 +45,12 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     var isShuffle: Bool!
     var isRepeat: Bool!
     var shufQueue = [MPMediaItem]()
-    var shufQueueCount: Int!{
+    /*var shufQueueCount: Int!{
         return defQueueCount
-    }
+    }*/
     var shufIndex: Int!
     var defIsAnyAfter: Bool!{
-        if(defIndex + 1 == defQueueCount){
+        if(defIndex + 1 == defQueue.count){
             return false
         }else{
             return true
@@ -78,7 +78,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         }
     }
     var shufIsAnyAfter: Bool!{
-        if(shufIndex + 1 == shufQueueCount){
+        if(shufIndex + 1 == shufQueue.count){
             return false
         }else{
             return true
@@ -137,7 +137,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         playerFlag = 1
         wasLoaded = false
         defIndex = 0
-        defQueueCount = 1
+        //defQueueCount = 1
         isUsrQueue = false
         usrIndex = 0
         isShuffle = false
@@ -219,7 +219,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
             defQueue.append(items[i])
         }
         //defQueue.append(contentsOf: items)
-        defQueueCount = defQueue.count
+        //defQueueCount = defQueue.count
     }
     
     func addNext(item: MPMediaItem){
@@ -295,13 +295,13 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
                     if(defIsAnyBefore){
                         playFromDefQueue(index: defIndex - 1, new: true)
                     }else{
-                        playFromDefQueue(index: defQueueCount - 1, new: true)
+                        playFromDefQueue(index: defQueue.count - 1, new: true)
                     }
                 }else{
                     if(shufIsAnyBefore){
                         playFromShufQueue(index: shufIndex - 1, new: true)
                     }else{
-                        playFromShufQueue(index: shufQueueCount - 1, new: true)
+                        playFromShufQueue(index: shufQueue.count - 1, new: true)
                     }
                 }
             }else{
@@ -417,13 +417,13 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         case "out of":
             if(!isShuffle){
                 if(!isUsrQueue){
-                    return "\(defIndex + 1) of \(defQueueCount!)"
+                    return "\(defIndex + 1) of \(defQueue.count)"
                 }else{
                     return "\(usrIndex! + 1) of \(usrQueue.count)"
                 }
             }else{
                 if(!isUsrQueue){
-                return "\(shufIndex + 1) of \(shufQueueCount!)"
+                return "\(shufIndex + 1) of \(shufQueue.count)"
             }else{
                 return "\(usrIndex! + 1) of \(usrQueue.count)"
                 }

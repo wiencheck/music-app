@@ -23,7 +23,7 @@ class AlbumsByVC: UITableViewController {
         tabBarController?.delegate = self
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         //tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
-        tableView.backgroundColor = UIColor(red: 0.968627450980392, green: 0.968627450980392, blue: 0.968627450980392, alpha: 1.0)
+        tableView.backgroundColor = UIColor.lightBackground
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
         tableView.scrollIndicatorInsets = tableView.contentInset
         als = musicQuery.shared.artistAlbumsID(artist: receivedID)
@@ -78,7 +78,7 @@ class AlbumsByVC: UITableViewController {
             return cell
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "albumCell", for: indexPath) as? AlbumCell
-            cell?.setup(album: als[indexPath.row - 1])
+            cell?.setupArtist(album: als[indexPath.row - 1])
             cell?.backgroundColor = .clear
             return cell!
         }

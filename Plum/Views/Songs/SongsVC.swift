@@ -28,6 +28,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     var searchActiveRow = 0
     var headers: [UIView]!
     var heightInset: CGFloat!
+    var hideKeyboard = false
     
     let backround = #imageLiteral(resourceName: "background_se")
     @IBOutlet weak var tableView: UITableView!
@@ -40,6 +41,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         //navigationController?.interactivePopGestureRecognizer?.delegate = nil
         tableView.delegate = self
         tableView.dataSource = self
+        //tableView.separatorStyle = .none
         setupDict()
         setHeaders()
         indexes.insert("", at: 0)
@@ -49,7 +51,10 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         }
         self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
         //tableView.backgroundView = UIImageView(image: backround)
-        tableView.backgroundColor = UIColor(red: 0.968627450980392, green: 0.968627450980392, blue: 0.968627450980392, alpha: 1.0)
+        tableView.backgroundColor = UIColor.lightBackground
+        //tableView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "gradient_background"))
+        //tableView.separatorStyle = .none
+        tableView.sectionFooterHeight = 0
         indexView.indexes = self.indexes
         indexView.tableView = self.tableView
         indexView.setup()
@@ -167,7 +172,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         }else{
             if indexPath.section == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath)
-                cell.backgroundColor = UIColor(red: 0.968627450980392, green: 0.968627450980392, blue: 0.968627450980392, alpha: 1.0)
+                cell.backgroundColor = UIColor(red: 0.964705882352941, green: 0.964705882352941, blue: 0.964705882352941, alpha: 1.0)
                 return cell
             }else{
                 if(cellTypes[indexPath.section][indexPath.row] == 0){
@@ -518,6 +523,7 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchController.searchBar.isTranslucent = true
         searchView.frame.size.height = searchController.searchBar.frame.height
         searchView.addSubview(searchController.searchBar)
+        
         let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
         NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
         //heightInset = (navigationController?.navigationBar.frame.height)! + 58
@@ -534,9 +540,13 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y < -160 {
             searchController.searchBar.becomeFirstResponder()
-        }else if scrollView.contentOffset.y > -80 {
-            searchController.searchBar.resignFirstResponder()
         }
+        else if scrollView.contentOffset.y > -heightInset + 20 {
+            if hideKeyboard {
+                searchController.searchBar.resignFirstResponder()
+            }
+        }
+        //print(scrollView.contentOffset.y)
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -562,9 +572,6 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
             shouldShowResults = false
         }else{
             shouldShowResults = true
-            if filteredSongs.count != 0 {
-                tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-            }
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces
         let strippedString = searchString!.trimmingCharacters(in: whitespaceCharacterSet)
@@ -589,6 +596,11 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         filteredSongs = (songs.filter { finalCompoundPredicate.evaluate(with: $0) })
         cellTypesSearch = Array<Int>(repeating: 0, count: filteredSongs.count)
         tableView.reloadData()
+        if filteredSongs.count != 0 {
+            hideKeyboard = false
+            tableView.contentOffset.y = -heightInset
+            hideKeyboard = true
+        }
 //        if filteredSongs.count != 0 {
 //            tableView.reloadData()
 //            tableView.contentOffset.y = heightInset

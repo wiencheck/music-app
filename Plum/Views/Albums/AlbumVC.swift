@@ -9,7 +9,7 @@
 import UIKit
 import MediaPlayer
 
-class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDelegate {
+class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDelegate, InfoCellDelegate {
     
     let player = Plum.shared
     let defaults = UserDefaults.standard
@@ -30,7 +30,8 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
         tableView.scrollIndicatorInsets = tableView.contentInset
-        tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
+        tableView.backgroundColor = UIColor.lightBackground
+        tableView.delaysContentTouches = false
         readSettings()
         if receivedID != nil{
             album = musicQuery.shared.albumID(album: receivedID)
@@ -111,9 +112,43 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
         }
     }
     
+    func playPressed() {
+        print("Should play")
+        Plum.shared.isShuffle = false
+        Plum.shared.createDefQueue(items: songs)
+        if Plum.shared.currentItem?.albumTitle == album.name{
+            var i = 0
+            for song in songs{
+                if Plum.shared.currentItem?.persistentID == song.persistentID{
+                    Plum.shared.playFromDefQueue(index: i, new: false)
+                    break
+                }
+                i += 1
+            }
+        }else{
+            Plum.shared.playFromDefQueue(index: 0, new: true)
+        }
+        Plum.shared.play()
+    }
+    
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableCell(withIdentifier: "infoCell") as! AlbumInfoCell
         header.setup(album: album, play: true)
+        header.delegate = self
+        header.contentView.backgroundColor = UIColor.lightBackground
+//        for (UIView *currentView in self.subviews)
+//        {
+//            if([currentView isKindOfClass:[UIScrollView class]])
+//            {
+//                ((UIScrollView *)currentView).delaysContentTouches = NO;
+//                break;
+//            }
+//        }
+        for current in header.subviews {
+            if current .isKind(of: UIScrollView.self) {
+                (current as! UIScrollView).delaysContentTouches = false
+            }
+        }
         return header.contentView
     }
 
@@ -128,18 +163,13 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if(cellTypes[activeIndexRow] == 1 || cellTypes[activeIndexRow] == 2){
+        if cellTypes[activeIndexRow] != 0 {
             cellTypes[activeIndexRow] = 0
-            tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: 0)], with: .fade)
+            tableView.reloadRows(at: [IndexPath(row: activeIndexRow+1, section: 0)], with: .fade)
         }
         
         if indexPath.row == 0 {
-            let items = songs
-            player.createDefQueue(items: items)
-            player.defIndex = Int(arc4random_uniform(UInt32(items.count)))
-            player.shuffleCurrent()
-            player.playFromShufQueue(index: 0, new: true)
-            player.play()
+            shuffleAll()
         }else{
             activeIndexRow = indexPath.row - 1
             absoluteIndex = indexPath.absoluteRow(tableView) - 1
@@ -178,10 +208,6 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 112
-    }
-    
-    @IBAction func shufBtnPressed(_ sender: Any) {
-        shuffleAll()
     }
     
     func cell(_ cell: QueueActionsCell, action: SongAction) {

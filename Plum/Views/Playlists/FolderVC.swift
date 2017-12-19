@@ -24,7 +24,7 @@ class FolderVC: UITableViewController {
         print(receivedID)
         setup()
         //tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
-        tableView.backgroundColor = UIColor(red: 0.968627450980392, green: 0.968627450980392, blue: 0.968627450980392, alpha: 1.0)
+        tableView.backgroundColor = UIColor.lightBackground
     }
     
     override func viewWillAppear(_ animated: Bool) {

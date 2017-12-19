@@ -28,21 +28,69 @@ class AlbumCell: UITableViewCell {
     func setup(album: AlbumB){
         let songsCount = album.songsIn
         self.artworkImage.image = album.artwork
-        let genre = album.items[0].genre ?? ""
-        if genre != "" {
-            if songsCount > 1{
-                detailLabel.text = "\(genre) ･ \(songsCount) songs"
-            }else{
-                detailLabel.text = "\(genre) ･ 1 song"
-            }
+        let genre = album.items[0].albumArtist ?? ""
+        let attYear = NSMutableAttributedString(string: genre)
+        let attYearR = NSRange(location: 0, length: attYear.length)
+        attYear.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 13), range: attYearR)
+        var st = ", "
+        let attComa = NSMutableAttributedString(string: st)
+        let attComaR = NSRange(location: 0, length: attComa.length)
+        attComa.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 13), range: attComaR)
+        
+        //Songs
+        let attCount = NSMutableAttributedString(string: "\(songsCount)")
+        let attCountR = NSRange(location: 0, length: attCount.length)
+        attCount.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 15, weight: .medium), range: attCountR)
+        st = ""
+        if songsCount > 1 {
+            st = " songs"
         }else{
-            if songsCount > 1{
-                detailLabel.text = "\(songsCount) songs"
-            }else{
-                detailLabel.text = "1 song"
-            }
+            st = " song"
         }
-        titleLabel.text = album.name
+        let attSongs = NSMutableAttributedString(string: st)
+        let attSongsR = NSRange(location: 0, length: attSongs.length)
+        attSongs.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 13), range: attSongsR)
+        
+        attYear.append(attComa)
+        attYear.append(attCount)
+        attYear.append(attSongs)
+        
+        detailLabel.attributedText = attYear
+    }
+    
+    func setupArtist(album: AlbumB){
+        let songsCount = album.songsIn
+        self.artworkImage.image = album.artwork
+        let genre = album.year ?? ""
+        //Year
+        
+        let attYear = NSMutableAttributedString(string: genre)
+        let attYearR = NSRange(location: 0, length: attYear.length)
+        attYear.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 15, weight: .medium), range: attYearR)
+        var st = ", "
+        let attComa = NSMutableAttributedString(string: st)
+        let attComaR = NSRange(location: 0, length: attComa.length)
+        attComa.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 13), range: attComaR)
+        
+        //Songs
+        let attCount = NSMutableAttributedString(string: "\(songsCount)")
+        let attCountR = NSRange(location: 0, length: attCount.length)
+        attCount.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 15, weight: .medium), range: attCountR)
+        st = ""
+        if songsCount > 1 {
+            st = " songs"
+        }else{
+            st = " song"
+        }
+        let attSongs = NSMutableAttributedString(string: st)
+        let attSongsR = NSRange(location: 0, length: attSongs.length)
+        attSongs.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 13), range: attSongsR)
+        
+        attYear.append(attComa)
+        attYear.append(attCount)
+        attYear.append(attSongs)
+        
+        detailLabel.attributedText = attYear
     }
     
     

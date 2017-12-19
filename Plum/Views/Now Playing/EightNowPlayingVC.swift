@@ -5,13 +5,12 @@
 //  Created by Adam Wienconek on 21.11.2017.
 //  Copyright © 2017 Adam Wienconek. All rights reserved.
 //
-
 import UIKit
 import MediaPlayer
 import UserNotifications
 
 class EightNowPlayingVC: UIViewController {
-
+    
     var scale: Double!
     
     let player = Plum.shared
@@ -85,13 +84,13 @@ class EightNowPlayingVC: UIViewController {
         setSlider()
         shufView.layer.cornerRadius = 6.0
         repView.layer.cornerRadius = 6.0
-//        if GlobalSettings.blur {
-//            let blur = UIBlurEffect(style: .dark)
-//            let fx = UIVisualEffectView(frame: BackgroundView.frame)
-//            fx.effect = blur
-//            backgroundImgView.contentMode = .scaleAspectFill
-//            BackgroundView.addSubview(fx)
-//        }
+        //        if GlobalSettings.blur {
+        //            let blur = UIBlurEffect(style: .dark)
+        //            let fx = UIVisualEffectView(frame: BackgroundView.frame)
+        //            fx.effect = blur
+        //            backgroundImgView.contentMode = .scaleAspectFill
+        //            BackgroundView.addSubview(fx)
+        //        }
         updateUI()
         setColors()
         NotificationCenter.default.addObserver(self, selector: #selector(updateUI), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
@@ -117,52 +116,26 @@ class EightNowPlayingVC: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-//        if(player.wasLoaded == false){
-//            nextBtn.isEnabled = false
-//            prevBtn.isEnabled = false
-//            playbackBtn.isEnabled = false
-//        }
+        //        if(player.wasLoaded == false){
+        //            nextBtn.isEnabled = false
+        //            prevBtn.isEnabled = false
+        //            playbackBtn.isEnabled = false
+        //        }
         updateUI()
     }
     
     @IBAction func presentQueue(_ sender: Any){
-        UIView.animate(withDuration: 0.05,
-                       animations: {
-                        self.upNextBtn.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
-        },
-                       completion: { _ in
-                        self.realPresent()
-                        UIView.animate(withDuration: 0.05) {
-                            self.upNextBtn.transform = CGAffineTransform.identity
-                        }
-        })
+        realPresent()
     }
     
     @IBAction func ratingPressed() {
-        //instruct("rating", message: "When enabled, you will see ratings for every song in app and on lock screen. Go to settings to change options available on lock screen", completion: nil)
+        instruct("rating", message: "When enabled, you will see ratings for every song in app and on lock screen. Go to settings to change options available on lock screen", completion: nil)
         GlobalSettings.changeRating(!GlobalSettings.rating)
         if GlobalSettings.rating {
-            UIView.animate(withDuration: 0.05,
-                           animations: {
-                            self.ratingButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
-            },
-                           completion: { _ in
-                            self.ratingButton.setImage(#imageLiteral(resourceName: "noratingsbutton"), for: .normal)
-                            UIView.animate(withDuration: 0.05) {
-                                self.ratingButton.transform = CGAffineTransform.identity
-                            }
-            })
+            ratingButton.setImage(#imageLiteral(resourceName: "ratingsbutton"), for: .normal)
+            lyricsButton.setImage(#imageLiteral(resourceName: "nolyricsbutton"), for: .normal)
         }else{
-            UIView.animate(withDuration: 0.05,
-                           animations: {
-                            self.ratingButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
-            },
-                           completion: { _ in
-                            self.lyricsButton.setImage(#imageLiteral(resourceName: "ratingsbutton"), for: .normal)
-                            UIView.animate(withDuration: 0.05) {
-                                self.ratingButton.transform = CGAffineTransform.identity
-                            }
-            })
+            ratingButton.setImage(#imageLiteral(resourceName: "noratingsbutton"), for: .normal)
         }
     }
     
@@ -181,28 +154,10 @@ class EightNowPlayingVC: UIViewController {
     
     @IBAction func playBackBtn(_ sender: Any) {
         if(player.isPlayin()){
-            UIView.animate(withDuration: 0.05,
-                           animations: {
-                            self.playbackBtn.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
-            },
-                           completion: { _ in
-                            self.playbackBtn.setImage(#imageLiteral(resourceName: "play-butt"), for: .normal)
-                            UIView.animate(withDuration: 0.05) {
-                                self.playbackBtn.transform = CGAffineTransform.identity
-                            }
-            })
+            playbackBtn.setImage(#imageLiteral(resourceName: "play-butt"), for: .normal)
             player.pause()
         }else{
-            UIView.animate(withDuration: 0.05,
-                           animations: {
-                            self.playbackBtn.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
-            },
-                           completion: { _ in
-                            self.playbackBtn.setImage(#imageLiteral(resourceName: "pause-butt"), for: .normal)
-                            UIView.animate(withDuration: 0.05) {
-                                self.playbackBtn.transform = CGAffineTransform.identity
-                            }
-            })
+            playbackBtn.setImage(#imageLiteral(resourceName: "pause-butt"), for: .normal)
             player.play()
         }
     }
@@ -213,15 +168,6 @@ class EightNowPlayingVC: UIViewController {
         }else{
             player.next()
         }
-        UIView.animate(withDuration: 0.05,
-                       animations: {
-                        self.nextBtn.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
-        },
-                       completion: { _ in
-                        UIView.animate(withDuration: 0.05) {
-                            self.nextBtn.transform = CGAffineTransform.identity
-                        }
-        })
     }
     @IBAction func prevBtn(_ sender: Any) {
         if(player.isPlayin()){
@@ -230,15 +176,6 @@ class EightNowPlayingVC: UIViewController {
         }else{
             player.prev()
         }
-        UIView.animate(withDuration: 0.05,
-                       animations: {
-                        self.prevBtn.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
-        },
-                       completion: { _ in
-                        UIView.animate(withDuration: 0.05) {
-                            self.prevBtn.transform = CGAffineTransform.identity
-                        }
-        })
     }
     
     @IBAction func shuffleBtn(_ sender: Any) {
@@ -248,16 +185,7 @@ class EightNowPlayingVC: UIViewController {
             player.shuffleCurrent()
         }
         outOfLabel.text = player.labelString(type: "out of")
-        UIView.animate(withDuration: 0.05,
-                       animations: {
-                        self.shufView.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
-        },
-                       completion: { _ in
-                        self.setColors()
-                        UIView.animate(withDuration: 0.05) {
-                            self.shufView.transform = CGAffineTransform.identity
-                        }
-        })
+        setColors()
     }
     
     @IBAction func repeatBtn() {
@@ -266,18 +194,9 @@ class EightNowPlayingVC: UIViewController {
         }else{
             player.repeatMode(true)
         }
-        UIView.animate(withDuration: 0.05,
-                       animations: {
-                        self.repView.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
-        },
-                       completion: { _ in
-                        self.setColors()
-                        UIView.animate(withDuration: 0.05) {
-                            self.repView.transform = CGAffineTransform.identity
-                        }
-        })
+        setColors()
     }
-
+    
 }
 
 extension EightNowPlayingVC: UIGestureRecognizerDelegate {
@@ -638,55 +557,53 @@ extension EightNowPlayingVC {       //Kolory i UI
     
     func color(){
         colors = image.getColors(scaleDownSize: CGSize(width: scale, height: scale))
-        UIView.animate(withDuration: 0.2, animations: {
-            self.BackgroundView.backgroundColor = self.colors.backgroundColor
-            self.view.backgroundColor = self.colors.backgroundColor
-            self.titleLabel.textColor = self.colors.primaryColor
-            self.detailLabel.textColor = self.colors.detailColor
-            self.elapsedLabel.textColor = self.colors.detailColor
-            self.remainingLabel.textColor = self.colors.detailColor
-            self.customTrackSlider(slider: self.timeSlider, min: self.colors.primaryColor, max: self.colors.detailColor, thumb: self.colors.primaryColor)
-            self.customVolumeSlider(min: self.colors.primaryColor, max: self.colors.detailColor, thumb: self.colors.detailColor, thumbImg: #imageLiteral(resourceName: "thumb"))
-            self.upNextBtn.tintColor = self.colors.detailColor
-            self.addNextBtn.setTitleColor(self.colors.detailColor, for: .normal)
-            self.outOfLabel.textColor = self.colors.primaryColor
-            self.ratingLabel.textColor = self.colors.primaryColor
-            self.ratingButton.tintColor = self.colors.detailColor
-            self.lyricsButton.tintColor = self.colors.detailColor
-            if(self.colors.backgroundColor.isDarkColor){
-                if self.shoudlChangeBar { UIApplication.shared.statusBarStyle = .lightContent }
-                self.lightBar = true
-                self.prevBtn.tintColor = .white
-                self.playbackBtn.tintColor = .white
-                self.nextBtn.tintColor = .white
-                self.minVolImg.tintColor = .white
-                self.maxVolImg.tintColor = .white
-                self.lightStyle = false
-            }else{
-                if self.shoudlChangeBar { UIApplication.shared.statusBarStyle = .default }
-                self.lightBar = false
-                self.prevBtn.tintColor = self.colors.primaryColor
-                self.playbackBtn.tintColor = self.colors.primaryColor
-                self.nextBtn.tintColor = self.colors.primaryColor
-                self.minVolImg.tintColor = self.colors.primaryColor
-                self.maxVolImg.tintColor = self.colors.primaryColor
-                self.lightStyle = true
-            }
-            if(self.player.isShuffle){
-                self.shufBtn.setTitleColor(self.colors.detailColor, for: .normal)
-                self.shufView.backgroundColor = self.colors.primaryColor.withAlphaComponent(0.3)
-            }else{
-                self.shufBtn.setTitleColor(self.colors.primaryColor, for: .normal)
-                self.shufView.backgroundColor = .clear
-            }
-            if self.player.isRepeat {
-                self.repBtn.setTitleColor(self.colors.detailColor, for: .normal)
-                self.repView.backgroundColor = self.colors.primaryColor.withAlphaComponent(0.3)
-            }else{
-                self.repBtn.setTitleColor(self.colors.primaryColor, for: .normal)
-                self.repView.backgroundColor = .clear
-            }
-            })
+        BackgroundView.backgroundColor = colors.backgroundColor
+        view.backgroundColor = colors.backgroundColor
+        self.titleLabel.textColor = colors.primaryColor
+        self.detailLabel.textColor = colors.detailColor
+        self.elapsedLabel.textColor = colors.detailColor
+        self.remainingLabel.textColor = colors.detailColor
+        customTrackSlider(slider: timeSlider, min: colors.primaryColor, max: colors.detailColor, thumb: colors.primaryColor)
+        customVolumeSlider(min: colors.primaryColor, max: colors.detailColor, thumb: colors.detailColor, thumbImg: #imageLiteral(resourceName: "thumb"))
+        upNextBtn.tintColor = colors.detailColor
+        addNextBtn.setTitleColor(colors.detailColor, for: .normal)
+        outOfLabel.textColor = colors.primaryColor
+        ratingLabel.textColor = colors.primaryColor
+        ratingButton.tintColor = colors.detailColor
+        lyricsButton.tintColor = colors.detailColor
+        if(colors.backgroundColor.isDarkColor){
+            if shoudlChangeBar { UIApplication.shared.statusBarStyle = .lightContent }
+            lightBar = true
+            prevBtn.tintColor = .white
+            playbackBtn.tintColor = .white
+            nextBtn.tintColor = .white
+            minVolImg.tintColor = .white
+            maxVolImg.tintColor = .white
+            lightStyle = false
+        }else{
+            if shoudlChangeBar { UIApplication.shared.statusBarStyle = .default }
+            lightBar = false
+            prevBtn.tintColor = colors.primaryColor
+            playbackBtn.tintColor = colors.primaryColor
+            nextBtn.tintColor = colors.primaryColor
+            minVolImg.tintColor = colors.primaryColor
+            maxVolImg.tintColor = colors.primaryColor
+            lightStyle = true
+        }
+        if(player.isShuffle){
+            shufBtn.setTitleColor(colors.detailColor, for: .normal)
+            shufView.backgroundColor = colors.primaryColor.withAlphaComponent(0.3)
+        }else{
+            shufBtn.setTitleColor(colors.primaryColor, for: .normal)
+            shufView.backgroundColor = .clear
+        }
+        if player.isRepeat {
+            repBtn.setTitleColor(colors.detailColor, for: .normal)
+            repView.backgroundColor = colors.primaryColor.withAlphaComponent(0.3)
+        }else{
+            repBtn.setTitleColor(colors.primaryColor, for: .normal)
+            repView.backgroundColor = .clear
+        }
     }
     
     func blur() {
@@ -812,7 +729,7 @@ extension EightNowPlayingVC {       //Kolory i UI
     func customTrackSlider(slider: UISlider, min: UIColor, max: UIColor, thumb: UIColor) {
         var thumbImg: UIImage
         if GlobalSettings.round {
-            thumbImg = #imageLiteral(resourceName: "volumeThumb").imageScaled(toFit: CGSize(width: 18, height: 18)).tintPictogram(with: .white)
+            thumbImg = #imageLiteral(resourceName: "volumeThumb").imageScaled(toFit: CGSize(width: 18, height: 18)).tintPictogram(with: thumb)
             slider.setThumbImage(thumbImg, for: .normal)
         }else{
             thumbImg = #imageLiteral(resourceName: "thumb2")
@@ -883,25 +800,25 @@ extension EightNowPlayingVC: MPMediaPickerControllerDelegate {
     
 }
 /*
-extension UIViewController {
-    
-    func presentDetail(_ viewControllerToPresent: UIViewController) {
-        let transition = CATransition()
-        transition.duration = 0.3
-        transition.type = kCATransitionMoveIn
-        transition.subtype = kCATransitionFromRight
-        self.view.window!.layer.add(transition, forKey: kCATransition)
-        
-        present(viewControllerToPresent, animated: false)
-    }
-    
-    func dismissDetail() {
-        let transition = CATransition()
-        transition.duration = 0.3
-        transition.type = kCATransitionMoveIn
-        transition.subtype = kCATransitionFromLeft
-        self.view.window!.layer.add(transition, forKey: kCATransition)
-        
-        dismiss(animated: false)
-    }
-}*/
+ extension UIViewController {
+ 
+ func presentDetail(_ viewControllerToPresent: UIViewController) {
+ let transition = CATransition()
+ transition.duration = 0.3
+ transition.type = kCATransitionMoveIn
+ transition.subtype = kCATransitionFromRight
+ self.view.window!.layer.add(transition, forKey: kCATransition)
+ 
+ present(viewControllerToPresent, animated: false)
+ }
+ 
+ func dismissDetail() {
+ let transition = CATransition()
+ transition.duration = 0.3
+ transition.type = kCATransitionMoveIn
+ transition.subtype = kCATransitionFromLeft
+ self.view.window!.layer.add(transition, forKey: kCATransition)
+ 
+ dismiss(animated: false)
+ }
+ }*/

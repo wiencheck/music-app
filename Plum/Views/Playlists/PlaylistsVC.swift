@@ -39,6 +39,7 @@ class PlaylistsVC: UIViewController {
     var heightInset: CGFloat!
     var controllerSet = false
     var pickedName: String!
+    var hideKeyboard = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,7 +94,7 @@ class PlaylistsVC: UIViewController {
     
     func setTable(){
         //self.tableView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
-        self.tableView.backgroundColor = UIColor(red: 0.968627450980392, green: 0.968627450980392, blue: 0.968627450980392, alpha: 1.0)
+        self.tableView.backgroundColor = UIColor.lightBackground
         tableView.delegate = self
         tableView.dataSource = self
         self.view.addSubview(tableView)
@@ -105,7 +106,7 @@ class PlaylistsVC: UIViewController {
     
     func setCollection(){
         //self.collectionView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
-        self.collectionView.backgroundColor = UIColor(red: 0.968627450980392, green: 0.968627450980392, blue: 0.968627450980392, alpha: 1.0)
+        self.collectionView.backgroundColor = UIColor.lightBackground
         collectionView.delegate = self
         collectionView.dataSource = self
         self.view.addSubview(collectionView)
@@ -551,6 +552,7 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.isTranslucent = true
         searchView.addSubview(searchController.searchBar)
+        
         let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
         NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
         //heightInset = (navigationController?.navigationBar.frame.height)! + searchController.searchBar.frame.height
@@ -571,7 +573,9 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         if scrollView.contentOffset.y < -174 {
             searchController.searchBar.becomeFirstResponder()
         }else if scrollView.contentOffset.y > -94 {
-            searchController.searchBar.resignFirstResponder()
+            if hideKeyboard {
+                searchController.searchBar.resignFirstResponder()
+            }
         }
     }
     
@@ -608,17 +612,6 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
             shouldShowResults = false
         }else{
             shouldShowResults = true
-            if grid {
-                if filteredPlaylists.count != 0 {
-                    collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-                }
-                //collectionView.contentOffset.y = -heightInset
-            }else{
-                if filteredPlaylists.count != 0 {
-                    tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-                }
-                //tableView.contentOffset.y = -heightInset
-            }
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces
         let strippedString = searchString!.trimmingCharacters(in: whitespaceCharacterSet)
@@ -644,18 +637,19 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchCellTypes = Array<Int>(repeating: 0, count: filteredPlaylists.count)
         if grid {
             collectionView.reloadData()
+            if filteredPlaylists.count != 0 {
+                hideKeyboard = false
+                collectionView.contentOffset.y = -heightInset + 6
+                hideKeyboard = true
+            }
         }else{
             tableView.reloadData()
+            if filteredPlaylists.count != 0 {
+                hideKeyboard = false
+                tableView.contentOffset.y = -heightInset
+                hideKeyboard = true
+            }
         }
-//        if filteredPlaylists.count != 0 {
-//            if grid {
-//                collectionView.reloadData()
-//                collectionView.contentOffset.y = heightInset
-//            }else{
-//                tableView.reloadData()
-//                tableView.contentOffset.y = heightInset
-//            }
-//        }
     }
     
 }

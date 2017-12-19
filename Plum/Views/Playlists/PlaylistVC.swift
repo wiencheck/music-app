@@ -34,12 +34,14 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
     var filteredSongs = [MPMediaItem]()
     var shouldShowResults = false
     var heightInset: CGFloat!
+    var hideKeyboard = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBarController?.delegate = self
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         receivedList = musicQuery.shared.playlistForID(playlist: receivedID)
+        //tableView.separatorStyle = .none
         title = receivedList.name
         setTable()
         configureSearchController()
@@ -57,7 +59,7 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
     
     func setTable(){
         //self.tableView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
-        self.tableView.backgroundColor = UIColor(red: 0.968627450980392, green: 0.968627450980392, blue: 0.968627450980392, alpha: 1.0)
+        self.tableView.backgroundColor = UIColor.lightBackground
         tableView.delegate = self
         tableView.dataSource = self
         songs = receivedList.items
@@ -74,6 +76,8 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
             tableIndexView.indexes = self.indexes
             tableIndexView.tableView = self.tableView
             tableIndexView.setup()
+        }else{
+            tableIndexView.isHidden = true
         }
     }
 
@@ -405,7 +409,9 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
         if scrollView.contentOffset.y < -160 {
             searchController.searchBar.becomeFirstResponder()
         }else if scrollView.contentOffset.y > -80 {
-            searchController.searchBar.resignFirstResponder()
+            if hideKeyboard {
+                searchController.searchBar.resignFirstResponder()
+            }
         }
     }
     
@@ -464,10 +470,11 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
         filteredSongs = (songs?.filter { finalCompoundPredicate.evaluate(with: $0) })!
         cellTypesSearch = Array<Int>(repeating: 0, count: filteredSongs.count)
         self.tableView.reloadData()
-//        if filteredSongs.count != 0 {
-//            tableView.reloadData()
-//            tableView.contentOffset.y = heightInset
-//        }
+        if filteredSongs.count != 0 {
+            hideKeyboard = false
+            tableView.contentOffset.y = -heightInset
+            hideKeyboard = true
+        }
     }
     
 }

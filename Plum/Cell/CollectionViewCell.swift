@@ -21,6 +21,11 @@ class CollectionViewCell: UICollectionViewCell {
         let count = artist.songsIn
         let albums = artist.albumsIn
         var st = ""
+//        if count > 1 {
+//            st = "\(count) songs"
+//        }else{
+//            st = "1 song"
+//        }
         if count > 1 {
             if albums > 1 {
                 st = "\(albums) albums ･ \(count) songs"

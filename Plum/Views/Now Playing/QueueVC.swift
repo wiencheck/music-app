@@ -54,7 +54,7 @@ class QueueVC: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        instruct("delete", message: "Tap on song's artwork to quickly delete it from queue or drag it to change queue's order", completion: nil)
+        instruct("delete", message: "Tap on song's artwork to quickly delete it from queue or drag it by the handle to change queue's order\n\nDrag the list down to dismiss this screen", completion: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -401,10 +401,18 @@ extension QueueVC {     //Ustawianie kolejek
         //////////////////////////////// NEXT
         
         nextStart = previousMeta + 1
-        if(player.defIndex > player.defQueueCount - 40 || player.shufIndex > player.shufQueueCount - 40){
-            nextMeta = player.defQueueCount
+        if player.isShuffle {
+            if player.shufIndex > player.shufQueue.count - 60 {
+                nextMeta = player.shufQueue.count
+            }else{
+                nextMeta = player.shufIndex + 60
+            }
         }else{
-            nextMeta = player.defIndex + 40
+            if player.defIndex > player.defQueue.count - 60 {
+                nextMeta = player.defQueue.count
+            }else{
+                nextMeta = player.defIndex + 60
+            }
         }
         if nextStart <= nextMeta {
             if(!player.isShuffle){

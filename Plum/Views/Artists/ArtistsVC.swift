@@ -37,6 +37,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     var headers: [UIView]!
     var heightInset: CGFloat!
     var controllerSet = false
+    var hideKeyboard = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,7 +87,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     
     func setTable(){
         //self.tableView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
-        tableView.backgroundColor = UIColor(red: 0.968627450980392, green: 0.968627450980392, blue: 0.968627450980392, alpha: 1.0)
+        tableView.backgroundColor = UIColor.lightBackground
         tableView.delegate = self
         tableView.dataSource = self
         view.addSubview(tableView)
@@ -101,7 +102,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     
     func setCollection(){
         //self.collectionView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
-        collectionView.backgroundColor = UIColor(red: 0.968627450980392, green: 0.968627450980392, blue: 0.968627450980392, alpha: 1.0)
+        collectionView.backgroundColor = UIColor.lightBackground
         collectionView.delegate = self
         collectionView.dataSource = self
         self.view.addSubview(collectionView)
@@ -577,6 +578,7 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.isTranslucent = true
         searchView.addSubview(searchController.searchBar)
+        
         let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
         NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
         //heightInset = (navigationController?.navigationBar.frame.height)! + searchController.searchBar.frame.height
@@ -597,7 +599,9 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         if scrollView.contentOffset.y < -160 {
             searchController.searchBar.becomeFirstResponder()
         }else if scrollView.contentOffset.y > -80 {
-            searchController.searchBar.resignFirstResponder()
+            if hideKeyboard {
+                searchController.searchBar.resignFirstResponder()
+            }
         }
     }
     
@@ -635,17 +639,6 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
             tableIndexView.isHidden = false
         }else{
             shouldShowResults = true
-            if grid {
-                if filteredArtists.count != 0 {
-                    collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-                }
-                //collectionView.contentOffset.y = -heightInset
-            }else{
-                if filteredArtists.count != 0 {
-                    tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-                }
-                //tableView.contentOffset.y = -heightInset
-            }
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces
         let strippedString = searchString!.trimmingCharacters(in: whitespaceCharacterSet)
@@ -671,18 +664,19 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         cellTypesSearch = Array<Int>(repeating: 0, count: filteredArtists.count)
         if grid {
             collectionView.reloadData()
+            if filteredArtists.count != 0 {
+                hideKeyboard = false
+                collectionView.contentOffset.y = -heightInset + 6
+                hideKeyboard = true
+            }
         }else{
             tableView.reloadData()
+            if filteredArtists.count != 0 {
+                hideKeyboard = false
+                tableView.contentOffset.y = -heightInset
+                hideKeyboard = true
+            }
         }
-//        if filteredArtists.count != 0 {
-//            if grid {
-//                collectionView.reloadData()
-//                collectionView.contentOffset.y = heightInset
-//            }else{
-//                tableView.reloadData()
-//                tableView.contentOffset.y = heightInset
-//            }
-//        }
     }
     
 }

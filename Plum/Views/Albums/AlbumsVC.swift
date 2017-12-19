@@ -36,6 +36,7 @@ class AlbumsVC: UIViewController {
     var headers: [UIView]!
     var heightInset: CGFloat!
     var controllerSet = false
+    var hideKeyboard = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,7 +83,7 @@ class AlbumsVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         //tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
-        tableView.backgroundColor = UIColor(red: 0.968627450980392, green: 0.968627450980392, blue: 0.968627450980392, alpha: 1.0)
+        tableView.backgroundColor = UIColor.lightBackground
         self.view.addSubview(tableView)
     }
     
@@ -90,7 +91,7 @@ class AlbumsVC: UIViewController {
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         //collectionView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
-        collectionView.backgroundColor = UIColor(red: 0.968627450980392, green: 0.968627450980392, blue: 0.968627450980392, alpha: 1.0)
+        collectionView.backgroundColor = UIColor.lightBackground
         //correctCollectionSections()
         for index in indexes {
             cellTypes.append(Array<Int>(repeating: 0, count: (result[index]?.count)!))
@@ -442,6 +443,7 @@ extension AlbumsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.isTranslucent = true
         searchView.addSubview(searchController.searchBar)
+        
         let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
         NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
         //heightInset = (navigationController?.navigationBar.frame.height)! + searchView.frame.height
@@ -462,7 +464,9 @@ extension AlbumsVC: UISearchBarDelegate, UISearchResultsUpdating {
         if scrollView.contentOffset.y < -160 {
             searchController.searchBar.becomeFirstResponder()
         }else if scrollView.contentOffset.y > -80 {
-            searchController.searchBar.resignFirstResponder()
+            if hideKeyboard {
+                searchController.searchBar.resignFirstResponder()
+            }
         }
     }
     
@@ -534,8 +538,18 @@ extension AlbumsVC: UISearchBarDelegate, UISearchResultsUpdating {
         cellTypesSearch = Array<Int>(repeating: 0, count: filteredAlbums.count)
         if grid {
             collectionView.reloadData()
+            if filteredAlbums.count != 0 {
+                hideKeyboard = false
+                collectionView.contentOffset.y = -heightInset + 6
+                hideKeyboard = true
+            }
         }else{
             tableView.reloadData()
+            if filteredAlbums.count != 0 {
+                hideKeyboard = false
+                tableView.contentOffset.y = -heightInset
+                hideKeyboard = true
+            }
         }
     }
     

@@ -193,7 +193,7 @@ extension ArtistSongs: UITableViewDelegate, UITableViewDataSource {
             if sort == .album {
                 if typesAlbums[activeIndexSection][activeIndexRow] != 0 {
                     typesAlbums[activeIndexSection][activeIndexRow] = 0
-                    tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .fade)
+                    tableView.reloadRows(at: [IndexPath(row: activeIndexRow+1, section: activeIndexSection)], with: .fade)
                 }
                 if indexPath.row == 0 {
                     let items = albums[indexPath.section-1].items
@@ -228,7 +228,7 @@ extension ArtistSongs: UITableViewDelegate, UITableViewDataSource {
             }else{
                 if typesSongs[activeIndexSection][activeIndexRow] != 0 {
                     typesSongs[activeIndexSection][activeIndexRow] = 0
-                    tableView.reloadRows(at: [IndexPath(row: activeIndexRow,section: activeIndexSection)], with: .fade)
+                    tableView.reloadRows(at: [IndexPath(row: activeIndexRow,section: activeIndexSection+1)], with: .fade)
                 }
                 activeIndexRow = indexPath.row
                 activeIndexSection = indexPath.section - 1
@@ -334,7 +334,7 @@ extension ArtistSongs: UIGestureRecognizerDelegate, QueueCellDelegate {
         }else{
             if typesSongs[activeIndexSection][activeIndexRow] != 0 {
                 typesSongs[activeIndexSection][activeIndexRow] = 0
-                let indexPath = IndexPath(row: activeIndexRow, section: 1)
+                let indexPath = IndexPath(row: activeIndexRow, section: activeIndexSection+1)
                 self.tableView.deselectRow(at: indexPath, animated: true)
                 self.tableView.reloadRows(at: [indexPath], with: .fade)
             }
@@ -376,14 +376,7 @@ extension ArtistSongs {
                 songsByAlbums.append(contentsOf: album.items)
                 let header = tableView.dequeueReusableCell(withIdentifier: "infoCell") as! AlbumInfoCell
                 header.setup(album: album, play: false)
-//                let imv = UIImageView(frame: header.frame)
-//                imv.contentMode = .scaleToFill
-//                imv.image = #imageLiteral(resourceName: "background_se")
-//                header.backgroundView = imv
-//                let v = UIView()
-//                v.addSubview(header)
-//                v.layer.borderWidth = 0.5
-//                v.layer.borderColor = tableView.separatorColor?.cgColor
+                header.contentView.backgroundColor = UIColor.lightBackground
                 headers.append(header.contentView)
             }
             songs = songsByAlbums
@@ -396,10 +389,7 @@ extension ArtistSongs {
         }
         tableView.delegate = self
         tableView.dataSource = self
-        //tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
-        tableView.backgroundColor = UIColor(red: 0.968627450980392, green: 0.968627450980392, blue: 0.968627450980392, alpha: 1.0)
-        //tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
-        //tableView.scrollIndicatorInsets = tableView.contentInset
+        tableView.backgroundColor = UIColor.lightBackground
     }
     
     func alphabetically() {

@@ -32,27 +32,14 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         nextBtn = UIBarButtonItem(barButtonSystemItem: .fastForward, target: self, action: #selector(nextBtnPressed))
         setPopup()
         emptyPopup()
-    }
-    
-    override func viewDidLayoutSubviews() {
-//        if !UserDefaults.standard.bool(forKey: "greeting") {
-//            let a = UIAlertController(title: "Hey there!", message: "Welcome to Plum, I hope you will find using it an enjoyable experience :)", preferredStyle: .alert)
-//            a.addAction(UIAlertAction(title: "Let's go!", style: .default, handler: {_ in
-//                self.instruct("index", message: "Drag your finger on the right edge of the screen to quickly scroll through your library", completion: {
-//                    UserDefaults.standard.set(true, forKey: "greeting")
-//                })
-//            }))
-//            present(a, animated: true, completion: nil)
-//        }
         DispatchQueue.global(qos: .background).async {
             musicQuery.shared.setArrays()
-            //self.loadAllViews()
             if let count = UserDefaults.standard.value(forKey: "count") as? Int {
                 if count != (musicQuery.shared.songs.count) {
                     musicQuery.shared.removeAllFromSpotlight()
                     musicQuery.shared.addToSpotlight()
                     /*self.instruct("spotlight", message: "Spinning wheel in status bar means that Plum is indexing all your songs and playlists so you will be able to search them from Spotlight\nIf you can't see any results be sure to enable Plum in Spotlight settings and launch indexing from the settings", completion: nil)
-                    UserDefaults.standard.set(musicQuery.shared.songs.count, forKey: "count")*/
+                     UserDefaults.standard.set(musicQuery.shared.songs.count, forKey: "count")*/
                 }
             }else{
                 UserDefaults.standard.set(musicQuery.shared.songs.count, forKey: "count")
@@ -61,7 +48,16 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
                 musicQuery.shared.addToSpotlight()
             }
         }
+        customizeMoreTab()
     }
+    
+//    override func viewDidAppear(_ animated: Bool) {
+//        DispatchQueue.global(qos: .background).async {
+//            musicQuery.shared.setArrays()
+//        }
+//    }
+    
+    
     
     fileprivate func displayPermissionsError() {
         let alertVC = UIAlertController(title: "This is a demo", message: "Unauthorized or restricted access. Cannot play media. Fix in Settings?" , preferredStyle: .alert)
@@ -162,14 +158,28 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         }
     }
     
-    
-    /*
-     // MARK: - Navigation
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
+    func customizeMoreTab() {
+        if let more = self.moreNavigationController.topViewController?.view as? UITableView {
+            //more.delegate = self
+            more.backgroundColor = GlobalSettings.tint.color
+            more.separatorStyle = .none
+            for cell in more.visibleCells {
+                cell.backgroundColor = .clear
+                cell.textLabel?.textColor = GlobalSettings.tint.bar
+            }
+        }
+        
+    }
     
 }
+
+//extension PlumTabBarController: UITableViewDelegate {
+//
+//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        cell.backgroundColor = .clear
+//        cell.textLabel?.textColor = GlobalSettings.tint.bar
+//        //cell.imageView?.image = UIImage()
+//    }
+//
+//}
+

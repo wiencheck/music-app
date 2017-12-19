@@ -16,7 +16,6 @@
 		38121E9F1FA07CBE00C2A3BD /* AlbumVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38121E9E1FA07CBE00C2A3BD /* AlbumVC.swift */; };
 		38121EA31FA0856400C2A3BD /* AlbumsCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38121EA21FA0856400C2A3BD /* AlbumsCollectionCell.swift */; };
 		3812DEED1F7D2E5600DA9840 /* AlbumSectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3812DEEC1F7D2E5600DA9840 /* AlbumSectionCell.swift */; };
-		381565251FDAC10E00F11D7F /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 381565241FDAC10E00F11D7F /* TabBarController.swift */; };
 		3817D0DB1FE1780300659C9C /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3817D0DA1FE1780300659C9C /* BlurView.swift */; };
 		3822211E1FA5EA4000004B21 /* QueueActionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3822211D1FA5EA4000004B21 /* QueueActionsCell.swift */; };
 		38345F461FABBBCA003DA1F2 /* PlaylistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38345F451FABBBCA003DA1F2 /* PlaylistCell.swift */; };
@@ -125,7 +124,6 @@
 		38121E9E1FA07CBE00C2A3BD /* AlbumVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumVC.swift; sourceTree = "<group>"; };
 		38121EA21FA0856400C2A3BD /* AlbumsCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumsCollectionCell.swift; sourceTree = "<group>"; };
 		3812DEEC1F7D2E5600DA9840 /* AlbumSectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumSectionCell.swift; sourceTree = "<group>"; };
-		381565241FDAC10E00F11D7F /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		3817D0DA1FE1780300659C9C /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		3822211D1FA5EA4000004B21 /* QueueActionsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueActionsCell.swift; sourceTree = "<group>"; };
 		38345F451FABBBCA003DA1F2 /* PlaylistCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistCell.swift; sourceTree = "<group>"; };
@@ -295,7 +293,6 @@
 			isa = PBXGroup;
 			children = (
 				384BCD4F1F96140600D8ECFD /* PlumTabBarController.swift */,
-				381565241FDAC10E00F11D7F /* TabBarController.swift */,
 				387C76B01FDD539300F4964E /* UpNextTabBarController.swift */,
 				389859EC1FDDB89700E54E55 /* PlumVolumeView.swift */,
 			);
@@ -630,7 +627,6 @@
 				385921431FA88A7600CF9059 /* SettingsVC.swift in Sources */,
 				3812DEED1F7D2E5600DA9840 /* AlbumSectionCell.swift in Sources */,
 				38401DF71F88EB9C00EF64F1 /* VolumeSlider.swift in Sources */,
-				381565251FDAC10E00F11D7F /* TabBarController.swift in Sources */,
 				38FD26DF1F9F57B3005BE3DF /* SearchVC.swift in Sources */,
 				3890B3581F920A6C000198D8 /* Structs:Classes.swift in Sources */,
 				38401DF91F88F16E00EF64F1 /* Colors.swift in Sources */,

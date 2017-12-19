@@ -9,14 +9,17 @@
 import UIKit
 import MediaPlayer
 
+protocol InfoCellDelegate {
+    func playPressed()
+}
+
 class AlbumInfoCell: UITableViewCell {
     
+    var delegate: InfoCellDelegate?
     @IBOutlet weak var songsLabel:UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var yearLabel: UILabel!
     @IBOutlet weak var artwork: UIImageView!
-    @IBOutlet weak var shufBtn: UIButton!
-    @IBOutlet weak var playBtn: UIButton!
     var songs: [MPMediaItem]!
     var album: AlbumB!
     override func awakeFromNib() {
@@ -30,6 +33,8 @@ class AlbumInfoCell: UITableViewCell {
     }
 
     func setup(album: AlbumB, play: Bool){
+        self.contentView.isUserInteractionEnabled = true
+        artwork.isUserInteractionEnabled = true
         self.album = album
         songs = album.items
         titleLabel.text = album.name
@@ -69,22 +74,8 @@ class AlbumInfoCell: UITableViewCell {
         return duration.calculateFromTimeInterval().minute
     }
     
-    @IBAction func playBtnPressed(_ sender: UIButton){
-        Plum.shared.isShuffle = false
-        Plum.shared.createDefQueue(items: songs)
-        if Plum.shared.currentItem?.albumTitle == album.name{
-            var i = 0
-            for song in songs{
-                if Plum.shared.currentItem?.persistentID == song.persistentID{
-                    Plum.shared.playFromDefQueue(index: i, new: false)
-                    break
-                }
-            i += 1
-            }
-        }else{
-            Plum.shared.playFromDefQueue(index: 0, new: true)
-        }
-        Plum.shared.play()
+    @IBAction func playBtn() {
+        delegate?.playPressed()
     }
     
     @IBAction func shufBtnPressed(_ sender: UIButton){

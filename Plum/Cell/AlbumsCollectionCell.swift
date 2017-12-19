@@ -18,19 +18,19 @@ class AlbumsCollectionCell: UICollectionViewCell {
         mainLabel.lineBreakMode = .byWordWrapping
         mainLabel.numberOfLines = 1
         mainLabel.text = album.name
-        let count = album.songsIn
-        var st = ""
-        let genre = album.items[0].genre ?? ""
-        if genre != "" {
-            if count > 1 {
-                st = "\(genre) ･ \(count)"
-            }else{
-                st = "\(genre) ･ 1 song"
-            }
-        }else{
-            st = "\(count) songs"
-        }
-        detailLabel.text = st
+        //let count = album.songsIn
+        //var st = ""
+        let genre = album.items[0].albumArtist ?? ""
+//        if genre != "" {
+//            if count > 1 {
+//                st = "\(genre) ･ \(count)"
+//            }else{
+//                st = "\(genre) ･ 1 song"
+//            }
+//        }else{
+//            st = "\(count) songs"
+//        }
+        detailLabel.text = genre
         artwork.image = album.artwork
     }
     
