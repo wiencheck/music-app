@@ -41,6 +41,7 @@ class QueueVC: UIViewController {
         setupQueue()
         setHeaders()
         setupTable()
+        addBtn.setImage(#imageLiteral(resourceName: "add").imageScaled(toFit: CGSize(width: 21, height: 21)).withRenderingMode(.alwaysTemplate), for: .normal)
         setColors()
         NotificationCenter.default.addObserver(self, selector: #selector(reload), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
     }
@@ -519,7 +520,7 @@ extension QueueVC: MPMediaPickerControllerDelegate {    //Media Picker
     func dark() {
         upperBar.backgroundColor = UIColor(red: 0.105882352941176, green: 0.105882352941176, blue: 0.105882352941176, alpha: 0.8)
         mainLabel.textColor = .white
-        addBtn.setTitleColor(GlobalSettings.tint.color, for: .normal)
+        addBtn.tintColor = GlobalSettings.tint.color
         UIApplication.shared.statusBarStyle = .lightContent
         fxView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
         self.tableView.separatorColor = .black
@@ -529,7 +530,7 @@ extension QueueVC: MPMediaPickerControllerDelegate {    //Media Picker
     func light() {
         upperBar.backgroundColor = UIColor(red: 0.972549019607843, green: 0.972549019607843, blue: 0.972549019607843, alpha: 0.8)
         mainLabel.textColor = .black
-        addBtn.setTitleColor(GlobalSettings.tint.color, for: .normal)
+        addBtn.tintColor = GlobalSettings.tint.color
         UIApplication.shared.statusBarStyle = .default
         fxView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
         self.tableView.separatorColor = UIColor(red: 0.929411764705882, green: 0.929411764705882, blue: 0.933333333333333, alpha: 1.0)

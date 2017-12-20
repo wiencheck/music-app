@@ -28,6 +28,7 @@ class AlbumCell: UITableViewCell {
     func setup(album: AlbumB){
         let songsCount = album.songsIn
         self.artworkImage.image = album.artwork
+        titleLabel.text = album.name ?? "Unknown album"
         let genre = album.items[0].albumArtist ?? ""
         let attYear = NSMutableAttributedString(string: genre)
         let attYearR = NSRange(location: 0, length: attYear.length)
@@ -61,6 +62,7 @@ class AlbumCell: UITableViewCell {
     func setupArtist(album: AlbumB){
         let songsCount = album.songsIn
         self.artworkImage.image = album.artwork
+        titleLabel.text = album.name ?? "Unknown album"
         let genre = album.year ?? ""
         //Year
         

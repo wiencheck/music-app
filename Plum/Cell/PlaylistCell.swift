@@ -18,9 +18,14 @@ class PlaylistCell: UICollectionViewCell {
         title.lineBreakMode = .byWordWrapping
         title.numberOfLines = 1
         title.text = list.name
-        detail.text = "\(list.songsIn) songs"
-        artwork.image = list.image
-        
+        if list.isFolder {
+            artwork.image = #imageLiteral(resourceName: "folder")
+            //let songsCount = musicQuery.shared.playlistsForParent(list.ID).count
+            detail.text = "Folder"
+        }else{
+            artwork.image = list.image
+            detail.text = "\(list.songsIn) songs"
+        }
     }
     
     override func layoutSubviews() {

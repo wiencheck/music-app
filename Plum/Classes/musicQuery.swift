@@ -39,20 +39,16 @@ class musicQuery{
     
     func setArrays(){
         if !playlistsSet{
-            playlists = allPlaylists()
-            playlistsSet = true
+            _ = allPlaylists()
         }
         if !artistsSet {
-            artists = allArtists()
-            artistsSet = true
+            _ = allArtists()
         }
         if !albumsSet {
-            albums = allAlbums()
-            albumsSet = true
+            _ = allAlbums()
         }
         if !songsSet {
-            songs = allSongs()
-            songsSet = true
+            _ = allSongs()
         }
         arraysSet = true
     }

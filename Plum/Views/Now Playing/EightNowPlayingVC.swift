@@ -519,6 +519,7 @@ extension EightNowPlayingVC {       //Kolory i UI
     func setImages() {
         prevBtn.setImage(#imageLiteral(resourceName: "prev-butt"), for: .normal)
         nextBtn.setImage(#imageLiteral(resourceName: "next-butt"), for: .normal)
+        addNextBtn.setImage(#imageLiteral(resourceName: "add").imageScaled(toFit: CGSize(width: 21, height: 21)).withRenderingMode(.alwaysTemplate), for: .normal)
         // 10 18 18 18
         let min = #imageLiteral(resourceName: "zeroVol").imageScaled(toFit: CGSize(width: 10, height: 18))
         let max = #imageLiteral(resourceName: "maxVol").imageScaled(toFit: CGSize(width: 18, height: 18))
@@ -566,7 +567,7 @@ extension EightNowPlayingVC {       //Kolory i UI
         customTrackSlider(slider: timeSlider, min: colors.primaryColor, max: colors.detailColor, thumb: colors.primaryColor)
         customVolumeSlider(min: colors.primaryColor, max: colors.detailColor, thumb: colors.detailColor, thumbImg: #imageLiteral(resourceName: "thumb"))
         upNextBtn.tintColor = colors.detailColor
-        addNextBtn.setTitleColor(colors.detailColor, for: .normal)
+        addNextBtn.tintColor = colors.detailColor
         outOfLabel.textColor = colors.primaryColor
         ratingLabel.textColor = colors.primaryColor
         ratingButton.tintColor = colors.detailColor
@@ -629,7 +630,7 @@ extension EightNowPlayingVC {       //Kolory i UI
         maxVolImg.tintColor = UIColor.white.withAlphaComponent(0.3)
         upperBar.backgroundColor = .clear
         upNextBtn.tintColor = .white
-        addNextBtn.setTitleColor(.white, for: .normal)
+        addNextBtn.tintColor = .white
         outOfLabel.textColor = UIColor.white.withAlphaComponent(0.3)
         ratingsView.backgroundColor = .clear
         titleView.backgroundColor = .clear
@@ -669,7 +670,7 @@ extension EightNowPlayingVC {       //Kolory i UI
         maxVolImg.tintColor = UIColor.white.withAlphaComponent(0.5)
         upperBar.backgroundColor = .clear
         upNextBtn.tintColor = .white
-        addNextBtn.setTitleColor(.white, for: .normal)
+        addNextBtn.tintColor = .white
         outOfLabel.textColor = UIColor.white.withAlphaComponent(0.5)
         ratingsView.backgroundColor = .clear
         titleView.backgroundColor = .clear

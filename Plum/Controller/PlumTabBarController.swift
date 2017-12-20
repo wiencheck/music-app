@@ -32,14 +32,16 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         nextBtn = UIBarButtonItem(barButtonSystemItem: .fastForward, target: self, action: #selector(nextBtnPressed))
         setPopup()
         emptyPopup()
+        _ = musicQuery.shared.allSongs()
         DispatchQueue.global(qos: .background).async {
             musicQuery.shared.setArrays()
             if let count = UserDefaults.standard.value(forKey: "count") as? Int {
-                if count != (musicQuery.shared.songs.count) {
+                let c = musicQuery.shared.songs.count
+                if count != c {
+                    UserDefaults.standard.set(c, forKey: "count")
                     musicQuery.shared.removeAllFromSpotlight()
                     musicQuery.shared.addToSpotlight()
-                    /*self.instruct("spotlight", message: "Spinning wheel in status bar means that Plum is indexing all your songs and playlists so you will be able to search them from Spotlight\nIf you can't see any results be sure to enable Plum in Spotlight settings and launch indexing from the settings", completion: nil)
-                     UserDefaults.standard.set(musicQuery.shared.songs.count, forKey: "count")*/
+                    /*self.instruct("spotlight", message: "Spinning wheel in status bar means that Plum is indexing all your songs and playlists so you will be able to search them from Spotlight\nIf you can't see any results be sure to enable Plum in Spotlight settings and launch indexing from the settings", completion: nil)*/
                 }
             }else{
                 UserDefaults.standard.set(musicQuery.shared.songs.count, forKey: "count")
@@ -91,7 +93,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         popupPresented = true
         nowPlaying.popupItem.title = "Welcome to Plum"
         nowPlaying.popupItem.subtitle = "Pick some music to play"
-        self.popupBar.isUserInteractionEnabled = false
+        self.popupBar.isUserInteractionEnabled = true
     }
     
     @objc func updatePopup() {

@@ -204,7 +204,6 @@ class RemoteCommandManager: NSObject{
     
     @objc func handleStopCommandEvent(_ event: MPRemoteCommandEvent) -> MPRemoteCommandHandlerStatus {
         player.stop()
-        
         return .success
     }
     
