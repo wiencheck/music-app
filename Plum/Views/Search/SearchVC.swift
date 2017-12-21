@@ -397,7 +397,11 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         searchView.addSubview(searchController.searchBar)
         let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
         NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
-        heightInset = 112
+        if UIDevice.current.modelName == "iPhone X" {
+            heightInset = 140
+        }else{
+            heightInset = 112
+        }
         let bottomInset = 49 + GlobalSettings.bottomInset
         tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
         tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)

@@ -34,6 +34,7 @@ class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.contentInset = UIEdgeInsetsMake(0, 0, 49, 0)
         separatorColor = tableView.separatorColor
         setColors()
         setup()

@@ -404,7 +404,7 @@ extension EightNowPlayingVC: UITextViewDelegate {
     }
     
     func setVolumeView(){
-        mpVolView = MPVolumeView(frame: volView.bounds)
+        mpVolView = MPVolumeView.init(frame: volView.bounds)
         mpVolView.showsVolumeSlider = true
         mpVolView.showsRouteButton = false
         volView.addSubview(mpVolView)

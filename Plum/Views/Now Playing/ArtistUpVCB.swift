@@ -37,6 +37,7 @@ class ArtistUpVCB: UIViewController {
         super.viewDidLoad()
         setupDict()
         setup()
+        tableView.contentInset = UIEdgeInsetsMake(0, 0, 49, 0)
         reload()
         NotificationCenter.default.addObserver(self, selector: #selector(reload), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
         separatorColor = tableView.separatorColor

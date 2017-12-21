@@ -529,7 +529,11 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
         NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
         //heightInset = (navigationController?.navigationBar.frame.height)! + 58
-        heightInset = 112
+        if UIDevice.current.modelName == "iPhone X" {
+            heightInset = 140
+        }else{
+            heightInset = 112
+        }
         automaticallyAdjustsScrollViewInsets = false
         let bottomInset = 49 + GlobalSettings.bottomInset
         if #available(iOS 11.0, *) {

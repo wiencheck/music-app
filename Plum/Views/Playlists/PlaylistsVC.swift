@@ -555,8 +555,15 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         
         let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
         NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
-        //heightInset = (navigationController?.navigationBar.frame.height)! + searchController.searchBar.frame.height
-        heightInset = 112
+        if UIDevice.current.modelName == "iPhone X" {
+            if grid {
+                heightInset = 136
+            }else{
+                heightInset = 140
+            }
+        }else{
+            heightInset = 112
+        }
         let bottomInset = 49 + GlobalSettings.bottomInset
         automaticallyAdjustsScrollViewInsets = false
         collectionView.contentInset = UIEdgeInsetsMake(heightInset+14, 0, bottomInset, 0)

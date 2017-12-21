@@ -84,6 +84,7 @@ extension QueueVC: UITableViewDelegate, UITableViewDataSource {     //TableView 
         tableView.dataSource = self
         tableView.allowsSelectionDuringEditing = true
         tableView.setEditing(true, animated: false)
+        tableView.contentInset = UIEdgeInsetsMake(0, 0, 49, 0)
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
