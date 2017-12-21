@@ -18,6 +18,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     var nextBtn: UIBarButtonItem!
     var elapsed: Float!
     var duration: Float!
+    var identifier: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +31,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(updatePopup), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
         nextBtn = UIBarButtonItem(barButtonSystemItem: .fastForward, target: self, action: #selector(nextBtnPressed))
+        identifier = setIdentifier()
         setPopup()
         emptyPopup()
         _ = musicQuery.shared.allSongs()
@@ -86,7 +88,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     func emptyPopup() {
         let story = UIStoryboard.init(name: "Main", bundle: nil)
-        nowPlaying = story.instantiateViewController(withIdentifier: "eight") as! EightNowPlayingVC
+        nowPlaying = story.instantiateViewController(withIdentifier: identifier) as! EightNowPlayingVC
         self.presentPopupBar(withContentViewController: nowPlaying, animated: true, completion: nil)
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
         timer.fire()
@@ -99,7 +101,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     @objc func updatePopup() {
         if !popupPresented {
             let story = UIStoryboard.init(name: "Main", bundle: nil)
-            nowPlaying = story.instantiateViewController(withIdentifier: "eight") as! EightNowPlayingVC
+            nowPlaying = story.instantiateViewController(withIdentifier: identifier) as! EightNowPlayingVC
             self.presentPopupBar(withContentViewController: nowPlaying, animated: true, completion: nil)
             popupPresented = true
         }
@@ -173,15 +175,21 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         
     }
     
+    func setIdentifier() -> String{
+        let device = UIDevice.current.modelName
+        print(device)
+        if device == "iPhone 5" || device == "iPhone 5s" || device == "iPhone 5c" || device == "iPhone SE" {
+            return "eight_se"
+        }else if device == "iPhone 6" || device == "iPhone 6s" || device == "iPhone 7" || device == "iPhone 8" {
+            return "eight_6"
+        }else if device == "iPhone 6 Plus" || device == "iPhone 7 Plus" || device == "iPhone 8 Plus" {
+            return "eight_6plus"
+        }else{
+            print("Rozpoznano simulator")
+            return "eight_6"
+        }
+    }
+    
 }
 
-//extension PlumTabBarController: UITableViewDelegate {
-//
-//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        cell.backgroundColor = .clear
-//        cell.textLabel?.textColor = GlobalSettings.tint.bar
-//        //cell.imageView?.image = UIImage()
-//    }
-//
-//}
 

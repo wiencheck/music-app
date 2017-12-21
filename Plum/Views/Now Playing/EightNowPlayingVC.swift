@@ -43,7 +43,7 @@ class EightNowPlayingVC: UIViewController {
     @IBOutlet weak var repBtn: UIButton!
     @IBOutlet weak var lyricsButton: UIButton!
     @IBOutlet weak var ratingButton: UIButton!
-    @IBOutlet weak var BackgroundView: UIView!
+    @IBOutlet weak var backgroundView: UIView!
     var shoudlChangeBar = false
     var viewActive = false
     
@@ -86,10 +86,10 @@ class EightNowPlayingVC: UIViewController {
         repView.layer.cornerRadius = 6.0
         //        if GlobalSettings.blur {
         //            let blur = UIBlurEffect(style: .dark)
-        //            let fx = UIVisualEffectView(frame: BackgroundView.frame)
+        //            let fx = UIVisualEffectView(frame: view.frame)
         //            fx.effect = blur
         //            backgroundImgView.contentMode = .scaleAspectFill
-        //            BackgroundView.addSubview(fx)
+        //            view.addSubview(fx)
         //        }
         updateUI()
         setColors()
@@ -558,7 +558,7 @@ extension EightNowPlayingVC {       //Kolory i UI
     
     func color(){
         colors = image.getColors(scaleDownSize: CGSize(width: scale, height: scale))
-        BackgroundView.backgroundColor = colors.backgroundColor
+        view.backgroundColor = colors.backgroundColor
         view.backgroundColor = colors.backgroundColor
         self.titleLabel.textColor = colors.primaryColor
         self.detailLabel.textColor = colors.detailColor
@@ -683,7 +683,7 @@ extension EightNowPlayingVC {       //Kolory i UI
     }
     
     func light() {
-        BackgroundView.backgroundColor = .clear
+        view.backgroundColor = .clear
         backgroundImgView.image = #imageLiteral(resourceName: "background_se")
         titleLabel.textColor = .black
         detailLabel.textColor = .black
