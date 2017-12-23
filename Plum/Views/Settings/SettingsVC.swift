@@ -147,6 +147,8 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         case "theme":
             //explainStyle()
             later()
+        case "about":
+            performSegue(withIdentifier: "about", sender: nil)
         case "miniplayer":
             explainMiniPlayer()
         case "tint":

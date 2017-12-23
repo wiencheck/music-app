@@ -73,6 +73,11 @@ class AlbumsVC: UIViewController {
         if grid != GlobalSettings.albumsGrid{
             self.viewDidLoad()
         }
+        definesPresentationContext = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        definesPresentationContext = false
     }
     
     override func viewDidAppear(_ animated: Bool) {

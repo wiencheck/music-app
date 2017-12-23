@@ -39,14 +39,28 @@ class ArtistCell: UITableViewCell {
     
     func setup(list: Playlist) {
         if list.isFolder {
-            let songsCount = musicQuery.shared.playlistsForParent(list.ID).count
-            artistLabel.text = list.name
-            detailLabel.text = "\(songsCount) playlists"
+            let albumsCount = list.albumsIn
+            let songsCount = list.songsIn
+            self.artistLabel.text = list.name
+            if(albumsCount == 1 && songsCount == 1){
+                self.detailLabel.text = "1 album ･ 1 song"
+            }else if(albumsCount == 1 && songsCount > 1){
+                self.detailLabel.text = "1 album ･ \(songsCount) songs"
+            }else if(albumsCount > 1 && songsCount > 1){
+                self.detailLabel.text = "\(albumsCount) albums ･ \(songsCount) songs"
+            }
             artistImage.image = #imageLiteral(resourceName: "folder")
         }else{
+            let albumsCount = list.albumsIn
             let songsCount = list.songsIn
-            artistLabel.text = list.name
-            detailLabel.text = "\(songsCount) songs"
+            self.artistLabel.text = list.name
+            if(albumsCount == 1 && songsCount == 1){
+                self.detailLabel.text = "1 album ･ 1 song"
+            }else if(albumsCount == 1 && songsCount > 1){
+                self.detailLabel.text = "1 album ･ \(songsCount) songs"
+            }else if(albumsCount > 1 && songsCount > 1){
+                self.detailLabel.text = "\(albumsCount) albums ･ \(songsCount) songs"
+            }
             artistImage.image = list.image
         }
     }

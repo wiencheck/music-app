@@ -24,12 +24,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var rating: Bool!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        /*if let _ = MPMediaQuery.songs().items {
+        if let _ = MPMediaQuery.songs().items {
             letGo()
         }else{
             hijack()
-        }*/
-        letGo()
+        }
+        //letGo()
         return true
     }
     

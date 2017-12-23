@@ -30,7 +30,6 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     var heightInset: CGFloat!
     var hideKeyboard = false
     
-    let backround = #imageLiteral(resourceName: "background_se")
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var indexView: TableIndexView!
     @IBOutlet weak var searchView: BlurView!
@@ -71,6 +70,11 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     
     override func viewWillAppear(_ animated: Bool) {
         tableView.reloadData()
+        definesPresentationContext = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        definesPresentationContext = false
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

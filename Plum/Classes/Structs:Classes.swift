@@ -214,6 +214,7 @@ struct ArtistKey {
     let ID: MPMediaEntityPersistentID
     let name: String
     let songsIn: Int
+    let albumsIn: Int
     let image: UIImage
     private var images: [UIImage]!
     var isFolder: Bool
@@ -285,23 +286,19 @@ struct ArtistKey {
         images = [UIImage]()
         songsIn = items.count
         var albums = [String]()
-        if images.count < 4{
-            for song in items{
-//                if let al = song.albumTitle {
-//                    if !albums.contains(al) {
-//                        if let art = song.artwork?.image(at: CGSize(width: 200, height: 200)) {
-//                            albums.append(al)
-//                            images.append(art)
-//                        }
-//                    }
-//                }
-                if !albums.contains(song.albumTitle!) && song.artwork != nil{
-                    albums.append(song.albumTitle!)
-                    images.append((song.artwork?.image(at: CGSize(width: 200, height: 200)))!)
-                    if images.count == 4 { break }
+        for song in items{
+            if let al = song.albumTitle {
+                if !albums.contains(al){
+                    albums.append(al)
+                    if images.count <= 3 {
+                        if let art = song.artwork?.image(at: CGSize(width: 200, height: 200)) {
+                            images.append(art)
+                        }
+                    }
                 }
             }
         }
+        albumsIn = albums.count
         image = combineImages(images: images)
         parentID = 0
         if let n = collection.value(forProperty: "parentPersistentID") as? NSNumber {

@@ -83,6 +83,11 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         }else{
             tableView.reloadData()
         }
+        definesPresentationContext = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        definesPresentationContext = false
     }
     
     func setTable(){

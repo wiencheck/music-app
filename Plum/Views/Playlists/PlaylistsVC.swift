@@ -73,7 +73,7 @@ class PlaylistsVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
-        //self.definesPresentationContext = true
+        self.definesPresentationContext = true
         if grid != GlobalSettings.playlistsGrid{
             self.viewDidLoad()
         }

@@ -5,6 +5,6 @@
       location = "group:../../../Downloads/LNPopupController-master-3/LNPopupController/LNPopupController.xcodeproj">
    </FileRef>
    <FileRef
-      location = "container:../Plum.xcodeproj">
+      location = "container:/Users/adw/Desktop/Plum/Plum.xcodeproj">
    </FileRef>
 </Workspace>

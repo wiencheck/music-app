@@ -27,10 +27,6 @@ class FolderVC: UITableViewController {
         tableView.backgroundColor = UIColor.lightBackground
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
-    }
-    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }

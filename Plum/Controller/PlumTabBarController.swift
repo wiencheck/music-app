@@ -95,7 +95,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         popupPresented = true
         nowPlaying.popupItem.title = "Welcome to Plum"
         nowPlaying.popupItem.subtitle = "Pick some music to play"
-        self.popupBar.isUserInteractionEnabled = true
+        self.popupBar.isUserInteractionEnabled = false
     }
     
     @objc func updatePopup() {
@@ -178,12 +178,14 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     func setIdentifier() -> String{
         let device = UIDevice.current.modelName
         print(device)
-        if device == "iPhone 5" || device == "iPhone 5s" || device == "iPhone 5c" || device == "iPhone SE" {
+        if device == "iPhone 5" || device == "iPhone 5s" || device == "iPhone 5c" || device == "iPhone SE" || device == "iPod Touch 6" {
             return "eight_se"
         }else if device == "iPhone 6" || device == "iPhone 6s" || device == "iPhone 7" || device == "iPhone 8" {
             return "eight_6"
         }else if device == "iPhone 6 Plus" || device == "iPhone 7 Plus" || device == "iPhone 8 Plus" {
             return "eight_6plus"
+        }else if device == "iPhone X" {
+            return "eight_x"
         }else{
             print("Rozpoznano simulator")
             return "eight_6"
