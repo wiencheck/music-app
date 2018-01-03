@@ -65,14 +65,18 @@ class AlbumCell: UITableViewCell {
         titleLabel.text = album.name ?? "Unknown album"
         let genre = album.year ?? ""
         //Year
-        
         let attYear = NSMutableAttributedString(string: genre)
-        let attYearR = NSRange(location: 0, length: attYear.length)
-        attYear.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 13, weight: .medium), range: attYearR)
-        var st = ", "
-        let attComa = NSMutableAttributedString(string: st)
-        let attComaR = NSRange(location: 0, length: attComa.length)
-        attComa.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 13), range: attComaR)
+        var attComa = NSMutableAttributedString(string: "")
+        var st = ""
+        if genre != "" {
+            //let attYear = NSMutableAttributedString(string: genre)
+            let attYearR = NSRange(location: 0, length: attYear.length)
+            attYear.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 13, weight: .medium), range: attYearR)
+            st = ", "
+            attComa = NSMutableAttributedString(string: st)
+            let attComaR = NSRange(location: 0, length: attComa.length)
+            attComa.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 13), range: attComaR)
+        }
         
         //Songs
         let attCount = NSMutableAttributedString(string: "\(songsCount)")

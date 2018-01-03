@@ -37,6 +37,7 @@ class AlbumsVC: UIViewController {
     var heightInset: CGFloat!
     var controllerSet = false
     var hideKeyboard = false
+    var currentTheme = Theme.light
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -600,10 +601,17 @@ extension AlbumsVC: UICollectionViewDelegateFlowLayout {
             let v = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 27))
             v.backgroundColor = .clear
             let label = UILabel(frame: CGRect(x: 12, y: 3, width: v.frame.width, height: 21))
+            label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
             let tool = UIToolbar(frame: v.frame)
             v.addSubview(tool)
             label.text = index
-            label.textColor = .black
+            if currentTheme == .dark {
+                label.textColor = .white
+                tool.barStyle = .blackTranslucent
+            }else{
+                label.textColor = UIColor.gray
+                tool.barStyle = .default
+            }
             v.addSubview(label)
             v.bringSubview(toFront: label)
             headers.append(v)

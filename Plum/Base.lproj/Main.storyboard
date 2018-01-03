@@ -1087,7 +1087,7 @@ SOFTWARE.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" contentInsetAdjustmentBehavior="never" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Aiz-RW-8Cf">
-                                <rect key="frame" x="0.0" y="160" width="320" height="408"/>
+                                <rect key="frame" x="0.0" y="202" width="320" height="366"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -1388,7 +1388,7 @@ SOFTWARE.</string>
         <!--ArtistSongs-->
         <scene sceneID="549-za-MZQ">
             <objects>
-                <viewController title="ArtistSongs" id="Mzv-cc-r99" customClass="ArtistSongs" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="ArtistSongs" automaticallyAdjustsScrollViewInsets="NO" id="Mzv-cc-r99" customClass="ArtistSongs" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="tTS-6Z-WHi"/>
                         <viewControllerLayoutGuide type="bottom" id="zeQ-0M-qEe"/>
@@ -1397,8 +1397,8 @@ SOFTWARE.</string>
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="NPL-WV-1cd">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" contentInsetAdjustmentBehavior="never" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="NPL-WV-1cd">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="songCell" rowHeight="62" id="PPF-Lm-xkI" customClass="SongCell" customModule="Plum" customModuleProvider="target">
@@ -1820,10 +1820,10 @@ SOFTWARE.</string>
                         <constraints>
                             <constraint firstItem="NPL-WV-1cd" firstAttribute="leading" secondItem="dhn-aL-5Xi" secondAttribute="leading" id="7dp-5G-Yjc"/>
                             <constraint firstItem="1fI-A7-OFg" firstAttribute="top" secondItem="tTS-6Z-WHi" secondAttribute="bottom" constant="10" id="Jfq-W4-fWg"/>
-                            <constraint firstItem="zeQ-0M-qEe" firstAttribute="top" secondItem="NPL-WV-1cd" secondAttribute="bottom" id="KFx-Tk-eFn"/>
                             <constraint firstItem="zeQ-0M-qEe" firstAttribute="top" secondItem="1fI-A7-OFg" secondAttribute="bottom" constant="10" id="N5q-Zk-24M"/>
                             <constraint firstAttribute="trailing" secondItem="NPL-WV-1cd" secondAttribute="trailing" id="QDI-Aa-Hd7"/>
                             <constraint firstAttribute="trailing" secondItem="1fI-A7-OFg" secondAttribute="trailing" id="WUu-vK-eGx"/>
+                            <constraint firstAttribute="bottom" secondItem="NPL-WV-1cd" secondAttribute="bottom" id="XBV-gD-xj0"/>
                             <constraint firstItem="GHa-r8-mEQ" firstAttribute="top" secondItem="dhn-aL-5Xi" secondAttribute="top" constant="74" id="fXA-Gl-IEo"/>
                             <constraint firstItem="zeQ-0M-qEe" firstAttribute="top" secondItem="GHa-r8-mEQ" secondAttribute="bottom" constant="10" id="sgE-4m-rwb"/>
                             <constraint firstAttribute="trailing" secondItem="GHa-r8-mEQ" secondAttribute="trailing" id="ue2-73-Q2Z"/>

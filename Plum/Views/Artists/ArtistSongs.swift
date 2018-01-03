@@ -46,7 +46,7 @@ class ArtistSongs: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
+        tableView.contentInset = UIEdgeInsetsMake(64, 0, GlobalSettings.bottomInset + 49, 0)
         tableView.reloadData()
     }
     
@@ -85,7 +85,7 @@ class ArtistSongs: UIViewController {
 extension ArtistSongs: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return indexes.count
+        return indexes.count+1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
