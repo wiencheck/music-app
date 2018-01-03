@@ -26,34 +26,56 @@ class SongCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func setup(item: MPMediaItem){
+    func setup(item: MPMediaItem, titColor: UIColor, artColor: UIColor, albColor: UIColor){
         titleLabel.text = item.title
+        titleLabel.textColor = titColor
         if let art = item.artwork {
             artworkView.image = art.image(at: CGSize(width: 30, height: 30))
         }else{
             artworkView.image = #imageLiteral(resourceName: "no_music")
         }
         let art = item.albumArtist ?? "Unknown"
-        let alb = " " + (item.albumTitle ?? "Unknown")
         let range = NSRange(location: 0, length: art.count)
         let nart = NSMutableAttributedString(string: art)
-        nart.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.black, range: range)
-        let nalb = NSMutableAttributedString(string: alb)
-        let range2 = NSRange(location: 0, length: alb.count)
-        nalb.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.lightGray, range: range2)
-        nart.append(nalb)
+        nart.addAttribute(NSAttributedStringKey.foregroundColor, value: artColor, range: range)
+        var alb = ""
+        if GlobalSettings.rating {
+            alb = " " + item.labelFromRating()
+            let nalb = NSMutableAttributedString(string: alb)
+            let range2 = NSRange(location: 0, length: alb.count)
+            nalb.addAttribute(NSAttributedStringKey.foregroundColor, value: GlobalSettings.tint.color, range: range2)
+            nart.append(nalb)
+        }else{
+            alb = " " + (item.albumTitle ?? "Unknown")
+            let nalb = NSMutableAttributedString(string: alb)
+            let range2 = NSRange(location: 0, length: alb.count)
+            nalb.addAttribute(NSAttributedStringKey.foregroundColor, value: albColor, range: range2)
+            nart.append(nalb)
+        }
         artAlLabel.attributedText = nart
     }
     
-    func artSetup(item: MPMediaItem){
+    func artSetup(item: MPMediaItem, titColor: UIColor, artColor: UIColor, albColor: UIColor){
         titleLabel.text = item.title
+        titleLabel.textColor = titColor
         if let art = item.artwork {
             artworkView.image = art.image(at: CGSize(width: 30, height: 30))
         }else{
             artworkView.image = #imageLiteral(resourceName: "no_music")
         }
-        artAlLabel.textColor = .gray
-        artAlLabel.text = item.albumTitle ?? "Unknown album"
+        let art = item.albumTitle ?? "Unknown"
+        let range = NSRange(location: 0, length: art.count)
+        let nart = NSMutableAttributedString(string: art)
+        nart.addAttribute(NSAttributedStringKey.foregroundColor, value: artColor, range: range)
+        var alb = ""
+        if GlobalSettings.rating {
+            alb = " " + item.labelFromRating()
+            let nalb = NSMutableAttributedString(string: alb)
+            let range2 = NSRange(location: 0, length: alb.count)
+            nalb.addAttribute(NSAttributedStringKey.foregroundColor, value: GlobalSettings.tint.color, range: range2)
+            nart.append(nalb)
+        }
+        artAlLabel.attributedText = nart
     }
     
     /*func editString(artAl: String, artistLetters: Int, albumLetters: Int) -> NSMutableAttributedString{

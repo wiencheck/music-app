@@ -36,6 +36,23 @@ extension MPMediaItem {
             objc_setAssociatedObject(self, &xoAssociationKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
         }
     }
+    
+    func labelFromRating() -> String {
+        switch self.rating{
+        case 1:
+            return "★☆☆☆☆"
+        case 2:
+            return "★★☆☆☆"
+        case 3:
+            return "★★★☆☆"
+        case 4:
+            return "★★★★☆"
+        case 5:
+            return "★★★★★"
+        default:
+            return "☆☆☆☆☆"
+        }
+    }
 }
 
 

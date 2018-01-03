@@ -13,12 +13,10 @@ class PermissionVC: UIViewController {
     
     var timet: Timer!
     @IBOutlet weak var text: UITextView!
-    @IBOutlet weak var thumb: UIImageView!
     @IBOutlet weak var loading: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        thumb.isHidden = true
         loading.isHidden = true
         text.isHidden = false
         timet = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(check), userInfo: nil, repeats: true)
@@ -31,7 +29,6 @@ class PermissionVC: UIViewController {
     
     @objc func check() {
         if checkPermissionForMusic() {
-            thumb.isHidden = false
             loading.isHidden = false
             text.isHidden = true
             let appDelegate = UIApplication.shared.delegate as! AppDelegate

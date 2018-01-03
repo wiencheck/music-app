@@ -11,7 +11,7 @@ import MediaPlayer
 
 class RemoteCommandManager: NSObject{
     
-    static let shared = RemoteCommandManager()
+    //static let shared = RemoteCommandManager()
     public let remoteCommandCenter = MPRemoteCommandCenter.shared()
     var player = Plum.shared
     

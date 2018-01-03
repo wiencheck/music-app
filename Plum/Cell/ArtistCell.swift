@@ -23,10 +23,12 @@ class ArtistCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
     
-    func setup(artist: Artist){
+    func setup(artist: Artist, titColor: UIColor, detColor: UIColor){
         let albumsCount = artist.albumsIn
         let songsCount = artist.songsIn
         self.artistLabel.text = artist.name
+        artistLabel.textColor = titColor
+        detailLabel.textColor = detColor
         if(albumsCount == 1 && songsCount == 1){
             self.detailLabel.text = "1 album ･ 1 song"
         }else if(albumsCount == 1 && songsCount > 1){
@@ -37,11 +39,13 @@ class ArtistCell: UITableViewCell {
         artistImage.image = artist.artwork
     }
     
-    func setup(list: Playlist) {
+    func setup(list: Playlist, titColor: UIColor, detColor: UIColor) {
+        let albumsCount = list.albumsIn
+        let songsCount = list.songsIn
+        self.artistLabel.text = list.name
+        artistLabel.textColor = titColor
+        detailLabel.textColor = detColor
         if list.isFolder {
-            let albumsCount = list.albumsIn
-            let songsCount = list.songsIn
-            self.artistLabel.text = list.name
             if(albumsCount == 1 && songsCount == 1){
                 self.detailLabel.text = "1 album ･ 1 song"
             }else if(albumsCount == 1 && songsCount > 1){
@@ -51,9 +55,6 @@ class ArtistCell: UITableViewCell {
             }
             artistImage.image = #imageLiteral(resourceName: "folder")
         }else{
-            let albumsCount = list.albumsIn
-            let songsCount = list.songsIn
-            self.artistLabel.text = list.name
             if(albumsCount == 1 && songsCount == 1){
                 self.detailLabel.text = "1 album ･ 1 song"
             }else if(albumsCount == 1 && songsCount > 1){

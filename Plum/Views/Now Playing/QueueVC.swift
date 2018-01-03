@@ -538,15 +538,15 @@ extension QueueVC: MPMediaPickerControllerDelegate {    //Media Picker
         tabBarController?.tabBar.barStyle = .default
     }
     
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let v = UIView(frame: CGRect(x: 5, y: 0, width: 40, height: 0.2))
-        v.backgroundColor = tableView.separatorColor?.withAlphaComponent(0.6)
-        return v
-    }
-    
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 1
-    }
+//    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+//        let v = UIView(frame: CGRect(x: 5, y: 0, width: 40, height: 0.2))
+//        v.backgroundColor = tableView.separatorColor?.withAlphaComponent(0.6)
+//        return v
+//    }
+//
+//    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+//        return 0
+//    }
     
     func setHeaders() {
         headers = [UIView]()

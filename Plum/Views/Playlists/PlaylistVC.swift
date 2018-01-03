@@ -44,6 +44,7 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
         //tableView.separatorStyle = .none
         title = receivedList.name
         setTable()
+        tableView.separatorColor = UIColor.lightSeparator
         configureSearchController()
         view.bringSubview(toFront: tableIndexView)
         tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
@@ -115,31 +116,49 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
             }else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! SongCell
                 let item = filteredSongs[indexPath.row]
-                cell.setup(item: item)
+                if GlobalSettings.theme == .dark {
+                    cell.setup(item: item, titColor: .white, artColor: .white, albColor: UIColor.lightText)
+                    cell.titleLabel.textColor = .white
+                }else{
+                    cell.setup(item: item, titColor: .black, artColor: .black, albColor: .black)
+                    cell.titleLabel.textColor = .black
+                }
                 cell.backgroundColor = .clear
                 return cell
             }
         }else{
             if indexPath.section == 0 {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath)
-                cell.backgroundColor = .clear
+                let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath) as! ShuffleCell
+                cell.setup(style: .light)
                 return cell
             }else{
                 if(cellTypes[indexPath.section]?[indexPath.row] == 0){
-                    let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as? SongCell
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! SongCell
                     let item = result[indexes[indexPath.section]]?[indexPath.row]
                     if(item != Plum.shared.currentItem){
-                        cell?.setup(item: item!)
+                        if GlobalSettings.theme == .dark {
+                            cell.setup(item: item!, titColor: .white, artColor: .white, albColor: UIColor.lightText)
+                            cell.titleLabel.textColor = .white
+                        }else{
+                            cell.setup(item: item!, titColor: .black, artColor: .black, albColor: UIColor.black)
+                            cell.titleLabel.textColor = .black
+                        }
                     }else{
-                        cell?.setup(item: item!)
+                        if GlobalSettings.theme == .dark {
+                            cell.setup(item: item!, titColor: .white, artColor: .white, albColor: UIColor.lightText)
+                            cell.titleLabel.textColor = .white
+                        }else{
+                            cell.setup(item: item!, titColor: .black, artColor: .black, albColor: .black)
+                            cell.titleLabel.textColor = .black
+                        }
                     }
-                    cell?.backgroundColor = .clear
-                    return cell!
+                    cell.backgroundColor = .clear
+                    return cell
                 }else {
-                    let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as? QueueActionsCell
-                    cell?.delegate = self
-                    cell?.backgroundColor = .clear
-                    return cell!
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as! QueueActionsCell
+                    cell.delegate = self
+                    cell.backgroundColor = .clear
+                    return cell
                 }
             }
         }

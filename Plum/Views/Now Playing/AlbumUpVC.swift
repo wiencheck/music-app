@@ -209,12 +209,12 @@ extension AlbumUpVC: UITableViewDelegate, UITableViewDataSource{
     @IBAction func playNextBtn(_ sender: Any) {
         Plum.shared.addNext(item: songs[index])
         cellTypes[index] = 0
-        tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .fade)
+        tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .right)
     }
     @IBAction func playLastBtn(_ sender: Any) {
         Plum.shared.addLast(item: songs[index])
         cellTypes[index] = 0
-        tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .fade)
+        tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .right)
     }
     @IBAction func playNowBtn(_ sender: Any) {
         if(Plum.shared.isUsrQueue){
@@ -232,7 +232,7 @@ extension AlbumUpVC: UITableViewDelegate, UITableViewDataSource{
         }
         Plum.shared.play()
         cellTypes[index] = 0
-        tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .fade)
+        tableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .right)
     }
     
     @objc func reload(){
@@ -241,15 +241,15 @@ extension AlbumUpVC: UITableViewDelegate, UITableViewDataSource{
         self.tableView.reloadData()
     }
     
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let v = UIView(frame: CGRect(x: 5, y: 0, width: 40, height: 0.2))
-        v.backgroundColor = tableView.separatorColor?.withAlphaComponent(0.6)
-        return v
-    }
-    
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 1
-    }
+//    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+//        let v = UIView(frame: CGRect(x: 5, y: 0, width: 40, height: 0.2))
+//        v.backgroundColor = tableView.separatorColor?.withAlphaComponent(0.6)
+//        return v
+//    }
+//
+//    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+//        return 1
+//    }
     
     func setColors(){
         if !lightTheme {

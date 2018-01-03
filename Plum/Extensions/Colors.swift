@@ -329,7 +329,8 @@ extension UIColor {
     static let artistBlue = UIColor(red: 0.00392156885936856, green: 0.317647069692612, blue: 0.552941203117371, alpha: 1.0)
     //static let lightBackground = UIColor(red: 0.968627450980392, green: 0.968627450980392, blue: 0.968627450980392, alpha: 1.0)
     static let lightBackground = UIColor(red:0.94, green:0.94, blue:0.94, alpha:1.0)
-    static let darkBackground = UIColor(red:0.32, green:0.32, blue:0.32, alpha:1.0)
+    static let darkBackground = UIColor(red: 0.176470588235294, green: 0.176470588235294, blue: 0.176470588235294, alpha: 1.0)
+    static let lightSeparator = UIColor(red:0.87, green:0.87, blue:0.87, alpha:1.0)
 }
 
 

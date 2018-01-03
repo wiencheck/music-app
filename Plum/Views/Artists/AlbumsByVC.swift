@@ -26,6 +26,7 @@ class AlbumsByVC: UITableViewController {
         tableView.backgroundColor = UIColor.lightBackground
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
         tableView.scrollIndicatorInsets = tableView.contentInset
+        tableView.separatorColor = UIColor.lightSeparator
         als = musicQuery.shared.artistAlbumsID(artist: receivedID)
         als = als.sorted(by:{ ($0.name! > $1.name!)})
         als.reverse()
@@ -84,11 +85,11 @@ class AlbumsByVC: UITableViewController {
         }
     }
     
-    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let v = UIView(frame: CGRect(x: 5, y: 0, width: 40, height: 0.2))
-        v.backgroundColor = tableView.separatorColor?.withAlphaComponent(0.6)
-        return v
-    }
+//    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+//        let v = UIView(frame: CGRect(x: 5, y: 0, width: 40, height: 0.2))
+//        v.backgroundColor = tableView.separatorColor?.withAlphaComponent(0.6)
+//        return v
+//    }
     
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 1

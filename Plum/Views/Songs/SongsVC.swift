@@ -29,15 +29,16 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     var headers: [UIView]!
     var heightInset: CGFloat!
     var hideKeyboard = false
+    var currentTheme: Theme!
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var indexView: TableIndexView!
     @IBOutlet weak var searchView: BlurView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        currentTheme = GlobalSettings.theme
+        setTheme()
         tabBarController?.delegate = self
-        navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
-        //navigationController?.interactivePopGestureRecognizer?.delegate = nil
         tableView.delegate = self
         tableView.dataSource = self
         //tableView.separatorStyle = .none
@@ -48,12 +49,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         for index in indexes {
             cellTypes.append(Array<Int>(repeating: 0, count: (result[index]?.count)!))
         }
-        self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
-        //tableView.backgroundView = UIImageView(image: backround)
-        tableView.backgroundColor = UIColor.lightBackground
-        //tableView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "gradient_background"))
         //tableView.separatorStyle = .none
-        tableView.sectionFooterHeight = 0
         indexView.indexes = self.indexes
         indexView.tableView = self.tableView
         indexView.setup()
@@ -104,6 +100,16 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             return 27
         }
     }
+    
+//    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+//        let v = UIView()
+//        v.backgroundColor = UIColor.clear
+//        return v
+//    }
+//
+//    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+//        return 0
+//    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if shouldShowResults {
@@ -169,31 +175,35 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             }else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! SongCell
                 let item = filteredSongs[indexPath.row]
-                cell.setup(item: item)
+                if currentTheme == .dark {
+                    cell.setup(item: item, titColor: .white, artColor: .white, albColor: UIColor.lightText)
+                }else{
+                    cell.setup(item: item, titColor: .black, artColor: .black, albColor: UIColor.gray)
+                }
                 cell.backgroundColor = .clear
                 return cell
             }
         }else{
             if indexPath.section == 0 {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath)
-                cell.backgroundColor = UIColor(red: 0.964705882352941, green: 0.964705882352941, blue: 0.964705882352941, alpha: 1.0)
+                let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath) as! ShuffleCell
+                cell.setup(style: currentTheme)
                 return cell
             }else{
                 if(cellTypes[indexPath.section][indexPath.row] == 0){
-                    let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as? SongCell
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! SongCell
                     let item = result[indexes[indexPath.section]]?[indexPath.row]
-                    if(item != Plum.shared.currentItem){
-                        cell?.setup(item: item!)
+                    if currentTheme == .dark {
+                        cell.setup(item: item!, titColor: .white, artColor: .white, albColor: UIColor.lightText)
                     }else{
-                        cell?.setup(item: item!)
+                        cell.setup(item: item!, titColor: .black, artColor: .black, albColor: UIColor.gray)
                     }
-                    cell?.backgroundColor = .clear
-                    return cell!
+                    cell.backgroundColor = .clear
+                    return cell
                 }else {
-                    let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as? QueueActionsCell
-                    cell?.delegate = self
-                    cell?.backgroundColor = .clear
-                    return cell!
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as! QueueActionsCell
+                    cell.delegate = self
+                    cell.backgroundColor = .clear
+                    return cell
                 }
             }
         }
@@ -624,13 +634,50 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
             v.backgroundColor = .clear
             let label = UILabel(frame: CGRect(x: 12, y: 3, width: v.frame.width, height: 21))
             let tool = UIToolbar(frame: v.frame)
+            label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+            if currentTheme == .dark {
+                label.textColor = .white
+                tool.barStyle = .blackTranslucent
+            }else{
+                label.textColor = UIColor.gray
+                tool.barStyle = .default
+            }
             v.addSubview(tool)
             label.text = index
-            label.textColor = .black
             v.addSubview(label)
             v.bringSubview(toFront: label)
             headers.append(v)
         }
+    }
+    
+    func setTheme() {
+        let tool = UIToolbar(frame: searchView.bounds)
+        guard let bar = navigationController?.navigationBar else { return }
+        switch currentTheme {
+        case .light:
+            tool.barStyle = .default
+            indexView.backgroundColor = UIColor.white
+            bar.barStyle = .default
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
+            tableView.backgroundColor = UIColor.lightBackground
+            tableView.separatorColor = UIColor.lightSeparator
+        case .dark:
+            tool.barStyle = .blackTranslucent
+            indexView.backgroundColor = UIColor.darkGray
+            bar.barStyle = .blackTranslucent
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+            tableView.backgroundColor = UIColor.darkBackground
+            tableView.separatorColor = .black
+        default:
+            tool.barStyle = .blackTranslucent
+            indexView.backgroundColor = UIColor.darkGray
+            bar.barStyle = .blackTranslucent
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+            tableView.backgroundColor = UIColor.lightBackground
+            tableView.separatorColor = .lightSeparator
+        }
+        searchView.addSubview(tool)
+        bar.tintColor = GlobalSettings.tint.color
     }
     
 }

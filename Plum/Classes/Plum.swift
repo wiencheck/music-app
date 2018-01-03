@@ -27,16 +27,15 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     var skip: Bool!
     var repeating: Bool!
     var player: AVAudioPlayer!
-    var player1: AVAudioPlayer!
-    var player2: AVAudioPlayer!
-    var playerFlag: UInt8!
+    //var player1: AVAudioPlayer!
+    //var player2: AVAudioPlayer!
+    //var playerFlag: UInt8!
     @objc var currentItem: MPMediaItem?
     var previousItem: MPMediaItem?
     var nextItem: MPMediaItem?
     var wasLoaded: Bool!
     var defQueue = [MPMediaItem]()
-    var defQ = [Int: MPMediaItem]()
-    //var defQueueCount: Int!
+    //var defQ = [Int: MPMediaItem]()
     var defIndex: Int!
     var isUsrQueue: Bool!
     var usrQueue = [MPMediaItem]()
@@ -111,6 +110,11 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     var shouldResumeAfterInterruption = false
     var timeObserverToken: Any?
     var timer: Timer!
+    
+    enum AVItemLoadedStatus {
+        case success
+        case failure
+    }
     enum playbackState{
         case initial, playing, paused, interrupted
     }
@@ -127,17 +131,14 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
 
     private override init(){
         super.init()
-        let url = URL(fileURLWithPath: Bundle.main.path(forResource: "change", ofType: "mp3")!)
+        let url = URL(fileURLWithPath: Bundle.main.path(forResource: "initPlum", ofType: "m4a")!)
         do{
-            try player1 = AVAudioPlayer(contentsOf: url)
-            player = player1
+            try player = AVAudioPlayer(contentsOf: url)
         }catch let error{
-            print("chuj nie udalo sie zainicjalizowac \(error)")
+            print("Nie udalo sie zainicjalizowac \(error)")
         }
-        playerFlag = 1
         wasLoaded = false
         defIndex = 0
-        //defQueueCount = 1
         isUsrQueue = false
         usrIndex = 0
         isShuffle = false
@@ -187,7 +188,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         defIndex = index
         if new{
             let item = defQueue[index]
-            if(loadWithMediaItem(item: item) != "succ"){
+            if(loadWithMediaItem(item: item) != AVItemLoadedStatus.success){
                 playFromDefQueue(index: index+1, new: true)
             }
         }
@@ -196,7 +197,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     func playFromUsrQueue(index: Int){
         usrIndex = index
         let item = usrQueue[index]
-        if(loadWithMediaItem(item: item) != "succ"){
+        if(loadWithMediaItem(item: item) != AVItemLoadedStatus.success){
             playFromUsrQueue(index: index+1)
         }
     }
@@ -205,7 +206,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         shufIndex = index
         if new{
             let item = shufQueue[index]
-            if(loadWithMediaItem(item: item) != "succ"){
+            if(loadWithMediaItem(item: item) != AVItemLoadedStatus.success){
                 playFromShufQueue(index: index+1, new: true)
             }
         }
@@ -463,13 +464,12 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     }
     
     func initAV(){
-        let url = URL(fileURLWithPath: Bundle.main.path(forResource: "change", ofType: "mp3")!)
+        let url = URL(fileURLWithPath: Bundle.main.path(forResource: "initPlum", ofType: "m4a")!)
         do{
-            try player1 = AVAudioPlayer(contentsOf: url)
-            player = player1
-            playerFlag = 1
+            try player = AVAudioPlayer(contentsOf: url)
+            player.delegate = self
         }catch let error{
-            print("chuj nie udalo sie zainicjalizowac \(error)")
+            print("Nie udalo sie zainicjalizowac \(error)")
         }
     }
     
@@ -502,23 +502,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         duration = Float(player.duration)
         let item = currentItem
         if GlobalSettings.rating{
-            var str = ""
-            let itrating = item?.rating
-            switch itrating{
-            case 1?:
-                str = "★☆☆☆☆"
-            case 2?:
-                str = "★★☆☆☆"
-            case 3?:
-                str = "★★★☆☆"
-            case 4?:
-                str = "★★★★☆"
-            case 5?:
-                str = "★★★★★"
-            default:
-                str = "☆☆☆☆☆"
-            }
-            nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = str
+            nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = currentItem?.labelFromRating()
         }else{
             nowPlayingInfo[MPMediaItemPropertyAlbumTitle] = ""
         }
@@ -536,7 +520,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
          }
     }
     
-    func loadWithMediaItem(item: MPMediaItem) -> String{
+    func loadWithMediaItem(item: MPMediaItem) -> AVItemLoadedStatus{
         if(item.assetURL != nil){
             do{
                 print("Trying to load \(String (describing:item.value(forProperty: MPMediaItemPropertyTitle)))...")
@@ -551,12 +535,12 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
                 //updateGeneralMetadata()
             }catch let error{
                 print("Failed to initialize with URL\n\(error)")
+                return AVItemLoadedStatus.failure
             }
-            player.delegate = self
-            return "succ"
+            return AVItemLoadedStatus.success
         }else{
             print("iCloud item, please download it in music app and come back")
-            return "fail"
+            return AVItemLoadedStatus.failure
         }
     }
     

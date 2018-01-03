@@ -24,20 +24,20 @@ public enum Sort: String {
 }
 
 enum styles: String {
-    case modern = "modern"
-    case classic = "classic"
-}
-
-enum Theme: String {
-    case light = "Light"
-    case dark = "Dark"
-    case adaptive = "Adaptive"
+    case modern = "Modern"
+    case classic = "Classic"
 }
 
 enum Deploy: String {
     case artist = "Artist"
     case album = "Album"
     case songs = "Songs"
+}
+
+enum Theme: String {
+    case light = "Light"
+    case dark = "Dark"
+    case mixed = "Mixed"
 }
 
 struct GlobalSettings{
@@ -81,7 +81,7 @@ struct GlobalSettings{
         defaults.set(t.name, forKey: "tintName")
     }
     
-    static var theme: Theme = .light                                       //UI
+    static var theme = Theme.light                                   //UI
     static func changeTheme(_ t: Theme) {
         self.theme = t
         defaults.set(t.rawValue, forKey: "theme")

@@ -25,7 +25,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         if let _ = MPMediaQuery.songs().items {
+            
             letGo()
+            //GlobalSettings.changeTheme(.light)
         }else{
             hijack()
         }
@@ -131,7 +133,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func letGo() {
-        _ = GlobalSettings()
+        //_ = GlobalSettings()
         GlobalSettings.remote = RemoteCommandManager()
         defaults = UserDefaults.standard
         setInitialSettings()
@@ -206,7 +208,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             defaults.set(false, forKey: "lyrics")
         }
         if defaults.value(forKey: "theme") == nil {
-            defaults.set("light", forKey: "theme")
+            defaults.set("Light", forKey: "theme")
         }
         if defaults.value(forKey: "deploy") == nil {
             defaults.set("Album", forKey: "deploy")
@@ -261,14 +263,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let alpha = defaults.value(forKey: "tintAlpha") as! CGFloat
             GlobalSettings.changeTint(Color(n: col, c: UIColor(red:red, green:green, blue:blue, alpha:alpha), b: .white))
         }
-        if let the = defaults.value(forKey: "theme") as? String {
-            switch the {
-            case "light":
-                GlobalSettings.changeTheme(.light)
-            default:
-                GlobalSettings.changeTheme(.dark)
-            }
-        }
+//        if let the = defaults.value(forKey: "theme") as? String {
+//            GlobalSettings.changeTheme(Theme(rawValue: the)!)
+//        }
+        GlobalSettings.changeTheme(Theme.light)
         if let blu = defaults.value(forKey: "blur") as? Bool {
             GlobalSettings.changeBlur(blu)
         }
@@ -303,6 +301,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
         UISwitch.appearance().tintColor = GlobalSettings.tint.color
         UISwitch.appearance().onTintColor = GlobalSettings.tint.color
+        UITableViewCell.appearance().backgroundColor = UIColor.clear
+        let s = UIView()
+        s.backgroundColor = GlobalSettings.tint.color.withAlphaComponent(0.8)
+        UITableViewCell.appearance().selectedBackgroundView = s
     }
     
     func setInitialInstructions() {

@@ -31,6 +31,7 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
         tableView.scrollIndicatorInsets = tableView.contentInset
         tableView.backgroundColor = UIColor.lightBackground
+        tableView.separatorColor = UIColor.lightSeparator
         tableView.delaysContentTouches = false
         readSettings()
         if receivedID != nil{
@@ -68,8 +69,8 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath)
-            cell.backgroundColor = .clear
+            let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath) as! ShuffleCell
+            cell.setup(style: .light)
             return cell
         }else{
             if album.manyArtists{
@@ -82,12 +83,10 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
                     }else{
                         cell?.setupA(item: item)
                     }
-                    cell?.backgroundColor = .clear
                     return cell!
                 }else {
                     let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as? QueueActionsCell
                     cell?.delegate = self
-                    cell?.backgroundColor = .clear
                     return cell!
                 }
             }else{
@@ -100,12 +99,10 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
                     }else{
                         cell?.setup(item: item)
                     }
-                    cell?.backgroundColor = .clear
                     return cell!
                 }else {
                     let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as? QueueActionsCell
                     cell?.delegate = self
-                    cell?.backgroundColor = .clear
                     return cell!
                 }
             }

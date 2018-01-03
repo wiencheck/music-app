@@ -426,7 +426,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RemoteCommandManager.swift"
-            timestampString = "535460788.383365"
+            timestampString = "536442049.980991"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "34"
@@ -442,7 +442,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RemoteCommandManager.swift"
-            timestampString = "535460788.383424"
+            timestampString = "536442049.981055"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "162"
@@ -458,7 +458,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RemoteCommandManager.swift"
-            timestampString = "535460788.383464"
+            timestampString = "536442049.981095"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "175"
@@ -474,7 +474,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RemoteCommandManager.swift"
-            timestampString = "535460788.383501"
+            timestampString = "536442049.981132"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "208"
@@ -490,7 +490,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RemoteCommandManager.swift"
-            timestampString = "535460788.383539"
+            timestampString = "536442049.981168"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "220"
@@ -506,13 +506,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AppDelegate.swift"
-            timestampString = "535396495.812903"
+            timestampString = "536690977.552568"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "235"
-            endingLineNumber = "235"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "237"
+            endingLineNumber = "237"
+            landmarkName = "readSettings()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -522,7 +522,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RemoteCommandManager.swift"
-            timestampString = "535460788.383592"
+            timestampString = "536442049.981245"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "42"
@@ -538,7 +538,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RemoteCommandManager.swift"
-            timestampString = "535460788.383628"
+            timestampString = "536442049.98128"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "49"
@@ -554,7 +554,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RemoteCommandManager.swift"
-            timestampString = "535460788.383663"
+            timestampString = "536442049.981316"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "46"
@@ -570,7 +570,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RemoteCommandManager.swift"
-            timestampString = "535460788.383698"
+            timestampString = "536442049.98135"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "44"
@@ -586,11 +586,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Artists/ArtistsVC.swift"
-            timestampString = "535739413.77429"
+            timestampString = "536690977.552727"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "363"
-            endingLineNumber = "363"
+            startingLineNumber = "381"
+            endingLineNumber = "381"
             landmarkName = "cell(_:action:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -602,11 +602,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Artists/ArtistsVC.swift"
-            timestampString = "535739413.774399"
+            timestampString = "536690977.552834"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "365"
-            endingLineNumber = "365"
+            startingLineNumber = "383"
+            endingLineNumber = "383"
             landmarkName = "cell(_:action:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -618,11 +618,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Artists/ArtistsVC.swift"
-            timestampString = "535739413.774444"
+            timestampString = "536690977.552886"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "367"
-            endingLineNumber = "367"
+            startingLineNumber = "385"
+            endingLineNumber = "385"
             landmarkName = "cell(_:action:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -634,7 +634,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RemoteCommandManager.swift"
-            timestampString = "535460788.383835"
+            timestampString = "536442049.982075"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "75"
@@ -650,7 +650,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RemoteCommandManager.swift"
-            timestampString = "535460788.38387"
+            timestampString = "536442049.982118"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "80"
@@ -666,7 +666,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RemoteCommandManager.swift"
-            timestampString = "535460788.383904"
+            timestampString = "536442049.982155"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "84"
@@ -682,7 +682,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RemoteCommandManager.swift"
-            timestampString = "535460788.383938"
+            timestampString = "536442049.982191"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "89"
@@ -698,7 +698,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RemoteCommandManager.swift"
-            timestampString = "535460788.383972"
+            timestampString = "536442049.982227"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "95"
@@ -714,7 +714,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RemoteCommandManager.swift"
-            timestampString = "535460788.384006"
+            timestampString = "536442049.982263"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "94"
@@ -730,7 +730,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RemoteCommandManager.swift"
-            timestampString = "535460788.38404"
+            timestampString = "536442049.982299"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "140"
@@ -746,7 +746,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RemoteCommandManager.swift"
-            timestampString = "535460788.384073"
+            timestampString = "536442049.982334"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "152"
@@ -762,7 +762,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RemoteCommandManager.swift"
-            timestampString = "535460788.384106"
+            timestampString = "536442049.982368"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "163"
@@ -778,7 +778,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RemoteCommandManager.swift"
-            timestampString = "535460788.384139"
+            timestampString = "536442049.982402"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "174"
@@ -794,7 +794,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RemoteCommandManager.swift"
-            timestampString = "535460788.384173"
+            timestampString = "536442049.982435"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "187"
@@ -810,7 +810,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RemoteCommandManager.swift"
-            timestampString = "535460788.384205"
+            timestampString = "536442049.982471"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "198"
@@ -826,13 +826,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AppDelegate.swift"
-            timestampString = "535396495.81333"
+            timestampString = "536690977.553172"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "227"
-            endingLineNumber = "227"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "229"
+            endingLineNumber = "229"
+            landmarkName = "AppDelegate"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -842,13 +842,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AppDelegate.swift"
-            timestampString = "535396495.813372"
+            timestampString = "536690977.553218"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "230"
-            endingLineNumber = "230"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "232"
+            endingLineNumber = "232"
+            landmarkName = "readSettings()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -858,7 +858,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RemoteCommandManager.swift"
-            timestampString = "535460788.384268"
+            timestampString = "536442049.982573"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "57"
@@ -874,7 +874,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RemoteCommandManager.swift"
-            timestampString = "535460788.384304"
+            timestampString = "536442049.982607"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "71"
@@ -890,7 +890,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/RemoteCommandManager.swift"
-            timestampString = "535460788.384337"
+            timestampString = "536442049.982642"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "66"
@@ -906,11 +906,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/Plum.swift"
-            timestampString = "535559292.183794"
+            timestampString = "536690977.553325"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "639"
-            endingLineNumber = "639"
+            startingLineNumber = "624"
+            endingLineNumber = "624"
             landmarkName = "setNextPrev()"
             landmarkType = "7">
          </BreakpointContent>
@@ -922,11 +922,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/Plum.swift"
-            timestampString = "535559292.184192"
+            timestampString = "536690977.553373"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "744"
-            endingLineNumber = "744"
+            startingLineNumber = "729"
+            endingLineNumber = "729"
             landmarkName = "postLyrics()"
             landmarkType = "7">
          </BreakpointContent>
@@ -954,11 +954,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/Plum.swift"
-            timestampString = "535559292.184465"
+            timestampString = "536690977.553452"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "775"
-            endingLineNumber = "775"
+            startingLineNumber = "760"
+            endingLineNumber = "760"
             landmarkName = "writeQueue()"
             landmarkType = "7">
          </BreakpointContent>
@@ -970,11 +970,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/Plum.swift"
-            timestampString = "535559292.18471"
+            timestampString = "536690977.5535"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "833"
-            endingLineNumber = "833"
+            startingLineNumber = "818"
+            endingLineNumber = "818"
             landmarkName = "writeQueue()"
             landmarkType = "7">
          </BreakpointContent>
@@ -986,11 +986,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/Plum.swift"
-            timestampString = "535559292.184934"
+            timestampString = "536690977.553543"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "820"
-            endingLineNumber = "820"
+            startingLineNumber = "805"
+            endingLineNumber = "805"
             landmarkName = "writeQueue()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1002,11 +1002,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/Plum.swift"
-            timestampString = "535559292.185155"
+            timestampString = "536690977.553586"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "855"
-            endingLineNumber = "855"
+            startingLineNumber = "840"
+            endingLineNumber = "840"
             landmarkName = "writeQueue()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1018,11 +1018,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/Plum.swift"
-            timestampString = "535559292.185372"
+            timestampString = "536690977.553628"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "877"
-            endingLineNumber = "877"
+            startingLineNumber = "862"
+            endingLineNumber = "862"
             landmarkName = "writeQueue()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1034,11 +1034,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/Plum.swift"
-            timestampString = "535559292.185591"
+            timestampString = "536690977.55367"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "854"
-            endingLineNumber = "854"
+            startingLineNumber = "839"
+            endingLineNumber = "839"
             landmarkName = "writeQueue()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1050,11 +1050,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/Plum.swift"
-            timestampString = "535559292.185807"
+            timestampString = "536690977.553712"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "882"
-            endingLineNumber = "882"
+            startingLineNumber = "867"
+            endingLineNumber = "867"
             landmarkName = "writeQueue()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1066,12 +1066,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Artists/ArtistSongs.swift"
-            timestampString = "535413882.551968"
+            timestampString = "536690977.553757"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "189"
-            endingLineNumber = "189"
-            landmarkName = "tableView(_:didSelectRowAt:)"
+            startingLineNumber = "194"
+            endingLineNumber = "194"
+            landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1082,11 +1082,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Artists/ArtistSongs.swift"
-            timestampString = "535413882.552016"
+            timestampString = "536690977.553864"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "474"
-            endingLineNumber = "474"
+            startingLineNumber = "480"
+            endingLineNumber = "480"
             landmarkName = "setupDict()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1098,11 +1098,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Artists/ArtistSongs.swift"
-            timestampString = "535413882.552056"
+            timestampString = "536690977.553929"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "476"
-            endingLineNumber = "476"
+            startingLineNumber = "482"
+            endingLineNumber = "482"
             landmarkName = "setupDict()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1114,45 +1114,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AppDelegate.swift"
-            timestampString = "535396495.814264"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
-            landmarkName = "unknown"
-            landmarkType = "0">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "AppDelegate.swift"
-            timestampString = "535396495.814303"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "68"
-            endingLineNumber = "68"
-            landmarkName = "unknown"
-            landmarkType = "0">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "AppDelegate.swift"
-            timestampString = "535396495.814341"
+            timestampString = "536690977.554006"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "69"
             endingLineNumber = "69"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "application(_:continue:restorationHandler:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1162,13 +1130,45 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AppDelegate.swift"
-            timestampString = "535396495.81438"
+            timestampString = "536690977.554048"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "70"
             endingLineNumber = "70"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "application(_:continue:restorationHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AppDelegate.swift"
+            timestampString = "536690977.554105"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
+            landmarkName = "application(_:continue:restorationHandler:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "AppDelegate.swift"
+            timestampString = "536690977.554157"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "72"
+            endingLineNumber = "72"
+            landmarkName = "application(_:continue:restorationHandler:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1178,7 +1178,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Controller/UpNextTabBarController.swift"
-            timestampString = "535288902.599434"
+            timestampString = "535986321.741943"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "25"
@@ -1194,11 +1194,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Playlists/PlaylistVC.swift"
-            timestampString = "535561655.322004"
+            timestampString = "536690977.554269"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "274"
-            endingLineNumber = "274"
+            startingLineNumber = "290"
+            endingLineNumber = "290"
             landmarkName = "playNowBtn()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1210,11 +1210,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Artists/ArtistsVC.swift"
-            timestampString = "535739413.774887"
+            timestampString = "536690977.554331"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "255"
-            endingLineNumber = "255"
+            startingLineNumber = "273"
+            endingLineNumber = "273"
             landmarkName = "collectionView(_:viewForSupplementaryElementOfKind:at:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1226,11 +1226,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Artists/ArtistsVC.swift"
-            timestampString = "535739413.77493"
+            timestampString = "536690977.554385"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "259"
-            endingLineNumber = "259"
+            startingLineNumber = "277"
+            endingLineNumber = "277"
             landmarkName = "collectionView(_:viewForSupplementaryElementOfKind:at:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1258,11 +1258,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Songs/SongsVC.swift"
-            timestampString = "535739413.774985"
+            timestampString = "536690977.554487"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "579"
-            endingLineNumber = "579"
+            startingLineNumber = "592"
+            endingLineNumber = "592"
             landmarkName = "updateSearchResults(for:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1274,11 +1274,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Artists/ArtistsVC.swift"
-            timestampString = "535739413.775037"
+            timestampString = "536690977.55455"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "433"
-            endingLineNumber = "433"
+            startingLineNumber = "451"
+            endingLineNumber = "451"
             landmarkName = "setupDict()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1290,7 +1290,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Playlists/PlaylistsVC.swift"
-            timestampString = "535739413.77508"
+            timestampString = "536690977.554608"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "49"
@@ -1306,7 +1306,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Albums/AlbumsVC.swift"
-            timestampString = "535739413.775125"
+            timestampString = "536690977.554664"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "51"
@@ -1322,7 +1322,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Albums/AlbumsVC.swift"
-            timestampString = "535739413.775164"
+            timestampString = "536690977.554717"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "41"
@@ -1338,11 +1338,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Artists/ArtistsVC.swift"
-            timestampString = "535739413.775202"
+            timestampString = "536690977.55477"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
+            startingLineNumber = "43"
+            endingLineNumber = "43"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1354,13 +1354,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Playlists/PlaylistsVC.swift"
-            timestampString = "535739413.775241"
+            timestampString = "536690977.554822"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "44"
             endingLineNumber = "44"
-            landmarkName = "viewDidLoad()"
-            landmarkType = "7">
+            landmarkName = "PlaylistsVC"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1370,11 +1370,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Songs/SongsVC.swift"
-            timestampString = "535739413.775281"
+            timestampString = "536690977.554873"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "36"
-            endingLineNumber = "36"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1386,7 +1386,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Settings/SettingsVC.swift"
-            timestampString = "535652571.941603"
+            timestampString = "536690977.554931"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "31"
@@ -1402,11 +1402,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Settings/PermissionVC.swift"
-            timestampString = "535056062.797944"
+            timestampString = "536690977.55541"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "20"
-            endingLineNumber = "20"
+            startingLineNumber = "19"
+            endingLineNumber = "19"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1418,11 +1418,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/Plum.swift"
-            timestampString = "535559292.186248"
+            timestampString = "536690977.555461"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "936"
-            endingLineNumber = "936"
+            startingLineNumber = "921"
+            endingLineNumber = "921"
             landmarkName = "handleAudioSessionInterruption(notification:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1434,7 +1434,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Controller/PlumTabBarController.swift"
-            timestampString = "535575296.351446"
+            timestampString = "535918816.16072"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "24"
@@ -1450,11 +1450,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Playlists/PlaylistsVC.swift"
-            timestampString = "535739413.775377"
+            timestampString = "536690977.555539"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "468"
-            endingLineNumber = "468"
+            startingLineNumber = "469"
+            endingLineNumber = "469"
             landmarkName = "setupDict()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1466,23 +1466,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Playlists/PlaylistsVC.swift"
-            timestampString = "535739413.775418"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "470"
-            endingLineNumber = "470"
-            landmarkName = "setupDict()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Views/Playlists/PlaylistsVC.swift"
-            timestampString = "535739413.775457"
+            timestampString = "536690977.555583"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "471"
@@ -1498,7 +1482,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Playlists/PlaylistsVC.swift"
-            timestampString = "535739413.775496"
+            timestampString = "536690977.555624"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "472"
@@ -1513,12 +1497,28 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Views/Playlists/PlaylistVC.swift"
-            timestampString = "535561655.323734"
+            filePath = "Views/Playlists/PlaylistsVC.swift"
+            timestampString = "536690977.555663"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "63"
-            endingLineNumber = "63"
+            startingLineNumber = "473"
+            endingLineNumber = "473"
+            landmarkName = "setupDict()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Views/Playlists/PlaylistVC.swift"
+            timestampString = "536690977.555705"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
             landmarkName = "setTable()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1530,13 +1530,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/Structs:Classes.swift"
-            timestampString = "535739413.775554"
+            timestampString = "536686291.179747"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "309"
-            endingLineNumber = "309"
-            landmarkName = "init(collection:)"
-            landmarkType = "7">
+            startingLineNumber = "12"
+            endingLineNumber = "12"
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1546,13 +1546,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/Structs:Classes.swift"
-            timestampString = "535739413.775961"
+            timestampString = "536686291.179794"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "311"
-            endingLineNumber = "311"
-            landmarkName = "init(collection:)"
-            landmarkType = "7">
+            startingLineNumber = "12"
+            endingLineNumber = "12"
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1642,11 +1642,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Songs/SongsVC.swift"
-            timestampString = "535739413.77626"
+            timestampString = "536690977.555901"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "550"
-            endingLineNumber = "550"
+            startingLineNumber = "563"
+            endingLineNumber = "563"
             landmarkName = "scrollViewDidScroll(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1658,11 +1658,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Songs/SongsVC.swift"
-            timestampString = "535739413.776308"
+            timestampString = "536690977.555951"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "610"
-            endingLineNumber = "610"
+            startingLineNumber = "623"
+            endingLineNumber = "623"
             landmarkName = "updateSearchResults(for:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1674,11 +1674,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Controller/PlumTabBarController.swift"
-            timestampString = "535575296.351971"
+            timestampString = "535918816.161036"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "44"
-            endingLineNumber = "44"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1690,11 +1690,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Controller/PlumTabBarController.swift"
-            timestampString = "535575296.352011"
+            timestampString = "535918816.161075"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "49"
-            endingLineNumber = "49"
+            startingLineNumber = "53"
+            endingLineNumber = "53"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1706,11 +1706,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Controller/PlumTabBarController.swift"
-            timestampString = "535575296.352048"
+            timestampString = "535918816.161115"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
+            startingLineNumber = "51"
+            endingLineNumber = "51"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1722,11 +1722,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Controller/PlumTabBarController.swift"
-            timestampString = "535575296.352083"
+            timestampString = "535918816.161153"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
+            startingLineNumber = "46"
+            endingLineNumber = "46"
             landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
@@ -1738,28 +1738,92 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Classes/Structs:Classes.swift"
-            timestampString = "535739413.77736"
+            timestampString = "536686291.179989"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "295"
-            endingLineNumber = "295"
-            landmarkName = "init(collection:)"
+            startingLineNumber = "12"
+            endingLineNumber = "12"
+            landmarkName = "unknown"
+            landmarkType = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Classes/Structs:Classes.swift"
+            timestampString = "536686291.180031"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "12"
+            endingLineNumber = "12"
+            landmarkName = "unknown"
+            landmarkType = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Views/Now Playing/EightNowPlayingVC.swift"
+            timestampString = "536690977.556118"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "210"
+            endingLineNumber = "210"
+            landmarkName = "gestureRecognizer(_:shouldRecognizeSimultaneouslyWith:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Classes/Structs:Classes.swift"
-            timestampString = "535739413.777579"
+            filePath = "Views/Songs/SongsVC.swift"
+            timestampString = "536690977.556465"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "302"
-            endingLineNumber = "302"
-            landmarkName = "init(collection:)"
+            startingLineNumber = "661"
+            endingLineNumber = "661"
+            landmarkName = "setTheme()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Views/Now Playing/EightNowPlayingVC.swift"
+            timestampString = "536690977.556513"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "72"
+            endingLineNumber = "72"
+            landmarkName = "viewDidLoad()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Views/Now Playing/EightNowPlayingVC.swift"
+            timestampString = "536690977.556813"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "120"
+            endingLineNumber = "120"
+            landmarkName = "viewWillAppear(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

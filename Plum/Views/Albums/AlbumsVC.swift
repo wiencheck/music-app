@@ -58,6 +58,7 @@ class AlbumsVC: UIViewController {
             view.bringSubview(toFront: collectionIndexView)
         }else{
             setTable()
+            tableView.separatorColor = UIColor.lightSeparator
             tableIndexView.indexes = self.indexes
             tableIndexView.tableView = self.tableView
             tableIndexView.setup()

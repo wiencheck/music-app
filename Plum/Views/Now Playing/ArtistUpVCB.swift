@@ -222,19 +222,19 @@ extension ArtistUpVCB: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if section == indexes.count - 1 {
-            let v = UIView(frame: CGRect(x: 5, y: 0, width: 40, height: 0.2))
-            v.backgroundColor = tableView.separatorColor?.withAlphaComponent(0.6)
-            return v
-        }else{
-            return UIView()
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 1
-    }
+//    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+//        if section == indexes.count - 1 {
+//            let v = UIView(frame: CGRect(x: 5, y: 0, width: 40, height: 0.2))
+//            v.backgroundColor = tableView.separatorColor?.withAlphaComponent(0.6)
+//            return v
+//        }else{
+//            return UIView()
+//        }
+//    }
+//    
+//    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+//        return 1
+//    }
 }
 
 extension ArtistUpVCB {
@@ -298,12 +298,12 @@ extension ArtistUpVCB {
     @IBAction func playNextBtn(_ sender: Any) {
         player.addNext(item: songs[absoluteRow])
         cellTypes[activeSection][activeRow] = 0
-        tableView.reloadRows(at: [IndexPath(row: activeRow, section: activeSection)], with: .fade)
+        tableView.reloadRows(at: [IndexPath(row: activeRow, section: activeSection)], with: .right)
     }
     @IBAction func playLastBtn(_ sender: Any) {
         player.addLast(item: songs[absoluteRow])
         cellTypes[activeSection][activeRow] = 0
-        tableView.reloadRows(at: [IndexPath(row: activeRow, section: activeSection)], with: .fade)
+        tableView.reloadRows(at: [IndexPath(row: activeRow, section: activeSection)], with: .right)
     }
     @IBAction func playNowBtn(_ sender: Any) {
         if(player.isUsrQueue){
@@ -321,7 +321,7 @@ extension ArtistUpVCB {
         }
         player.play()
         cellTypes[activeSection][activeRow] = 0
-        tableView.reloadRows(at: [IndexPath(row: activeRow, section: activeSection)], with: .fade)
+        tableView.reloadRows(at: [IndexPath(row: activeRow, section: activeSection)], with: .right)
     }
     
     func doneBtnPressed(){

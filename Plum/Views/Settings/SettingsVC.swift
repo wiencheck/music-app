@@ -192,6 +192,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         lyricsSwitch.isOn = GlobalSettings.lyrics
         currentMiniPlayer.text = GlobalSettings.popupStyle.rawValue
         roundSwitch.isOn = GlobalSettings.round
+        currentStyle.text = GlobalSettings.theme.rawValue
     }
     
     func selfExplanatory() {
@@ -250,23 +251,33 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
 //    }
     
     func explainStyle(){
-        let alert = UIAlertController(title: "Time for decision", message: "Light: Certain elements on now playing screen, like lyrics background, UpNext background and upper bar will be white colored\n\nDark: Same as light, only it's totally opossite\n\nAdaptive: Light/Dark style will be enabled base on current artwork", preferredStyle: .actionSheet)
-        let dark = UIAlertAction(title: "Always Dark", style: .default, handler: {(action) in
-            self.defaults.set(1, forKey: "style")
+        let alert = UIAlertController(title: "Time for decision", message: "Light: Certain elements on now playing screen, like lyrics background, UpNext background and upper bar will be white colored\n\nDark: Same as light, only it's totally opossite\n\nMixed: Navigation elements will be dark, while content will be light", preferredStyle: .actionSheet)
+        let dark = UIAlertAction(title: "Dark", style: .default, handler: {(action) in
+            GlobalSettings.changeTheme(.dark)
             self.reload()
+            self.themeAlert()
         })
-        let light = UIAlertAction(title: "Always light", style: .default, handler: {(action) in
-            self.defaults.set(0, forKey: "style")
+        let light = UIAlertAction(title: "Light", style: .default, handler: {(action) in
+            GlobalSettings.changeTheme(.light)
             self.reload()
+            self.themeAlert()
         })
-        let adaptive = UIAlertAction(title: "Adaptive", style: .default, handler: {(action) in
-            self.defaults.set(2, forKey: "style")
+        let mixed = UIAlertAction(title: "Mixed", style: .default, handler: {(action) in
+            GlobalSettings.changeTheme(.mixed)
             self.reload()
+            self.themeAlert()
         })
         alert.addAction(light)
         alert.addAction(dark)
-        alert.addAction(adaptive)
+        alert.addAction(mixed)
         present(alert, animated: true, completion: nil)
+    }
+    
+    func themeAlert() {
+        let a = UIAlertController(title: "Changing theme?", message: "Please restart the app for all changes to be enabled", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        a.addAction(ok)
+        present(a, animated: true, completion: nil)
     }
     
     func explainMiniPlayer(){

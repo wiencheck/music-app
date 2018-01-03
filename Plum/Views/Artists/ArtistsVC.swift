@@ -38,11 +38,13 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     var heightInset: CGFloat!
     var controllerSet = false
     var hideKeyboard = false
+    var currentTheme: Theme!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBarController?.delegate = self
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
+        currentTheme = GlobalSettings.theme
         grid = GlobalSettings.artistsGrid
         setupDict()
         if !controllerSet {
@@ -92,7 +94,13 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     
     func setTable(){
         //self.tableView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
-        tableView.backgroundColor = UIColor.lightBackground
+        if currentTheme == .dark {
+            tableView.backgroundColor = UIColor.darkBackground
+            tableView.separatorColor = UIColor.black
+        }else{
+            tableView.backgroundColor = UIColor.lightBackground
+            tableView.separatorColor = UIColor.lightSeparator
+        }
         tableView.delegate = self
         tableView.dataSource = self
         view.addSubview(tableView)
@@ -107,7 +115,11 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     
     func setCollection(){
         //self.collectionView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
-        collectionView.backgroundColor = UIColor.lightBackground
+        if currentTheme == .dark {
+            collectionView.backgroundColor = UIColor.darkBackground
+        }else{
+            collectionView.backgroundColor = UIColor.lightBackground
+        }
         collectionView.delegate = self
         collectionView.dataSource = self
         self.view.addSubview(collectionView)
@@ -217,12 +229,18 @@ extension ArtistsVC: UITableViewDelegate, UITableViewDataSource{    //Table
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "artistCell", for: indexPath) as! ArtistCell
         if shouldShowResults {
-             cell.setup(artist: filteredArtists[indexPath.row])
-            cell.backgroundColor = .clear
+            if currentTheme == .dark {
+                cell.setup(artist: filteredArtists[indexPath.row], titColor: .white, detColor: .lightText)
+            }else{
+                cell.setup(artist: filteredArtists[indexPath.row], titColor: .black, detColor: .lightText)
+            }
             return cell
         }else{
-            cell.setup(artist: (result[indexes[indexPath.section]]?[indexPath.row])!)
-            cell.backgroundColor = .clear
+            if currentTheme == .dark {
+                cell.setup(artist: result[indexes[indexPath.section]]![indexPath.row], titColor: .white, detColor: .white)
+            }else{
+                cell.setup(artist: result[indexes[indexPath.section]]![indexPath.row], titColor: .black, detColor: .black)
+            }
             return cell
         }
     }

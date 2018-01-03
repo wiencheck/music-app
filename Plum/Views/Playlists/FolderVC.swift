@@ -17,14 +17,22 @@ class FolderVC: UITableViewController {
     var playlists: [Playlist]!
     var pickedList: Playlist!
     var barTitle: String!
+    var currentTheme: Theme!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        currentTheme = GlobalSettings.theme
         title = barTitle
         print(receivedID)
         setup()
-        //tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
-        tableView.backgroundColor = UIColor.lightBackground
+        tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
+        if currentTheme == .dark {
+            tableView.backgroundColor = UIColor.darkBackground
+            tableView.separatorColor = UIColor.black
+        }else{
+            tableView.backgroundColor = UIColor.lightBackground
+            tableView.separatorColor = UIColor.lightSeparator
+        }
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -41,7 +49,11 @@ class FolderVC: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! ArtistCell
-        cell.setup(list: playlists[indexPath.row])
+        if currentTheme == .dark {
+            cell.setup(list: playlists[indexPath.row], titColor: .white, detColor: .lightText)
+        }else{
+            cell.setup(list: playlists[indexPath.row], titColor: .black, detColor: .black)
+        }
         cell.backgroundColor = .clear
         return cell
     }

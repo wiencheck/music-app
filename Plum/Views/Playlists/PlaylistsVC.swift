@@ -40,12 +40,15 @@ class PlaylistsVC: UIViewController {
     var controllerSet = false
     var pickedName: String!
     var hideKeyboard = false
+    var currentTheme = GlobalSettings.theme
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBarController?.delegate = self
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         grid = GlobalSettings.playlistsGrid
+        setTheme()
         setup()
         setupDict()
         //setHeaders()
@@ -62,6 +65,7 @@ class PlaylistsVC: UIViewController {
             view.bringSubview(toFront: collectionIndexView)
         }else{
             setTable()
+            tableView.separatorColor = UIColor.lightSeparator
             tableIndexView.indexes = self.indexes
             tableIndexView.tableView = self.tableView
             tableIndexView.setup()
@@ -93,8 +97,6 @@ class PlaylistsVC: UIViewController {
     
     
     func setTable(){
-        //self.tableView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
-        self.tableView.backgroundColor = UIColor.lightBackground
         tableView.delegate = self
         tableView.dataSource = self
         self.view.addSubview(tableView)
@@ -105,8 +107,6 @@ class PlaylistsVC: UIViewController {
     }
     
     func setCollection(){
-        //self.collectionView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
-        self.collectionView.backgroundColor = UIColor.lightBackground
         collectionView.delegate = self
         collectionView.dataSource = self
         self.view.addSubview(collectionView)
@@ -128,10 +128,6 @@ class PlaylistsVC: UIViewController {
             d.barTitle = self.pickedName
             d.receivedID = self.pickedID
         }
-    }
-    
-    @IBAction func NPBtnPressed(_ sender: Any) {
-        
     }
 
 }
@@ -174,13 +170,21 @@ extension PlaylistsVC: UITableViewDelegate, UITableViewDataSource {
         if shouldShowResults {
             let cell = tableView.dequeueReusableCell(withIdentifier: "playlistCell", for: indexPath) as! ArtistCell
             let item = filteredPlaylists[indexPath.row]
-            cell.setup(list: item)
+            if currentTheme == .dark {
+                cell.setup(list: item, titColor: .white, detColor: .lightText)
+            }else{
+                cell.setup(list: item, titColor: .black, detColor: .black)
+            }
             cell.backgroundColor = .clear
             return cell
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "playlistCell", for: indexPath) as! ArtistCell
             let item = result[indexes[indexPath.section]]?[indexPath.row]
-            cell.setup(list: item!)
+            if currentTheme == .dark {
+                cell.setup(list: item!, titColor: .white, detColor: .lightText)
+            }else{
+                cell.setup(list: item!, titColor: .black, detColor: .black)
+            }
             cell.backgroundColor = .clear
             return cell
         }
@@ -719,6 +723,39 @@ extension PlaylistsVC: UICollectionViewDelegateFlowLayout {
                 }
             }
         }
+    }
+    
+    func setTheme() {
+        let tool = UIToolbar(frame: searchView.bounds)
+        guard let bar = navigationController?.navigationBar else { return }
+        switch currentTheme {
+        case .light:
+            tool.barStyle = .default
+            tableIndexView.backgroundColor = UIColor.white
+            collectionIndexView.backgroundColor = UIColor.white
+            bar.barStyle = .default
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
+            tableView.backgroundColor = UIColor.lightBackground
+            tableView.separatorColor = .lightGray
+        case .dark:
+            tool.barStyle = .blackTranslucent
+            tableIndexView.backgroundColor = UIColor.darkGray
+            collectionIndexView.backgroundColor = UIColor.darkGray
+            bar.barStyle = .blackTranslucent
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+            tableView.backgroundColor = UIColor.darkBackground
+            tableView.separatorColor = .black
+        default:
+            tool.barStyle = .blackTranslucent
+            tableIndexView.backgroundColor = UIColor.darkGray
+            collectionIndexView.backgroundColor = UIColor.darkGray
+            bar.barStyle = .blackTranslucent
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+            tableView.backgroundColor = UIColor.lightBackground
+            tableView.separatorColor = .lightGray
+        }
+        searchView.addSubview(tool)
+        bar.tintColor = GlobalSettings.tint.color
     }
     
 }

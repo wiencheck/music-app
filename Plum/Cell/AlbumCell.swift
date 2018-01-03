@@ -41,7 +41,7 @@ class AlbumCell: UITableViewCell {
         //Songs
         let attCount = NSMutableAttributedString(string: "\(songsCount)")
         let attCountR = NSRange(location: 0, length: attCount.length)
-        attCount.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 15, weight: .medium), range: attCountR)
+        attCount.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 13, weight: .medium), range: attCountR)
         st = ""
         if songsCount > 1 {
             st = " songs"
@@ -68,7 +68,7 @@ class AlbumCell: UITableViewCell {
         
         let attYear = NSMutableAttributedString(string: genre)
         let attYearR = NSRange(location: 0, length: attYear.length)
-        attYear.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 15, weight: .medium), range: attYearR)
+        attYear.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 13, weight: .medium), range: attYearR)
         var st = ", "
         let attComa = NSMutableAttributedString(string: st)
         let attComaR = NSRange(location: 0, length: attComa.length)
@@ -77,7 +77,7 @@ class AlbumCell: UITableViewCell {
         //Songs
         let attCount = NSMutableAttributedString(string: "\(songsCount)")
         let attCountR = NSRange(location: 0, length: attCount.length)
-        attCount.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 15, weight: .medium), range: attCountR)
+        attCount.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 13, weight: .medium), range: attCountR)
         st = ""
         if songsCount > 1 {
             st = " songs"

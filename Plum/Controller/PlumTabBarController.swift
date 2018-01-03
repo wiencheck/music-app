@@ -23,8 +23,12 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         //_ = viewControllers?.first
-        self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         self.tabBar.tintColor = GlobalSettings.tint.color
+        if GlobalSettings.theme == .light {
+            tabBar.barStyle = .default
+        }else{
+            tabBar.barStyle = .black
+        }
         moreNavigationController.navigationBar.tintColor = GlobalSettings.tint.color
         self.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color], for: UIControlState.normal)
         self.tabBar.unselectedItemTintColor = UIColor.gray
@@ -54,14 +58,6 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         }
         customizeMoreTab()
     }
-    
-//    override func viewDidAppear(_ animated: Bool) {
-//        DispatchQueue.global(qos: .background).async {
-//            musicQuery.shared.setArrays()
-//        }
-//    }
-    
-    
     
     fileprivate func displayPermissionsError() {
         let alertVC = UIAlertController(title: "This is a demo", message: "Unauthorized or restricted access. Cannot play media. Fix in Settings?" , preferredStyle: .alert)

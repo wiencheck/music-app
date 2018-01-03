@@ -29,7 +29,8 @@ class ArtistUpCell: UITableViewCell {
         self.item = item
         if GlobalSettings.rating{
             duration.textColor = GlobalSettings.tint.color
-            switch item.rating{
+            duration.text = item.labelFromRating()
+            /*switch item.rating{
             case 1:
                 duration.text = "★☆☆☆☆"
             case 2:
@@ -42,7 +43,7 @@ class ArtistUpCell: UITableViewCell {
                 duration.text = "★★★★★"
             default:
                 duration.text = "☆☆☆☆☆"
-            }
+            }*/
         }else{
             let d = item.playbackDuration.calculateFromTimeInterval()
             self.duration.text = "\(d.minute):\(d.second)"

@@ -14,8 +14,8 @@ class EightNowPlayingVC: UIViewController {
     var scale: Double!
     
     let player = Plum.shared
-    @IBOutlet weak var volView: UIView!
-    var mpVolView: MPVolumeView!
+    //@IBOutlet weak var volView: UIView!
+    //var mpVolView: MPVolumeView!
     @IBOutlet weak var artworkImage: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var detailLabel: UILabel!
@@ -44,6 +44,7 @@ class EightNowPlayingVC: UIViewController {
     @IBOutlet weak var lyricsButton: UIButton!
     @IBOutlet weak var ratingButton: UIButton!
     @IBOutlet weak var backgroundView: UIView!
+    @IBOutlet weak var mpVolView: MPVolumeView!
     var shoudlChangeBar = false
     var viewActive = false
     
@@ -91,6 +92,7 @@ class EightNowPlayingVC: UIViewController {
         //            backgroundImgView.contentMode = .scaleAspectFill
         //            view.addSubview(fx)
         //        }
+        scale = 20
         updateUI()
         setColors()
         NotificationCenter.default.addObserver(self, selector: #selector(updateUI), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
@@ -121,7 +123,8 @@ class EightNowPlayingVC: UIViewController {
         //            prevBtn.isEnabled = false
         //            playbackBtn.isEnabled = false
         //        }
-        updateUI()
+        //updateUI()
+        //setColors()
     }
     
     @IBAction func presentQueue(_ sender: Any){
@@ -129,7 +132,7 @@ class EightNowPlayingVC: UIViewController {
     }
     
     @IBAction func ratingPressed() {
-        instruct("rating", message: "When enabled, you will see ratings for every song in app and on lock screen. Go to settings to change options available on lock screen", completion: nil)
+        //instruct("rating", message: "When enabled, you will see ratings for every song in app and on lock screen. Go to settings to change options available on lock screen", completion: nil)
         GlobalSettings.changeRating(!GlobalSettings.rating)
         if GlobalSettings.rating {
             ratingButton.setImage(#imageLiteral(resourceName: "ratingsbutton"), for: .normal)
@@ -139,11 +142,14 @@ class EightNowPlayingVC: UIViewController {
         }
     }
     
+    
+    
     @IBAction func lyricsModePressed() {
         GlobalSettings.changeLyrics(!GlobalSettings.lyrics)
-        instruct("lyrics", message: "When enabled, lyrics will be presented on your lock screen automatically and outside the app by pressing the button in control center", completion: {
-            self.askNotification()
-        })
+        //instruct("lyrics", message: "When enabled, lyrics will be presented on your lock screen automatically and outside the app by pressing the button in control center", completion: {
+            //self.askNotification()
+        //})
+        askNotification()
         if GlobalSettings.lyrics {
             lyricsButton.setImage(#imageLiteral(resourceName: "lyricsbutton"), for: .normal)
             ratingButton.setImage(#imageLiteral(resourceName: "noratingsbutton"), for: .normal)
@@ -202,11 +208,7 @@ class EightNowPlayingVC: UIViewController {
 extension EightNowPlayingVC: UIGestureRecognizerDelegate {
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        if lyricsTextView.contentOffset.y <= 0 {
-            return false
-        }else{
-            return true
-        }
+        return false
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -220,6 +222,7 @@ extension EightNowPlayingVC: UIGestureRecognizerDelegate {
             ratingsView.isUserInteractionEnabled = false
             ratingLabel.isUserInteractionEnabled = false
         }
+        
     }
     
     func setArtworkDoubleTap(){
@@ -395,19 +398,41 @@ extension EightNowPlayingVC: UITextViewDelegate {
         lyricsView.addGestureRecognizer(lyricsTap)
         setLyricsDoubleTap()
         lyricsTap.require(toFail: doubleTapLyr)
-        lyricsView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        lyricsView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
         lyricsTextView.backgroundColor = .clear
         lyricsTextView.isScrollEnabled = true
         lyricsTextView.delegate = self
+        //fadeTextView()
         lyricsView.addSubview(lyricsTextView)
         view.superview?.addSubview(lyricsView)
     }
     
+    func fadeTextView() {
+        let innerColor = UIColor.black.cgColor
+        let outerColor = UIColor.black.cgColor;
+        
+        // define a vertical gradient (up/bottom edges)
+        let colors = [outerColor, innerColor,innerColor,outerColor]
+        let locations: [NSNumber] = [0.0, 0.15,0.85,1.0]
+        
+        let vMaskLayer : CAGradientLayer = CAGradientLayer()// layer];
+        // without specifying startPoint and endPoint, we get a vertical gradient
+        vMaskLayer.opacity = 0.7
+        vMaskLayer.colors = colors;
+        vMaskLayer.locations = locations;
+        vMaskLayer.bounds = self.lyricsTextView.bounds;
+        vMaskLayer.anchorPoint = CGPoint.zero;
+        
+        // you must add the mask to the root view, not the scrollView, otherwise
+        //  the masks will move as the user scrolls!
+        self.lyricsView.layer.addSublayer(vMaskLayer)
+    }
+    
     func setVolumeView(){
-        mpVolView = MPVolumeView.init(frame: volView.bounds)
+        //mpVolView = MPVolumeView.init(frame: volView.bounds)
         mpVolView.showsVolumeSlider = true
         mpVolView.showsRouteButton = false
-        volView.addSubview(mpVolView)
+        //volView.addSubview(mpVolView)
     }
     
     func setSlider(){
@@ -449,7 +474,6 @@ extension EightNowPlayingVC: UpNextDelegate {
 extension EightNowPlayingVC {       //Kolory i UI
     
     @objc func updateUI(){
-        scale = GlobalSettings.scale
         if(self.player.currentItem != nil){
             self.titleLabel.text = self.player.labelString(type: "title")
             self.detailLabel.text = self.player.labelString(type: "detail")
@@ -476,13 +500,13 @@ extension EightNowPlayingVC {       //Kolory i UI
         if player.currentItem != nil{
             let ass = AVAsset(url: (self.player.currentItem?.assetURL)!)
             if let lyr = ass.lyrics {
-                self.lyricsTextView.text = lyr
+                self.lyricsTextView.text = "\n" + lyr + "\n"
             }else{
                 self.lyricsTextView.text = "\n\n\n\n\n\nNo lyrics available :(\n\nYou can add them in iTunes\non your Mac or PC\n"
             }
         }
         self.lyricsTextView.textColor = .white
-        self.lyricsTextView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
+        //self.lyricsTextView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
         if GlobalSettings.rating {
             ratingButton.setImage(#imageLiteral(resourceName: "ratingsbutton"), for: .normal)
         }else{
@@ -494,6 +518,7 @@ extension EightNowPlayingVC {       //Kolory i UI
             lyricsButton.setImage(#imageLiteral(resourceName: "nolyricsbutton"), for: .normal)
         }
         showRating()
+        lyricsTextView.contentOffset.y = 0.1
     }
     
     @objc func updateTimes(){
@@ -509,7 +534,9 @@ extension EightNowPlayingVC {       //Kolory i UI
         }
     }
     
-    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        print(scrollView.contentOffset.y)
+    }
     
     @objc func scrubAudio(){
         shouldUpdateSlider = false
@@ -544,15 +571,6 @@ extension EightNowPlayingVC {       //Kolory i UI
             color()
         }else if GlobalSettings.blur {
             blur()
-        }else{
-            switch GlobalSettings.theme {
-            case .dark:
-                dark()
-            case .light:
-                light()
-            case .adaptive:
-                light()
-            }
         }
     }
     

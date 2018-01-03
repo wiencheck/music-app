@@ -43,9 +43,11 @@ class ArtistSongs: UIViewController {
         tabBarController?.delegate = self
         sort = GlobalSettings.artistSort
         setup()
-        
-//        tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0)
-//        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
+        tableView.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -138,15 +140,21 @@ extension ArtistSongs: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath)
-            cell.backgroundColor = .clear
+            let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath) as! ShuffleCell
+            cell.setup(style: .light)
             return cell
         }else{
             if sort == .alphabetically {
                 if typesSongs[indexPath.section-1][indexPath.row] == 0 {
                     let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! SongCell
                     let item = result[indexes[indexPath.section-1]]?[indexPath.row]
-                    cell.setup(item: item!)
+                    if GlobalSettings.theme == .dark {
+                        cell.artSetup(item: item!, titColor: .white, artColor: .white, albColor: UIColor.lightText)
+                        cell.titleLabel.textColor = .white
+                    }else{
+                        cell.artSetup(item: item!, titColor: .black, artColor: .black, albColor: .black)
+                        cell.titleLabel.textColor = .black
+                    }
                     cell.backgroundColor = .clear
                     return cell
                 }else{
@@ -157,8 +165,8 @@ extension ArtistSongs: UITableViewDelegate, UITableViewDataSource {
                 }
             }else{
                 if indexPath.row == 0 {
-                    let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath)
-                    cell.backgroundColor = .clear
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath) as! ShuffleCell
+                    cell.setup(style: .light)
                     return cell
                 }else{
                     if typesAlbums[indexPath.section][indexPath.row-1] == 0 {
@@ -387,6 +395,7 @@ extension ArtistSongs {
             albIndexView.isHidden = false
             alpIndexView.isHidden = true
         }
+        tableView.separatorColor = UIColor.lightSeparator
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = UIColor.lightBackground
