@@ -131,12 +131,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
 
     private override init(){
         super.init()
-        let url = URL(fileURLWithPath: Bundle.main.path(forResource: "initPlum", ofType: "m4a")!)
-        do{
-            try player = AVAudioPlayer(contentsOf: url)
-        }catch let error{
-            print("Nie udalo sie zainicjalizowac \(error)")
-        }
+        initPlayer()
         wasLoaded = false
         defIndex = 0
         isUsrQueue = false
@@ -463,7 +458,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         if shouldPlay { play() }
     }
     
-    func initAV(){
+    func initPlayer(){
         let url = URL(fileURLWithPath: Bundle.main.path(forResource: "initPlum", ofType: "m4a")!)
         do{
             try player = AVAudioPlayer(contentsOf: url)
@@ -525,6 +520,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
             do{
                 print("Trying to load \(String (describing:item.value(forProperty: MPMediaItemPropertyTitle)))...")
                 player = try AVAudioPlayer(contentsOf: (item.value(forProperty: MPMediaItemPropertyAssetURL))as! URL)
+                player.delegate = self
                 player.prepareToPlay()
                 currentItem = item
                 wasLoaded = true
