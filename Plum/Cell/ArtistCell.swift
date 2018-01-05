@@ -65,5 +65,4 @@ class ArtistCell: UITableViewCell {
             artistImage.image = list.image
         }
     }
-
 }

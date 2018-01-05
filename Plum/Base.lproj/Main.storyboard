@@ -3919,10 +3919,19 @@ SOFTWARE.</string>
                                             <action selector="addBtnPressed:" destination="JFZ-Pw-iWO" eventType="touchUpInside" id="Xc7-Ar-Bpy"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1UI-SZ-jpb">
+                                        <rect key="frame" x="319" y="32" width="44" height="30"/>
+                                        <state key="normal" title="Rating"/>
+                                        <connections>
+                                            <action selector="ratingPressed" destination="JFZ-Pw-iWO" eventType="touchUpInside" id="LGE-qG-QGS"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="CwN-Tj-Ckz" secondAttribute="bottom" constant="6.5" id="6Rv-8r-Dk8"/>
                                     <constraint firstItem="5ER-zk-H3Q" firstAttribute="leading" secondItem="gAk-GD-dog" secondAttribute="leading" constant="14" id="FaZ-ir-LIF"/>
+                                    <constraint firstItem="1UI-SZ-jpb" firstAttribute="top" secondItem="gAk-GD-dog" secondAttribute="top" constant="32" id="KdQ-ZS-6SD"/>
+                                    <constraint firstAttribute="trailing" secondItem="1UI-SZ-jpb" secondAttribute="trailing" constant="12" id="Ll9-oD-DHK"/>
                                     <constraint firstAttribute="height" constant="64" id="cIC-LL-Ssd"/>
                                     <constraint firstItem="CwN-Tj-Ckz" firstAttribute="centerX" secondItem="gAk-GD-dog" secondAttribute="centerX" id="i7q-LH-dNk"/>
                                     <constraint firstAttribute="bottom" secondItem="5ER-zk-H3Q" secondAttribute="bottom" constant="8" id="tQ9-rJ-mqF"/>
@@ -3945,6 +3954,7 @@ SOFTWARE.</string>
                     <connections>
                         <outlet property="addBtn" destination="5ER-zk-H3Q" id="evn-Vp-vwZ"/>
                         <outlet property="mainLabel" destination="CwN-Tj-Ckz" id="fDQ-ww-RFK"/>
+                        <outlet property="ratingBtn" destination="1UI-SZ-jpb" id="xR8-81-BfM"/>
                         <outlet property="tableView" destination="edQ-8x-7ty" id="fkU-al-4mj"/>
                         <outlet property="upperBar" destination="gAk-GD-dog" id="FRN-PD-kI8"/>
                     </connections>
@@ -4148,25 +4158,23 @@ SOFTWARE.</string>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1996" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n4f-nU-HHd">
-                                        <rect key="frame" x="327" y="30" width="40" height="21"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="40" id="Jg0-Eh-Xi7"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GB1-FV-CZZ">
+                                        <rect key="frame" x="319" y="32" width="44" height="30"/>
+                                        <state key="normal" title="Rating"/>
+                                        <connections>
+                                            <action selector="ratingPressed" destination="iom-mG-mvn" eventType="touchUpInside" id="eFf-fF-E5q"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="n4f-nU-HHd" secondAttribute="trailing" constant="8" id="1Y3-pN-ONr"/>
+                                    <constraint firstItem="GB1-FV-CZZ" firstAttribute="top" secondItem="ITq-Lf-agF" secondAttribute="top" constant="32" id="870-Tf-fvQ"/>
                                     <constraint firstItem="zuM-rV-dYZ" firstAttribute="top" secondItem="rOo-0H-f5V" secondAttribute="bottom" id="AYs-qk-zhj"/>
                                     <constraint firstItem="zuM-rV-dYZ" firstAttribute="centerX" secondItem="ITq-Lf-agF" secondAttribute="centerX" id="BJb-dr-omD"/>
                                     <constraint firstAttribute="bottom" secondItem="fK2-ql-fuA" secondAttribute="bottom" constant="3" id="Ocp-p5-s1n"/>
+                                    <constraint firstAttribute="trailing" secondItem="GB1-FV-CZZ" secondAttribute="trailing" constant="12" id="cJF-BD-Zcx"/>
                                     <constraint firstItem="rOo-0H-f5V" firstAttribute="centerX" secondItem="ITq-Lf-agF" secondAttribute="centerX" id="fpB-3C-t2c"/>
                                     <constraint firstItem="fK2-ql-fuA" firstAttribute="leading" secondItem="ITq-Lf-agF" secondAttribute="leading" constant="8" id="hni-mB-G2f"/>
                                     <constraint firstAttribute="bottom" secondItem="zuM-rV-dYZ" secondAttribute="bottom" constant="2" id="kQO-C6-uSU"/>
-                                    <constraint firstItem="n4f-nU-HHd" firstAttribute="top" secondItem="ITq-Lf-agF" secondAttribute="top" constant="30" id="rVn-wv-rlY"/>
                                     <constraint firstItem="rOo-0H-f5V" firstAttribute="top" secondItem="ITq-Lf-agF" secondAttribute="top" constant="18" id="z9g-TR-LGW"/>
                                 </constraints>
                             </view>
@@ -4186,10 +4194,10 @@ SOFTWARE.</string>
                     <connections>
                         <outlet property="albumLabel" destination="zuM-rV-dYZ" id="Oxz-Ej-s75"/>
                         <outlet property="artistLabel" destination="rOo-0H-f5V" id="8l2-xi-ojm"/>
+                        <outlet property="ratingBtn" destination="GB1-FV-CZZ" id="ncC-YL-aXi"/>
                         <outlet property="shufBtn" destination="fK2-ql-fuA" id="dtW-iU-F4l"/>
                         <outlet property="tableView" destination="OZM-u5-tVu" id="7Cs-rJ-veu"/>
                         <outlet property="upperBar" destination="ITq-Lf-agF" id="GpM-On-6sX"/>
-                        <outlet property="yearLabel" destination="n4f-nU-HHd" id="0ZD-j0-hUs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IzW-76-Y0O" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4383,6 +4391,13 @@ SOFTWARE.</string>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KXH-DO-WNp">
+                                        <rect key="frame" x="319" y="32" width="44" height="30"/>
+                                        <state key="normal" title="Rating"/>
+                                        <connections>
+                                            <action selector="ratingPressed" destination="dQw-Ml-Zsz" eventType="touchUpInside" id="9yF-8U-Cj2"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="dkL-Ec-7vr" firstAttribute="leading" secondItem="be3-Sp-y8O" secondAttribute="leading" constant="8" id="4Zw-7s-tsJ"/>
@@ -4392,6 +4407,8 @@ SOFTWARE.</string>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="64" id="aaM-4g-5w7"/>
                                     <constraint firstItem="czz-WR-vev" firstAttribute="leading" secondItem="dkL-Ec-7vr" secondAttribute="trailing" id="dlu-4F-Gsr"/>
                                     <constraint firstAttribute="bottom" secondItem="czz-WR-vev" secondAttribute="bottom" constant="6.5" id="iyT-Lk-wbT"/>
+                                    <constraint firstItem="KXH-DO-WNp" firstAttribute="top" secondItem="be3-Sp-y8O" secondAttribute="top" constant="32" id="l2S-nI-ITf"/>
+                                    <constraint firstAttribute="trailing" secondItem="KXH-DO-WNp" secondAttribute="trailing" constant="12" id="tm3-V6-kzj"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nLi-CZ-ImR" customClass="TableIndexView" customModule="Plum" customModuleProvider="target">
@@ -4420,6 +4437,7 @@ SOFTWARE.</string>
                     <connections>
                         <outlet property="artistLabel" destination="czz-WR-vev" id="6Z0-H8-gap"/>
                         <outlet property="indexView" destination="nLi-CZ-ImR" id="EjE-lb-zSo"/>
+                        <outlet property="ratingBtn" destination="KXH-DO-WNp" id="Tso-dG-Ina"/>
                         <outlet property="shufBtn" destination="dkL-Ec-7vr" id="SG9-3C-HHC"/>
                         <outlet property="tableView" destination="CIa-fU-VW9" id="PdX-nz-C8P"/>
                         <outlet property="upperBar" destination="be3-Sp-y8O" id="MkB-62-A2M"/>

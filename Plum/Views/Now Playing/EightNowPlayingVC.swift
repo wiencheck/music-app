@@ -123,7 +123,7 @@ class EightNowPlayingVC: UIViewController {
         //            prevBtn.isEnabled = false
         //            playbackBtn.isEnabled = false
         //        }
-        //updateUI()
+        updateUI()
         //setColors()
     }
     

@@ -330,6 +330,11 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         if(currentItem != nil){
             if(!player.isPlaying){
                 player.play()
+                do {
+                    try AVAudioSession.sharedInstance().setActive(true)
+                }catch let error {
+                    print(error)
+                }
             }else{
                 print("player is already playing")
             }
@@ -344,6 +349,11 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         }
         if(player.isPlaying){
             player.pause()
+            do {
+                try AVAudioSession.sharedInstance().setActive(false)
+            }catch let error {
+                print(error)
+            }
         }else{
             print("player is currently not playing")
         }

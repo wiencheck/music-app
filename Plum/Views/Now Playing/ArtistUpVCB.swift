@@ -18,6 +18,7 @@ class ArtistUpVCB: UIViewController {
     @IBOutlet weak var upperBar: UIView!
     @IBOutlet weak var shufBtn: UIButton!
     @IBOutlet weak var artistLabel: UILabel!
+    @IBOutlet weak var ratingBtn: UIButton!
     
     var result = [String: [MPMediaItem]]()
     var indexes = [String]()
@@ -64,6 +65,11 @@ class ArtistUpVCB: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         UIApplication.shared.statusBarStyle = statusBarStyle
+    }
+    
+    @IBAction func ratingPressed() {
+        GlobalSettings.changeRating(!GlobalSettings.rating)
+        tableView.reloadData()
     }
     
     func setup() {
@@ -340,6 +346,7 @@ extension ArtistUpVCB {
         }else {
             light()
         }
+        ratingBtn.tintColor = GlobalSettings.tint.color
         fxView.frame = self.view.frame
         view.backgroundColor = .clear
         view.addSubview(fxView)

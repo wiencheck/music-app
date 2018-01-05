@@ -490,6 +490,20 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
             
             searchItemsPredicate.append(titleSearchComparisonPredicate)
             
+            let artistExpression = NSExpression(forKeyPath: "artist")
+            let searchStringExpression2 = NSExpression(forConstantValue: searchString)
+            
+            let titleSearchComparisonPredicate2 = NSComparisonPredicate(leftExpression: artistExpression, rightExpression: searchStringExpression2, modifier: .direct, type: .contains, options: .caseInsensitive)
+            
+            searchItemsPredicate.append(titleSearchComparisonPredicate2)
+            
+            let albumExpression = NSExpression(forKeyPath: "albumTitle")
+            let searchStringExpression3 = NSExpression(forConstantValue: searchString)
+            
+            let titleSearchComparisonPredicate3 = NSComparisonPredicate(leftExpression: albumExpression, rightExpression: searchStringExpression3, modifier: .direct, type: .contains, options: .caseInsensitive)
+            
+            searchItemsPredicate.append(titleSearchComparisonPredicate3)
+            
             let orMatchPredicate = NSCompoundPredicate(orPredicateWithSubpredicates:searchItemsPredicate)
             
             return orMatchPredicate

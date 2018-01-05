@@ -28,6 +28,7 @@ class QueueVC: UIViewController {
     @IBOutlet weak var upperBar: UIView!
     @IBOutlet weak var addBtn: UIButton!
     @IBOutlet weak var mainLabel: UILabel!
+    @IBOutlet weak var ratingBtn: UIButton!
     
     let player = Plum.shared
     var sections: [Section]!
@@ -63,6 +64,11 @@ class QueueVC: UIViewController {
         setHeaders()
         tableView.reloadData()
         tableView.scrollToRow(at: IndexPath(row: 0, section: 1), at: .top, animated: false)
+    }
+    
+    @IBAction func ratingPressed() {
+        GlobalSettings.changeRating(!GlobalSettings.rating)
+        tableView.reloadData()
     }
     
     func doneBtnPressed(){
@@ -510,6 +516,7 @@ extension QueueVC: MPMediaPickerControllerDelegate {    //Media Picker
         }else{
             light()
         }
+        ratingBtn.tintColor = GlobalSettings.tint.color
         fxView.frame = self.view.frame
         self.view.backgroundColor = .clear
         view.addSubview(fxView)

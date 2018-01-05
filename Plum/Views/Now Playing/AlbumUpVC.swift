@@ -16,7 +16,7 @@ class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
     @IBOutlet weak var shufBtn: UIButton!
     @IBOutlet weak var albumLabel: UILabel!
     @IBOutlet weak var artistLabel: UILabel!
-    @IBOutlet weak var yearLabel: UILabel!
+    @IBOutlet weak var ratingBtn: UIButton!
     
     var cellTypes = [Int]()
     var songs = [MPMediaItem]()
@@ -41,6 +41,11 @@ class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
         NotificationCenter.default.addObserver(self, selector: #selector(reload), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
     }
     
+    @IBAction func ratingPressed() {
+        GlobalSettings.changeRating(!GlobalSettings.rating)
+        tableView.reloadData()
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         instruct("deploy", message: "Tap on now playing song to to immediately set current playing queue to the album", completion: nil)
     }
@@ -54,15 +59,7 @@ class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
         cellTypes = Array<Int>(repeating: 0, count: songs.count)
         let item = songs[0]
         artistLabel.text = item.albumArtist ?? "Unknown artist"
-        albumLabel.text = item.albumTitle ?? "Unknown album"
-        if let date = item.releaseDate {
-            let calendar = Calendar.current
-            let year = calendar.component(.year, from: date)
-            yearLabel.text = "\(year)"
-        }else{
-            yearLabel.text = ""
-        }
-    }
+        albumLabel.text = item.albumTitle ?? "Unknown album"    }
     
     func doneBtnPressed(){
         let bar = self.tabBarController as! UpNextTabBarController
@@ -257,6 +254,7 @@ extension AlbumUpVC: UITableViewDelegate, UITableViewDataSource{
         }else {
             light()
         }
+        ratingBtn.tintColor = GlobalSettings.tint.color
         fxView.frame = self.view.frame
         view.backgroundColor = .clear
         view.addSubview(fxView)
