@@ -25,13 +25,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         if let _ = MPMediaQuery.songs().items {
-            
             letGo()
-            //GlobalSettings.changeTheme(.light)
         }else{
             hijack()
         }
-        //letGo()
         return true
     }
     

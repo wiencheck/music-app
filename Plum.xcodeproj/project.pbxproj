@@ -53,7 +53,6 @@
 		389333AF1FDDC118004A071B /* UIImage+Tint.m in Sources */ = {isa = PBXBuildFile; fileRef = 389333AD1FDDC118004A071B /* UIImage+Tint.m */; };
 		38944CA01FA0EFA4005CB30C /* AlbumUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38944C9F1FA0EFA4005CB30C /* AlbumUpVC.swift */; };
 		38944CA31FA0F024005CB30C /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38944CA21FA0F024005CB30C /* MediaPlayer.framework */; };
-		38944CA51FA0F031005CB30C /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38944CA41FA0F031005CB30C /* AVFoundation.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		389859ED1FDDB89700E54E55 /* PlumVolumeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 389859EC1FDDB89700E54E55 /* PlumVolumeView.swift */; };
 		389A24781FD8872D0092F979 /* QueueCellLite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 389A24761FD8871B0092F979 /* QueueCellLite.swift */; };
 		389A24791FD8874E0092F979 /* QueueCellLite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 389A24761FD8871B0092F979 /* QueueCellLite.swift */; };
@@ -61,13 +60,13 @@
 		38A12EA81F72834E00E3E53E /* QueueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38A12EA71F72834E00E3E53E /* QueueCell.swift */; };
 		38AC0F501FDC54DC0049AD09 /* ArtistUpVCB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AC0F4F1FDC54DC0049AD09 /* ArtistUpVCB.swift */; };
 		38AF9C791F2F72A800FA73B8 /* Plum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38AF9C781F2F72A800FA73B8 /* Plum.swift */; };
-		38B8E0311FDAE632003A3B78 /* LNPopupController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38B8E0301FDAE632003A3B78 /* LNPopupController.framework */; };
-		38B8E0321FDAE632003A3B78 /* LNPopupController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 38B8E0301FDAE632003A3B78 /* LNPopupController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		38C4BCAA1F94BAF700DABE81 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C4BCA91F94BAF700DABE81 /* CollectionViewCell.swift */; };
 		38C83D5D1FDBFBD600C7D94E /* ArtistSongs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C83D5C1FDBFBD600C7D94E /* ArtistSongs.swift */; };
 		38CB49481FE296A30054F23C /* FolderVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38CB49471FE296A30054F23C /* FolderVC.swift */; };
 		38CC1A151F9CAEA500B2AA8D /* IndexViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38CC1A141F9CAEA500B2AA8D /* IndexViews.swift */; };
 		38D142571FB367CF003F08F5 /* SearchHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D142561FB367CF003F08F5 /* SearchHeader.swift */; };
+		38D70A271FFFC72E00775381 /* LNPopupController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38D70A261FFFC72D00775381 /* LNPopupController.framework */; };
+		38D70A281FFFC72E00775381 /* LNPopupController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 38D70A261FFFC72D00775381 /* LNPopupController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		38E68AC11F28C17500BFF4E2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38E68AC01F28C17500BFF4E2 /* AppDelegate.swift */; };
 		38E68AC61F28C17500BFF4E2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 38E68AC41F28C17500BFF4E2 /* Main.storyboard */; };
 		38E68AC81F28C17500BFF4E2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 38E68AC71F28C17500BFF4E2 /* Assets.xcassets */; };
@@ -111,7 +110,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				38B8E0321FDAE632003A3B78 /* LNPopupController.framework in Embed Frameworks */,
+				38D70A281FFFC72E00775381 /* LNPopupController.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -177,13 +176,12 @@
 		38A12EA71F72834E00E3E53E /* QueueCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueCell.swift; sourceTree = "<group>"; };
 		38AC0F4F1FDC54DC0049AD09 /* ArtistUpVCB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistUpVCB.swift; sourceTree = "<group>"; };
 		38AF9C781F2F72A800FA73B8 /* Plum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plum.swift; sourceTree = "<group>"; };
-		38B8E0301FDAE632003A3B78 /* LNPopupController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = LNPopupController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		38B8E0331FDAE64B003A3B78 /* LNPopupController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LNPopupController.framework; sourceTree = "<group>"; };
 		38C4BCA91F94BAF700DABE81 /* CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		38C83D5C1FDBFBD600C7D94E /* ArtistSongs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistSongs.swift; sourceTree = "<group>"; };
 		38CB49471FE296A30054F23C /* FolderVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderVC.swift; sourceTree = "<group>"; };
 		38CC1A141F9CAEA500B2AA8D /* IndexViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexViews.swift; sourceTree = "<group>"; };
 		38D142561FB367CF003F08F5 /* SearchHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchHeader.swift; sourceTree = "<group>"; };
+		38D70A261FFFC72D00775381 /* LNPopupController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LNPopupController.framework; sourceTree = "<group>"; };
 		38E68ABD1F28C17500BFF4E2 /* Plum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Plum.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		38E68AC01F28C17500BFF4E2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		38E68AC51F28C17500BFF4E2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -215,9 +213,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				380C2EBA1FB1AE6400A6731B /* AudioToolbox.framework in Frameworks */,
-				38B8E0311FDAE632003A3B78 /* LNPopupController.framework in Frameworks */,
-				38944CA51FA0F031005CB30C /* AVFoundation.framework in Frameworks */,
 				38944CA31FA0F024005CB30C /* MediaPlayer.framework in Frameworks */,
+				38D70A271FFFC72E00775381 /* LNPopupController.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,7 +247,6 @@
 		38944CA11FA0F024005CB30C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				38B8E0331FDAE64B003A3B78 /* LNPopupController.framework */,
 				380C2EB91FB1AE6400A6731B /* AudioToolbox.framework */,
 				38944CA41FA0F031005CB30C /* AVFoundation.framework */,
 				38944CA21FA0F024005CB30C /* MediaPlayer.framework */,
@@ -417,7 +413,7 @@
 		38E68AB41F28C17500BFF4E2 = {
 			isa = PBXGroup;
 			children = (
-				38B8E0301FDAE632003A3B78 /* LNPopupController.framework */,
+				38D70A261FFFC72D00775381 /* LNPopupController.framework */,
 				38E68ABF1F28C17500BFF4E2 /* Plum */,
 				3878D4FC1FD7F91500A6C42B /* PlumWidget */,
 				38E68ABE1F28C17500BFF4E2 /* Products */,
@@ -865,6 +861,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)/Plum",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Plum/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -895,6 +892,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)",
 					"$(PROJECT_DIR)/Plum",
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Plum/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
