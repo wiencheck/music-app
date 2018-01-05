@@ -34,6 +34,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateProgressBar), userInfo: nil, repeats: true)
         tabBarController?.delegate = self
         musicQuery.shared.delegate = self
+        
         tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
         spotlightButton.alpha = 1.0
         progressBar.alpha = 0.0

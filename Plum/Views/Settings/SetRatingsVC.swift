@@ -44,7 +44,7 @@ class SetRatingsVC: UITableViewController {
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 2
     }
     
     override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
@@ -52,9 +52,9 @@ class SetRatingsVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
+        if section == 4 {
             return "Settings"
-        }else if section == 1 {
+        }else if section == 0 {
             return "Active"
         }else{
             return "Not active"
@@ -70,9 +70,9 @@ class SetRatingsVC: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
+        if section == 4 {
             return 2
-        }else if section == 1 {
+        }else if section == 0 {
             return active.count
         }else{
             return notActive.count
@@ -82,9 +82,9 @@ class SetRatingsVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        if indexPath.section == 1 {
+        if indexPath.section == 0 {
             cell.textLabel?.text = active[indexPath.row].rawValue
-        }else if indexPath.section == 2{
+        }else if indexPath.section == 1{
             cell.textLabel?.text = notActive[indexPath.row].rawValue
         }else{
             if indexPath.row == 0 {
@@ -107,69 +107,74 @@ class SetRatingsVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        if indexPath.section == 0 {
-            return indexPath
-        }else{
-            return nil
-        }
+//        if indexPath.section == 0 {
+//            return indexPath
+//        }else{
+//            return nil
+//        }
+        return nil
     }
     
     override func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        if indexPath.section == 0 {
-            return true
-        }else{
-            return false
-        }
+//        if indexPath.section == 0 {
+//            return true
+//        }else{
+//            return false
+//        }
+        return false
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 0 {
-            GlobalSettings.full = true
-            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-            tableView.cellForRow(at: IndexPath(row: 1, section: 0))?.accessoryType = .none
-        }else{
-            GlobalSettings.full = false
-            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-            tableView.cellForRow(at: IndexPath(row: 0, section: 0))?.accessoryType = .none
-        }
-        //GlobalSettings.changeRating(GlobalSettings.rating, full: GlobalSettings.full)
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
+//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        if indexPath.row == 0 {
+//            GlobalSettings.full = true
+//            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+//            tableView.cellForRow(at: IndexPath(row: 1, section: 0))?.accessoryType = .none
+//        }else{
+//            GlobalSettings.full = false
+//            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+//            tableView.cellForRow(at: IndexPath(row: 0, section: 0))?.accessoryType = .none
+//        }
+//        //GlobalSettings.changeRating(GlobalSettings.rating, full: GlobalSettings.full)
+//        tableView.deselectRow(at: indexPath, animated: true)
+//    }
     
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
         return .none
     }
     
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        if indexPath.section == 0 {
-            return false
-        }else{
-            return true
-        }
+//        if indexPath.section == 0 {
+//            return false
+//        }else{
+//            return true
+//        }
+        return true
     }
     
     override func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
         if tableView.numberOfRows(inSection: proposedDestinationIndexPath.section) == 3 {
-            return IndexPath(row: 0, section: 2)
-        }else if proposedDestinationIndexPath.section == 0 {
-            return IndexPath(row: 0, section: 2)
-        }else{
+            return IndexPath(row: 0, section: 1)
+        }
+//        else if proposedDestinationIndexPath.section == 0 {
+//            return IndexPath(row: 0, section: 2)
+//        }
+        else{
             return proposedDestinationIndexPath
         }
     }
     
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let moving: Rating
-        if sourceIndexPath.section == 1 {
+        if sourceIndexPath.section == 0 {
             moving = active[sourceIndexPath.row]
             active.remove(at: sourceIndexPath.row)
         }else{
             moving = notActive[sourceIndexPath.row]
             notActive.remove(at: sourceIndexPath.row)
         }
-        if destinationIndexPath.section == 1 {
+        if destinationIndexPath.section == 0 {
             active.insert(moving, at: destinationIndexPath.row)
-        }else if destinationIndexPath.section == 2{
+        }else if destinationIndexPath.section == 1{
             notActive.insert(moving, at: destinationIndexPath.row)
         }
         GlobalSettings.updateRatings(active)
