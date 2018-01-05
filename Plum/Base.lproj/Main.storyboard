@@ -1111,7 +1111,7 @@ SOFTWARE.</string>
                                                         <constraint firstAttribute="width" constant="82" id="AAP-gA-KdK"/>
                                                         <constraint firstAttribute="height" constant="21" id="SFb-2f-6ZD"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -1256,7 +1256,7 @@ SOFTWARE.</string>
                                 </prototypes>
                             </tableView>
                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="alO-IS-L7N" customClass="TableIndexView" customModule="Plum" customModuleProvider="target">
-                                <rect key="frame" x="300" y="74" width="20" height="435"/>
+                                <rect key="frame" x="300" y="66" width="20" height="447"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -1275,19 +1275,24 @@ SOFTWARE.</string>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="Aiz-RW-8Cf" secondAttribute="bottom" id="GXr-Ks-A6y"/>
                             <constraint firstItem="Aiz-RW-8Cf" firstAttribute="top" secondItem="Jye-uf-iaF" secondAttribute="top" id="KBa-3D-bRq"/>
-                            <constraint firstItem="NW6-nA-cnP" firstAttribute="top" secondItem="alO-IS-L7N" secondAttribute="bottom" constant="10" id="MlE-z7-SJK"/>
+                            <constraint firstItem="NW6-nA-cnP" firstAttribute="top" secondItem="alO-IS-L7N" secondAttribute="bottom" constant="6" id="MlE-z7-SJK"/>
                             <constraint firstItem="XJi-MH-dpL" firstAttribute="leading" secondItem="Jye-uf-iaF" secondAttribute="leading" id="REd-Fg-euH"/>
                             <constraint firstItem="XJi-MH-dpL" firstAttribute="top" secondItem="p4L-1T-VN9" secondAttribute="bottom" id="Ugj-J3-ura"/>
                             <constraint firstAttribute="trailing" secondItem="Aiz-RW-8Cf" secondAttribute="trailing" id="dfI-gh-iaz"/>
                             <constraint firstAttribute="trailing" secondItem="XJi-MH-dpL" secondAttribute="trailing" id="jVH-1e-cUp"/>
                             <constraint firstItem="Aiz-RW-8Cf" firstAttribute="leading" secondItem="Jye-uf-iaF" secondAttribute="leading" id="ogy-r7-Jd1"/>
                             <constraint firstAttribute="trailing" secondItem="alO-IS-L7N" secondAttribute="trailing" id="vDY-0g-mZ7"/>
-                            <constraint firstItem="alO-IS-L7N" firstAttribute="top" secondItem="p4L-1T-VN9" secondAttribute="bottom" constant="10" id="vcg-pN-JD6"/>
+                            <constraint firstItem="alO-IS-L7N" firstAttribute="top" secondItem="p4L-1T-VN9" secondAttribute="bottom" constant="2" id="vcg-pN-JD6"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" tag="4" title="Songs" image="tab_songs" id="VHL-1H-Ust"/>
                     <navigationItem key="navigationItem" title="Songs" id="DqK-A4-Q1Z">
                         <barButtonItem key="backBarButtonItem" title=" " id="q6b-2B-qxz"/>
+                        <barButtonItem key="rightBarButtonItem" title="Rating" id="a3O-fv-yqE">
+                            <connections>
+                                <action selector="ratingPressed" destination="0U7-7i-GxC" id="NKK-27-BK4"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="indexView" destination="alO-IS-L7N" id="Ce3-Lu-bRX"/>

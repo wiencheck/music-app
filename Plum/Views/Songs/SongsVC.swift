@@ -30,6 +30,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     var heightInset: CGFloat!
     var hideKeyboard = false
     var currentTheme: Theme!
+    var searchVisible: Bool!
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var indexView: TableIndexView!
@@ -53,6 +54,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         indexView.indexes = self.indexes
         indexView.tableView = self.tableView
         indexView.setup()
+        searchVisible = false
         configureSearchController()
         view.bringSubview(toFront: indexView)
         print("Songs loaded")
@@ -71,6 +73,11 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     
     override func viewWillDisappear(_ animated: Bool) {
         definesPresentationContext = false
+    }
+    
+    @IBAction func ratingPressed() {
+        GlobalSettings.changeRating(!GlobalSettings.rating)
+        tableView.reloadData()
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -538,16 +545,24 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.isTranslucent = true
         searchView.frame.size.height = searchController.searchBar.frame.height
-        searchView.addSubview(searchController.searchBar)
-        
-        let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
-        NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
-        //heightInset = (navigationController?.navigationBar.frame.height)! + 58
-        if UIDevice.current.modelName == "iPhone X" {
-            heightInset = 140
+        if searchVisible {
+            searchView.isHidden = false
+            if UIDevice.current.modelName == "iPhone X" {
+                heightInset = 140
+            }else{
+                heightInset = 112
+            }
+            searchView.addSubview(searchController.searchBar)
+            let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
+            NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
         }else{
-            heightInset = 112
+            //searchController.searchBar.backgroundImage = #imageLiteral(resourceName: "gradient_background")
+            searchView.isHidden = true
+            tableView.tableHeaderView = searchController.searchBar
+            heightInset = 64
+            tableView.contentOffset.y = -64
         }
+        
         automaticallyAdjustsScrollViewInsets = false
         let bottomInset = 49 + GlobalSettings.bottomInset
         if #available(iOS 11.0, *) {
@@ -559,7 +574,9 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y < -160 {
-            searchController.searchBar.becomeFirstResponder()
+            if searchVisible {
+                searchController.searchBar.becomeFirstResponder()
+            }
         }
         else if scrollView.contentOffset.y > -heightInset + 20 {
             if hideKeyboard {
@@ -574,7 +591,6 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         indexView.isHidden = true
     }
     
-    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         shouldShowResults = false
         tableView.reloadData()
@@ -584,7 +600,6 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchController.searchBar.resignFirstResponder()
     }
-    
     
     func updateSearchResults(for searchController: UISearchController) {
         let searchString = searchController.searchBar.text
@@ -638,9 +653,14 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
             if currentTheme == .dark {
                 label.textColor = .white
                 tool.barStyle = .blackTranslucent
+                v.addSubview(tool)
             }else{
                 label.textColor = UIColor.gray
                 tool.barStyle = .default
+//                let im = UIImageView(frame: v.frame)
+//                im.image = #imageLiteral(resourceName: "gradient_background")
+//                im.contentMode = .scaleToFill
+//                v.addSubview(im)
             }
             v.addSubview(tool)
             label.text = index
@@ -658,7 +678,13 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
             tool.barStyle = .default
             indexView.backgroundColor = UIColor.white
             bar.barStyle = .default
+            //bar.isTranslucent = false
             bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
+//            tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "gradient_background"))
+//            let im = UIImageView(frame: searchView.bounds)
+//            im.contentMode = .scaleToFill
+//            im.image = #imageLiteral(resourceName: "gradient_background")
+//            searchView.addSubview(im)
             tableView.backgroundColor = UIColor.lightBackground
             tableView.separatorColor = UIColor.lightSeparator
         case .dark:

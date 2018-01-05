@@ -16,7 +16,7 @@ class TableIndexView: UIView {
 
     func setup() {
         self.layer.cornerRadius = 10.0
-        //self.backgroundColor = .white
+        self.backgroundColor = .clear
         translatesAutoresizingMaskIntoConstraints = false
         var views = [String:UILabel]()
         var verticalLayoutString = "V:|"
