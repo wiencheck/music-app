@@ -42,7 +42,8 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         receivedList = musicQuery.shared.playlistForID(playlist: receivedID)
         //tableView.separatorStyle = .none
-        title = receivedList.name
+        navigationItem.title = receivedList.name
+        //title = receivedList.name
         setTable()
         tableView.separatorColor = UIColor.lightSeparator
         configureSearchController()
@@ -56,6 +57,11 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         definesPresentationContext = true
+    }
+    
+    @IBAction func ratingPressed() {
+        GlobalSettings.changeRating(!GlobalSettings.rating)
+        tableView.reloadData()
     }
     
     func setTable(){
@@ -76,7 +82,7 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
         if songs.count > 11 {
             tableIndexView.indexes = self.indexes
             tableIndexView.tableView = self.tableView
-            tableIndexView.setup()
+            tableIndexView.setup(color: UIColor.lightBackground)
         }else{
             tableIndexView.isHidden = true
         }
@@ -355,9 +361,9 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
     
     func setup(){
         let bcount = receivedList.songsIn
-        indexes.append("")
+        indexes.append(" - ")
         indexesInt.append(0)
-        result[""] = [MPMediaItem()]
+        result[" - "] = [MPMediaItem()]
         if bcount > 11 {
             let difference: Int = bcount / 12
             var index = difference

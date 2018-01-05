@@ -47,6 +47,11 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
         title = album.artist
     }
     
+    @IBAction func ratingPressed() {
+        GlobalSettings.changeRating(!GlobalSettings.rating)
+        tableView.reloadData()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         readSettings()

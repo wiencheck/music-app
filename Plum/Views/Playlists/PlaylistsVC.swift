@@ -51,6 +51,7 @@ class PlaylistsVC: UIViewController {
         setTheme()
         setup()
         setupDict()
+        indexes.sort { $0 < $1 }
         //setHeaders()
         if !controllerSet {
             configureSearchController()
@@ -68,7 +69,7 @@ class PlaylistsVC: UIViewController {
             tableView.separatorColor = UIColor.lightSeparator
             tableIndexView.indexes = self.indexes
             tableIndexView.tableView = self.tableView
-            tableIndexView.setup()
+            tableIndexView.setup(color: UIColor.lightBackground)
             view.bringSubview(toFront: searchView)
             view.bringSubview(toFront: tableIndexView)
         }
@@ -79,6 +80,7 @@ class PlaylistsVC: UIViewController {
         self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
         self.definesPresentationContext = true
         if grid != GlobalSettings.playlistsGrid{
+            controllerSet = false
             self.viewDidLoad()
         }
     }

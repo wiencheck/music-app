@@ -42,7 +42,6 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         tabBarController?.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
-        //tableView.separatorStyle = .none
         setupDict()
         setHeaders()
         indexes.insert("", at: 0)
@@ -53,8 +52,8 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         //tableView.separatorStyle = .none
         indexView.indexes = self.indexes
         indexView.tableView = self.tableView
-        indexView.setup()
-        searchVisible = false
+        indexView.setup(color: UIColor.lightBackground)
+        searchVisible = true
         configureSearchController()
         view.bringSubview(toFront: indexView)
         print("Songs loaded")
@@ -229,6 +228,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("Active: \(activeIndexSection) \(activeIndexRow) Selected \(indexPath.section) \(indexPath.row)")
         if shouldShowResults {
             if cellTypesSearch[searchActiveRow] != 0 {
                 cellTypesSearch[searchActiveRow] = 0
@@ -274,7 +274,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         }else{
             if cellTypes[activeIndexSection][activeIndexRow] != 0 {
                 cellTypes[activeIndexSection][activeIndexRow] = 0
-                tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection+1)], with: .fade)
+                tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .fade)
             }
             if indexPath.section == 0 {
                 shuffleAll()

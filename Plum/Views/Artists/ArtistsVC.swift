@@ -39,6 +39,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     var controllerSet = false
     var hideKeyboard = false
     var currentTheme: Theme!
+    var searchVisible: Bool!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +48,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         currentTheme = GlobalSettings.theme
         grid = GlobalSettings.artistsGrid
         setupDict()
+        searchVisible = true
         if !controllerSet {
             configureSearchController()
             controllerSet = true
@@ -232,12 +234,12 @@ extension ArtistsVC: UITableViewDelegate, UITableViewDataSource{    //Table
             if currentTheme == .dark {
                 cell.setup(artist: filteredArtists[indexPath.row], titColor: .white, detColor: .lightText)
             }else{
-                cell.setup(artist: filteredArtists[indexPath.row], titColor: .black, detColor: .lightText)
+                cell.setup(artist: filteredArtists[indexPath.row], titColor: .black, detColor: .black)
             }
             return cell
         }else{
             if currentTheme == .dark {
-                cell.setup(artist: result[indexes[indexPath.section]]![indexPath.row], titColor: .white, detColor: .white)
+                cell.setup(artist: result[indexes[indexPath.section]]![indexPath.row], titColor: .white, detColor: .lightText)
             }else{
                 cell.setup(artist: result[indexes[indexPath.section]]![indexPath.row], titColor: .black, detColor: .black)
             }

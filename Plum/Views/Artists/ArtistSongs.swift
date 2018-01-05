@@ -43,6 +43,7 @@ class ArtistSongs: UIViewController {
         tabBarController?.delegate = self
         sort = GlobalSettings.artistSort
         setup()
+        print("\(indexes.count) \((result[indexes[0]]?.count)! + 1)")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -79,13 +80,18 @@ class ArtistSongs: UIViewController {
     @IBAction func playBtnPressed() {
         
     }
+    
+    @IBAction func ratingPressed() {
+        GlobalSettings.changeRating(!GlobalSettings.rating)
+        tableView.reloadData()
+    }
 
 }
 
 extension ArtistSongs: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return indexes.count+1
+        return indexes.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -366,15 +372,15 @@ extension ArtistSongs {
             sections = indexesInt.count
             alpIndexView.indexes = self.indexes
             alpIndexView.tableView = self.tableView
-            alpIndexView.setup()
+            alpIndexView.setup(color: UIColor.lightBackground)
             albIndexView.isHidden = true
             alpIndexView.isHidden = false
         }else if sort == .album {
             result = [String: [MPMediaItem]]()
             albums = musicQuery.shared.artistAlbumsID(artist: receivedID)
             byAlbum()
-            indexes.insert("Shuffle", at: 0)
-            result["Shuffle"] = [MPMediaItem()]
+            indexes.insert(" - ", at: 0)
+            result[" - "] = [MPMediaItem()]
             for index in indexes {
                 typesAlbums.append(Array<Int>(repeating: 0, count: (result[index]?.count)!))
             }
@@ -384,14 +390,14 @@ extension ArtistSongs {
                 songsByAlbums.append(contentsOf: album.items)
                 let header = tableView.dequeueReusableCell(withIdentifier: "infoCell") as! AlbumInfoCell
                 header.setup(album: album, play: false)
-                header.contentView.backgroundColor = UIColor.lightBackground
+                //header.contentView.backgroundColor = UIColor.lightBackground
                 headers.append(header.contentView)
             }
             songs = songsByAlbums
             upperBar.title = songsByAlbums[0].albumArtist
             albIndexView.indexes = self.indexes
             albIndexView.tableView = self.tableView
-            albIndexView.setup()
+            albIndexView.setup(color: UIColor.lightBackground)
             albIndexView.isHidden = false
             alpIndexView.isHidden = true
         }

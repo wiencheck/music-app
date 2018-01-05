@@ -38,6 +38,7 @@ class SongInAlbumCell: UITableViewCell {
             durationLabel.textColor = GlobalSettings.tint.color
             durationLabel.text = item.labelFromRating()
         }else{
+            durationLabel.textColor = UIColor.black
             durationLabel.text = "\(item.playbackDuration.calculateFromTimeInterval().minute):\(item.playbackDuration.calculateFromTimeInterval().second)"
         }
         self.item = item
@@ -69,6 +70,7 @@ class SongInAlbumCell: UITableViewCell {
                 durationLabel.text = "\(item.playbackDuration.calculateFromTimeInterval().minute):\(item.playbackDuration.calculateFromTimeInterval().second)"
             }*/
         }else{
+            durationLabel.textColor = UIColor.black
             durationLabel.text = "\(item.playbackDuration.calculateFromTimeInterval().minute):\(item.playbackDuration.calculateFromTimeInterval().second)"
         }
         self.item = item
