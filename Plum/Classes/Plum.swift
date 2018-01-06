@@ -311,7 +311,8 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
             postPlaybackStateChanged()
         }
         else{
-            player.currentTime = 0
+            player.currentTime = 0.0
+            MPNowPlayingInfoCenter.default().nowPlayingInfo![MPNowPlayingInfoPropertyElapsedPlaybackTime] = 0.0
         }
     }
     
