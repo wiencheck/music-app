@@ -124,6 +124,7 @@ class EightNowPlayingVC: UIViewController {
         //            playbackBtn.isEnabled = false
         //        }
         updateUI()
+        lyricsTextView.contentOffset.y = 0.5
         //setColors()
     }
     
@@ -391,6 +392,8 @@ extension EightNowPlayingVC: UITextViewDelegate {
     
     func setLyricsView(){
         lyricsView.alpha = 0.0
+        self.lyricsTextView.contentOffset.y = 0
+        lyricsTextView.isSelectable = true
         lyricsView.isUserInteractionEnabled = false
         let lyricsTap = UITapGestureRecognizer(target: self, action: #selector(tapOnLyrics(_:)))
         lyricsTap.numberOfTapsRequired = 1
@@ -405,6 +408,7 @@ extension EightNowPlayingVC: UITextViewDelegate {
         //fadeTextView()
         lyricsView.addSubview(lyricsTextView)
         view.superview?.addSubview(lyricsView)
+        //self.lyricsTextView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: false)
     }
     
     func fadeTextView() {
@@ -497,6 +501,8 @@ extension EightNowPlayingVC {       //Kolory i UI
         }else if GlobalSettings.color {
             color()
         }
+        //self.lyricsTextView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
+        self.lyricsTextView.contentOffset.y = 0.0
         if player.currentItem != nil{
             let ass = AVAsset(url: (self.player.currentItem?.assetURL)!)
             if let lyr = ass.lyrics {
@@ -518,7 +524,6 @@ extension EightNowPlayingVC {       //Kolory i UI
         }
         showRating()
         //self.lyricsTextView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
-        self.lyricsTextView.contentOffset.y = 3.0
     }
     
     @objc func updateTimes(){
@@ -532,10 +537,6 @@ extension EightNowPlayingVC {       //Kolory i UI
         if(shouldUpdateSlider == true){
             timeSlider.value = Float(player.player.currentTime)
         }
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print(scrollView.contentOffset.y)
     }
     
     @objc func scrubAudio(){
@@ -576,6 +577,7 @@ extension EightNowPlayingVC {       //Kolory i UI
     
     func color(){
         colors = image.getColors(scaleDownSize: CGSize(width: scale, height: scale))
+        lyricsTextView.tintColor = colors.primaryColor
         view.backgroundColor = colors.backgroundColor
         view.backgroundColor = colors.backgroundColor
         self.titleLabel.textColor = colors.primaryColor
@@ -751,7 +753,8 @@ extension EightNowPlayingVC {       //Kolory i UI
             thumbImg = #imageLiteral(resourceName: "volumeThumb").imageScaled(toFit: CGSize(width: 18, height: 18)).tintPictogram(with: thumb)
             slider.setThumbImage(thumbImg, for: .normal)
         }else{
-            thumbImg = #imageLiteral(resourceName: "thumb2")
+            let size = CGSize(width: 2, height: 14)
+            thumbImg = #imageLiteral(resourceName: "thumb2").imageScaled(toFit: size)
             slider.setThumbImage(thumbImg.tintPictogram(with: thumb), for: .normal)
         }
         slider.setMinimumTrackImage(#imageLiteral(resourceName: "track").tintPictogram(with: min), for: .normal)
@@ -816,6 +819,19 @@ extension EightNowPlayingVC: MPMediaPickerControllerDelegate {
     func mediaPickerDidCancel(_ mediaPicker: MPMediaPickerController) {
         mediaPicker.dismiss(animated: true, completion: nil)
     }
+    
+}
+
+extension EightNowPlayingVC {
+    
+//    private func generateHandleImage(with color: UIColor) -> UIImage {
+//        let rect = CGRect(x: 0, y: 0, width: self.bounds.size.height + 20, height: self.bounds.size.height + 20)
+//
+//        return UIGraphicsImageRenderer(size: rect.size).image { (imageContext) in
+//            imageContext.cgContext.setFillColor(color.cgColor)
+//            imageContext.cgContext.fill(rect.insetBy(dx: 10, dy: 10))
+//        }
+//    }
     
 }
 /*
