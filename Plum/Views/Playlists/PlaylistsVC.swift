@@ -69,7 +69,7 @@ class PlaylistsVC: UIViewController {
             tableView.separatorColor = UIColor.lightSeparator
             tableIndexView.indexes = self.indexes
             tableIndexView.tableView = self.tableView
-            tableIndexView.setup(color: UIColor.lightBackground)
+            tableIndexView.setup(color: UIColor.white)
             view.bringSubview(toFront: searchView)
             view.bringSubview(toFront: tableIndexView)
         }

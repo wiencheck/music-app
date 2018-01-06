@@ -59,6 +59,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
             self.collectionIndexView.indexes = self.indexes
             self.collectionIndexView.collectionView = self.collectionView
             self.collectionIndexView.setup()
+            //collectionIndexView.backgroundColor = .clear
             view.bringSubview(toFront: searchView)
             view.bringSubview(toFront: collectionIndexView)
         }else{
@@ -66,6 +67,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
             tableIndexView.indexes = self.indexes
             tableIndexView.tableView = self.tableView
             tableIndexView.setup()
+            tableIndexView.backgroundColor = .clear
             view.bringSubview(toFront: searchView)
             view.bringSubview(toFront: tableIndexView)
         }

@@ -52,7 +52,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         //tableView.separatorStyle = .none
         indexView.indexes = self.indexes
         indexView.tableView = self.tableView
-        indexView.setup(color: UIColor.lightBackground)
+        indexView.setup(color: UIColor.white)
         searchVisible = true
         configureSearchController()
         view.bringSubview(toFront: indexView)
@@ -63,6 +63,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     
     override func viewDidAppear(_ animated: Bool) {
         instruct("songs", message: "Swipe left on a song to quickly go to corresponding album or artist page", completion: nil)
+        instruct("slider", message: "Swipe on the right edge of the screen to use quick scrolling", completion: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -401,7 +402,11 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         performSegue(withIdentifier: "album", sender: nil)
     }
     func artistBtn(){
-        performSegue(withIdentifier: "artist", sender: nil)
+        if musicQuery.shared.artistAlbumsID(artist: self.pickedArtistID).count == 1 {
+            performSegue(withIdentifier: "album", sender: nil)
+        }else{
+            performSegue(withIdentifier: "artist", sender: nil)
+        }
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {

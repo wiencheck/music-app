@@ -353,6 +353,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: "artistslider") == nil {
             defaults.set(false, forKey: "artistslider")
         }
+        if defaults.value(forKey: "slider") == nil {
+            defaults.set(false, forKey: "slider")
+        }
 
     }
 }

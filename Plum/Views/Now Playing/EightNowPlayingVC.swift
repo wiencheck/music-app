@@ -398,7 +398,7 @@ extension EightNowPlayingVC: UITextViewDelegate {
         lyricsView.addGestureRecognizer(lyricsTap)
         setLyricsDoubleTap()
         lyricsTap.require(toFail: doubleTapLyr)
-        lyricsView.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+        lyricsView.backgroundColor = UIColor.black.withAlphaComponent(0.55)
         lyricsTextView.backgroundColor = .clear
         lyricsTextView.isScrollEnabled = true
         lyricsTextView.delegate = self
@@ -506,7 +506,6 @@ extension EightNowPlayingVC {       //Kolory i UI
             }
         }
         self.lyricsTextView.textColor = .white
-        //self.lyricsTextView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
         if GlobalSettings.rating {
             ratingButton.setImage(#imageLiteral(resourceName: "ratingsbutton"), for: .normal)
         }else{
@@ -518,7 +517,8 @@ extension EightNowPlayingVC {       //Kolory i UI
             lyricsButton.setImage(#imageLiteral(resourceName: "nolyricsbutton"), for: .normal)
         }
         showRating()
-        lyricsTextView.contentOffset.y = 0.1
+        //self.lyricsTextView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: true)
+        self.lyricsTextView.contentOffset.y = 3.0
     }
     
     @objc func updateTimes(){

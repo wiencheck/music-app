@@ -35,13 +35,11 @@ class AlbumCell: UITableViewCell {
         attYear.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 13), range: attYearR)
         var st = ", "
         let attComa = NSMutableAttributedString(string: st)
-        let attComaR = NSRange(location: 0, length: attComa.length)
-        attComa.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 13), range: attComaR)
         
         //Songs
         let attCount = NSMutableAttributedString(string: "\(songsCount)")
         let attCountR = NSRange(location: 0, length: attCount.length)
-        attCount.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 13, weight: .medium), range: attCountR)
+        attCount.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 14, weight: .medium), range: attCountR)
         st = ""
         if songsCount > 1 {
             st = " songs"
@@ -49,8 +47,6 @@ class AlbumCell: UITableViewCell {
             st = " song"
         }
         let attSongs = NSMutableAttributedString(string: st)
-        let attSongsR = NSRange(location: 0, length: attSongs.length)
-        attSongs.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 13), range: attSongsR)
         
         attYear.append(attComa)
         attYear.append(attCount)
@@ -71,7 +67,7 @@ class AlbumCell: UITableViewCell {
         if genre != "" {
             //let attYear = NSMutableAttributedString(string: genre)
             let attYearR = NSRange(location: 0, length: attYear.length)
-            attYear.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 13, weight: .medium), range: attYearR)
+            attYear.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 14, weight: .medium), range: attYearR)
             st = ", "
             attComa = NSMutableAttributedString(string: st)
             let attComaR = NSRange(location: 0, length: attComa.length)
@@ -81,7 +77,7 @@ class AlbumCell: UITableViewCell {
         //Songs
         let attCount = NSMutableAttributedString(string: "\(songsCount)")
         let attCountR = NSRange(location: 0, length: attCount.length)
-        attCount.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 13, weight: .medium), range: attCountR)
+        attCount.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 14, weight: .medium), range: attCountR)
         st = ""
         if songsCount > 1 {
             st = " songs"

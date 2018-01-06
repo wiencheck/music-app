@@ -29,13 +29,28 @@ class ArtistCell: UITableViewCell {
         self.artistLabel.text = artist.name
         artistLabel.textColor = titColor
         detailLabel.textColor = detColor
-        if(albumsCount == 1 && songsCount == 1){
-            self.detailLabel.text = "1 album ･ 1 song"
-        }else if(albumsCount == 1 && songsCount > 1){
-            self.detailLabel.text = "1 album ･ \(songsCount) songs"
-        }else if(albumsCount > 1 && songsCount > 1){
-            self.detailLabel.text = "\(albumsCount) albums ･ \(songsCount) songs"
+        let alCSt = "\(albumsCount)"
+        let sonCSt = "\(songsCount)"
+        var alSt = " albums, "
+        if albumsCount == 1 {
+            alSt = " album, "
         }
+        var sonSt = " songs"
+        if songsCount == 1 {
+            sonSt = " song"
+        }
+        let attAlbums = NSMutableAttributedString(string: alCSt)
+        let attAlbumsR = NSRange(location: 0, length: attAlbums.length)
+        attAlbums.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 14, weight: .medium), range: attAlbumsR)
+        let attSongs = NSMutableAttributedString(string: sonCSt)
+        let attSongsR = NSRange(location: 0, length: attSongs.length)
+        attSongs.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 14, weight: .medium), range: attSongsR)
+        let albums = NSMutableAttributedString(string: alSt)
+        let songs = NSMutableAttributedString(string: sonSt)
+        attAlbums.append(albums)
+        attAlbums.append(attSongs)
+        attAlbums.append(songs)
+        detailLabel.attributedText = attAlbums
         artistImage.image = artist.artwork
     }
     
@@ -45,24 +60,28 @@ class ArtistCell: UITableViewCell {
         self.artistLabel.text = list.name
         artistLabel.textColor = titColor
         detailLabel.textColor = detColor
-        if list.isFolder {
-            if(albumsCount == 1 && songsCount == 1){
-                self.detailLabel.text = "1 album ･ 1 song"
-            }else if(albumsCount == 1 && songsCount > 1){
-                self.detailLabel.text = "1 album ･ \(songsCount) songs"
-            }else if(albumsCount > 1 && songsCount > 1){
-                self.detailLabel.text = "\(albumsCount) albums ･ \(songsCount) songs"
-            }
-            artistImage.image = #imageLiteral(resourceName: "folder")
-        }else{
-            if(albumsCount == 1 && songsCount == 1){
-                self.detailLabel.text = "1 album ･ 1 song"
-            }else if(albumsCount == 1 && songsCount > 1){
-                self.detailLabel.text = "1 album ･ \(songsCount) songs"
-            }else if(albumsCount > 1 && songsCount > 1){
-                self.detailLabel.text = "\(albumsCount) albums ･ \(songsCount) songs"
-            }
-            artistImage.image = list.image
+        let alCSt = "\(albumsCount)"
+        let sonCSt = "\(songsCount)"
+        var alSt = " albums, "
+        if albumsCount == 1 {
+            alSt = " album, "
         }
+        var sonSt = " songs"
+        if songsCount == 1 {
+            sonSt = " song"
+        }
+        let attAlbums = NSMutableAttributedString(string: alCSt)
+        let attAlbumsR = NSRange(location: 0, length: attAlbums.length)
+        attAlbums.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 14, weight: .medium), range: attAlbumsR)
+        let attSongs = NSMutableAttributedString(string: sonCSt)
+        let attSongsR = NSRange(location: 0, length: attSongs.length)
+        attSongs.addAttribute(NSAttributedStringKey.font, value: UIFont.systemFont(ofSize: 14, weight: .medium), range: attSongsR)
+        let albums = NSMutableAttributedString(string: alSt)
+        let songs = NSMutableAttributedString(string: sonSt)
+        attAlbums.append(albums)
+        attAlbums.append(attSongs)
+        attAlbums.append(songs)
+        detailLabel.attributedText = attAlbums
+        artistImage.image = list.image
     }
 }

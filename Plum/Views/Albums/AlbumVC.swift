@@ -154,15 +154,15 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
         return header.contentView
     }
 
-    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let v = UIView(frame: CGRect(x: 5, y: 0, width: 40, height: 0.2))
-        v.backgroundColor = tableView.separatorColor?.withAlphaComponent(0.6)
-        return v
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 1
-    }
+//    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+//        let v = UIView(frame: CGRect(x: 5, y: 0, width: 40, height: 0.2))
+//        v.backgroundColor = tableView.separatorColor?.withAlphaComponent(0.6)
+//        return v
+//    }
+//    
+//    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+//        return 1
+//    }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if cellTypes[activeIndexRow] != 0 {

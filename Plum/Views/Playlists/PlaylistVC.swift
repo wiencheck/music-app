@@ -82,7 +82,7 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
         if songs.count > 11 {
             tableIndexView.indexes = self.indexes
             tableIndexView.tableView = self.tableView
-            tableIndexView.setup(color: UIColor.lightBackground)
+            tableIndexView.setup(color: UIColor.white)
         }else{
             tableIndexView.isHidden = true
         }
@@ -146,7 +146,7 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
                             cell.setup(item: item!, titColor: .white, artColor: .white, albColor: UIColor.lightText)
                             cell.titleLabel.textColor = .white
                         }else{
-                            cell.setup(item: item!, titColor: .black, artColor: .black, albColor: UIColor.black)
+                            cell.setup(item: item!, titColor: .black, artColor: .black, albColor: UIColor.gray)
                             cell.titleLabel.textColor = .black
                         }
                     }else{
@@ -325,15 +325,62 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
         }
         Plum.shared.play()
     }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if shouldShowResults {
+            return true
+        }else{
+            if indexPath.section == 0 {
+                return false
+            }else{
+                return true
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        if shouldShowResults {
+            let album = UITableViewRowAction(style: .default, title: "Album", handler: {_,path in
+                let item = self.filteredSongs[path.row]
+                self.pickedAlbumID = item.albumPersistentID
+                tableView.setEditing(false, animated: true)
+                self.albumBtn()
+            })
+            album.backgroundColor = .albumGreen
+            let artist = UITableViewRowAction(style: .default, title: "Artist", handler: {_,path in
+                let item = self.filteredSongs[path.row]
+                self.pickedArtistID = item.albumArtistPersistentID
+                self.pickedAlbumID = item.albumPersistentID
+                tableView.setEditing(false, animated: true)
+                self.artistBtn()
+            })
+            artist.backgroundColor = .artistBlue
+            return [album, artist]
+        }else{
+            let album = UITableViewRowAction(style: .default, title: "Album", handler: {_,path in
+                let item = self.result[self.indexes[path.section]]?[path.row]
+                self.pickedAlbumID = item?.albumPersistentID
+                tableView.setEditing(false, animated: true)
+                self.albumBtn()
+            })
+            album.backgroundColor = .albumGreen
+            let artist = UITableViewRowAction(style: .default, title: "Artist", handler: {_,path in
+                let item = self.result[self.indexes[path.section]]?[path.row]
+                self.pickedArtistID = item?.albumArtistPersistentID
+                self.pickedAlbumID = item?.albumPersistentID
+                tableView.setEditing(false, animated: true)
+                self.artistBtn()
+            })
+            artist.backgroundColor = .artistBlue
+            return [album, artist]
+        }
+    }
+    
     func albumBtn(){
-        cellTypes[activeIndexSection]?[activeIndexRow] = 0
-        self.tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .fade)
         performSegue(withIdentifier: "album", sender: nil)
     }
     func artistBtn(){
-        cellTypes[activeIndexSection]?[activeIndexRow] = 0
-        self.tableView.reloadRows(at: [IndexPath(row: self.activeIndexRow, section: activeIndexSection)], with: .fade)
-        if musicQuery.shared.artistAlbumsID(artist: (result[indexes[activeIndexSection]]?[activeIndexRow].albumArtistPersistentID)!).count == 1 {
+        if musicQuery.shared.artistAlbumsID(artist: self.pickedArtistID).count == 1 {
             performSegue(withIdentifier: "album", sender: nil)
         }else{
             performSegue(withIdentifier: "artist", sender: nil)
