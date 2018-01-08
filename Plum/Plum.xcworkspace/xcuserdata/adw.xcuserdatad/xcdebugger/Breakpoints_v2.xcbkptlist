@@ -586,13 +586,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Artists/ArtistsVC.swift"
-            timestampString = "536892311.818643"
+            timestampString = "537135953.715247"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "387"
-            endingLineNumber = "387"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "386"
+            endingLineNumber = "386"
+            landmarkName = "cell(_:action:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -602,13 +602,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Artists/ArtistsVC.swift"
-            timestampString = "536892311.818754"
+            timestampString = "537135953.715691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "389"
-            endingLineNumber = "389"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "388"
+            endingLineNumber = "388"
+            landmarkName = "cell(_:action:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -618,13 +618,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Artists/ArtistsVC.swift"
-            timestampString = "536892311.818804"
+            timestampString = "537135953.715929"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "391"
-            endingLineNumber = "391"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "390"
+            endingLineNumber = "390"
+            landmarkName = "cell(_:action:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1210,13 +1210,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Artists/ArtistsVC.swift"
-            timestampString = "536892311.819263"
+            timestampString = "537135953.716508"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "279"
-            endingLineNumber = "279"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "278"
+            endingLineNumber = "278"
+            landmarkName = "collectionView(_:viewForSupplementaryElementOfKind:at:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1226,13 +1226,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Artists/ArtistsVC.swift"
-            timestampString = "536892311.819303"
+            timestampString = "537135953.71672"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "283"
-            endingLineNumber = "283"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "282"
+            endingLineNumber = "282"
+            landmarkName = "collectionView(_:viewForSupplementaryElementOfKind:at:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1274,13 +1274,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Artists/ArtistsVC.swift"
-            timestampString = "536892311.8194"
+            timestampString = "537135953.7169451"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "457"
-            endingLineNumber = "457"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "456"
+            endingLineNumber = "456"
+            landmarkName = "setupDict()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1338,13 +1338,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Views/Artists/ArtistsVC.swift"
-            timestampString = "536892311.819939"
+            timestampString = "537135953.717181"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "45"
             endingLineNumber = "45"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            landmarkName = "viewDidLoad()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

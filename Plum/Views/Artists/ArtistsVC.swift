@@ -67,7 +67,6 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
             tableIndexView.indexes = self.indexes
             tableIndexView.tableView = self.tableView
             tableIndexView.setup()
-            tableIndexView.backgroundColor = .clear
             view.bringSubview(toFront: searchView)
             view.bringSubview(toFront: tableIndexView)
         }
