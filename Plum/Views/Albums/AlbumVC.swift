@@ -151,12 +151,15 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
                 (current as! UIScrollView).delaysContentTouches = false
             }
         }
-        return header.contentView
+        let v = header.contentView
+        v.addBottomBorderWithColor(color: UIColor.lightSeparator, width: 1, x: 14)
+        return v
     }
 
 //    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-//        let v = UIView(frame: CGRect(x: 5, y: 0, width: 40, height: 0.2))
-//        v.backgroundColor = tableView.separatorColor?.withAlphaComponent(0.6)
+//        let v = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 1))
+//        v.backgroundColor = UIColor.clear
+//        v.addBottomBorderWithColor(color: UIColor.lightSeparator, width: 1, x: 16)
 //        return v
 //    }
 //    

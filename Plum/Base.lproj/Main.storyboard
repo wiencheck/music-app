@@ -967,9 +967,6 @@ SOFTWARE.</string>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lFM-7a-i90">
                                                             <rect key="frame" x="0.0" y="0.0" width="123.33333333333333" height="36"/>
                                                             <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="92" id="i3t-kK-rNL"/>
-                                                            </constraints>
                                                             <state key="normal" title="Play Now">
                                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             </state>
@@ -985,9 +982,6 @@ SOFTWARE.</string>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nq1-bo-IoT">
                                                             <rect key="frame" x="138.33333333333334" y="0.0" width="123.33333333333334" height="36"/>
                                                             <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="92" id="3qg-3C-4xX"/>
-                                                            </constraints>
                                                             <state key="normal" title="Play Next">
                                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             </state>
@@ -1003,9 +997,6 @@ SOFTWARE.</string>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uwE-h9-zyX">
                                                             <rect key="frame" x="276.66666666666669" y="0.0" width="123.33333333333331" height="36"/>
                                                             <color key="backgroundColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="92" id="wIo-ZA-c1U"/>
-                                                            </constraints>
                                                             <state key="normal" title="Play Last">
                                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             </state>
@@ -1189,14 +1180,13 @@ SOFTWARE.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="cId-d8-TKv">
-                                                    <rect key="frame" x="54.666666666666657" y="13" width="306" height="36"/>
+                                                    <rect key="frame" x="7" y="13" width="400" height="36"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FP1-hx-U9L">
-                                                            <rect key="frame" x="0.0" y="0.0" width="92" height="36"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="123.33333333333333" height="36"/>
                                                             <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="36" id="bKy-L4-tsf"/>
-                                                                <constraint firstAttribute="width" constant="92" id="ym0-vn-5ZY"/>
                                                             </constraints>
                                                             <state key="normal" title="Play Now">
                                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1214,7 +1204,7 @@ SOFTWARE.</string>
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jRc-hI-skU">
-                                                            <rect key="frame" x="107" y="0.0" width="92" height="36"/>
+                                                            <rect key="frame" x="138.33333333333334" y="0.0" width="123.33333333333334" height="36"/>
                                                             <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <state key="normal" title="Play Next">
                                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1232,7 +1222,7 @@ SOFTWARE.</string>
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qCd-hw-pAY">
-                                                            <rect key="frame" x="214" y="0.0" width="92" height="36"/>
+                                                            <rect key="frame" x="276.66666666666669" y="0.0" width="123.33333333333331" height="36"/>
                                                             <color key="backgroundColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                                             <state key="normal" title="Play Last">
                                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1253,7 +1243,9 @@ SOFTWARE.</string>
                                                 </stackView>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="cId-d8-TKv" firstAttribute="leading" secondItem="dWW-PI-KPS" secondAttribute="leading" constant="7" id="2bq-qE-W7h"/>
                                                 <constraint firstItem="cId-d8-TKv" firstAttribute="centerY" secondItem="dWW-PI-KPS" secondAttribute="centerY" id="9IL-q9-uWB"/>
+                                                <constraint firstAttribute="trailing" secondItem="cId-d8-TKv" secondAttribute="trailing" constant="7" id="EZc-fU-gWM"/>
                                                 <constraint firstItem="cId-d8-TKv" firstAttribute="centerX" secondItem="dWW-PI-KPS" secondAttribute="centerX" id="cn9-Ia-Bkr"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -1522,9 +1514,8 @@ SOFTWARE.</string>
                                                     </items>
                                                 </toolbar>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This Name Of Album Socks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DJi-KQ-W3R">
-                                                    <rect key="frame" x="115" y="16" width="205" height="20"/>
+                                                    <rect key="frame" x="115" y="16" width="254" height="20"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="205" id="6hS-fs-dh2"/>
                                                         <constraint firstAttribute="height" constant="20" id="GcQ-li-TPe"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
@@ -1576,6 +1567,7 @@ SOFTWARE.</string>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstItem="9Gv-6J-qJp" firstAttribute="top" secondItem="KD4-vZ-brx" secondAttribute="bottom" constant="9" id="DBS-gc-Qab"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="DJi-KQ-W3R" secondAttribute="trailing" constant="30" id="Ht6-hY-t9B"/>
                                                 <constraint firstItem="RNt-pl-Wtv" firstAttribute="top" secondItem="gla-Sa-fbh" secondAttribute="top" id="Pec-rb-9Sm"/>
                                                 <constraint firstAttribute="trailing" secondItem="RNt-pl-Wtv" secondAttribute="trailing" id="ThJ-op-OHO"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="Rnb-Pe-T28" secondAttribute="bottom" constant="4" id="TiK-2B-LsN"/>
@@ -1742,7 +1734,6 @@ SOFTWARE.</string>
                                                 <constraint firstItem="SpT-Rh-oM0" firstAttribute="leading" secondItem="ToB-8V-ImT" secondAttribute="trailing" constant="5" id="aQu-7T-de7"/>
                                                 <constraint firstItem="KK4-IE-WO6" firstAttribute="centerY" secondItem="2w4-Qa-gEv" secondAttribute="centerY" id="hoj-u8-T2U"/>
                                                 <constraint firstItem="ToB-8V-ImT" firstAttribute="centerY" secondItem="2w4-Qa-gEv" secondAttribute="centerY" id="lDZ-U1-Ude"/>
-                                                <constraint firstItem="KK4-IE-WO6" firstAttribute="leading" secondItem="SpT-Rh-oM0" secondAttribute="trailing" constant="5" id="lhk-nv-GGX"/>
                                                 <constraint firstItem="SpT-Rh-oM0" firstAttribute="centerY" secondItem="2w4-Qa-gEv" secondAttribute="centerY" id="uj3-g4-nMs"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -2041,9 +2032,6 @@ SOFTWARE.</string>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0dI-uD-5pj">
                                                     <rect key="frame" x="0.0" y="0.0" width="123.33333333333333" height="36"/>
                                                     <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="92" id="8JJ-Po-qlv"/>
-                                                    </constraints>
                                                     <state key="normal" title="Play Now">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -2062,9 +2050,6 @@ SOFTWARE.</string>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="75f-5q-ZZk">
                                                     <rect key="frame" x="138.33333333333334" y="0.0" width="123.33333333333334" height="36"/>
                                                     <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="92" id="YJa-UF-g5x"/>
-                                                    </constraints>
                                                     <state key="normal" title="Play Next">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -2083,9 +2068,6 @@ SOFTWARE.</string>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pBh-b6-ONk">
                                                     <rect key="frame" x="276.66666666666669" y="0.0" width="123.33333333333331" height="36"/>
                                                     <color key="backgroundColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="92" id="0uy-Jw-epj"/>
-                                                    </constraints>
                                                     <state key="normal" title="Play Last">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -2488,7 +2470,7 @@ SOFTWARE.</string>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="uBT-J2-9WL" firstAttribute="centerY" secondItem="nk7-6h-gfk" secondAttribute="centerY" id="4Bp-ET-PGF"/>
                                     <constraint firstItem="uBT-J2-9WL" firstAttribute="centerX" secondItem="nk7-6h-gfk" secondAttribute="centerX" id="JCk-13-BWr"/>
@@ -2612,7 +2594,7 @@ SOFTWARE.</string>
                         <outlet property="elapsedLabel" destination="LYG-ZI-2Pv" id="qBv-Tl-2Xd"/>
                         <outlet property="lyricsButton" destination="zPr-nq-UDX" id="5BN-5d-6R2"/>
                         <outlet property="lyricsTextView" destination="uBT-J2-9WL" id="HGG-8e-zZ4"/>
-                        <outlet property="lyricsView" destination="nk7-6h-gfk" id="d6A-3l-2Eb"/>
+                        <outlet property="lyricsView" destination="nk7-6h-gfk" id="V8j-GL-4d6"/>
                         <outlet property="maxVolImg" destination="wT7-lt-rH4" id="eWz-pm-fF6"/>
                         <outlet property="minVolImg" destination="C2i-CI-Vnq" id="Zrw-Ku-OUE"/>
                         <outlet property="mpVolView" destination="cd1-e2-oey" id="6R9-8H-Rsa"/>
@@ -2723,7 +2705,7 @@ SOFTWARE.</string>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="375" id="2sg-uG-p4T"/>
                                     <constraint firstAttribute="width" constant="375" id="M0a-Qd-oaa"/>
@@ -3003,7 +2985,7 @@ SOFTWARE.</string>
                         <outlet property="elapsedLabel" destination="Uhw-xI-3lV" id="8XZ-b0-UrA"/>
                         <outlet property="lyricsButton" destination="ZKH-Uu-qsk" id="3rF-ms-kRA"/>
                         <outlet property="lyricsTextView" destination="sg7-4Y-ZS1" id="Kdm-h8-03W"/>
-                        <outlet property="lyricsView" destination="nPG-11-nZv" id="j7E-KE-CkT"/>
+                        <outlet property="lyricsView" destination="nPG-11-nZv" id="JGQ-ov-tXF"/>
                         <outlet property="maxVolImg" destination="hR7-WP-Yb3" id="9lq-OW-p1H"/>
                         <outlet property="minVolImg" destination="TET-Fo-UyW" id="7Nm-kK-Aff"/>
                         <outlet property="mpVolView" destination="Lfg-IU-hvl" id="Eep-5D-yO7"/>
@@ -3109,7 +3091,7 @@ SOFTWARE.</string>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="wCk-SZ-fdE" firstAttribute="top" secondItem="7JA-ek-mV7" secondAttribute="top" id="7qq-8M-Fq5"/>
                                     <constraint firstAttribute="width" constant="414" id="Beg-tf-eWY"/>
@@ -3387,7 +3369,7 @@ SOFTWARE.</string>
                         <outlet property="elapsedLabel" destination="ayd-t4-ivj" id="g6b-8d-KCE"/>
                         <outlet property="lyricsButton" destination="V1Q-c5-193" id="ocU-fh-tPj"/>
                         <outlet property="lyricsTextView" destination="wCk-SZ-fdE" id="jxt-gV-iC7"/>
-                        <outlet property="lyricsView" destination="7JA-ek-mV7" id="2HE-9P-gPk"/>
+                        <outlet property="lyricsView" destination="7JA-ek-mV7" id="MX3-On-3n4"/>
                         <outlet property="maxVolImg" destination="U0r-JR-Sui" id="Yhe-9i-Z2V"/>
                         <outlet property="minVolImg" destination="Cge-ur-4iO" id="iDR-VA-hQl"/>
                         <outlet property="mpVolView" destination="L5K-R0-uz0" id="B7r-VL-waL"/>
@@ -3502,7 +3484,7 @@ SOFTWARE.</string>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="e3q-hu-OX7" firstAttribute="width" secondItem="Y37-t7-S71" secondAttribute="width" id="1GY-cb-kFv"/>
                                     <constraint firstAttribute="width" constant="375" id="Hf8-k2-nzn"/>
@@ -3777,7 +3759,7 @@ SOFTWARE.</string>
                         <outlet property="elapsedLabel" destination="Lbu-cH-RGp" id="xyY-AV-KVL"/>
                         <outlet property="lyricsButton" destination="iRT-w0-KpB" id="LwB-ua-5mc"/>
                         <outlet property="lyricsTextView" destination="e3q-hu-OX7" id="bWk-bh-Ty0"/>
-                        <outlet property="lyricsView" destination="Y37-t7-S71" id="Uur-JU-SHd"/>
+                        <outlet property="lyricsView" destination="Y37-t7-S71" id="A7X-Ys-a5H"/>
                         <outlet property="maxVolImg" destination="Ty1-n8-jgO" id="XHL-wa-g6Q"/>
                         <outlet property="minVolImg" destination="da2-Ah-zHD" id="qxQ-bB-6mj"/>
                         <outlet property="mpVolView" destination="CfL-Pf-iR1" id="unF-nT-Lx1"/>
@@ -3990,15 +3972,14 @@ SOFTWARE.</string>
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="51.666666666666664"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="B14-Ty-sxm">
+                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="B14-Ty-sxm">
                                                     <rect key="frame" x="7" y="8" width="400" height="36"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ycT-ic-pFo">
-                                                            <rect key="frame" x="0.0" y="0.0" width="92" height="36"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="123.33333333333333" height="36"/>
                                                             <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="36" id="9wn-6r-2vQ"/>
-                                                                <constraint firstAttribute="width" constant="92" id="gUp-zd-pDh"/>
                                                             </constraints>
                                                             <state key="normal" title="Play Now">
                                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -4016,11 +3997,10 @@ SOFTWARE.</string>
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ggU-Nr-O6S">
-                                                            <rect key="frame" x="107" y="0.0" width="92" height="36"/>
+                                                            <rect key="frame" x="138.33333333333334" y="0.0" width="123.33333333333334" height="36"/>
                                                             <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="36" id="7JT-zA-Zmx"/>
-                                                                <constraint firstAttribute="width" constant="92" id="J7I-kd-plu"/>
                                                             </constraints>
                                                             <state key="normal" title="Play Next">
                                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -4038,10 +4018,9 @@ SOFTWARE.</string>
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g9R-xa-DPH">
-                                                            <rect key="frame" x="214" y="0.0" width="186" height="36"/>
+                                                            <rect key="frame" x="276.66666666666669" y="0.0" width="123.33333333333331" height="36"/>
                                                             <color key="backgroundColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="92" id="8RV-Gk-uLN"/>
                                                                 <constraint firstAttribute="height" constant="36" id="zxI-Ik-SG6"/>
                                                             </constraints>
                                                             <state key="normal" title="Play Last">
@@ -4143,9 +4122,8 @@ SOFTWARE.</string>
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Run The Jewels" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rOo-0H-f5V">
-                                        <rect key="frame" x="107.66666666666669" y="18" width="200" height="21"/>
+                                        <rect key="frame" x="84.000000000000014" y="18" width="247.33333333333337" height="21"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="200" id="41m-vz-luz"/>
                                             <constraint firstAttribute="height" constant="21" id="ZnH-TH-SFp"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
@@ -4163,7 +4141,7 @@ SOFTWARE.</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GB1-FV-CZZ">
-                                        <rect key="frame" x="358" y="32" width="44" height="30"/>
+                                        <rect key="frame" x="351.33333333333331" y="32" width="50.666666666666686" height="30"/>
                                         <state key="normal" title="Rating"/>
                                         <connections>
                                             <action selector="ratingPressed" destination="iom-mG-mvn" eventType="touchUpInside" id="eFf-fF-E5q"/>
@@ -4171,11 +4149,13 @@ SOFTWARE.</string>
                                     </button>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="GB1-FV-CZZ" firstAttribute="leading" secondItem="rOo-0H-f5V" secondAttribute="trailing" constant="20" id="6Eh-sY-VtT"/>
                                     <constraint firstItem="GB1-FV-CZZ" firstAttribute="top" secondItem="ITq-Lf-agF" secondAttribute="top" constant="32" id="870-Tf-fvQ"/>
                                     <constraint firstItem="zuM-rV-dYZ" firstAttribute="top" secondItem="rOo-0H-f5V" secondAttribute="bottom" id="AYs-qk-zhj"/>
                                     <constraint firstItem="zuM-rV-dYZ" firstAttribute="centerX" secondItem="ITq-Lf-agF" secondAttribute="centerX" id="BJb-dr-omD"/>
                                     <constraint firstAttribute="bottom" secondItem="fK2-ql-fuA" secondAttribute="bottom" constant="3" id="Ocp-p5-s1n"/>
                                     <constraint firstAttribute="trailing" secondItem="GB1-FV-CZZ" secondAttribute="trailing" constant="12" id="cJF-BD-Zcx"/>
+                                    <constraint firstItem="rOo-0H-f5V" firstAttribute="leading" secondItem="fK2-ql-fuA" secondAttribute="trailing" constant="30" id="crZ-E6-N76"/>
                                     <constraint firstItem="rOo-0H-f5V" firstAttribute="centerX" secondItem="ITq-Lf-agF" secondAttribute="centerX" id="fpB-3C-t2c"/>
                                     <constraint firstItem="fK2-ql-fuA" firstAttribute="leading" secondItem="ITq-Lf-agF" secondAttribute="leading" constant="8" id="hni-mB-G2f"/>
                                     <constraint firstAttribute="bottom" secondItem="zuM-rV-dYZ" secondAttribute="bottom" constant="2" id="kQO-C6-uSU"/>
@@ -4278,14 +4258,13 @@ SOFTWARE.</string>
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="57.666666666666664"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="fsW-h6-lbk">
+                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="fsW-h6-lbk">
                                                     <rect key="frame" x="7" y="11" width="400" height="36"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KzI-EQ-25N">
-                                                            <rect key="frame" x="0.0" y="0.0" width="92" height="36"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="123.33333333333333" height="36"/>
                                                             <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="92" id="ilX-yg-8p4"/>
                                                                 <constraint firstAttribute="height" constant="36" id="lZj-MR-FL3"/>
                                                             </constraints>
                                                             <state key="normal" title="Play Now">
@@ -4307,10 +4286,9 @@ SOFTWARE.</string>
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YSH-ne-iAy">
-                                                            <rect key="frame" x="107" y="0.0" width="92" height="36"/>
+                                                            <rect key="frame" x="138.33333333333334" y="0.0" width="123.33333333333334" height="36"/>
                                                             <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="92" id="5xV-bY-yK3"/>
                                                                 <constraint firstAttribute="height" constant="36" id="svu-Wg-ia9"/>
                                                             </constraints>
                                                             <state key="normal" title="Play Next">
@@ -4332,10 +4310,9 @@ SOFTWARE.</string>
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0xE-mi-zS3">
-                                                            <rect key="frame" x="214" y="0.0" width="186" height="36"/>
+                                                            <rect key="frame" x="276.66666666666669" y="0.0" width="123.33333333333331" height="36"/>
                                                             <color key="backgroundColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="92" id="0Jk-sj-OXL"/>
                                                                 <constraint firstAttribute="height" constant="36" id="lsy-6J-MIK"/>
                                                             </constraints>
                                                             <state key="normal" title="Play Last">
@@ -5621,7 +5598,6 @@ SOFTWARE.</string>
                                                             <rect key="frame" x="0.0" y="0.0" width="123.33333333333333" height="36"/>
                                                             <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="92" id="ejf-S5-0iD"/>
                                                                 <constraint firstAttribute="height" constant="36" id="lPc-Ti-g0Q"/>
                                                             </constraints>
                                                             <state key="normal" title="Play Now">

@@ -307,17 +307,14 @@ class musicQuery{
                     print("Search item successfully indexed!")
                 }
             }
+            print("Indeksowanie zakonczone!")
+            self.delegate?.indexingEnded()
             self.networkIndicator(false)
         })
-        print("Indeksowanie zakonczone!")
     }
     
     func networkIndicator(_ enabled: Bool) {
-        if enabled {
-            UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        }else{
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
-        }
+        UIApplication.shared.isNetworkActivityIndicatorVisible = enabled
     }
     
     func removeAllFromSpotlight(){

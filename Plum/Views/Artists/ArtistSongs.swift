@@ -144,6 +144,17 @@ extension ArtistSongs: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+//    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+//        let v = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 2))
+//        v.backgroundColor = UIColor.red
+//        v.addBottomBorderWithColor(color: UIColor.lightSeparator, width: 1, x: 16)
+//        return v
+//    }
+//    
+//    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+//        return 2
+//    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath) as! ShuffleCell
@@ -390,8 +401,9 @@ extension ArtistSongs {
                 songsByAlbums.append(contentsOf: album.items)
                 let header = tableView.dequeueReusableCell(withIdentifier: "infoCell") as! AlbumInfoCell
                 header.setup(album: album, play: false)
-                //header.contentView.backgroundColor = UIColor.lightBackground
-                headers.append(header.contentView)
+                let v = header.contentView
+                v.addBottomBorderWithColor(color: UIColor.lightSeparator, width: 1, x: 16)
+                headers.append(v)
             }
             songs = songsByAlbums
             upperBar.title = songsByAlbums[0].albumArtist

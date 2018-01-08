@@ -115,6 +115,7 @@ class EightNowPlayingVC: UIViewController {
         //viewActive = true
         instruct("tap", message: "Tap on title to show rating and toggles for lyrics and rating mode", completion: nil)
         self.instruct("swipe", message: "Tap twice on artwork or press Up Next button to show next playing songs", completion: nil)
+        lyricsTextView.contentOffset.y = 0.5
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -124,7 +125,6 @@ class EightNowPlayingVC: UIViewController {
         //            playbackBtn.isEnabled = false
         //        }
         updateUI()
-        lyricsTextView.contentOffset.y = 0.5
         //setColors()
     }
     
@@ -393,7 +393,7 @@ extension EightNowPlayingVC: UITextViewDelegate {
     func setLyricsView(){
         lyricsView.alpha = 0.0
         self.lyricsTextView.contentOffset.y = 0
-        lyricsTextView.isSelectable = true
+        lyricsTextView.isSelectable = false
         lyricsView.isUserInteractionEnabled = false
         let lyricsTap = UITapGestureRecognizer(target: self, action: #selector(tapOnLyrics(_:)))
         lyricsTap.numberOfTapsRequired = 1
@@ -512,6 +512,11 @@ extension EightNowPlayingVC {       //Kolory i UI
             }
         }
         self.lyricsTextView.textColor = .white
+//        for gest in lyricsTextView.gestureRecognizers! {
+//            if gest is UITapGestureRecognizer {
+//                gest.isEnabled = false
+//            }
+//        }
         if GlobalSettings.rating {
             ratingButton.setImage(#imageLiteral(resourceName: "ratingsbutton"), for: .normal)
         }else{

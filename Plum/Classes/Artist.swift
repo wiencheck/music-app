@@ -30,7 +30,7 @@ fileprivate struct ArtistKey {
         let item = Collection.representativeItem
         self.ID = item?.albumArtistPersistentID
         self.name = item?.albumArtist ?? "Unknown artist"
-        if let art = item?.artwork?.image(at: CGSize(width: 200, height: 200)) {
+        if let art = item?.artwork?.image(at: CGSize(width: 80, height: 80)) {
             artwork = art
         }else{
             artwork = #imageLiteral(resourceName: "no_music")

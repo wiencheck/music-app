@@ -336,6 +336,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
                 }catch let error {
                     print(error)
                 }
+                player.rate = 1.0
             }else{
                 print("player is already playing")
             }
@@ -355,6 +356,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
             }catch let error {
                 print(error)
             }
+            player.rate = 0.0
         }else{
             print("player is currently not playing")
         }

@@ -102,7 +102,7 @@ import MediaPlayer
                 if !albums.contains(al){
                     albums.append(al)
                     if images.count <= 3 {
-                        if let art = song.artwork?.image(at: CGSize(width: 200, height: 200)) {
+                        if let art = song.artwork?.image(at: CGSize(width: 120, height: 120)) {
                             images.append(art)
                         }
                     }

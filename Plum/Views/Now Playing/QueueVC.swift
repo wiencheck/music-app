@@ -478,6 +478,7 @@ extension QueueVC {     //Ustawianie kolejek
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
         }
+        player.writeQueue()
     }
 }
 

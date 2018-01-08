@@ -20,7 +20,6 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     @IBOutlet weak var ratingSwitch: UISwitch!
     @IBOutlet weak var currentStyle: UILabel!
     @IBOutlet weak var currentMiniPlayer: UILabel!
-    @IBOutlet weak var indexVisibleSwitch: UISwitch!
     @IBOutlet weak var roundSwitch: UISwitch!
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var lyricsSwitch: UISwitch!

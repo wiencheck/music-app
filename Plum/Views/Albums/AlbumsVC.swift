@@ -541,6 +541,11 @@ extension AlbumsVC: UISearchBarDelegate, UISearchResultsUpdating {
             
             searchItemsPredicate.append(titleSearchComparisonPredicate)
             
+            let artistExpression = NSExpression(forKeyPath: "artist")
+            let artistSearchComparisionPredicate = NSComparisonPredicate(leftExpression: artistExpression, rightExpression: searchStringExpression, modifier: .direct, type: .contains, options: .caseInsensitive)
+            
+            searchItemsPredicate.append(artistSearchComparisionPredicate)
+            
             let orMatchPredicate = NSCompoundPredicate(orPredicateWithSubpredicates:searchItemsPredicate)
             
             return orMatchPredicate

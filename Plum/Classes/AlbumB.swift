@@ -89,7 +89,7 @@ import MediaPlayer
         let item = items[0]
         ID = item.albumPersistentID
         name = item.albumTitle
-        if let img = item.artwork?.image(at: CGSize(width: 200, height: 200)){
+        if let img = item.artwork?.image(at: CGSize(width: 80, height: 80)){
             artwork = img
         }else{
             artwork = #imageLiteral(resourceName: "no_music")
