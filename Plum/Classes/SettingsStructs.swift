@@ -111,6 +111,12 @@ struct GlobalSettings{
         UserDefaults.standard.set(t.rawValue, forKey: "artistSort")
     }
     
+    static var artistAlbumsSort = Sort.alphabetically
+    static func changeArtistAlbumsSort(_ t: Sort){
+        self.artistAlbumsSort = t
+        UserDefaults.standard.set(t.rawValue, forKey: "artistAlbumsSort")
+    }
+    
     static var popupStyle: styles = .classic
     static func changePopupStyle(_ t: styles) {
         self.popupStyle = t

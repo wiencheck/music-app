@@ -59,6 +59,13 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         customizeMoreTab()
     }
     
+    override func viewDidLayoutSubviews() {
+        instruct("miniplayer", message: "Tap twice on the miniplayer bar or drag it upwards to open now playing view", completion: {
+            self.instruct("slider", message: "Swipe on the right edge of the screen to use quick scrolling", completion: nil)
+        })
+        self.instruct("slider", message: "Swipe on the right edge of the screen to use quick scrolling", completion: nil)
+    }
+    
     fileprivate func displayPermissionsError() {
         let alertVC = UIAlertController(title: "This is a demo", message: "Unauthorized or restricted access. Cannot play media. Fix in Settings?" , preferredStyle: .alert)
         
@@ -91,7 +98,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         popupPresented = true
         nowPlaying.popupItem.title = "Welcome to Plum"
         nowPlaying.popupItem.subtitle = "Pick some music to play"
-        self.popupBar.isUserInteractionEnabled = false
+        popupBar.isUserInteractionEnabled = false
     }
     
     @objc func updatePopup() {
@@ -161,11 +168,11 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     func customizeMoreTab() {
         if let more = self.moreNavigationController.topViewController?.view as? UITableView {
             //more.delegate = self
-            more.backgroundColor = GlobalSettings.tint.color
+            more.backgroundColor = UIColor.lightBackground
             more.separatorStyle = .none
             for cell in more.visibleCells {
                 cell.backgroundColor = .clear
-                cell.textLabel?.textColor = GlobalSettings.tint.bar
+                cell.textLabel?.textColor = UIColor.black
             }
         }
         
@@ -182,9 +189,11 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
             return "eight_6plus"
         }else if device == "iPhone X" {
             return "eight_x"
+        }else if device.contains("iPad"){
+            return "eight_se"
         }else{
             print("Rozpoznano simulator")
-            return "eight_6"
+            return "eight_6plus"
         }
     }
     

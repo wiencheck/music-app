@@ -222,6 +222,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: "artistsGrid") == nil{
             defaults.set(false, forKey: "artistsGrid")
         }
+        if defaults.value(forKey: "artistAlbumsSort") == nil {
+            defaults.set("alphabetically", forKey: "artistAlbumsSort")
+        }
     }
     
     func readSettings(){
@@ -238,6 +241,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         if let alp = defaults.value(forKey: "artistSort") as? String{
             GlobalSettings.changeArtistSort(Sort(rawValue: alp)!)
+        }
+        if let alb = defaults.value(forKey: "artistAlbumsSort") as? String{
+            GlobalSettings.changeArtistAlbumsSort(Sort(rawValue: alb)!)
         }
         if let pop = defaults.value(forKey: "modernPopup") as? Bool{
             if pop {
@@ -356,7 +362,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: "slider") == nil {
             defaults.set(false, forKey: "slider")
         }
-
+        if defaults.value(forKey: "miniplayer") == nil {
+            defaults.set(false, forKey: "miniplayer")
+        }
     }
 }
 

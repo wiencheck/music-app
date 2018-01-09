@@ -40,30 +40,34 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         currentTheme = GlobalSettings.theme
         setTheme()
         tabBarController?.delegate = self
-        tableView.delegate = self
-        tableView.dataSource = self
-        setupDict()
-        setHeaders()
-        indexes.insert("", at: 0)
-        result[""] = [MPMediaItem()]
-        for index in indexes {
-            cellTypes.append(Array<Int>(repeating: 0, count: (result[index]?.count)!))
+        if musicQuery.shared.songsSet{
+            songs = musicQuery.shared.songs
+        }else{
+            songs = musicQuery.shared.allSongs()
         }
-        //tableView.separatorStyle = .none
-        indexView.indexes = self.indexes
-        indexView.tableView = self.tableView
-        indexView.setup(color: UIColor.white)
-        searchVisible = true
-        configureSearchController()
-        view.bringSubview(toFront: indexView)
+        if !songs.isEmpty {
+            tableView.delegate = self
+            tableView.dataSource = self
+            setupDict()
+            setHeaders()
+            indexes.insert("", at: 0)
+            result[""] = [MPMediaItem()]
+            for index in indexes {
+                cellTypes.append(Array<Int>(repeating: 0, count: (result[index]?.count)!))
+            }
+            //tableView.separatorStyle = .none
+            indexView.indexes = self.indexes
+            indexView.tableView = self.tableView
+            indexView.setup(color: UIColor.white)
+            searchVisible = true
+            configureSearchController()
+            view.bringSubview(toFront: indexView)
+        }
         print("Songs loaded")
-        print("Nav:\((navigationController?.navigationBar.frame.height)!)")
-        print("search:\(searchView.frame.height)")
     }
     
     override func viewDidAppear(_ animated: Bool) {
         instruct("songs", message: "Swipe left on a song to quickly go to corresponding album or artist page", completion: nil)
-        instruct("slider", message: "Swipe on the right edge of the screen to use quick scrolling", completion: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -131,7 +135,11 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
+        if indexPath.section == 0 {
+            return false
+        }else{
+            return true
+        }
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
@@ -428,11 +436,6 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
 extension SongsVC {
     
     func setupDict() {
-        if musicQuery.shared.songsSet{
-            songs = musicQuery.shared.songs
-        }else{
-            songs = musicQuery.shared.allSongs()
-        }
         let articles = ["The","A","An"]
         var anyNumber = false
         var anySpecial = false

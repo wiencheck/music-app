@@ -50,28 +50,30 @@ class PlaylistsVC: UIViewController {
         grid = GlobalSettings.playlistsGrid
         setTheme()
         setup()
-        setupDict()
-        indexes.sort { $0 < $1 }
-        //setHeaders()
-        if !controllerSet {
-            configureSearchController()
-            controllerSet = true
-        }
-        if grid{
-            setCollection()
-            self.collectionIndexView.indexes = self.indexes
-            self.collectionIndexView.collectionView = self.collectionView
-            self.collectionIndexView.setup()
-            view.bringSubview(toFront: searchView)
-            view.bringSubview(toFront: collectionIndexView)
-        }else{
-            setTable()
-            tableView.separatorColor = UIColor.lightSeparator
-            tableIndexView.indexes = self.indexes
-            tableIndexView.tableView = self.tableView
-            tableIndexView.setup(color: UIColor.white)
-            view.bringSubview(toFront: searchView)
-            view.bringSubview(toFront: tableIndexView)
+        if !playlists.isEmpty {
+            setupDict()
+            indexes.sort { $0 < $1 }
+            //setHeaders()
+            if !controllerSet {
+                configureSearchController()
+                controllerSet = true
+            }
+            if grid{
+                setCollection()
+                self.collectionIndexView.indexes = self.indexes
+                self.collectionIndexView.collectionView = self.collectionView
+                self.collectionIndexView.setup()
+                view.bringSubview(toFront: searchView)
+                view.bringSubview(toFront: collectionIndexView)
+            }else{
+                setTable()
+                tableView.separatorColor = UIColor.lightSeparator
+                tableIndexView.indexes = self.indexes
+                tableIndexView.tableView = self.tableView
+                tableIndexView.setup(color: UIColor.white)
+                view.bringSubview(toFront: searchView)
+                view.bringSubview(toFront: tableIndexView)
+            }
         }
         print("Playlists loaded")
     }
@@ -713,14 +715,14 @@ extension PlaylistsVC: UICollectionViewDelegateFlowLayout {
         playlists = [Playlist]()
         if musicQuery.shared.playlistsSet {
             for list in musicQuery.shared.playlists {
-                if list.isFolder || !list.isChild {
+                if (list.isFolder || !list.isChild) && list.songsIn != 0 {
                     playlists.append(list)
                 }
             }
         }else{
             musicQuery.shared.playlistsSet = true
             for list in musicQuery.shared.allPlaylists() {
-                if list.isFolder || !list.isChild {
+                if (list.isFolder || !list.isChild) && list.songsIn != 0 {
                     playlists.append(list)
                 }
             }

@@ -17,6 +17,7 @@ class AlbumsByVC: UITableViewController {
     var picked: AlbumB!
     var pickedID: MPMediaEntityPersistentID!
     let defaults = UserDefaults.standard
+    var currentSort: Sort!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,9 +29,9 @@ class AlbumsByVC: UITableViewController {
         tableView.scrollIndicatorInsets = tableView.contentInset
         tableView.separatorColor = UIColor.lightSeparator
         als = musicQuery.shared.artistAlbumsID(artist: receivedID)
-        als = als.sorted(by:{ ($0.name! > $1.name!)})
-        als.reverse()
         title = als.first?.artist
+        currentSort = GlobalSettings.artistAlbumsSort
+        sort()
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -160,4 +161,51 @@ extension AlbumsByVC: UITabBarControllerDelegate {
             }
         }
     }
+}
+
+extension AlbumsByVC { //Sortowanie
+    
+    @IBAction func sortBtnPressed(){
+        presentAlert()
+    }
+    
+    func sort() {
+        switch currentSort {
+        case .alphabetically:
+            als.sort(by:{ ($0.name! < $1.name!)})
+        case .yearAscending:
+            als.sort(by:{ ($0.year! < $1.year!)})
+        case .yearDescending:
+            als.sort(by:{ ($0.year! > $1.year!)})
+        default:
+            print("default")
+        }
+    }
+    
+    func presentAlert() {
+        let alert = UIAlertController(title: "Choose sorting method", message: "", preferredStyle: .actionSheet)
+        let alpha = UIAlertAction(title: "Alphabetically", style: .default) { _ in
+            GlobalSettings.changeArtistAlbumsSort(.alphabetically)
+            self.currentSort = .alphabetically
+            self.sort()
+            self.tableView.reloadData()
+        }
+        alert.addAction(alpha)
+        let yearA = UIAlertAction(title: "Year ascending", style: .default) { _ in
+            GlobalSettings.changeArtistAlbumsSort(Sort.yearAscending)
+            self.currentSort = .yearAscending
+            self.sort()
+            self.tableView.reloadData()
+        }
+        alert.addAction(yearA)
+        let yearD = UIAlertAction(title: "Year descending", style: .default) { _ in
+            GlobalSettings.changeArtistAlbumsSort(Sort.yearDescending)
+            self.currentSort = .yearDescending
+            self.sort()
+            self.tableView.reloadData()
+        }
+        alert.addAction(yearD)
+        present(alert, animated: true, completion: nil)
+    }
+    
 }

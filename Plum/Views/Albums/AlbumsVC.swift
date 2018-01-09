@@ -20,7 +20,7 @@ class AlbumsVC: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionIndexView: CollectionIndexView!
     @IBOutlet weak var searchView: BlurView!
-    var albums: [AlbumB]!
+    var albums = [AlbumB]()
     var indexes = [String]()
     var result = [String: [AlbumB]]()
     var picked: AlbumB!
@@ -44,29 +44,36 @@ class AlbumsVC: UIViewController {
         tabBarController?.delegate = self
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         grid = GlobalSettings.albumsGrid
-        setupDict()
-        if !controllerSet {
-            configureSearchController()
-            controllerSet = true
-        }
-        if grid{
-            setCollection()
-            //correctCollectionSections()
-            self.collectionIndexView.indexes = self.indexes
-            self.collectionIndexView.collectionView = self.collectionView
-            self.collectionIndexView.setup()
-            view.bringSubview(toFront: searchView)
-            view.bringSubview(toFront: collectionIndexView)
+        if musicQuery.shared.albumsSet {
+            albums = musicQuery.shared.albums
         }else{
-            setTable()
-            tableView.separatorColor = UIColor.lightSeparator
-            tableIndexView.indexes = self.indexes
-            tableIndexView.tableView = self.tableView
-            tableIndexView.setup(color: UIColor.white)
-            view.bringSubview(toFront: searchView)
-            view.bringSubview(toFront: tableIndexView)
+            albums = musicQuery.shared.allAlbums()
         }
-        setHeaders()
+        if !albums.isEmpty {
+            setupDict()
+            if !controllerSet {
+                configureSearchController()
+                controllerSet = true
+            }
+            if grid{
+                setCollection()
+                //correctCollectionSections()
+                self.collectionIndexView.indexes = self.indexes
+                self.collectionIndexView.collectionView = self.collectionView
+                self.collectionIndexView.setup()
+                view.bringSubview(toFront: searchView)
+                view.bringSubview(toFront: collectionIndexView)
+            }else{
+                setTable()
+                tableView.separatorColor = UIColor.lightSeparator
+                tableIndexView.indexes = self.indexes
+                tableIndexView.tableView = self.tableView
+                tableIndexView.setup(color: UIColor.white)
+                view.bringSubview(toFront: searchView)
+                view.bringSubview(toFront: tableIndexView)
+            }
+            setHeaders()
+        }
         print("Albums loaded")
     }
     
@@ -630,11 +637,6 @@ extension AlbumsVC {
     func setupDict() {
         result = [String: [AlbumB]]()
         indexes = [String]()
-        if musicQuery.shared.albumsSet {
-            albums = musicQuery.shared.albums
-        }else{
-            albums = musicQuery.shared.allAlbums()
-        }
         let articles = ["The","A","An"]
         var anyNumber = false
         var anySpecial = false
@@ -644,13 +646,30 @@ extension AlbumsVC {
             if articles.contains(article) {
                 if objStr.components(separatedBy: " ").count > 1 {
                     let secondStr = objStr.components(separatedBy: " ")[1]
-                    if result["\(secondStr.first!)"] != nil {
-                        result["\(secondStr.uppercased().first!)"]?.append(song)
+                    if secondStr.firstNumber() {
+                        if result["#"] != nil {
+                            result["#"]?.append(song)
+                        }else{
+                            result["#"] = []
+                            result["#"]?.append(song)
+                            anyNumber = true
+                        }
                     }else{
-                        result["\(secondStr.uppercased().first!)"] = []
-                        result["\(secondStr.uppercased().first!)"]?.append(song)
-                        indexes.append("\(secondStr.uppercased().first!)")
+                        if result["\(secondStr.first!)"] != nil {
+                            result["\(secondStr.uppercased().first!)"]?.append(song)
+                        }else{
+                            result["\(secondStr.uppercased().first!)"] = []
+                            result["\(secondStr.uppercased().first!)"]?.append(song)
+                            indexes.append("\(secondStr.uppercased().first!)")
+                        }
                     }
+//                    if result["\(secondStr.first!)"] != nil {
+//                        result["\(secondStr.uppercased().first!)"]?.append(song)
+//                    }else{
+//                        result["\(secondStr.uppercased().first!)"] = []
+//                        result["\(secondStr.uppercased().first!)"]?.append(song)
+//                        indexes.append("\(secondStr.uppercased().first!)")
+//                    }
                 }
             }else{
                 if let prefi = article.first {
@@ -681,7 +700,10 @@ extension AlbumsVC {
                 }
             }
         }
-        //indexes = Array(result.keys).sorted(by: <)
+        //indexes.sort(by: <)
+        indexes = indexes.sorted {
+            (s1, s2) -> Bool in return s1.localizedStandardCompare(s2) == .orderedAscending
+        }
         if anyNumber {
             indexes.append("#")
         }

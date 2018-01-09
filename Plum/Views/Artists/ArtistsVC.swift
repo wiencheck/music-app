@@ -47,30 +47,37 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         currentTheme = GlobalSettings.theme
         grid = GlobalSettings.artistsGrid
-        setupDict()
-        searchVisible = true
-        if !controllerSet {
-            configureSearchController()
-            controllerSet = true
-        }
-        if grid{
-            setCollection()
-            //correctCollectionSections()
-            self.collectionIndexView.indexes = self.indexes
-            self.collectionIndexView.collectionView = self.collectionView
-            self.collectionIndexView.setup()
-            //collectionIndexView.backgroundColor = .clear
-            view.bringSubview(toFront: searchView)
-            view.bringSubview(toFront: collectionIndexView)
+        if musicQuery.shared.artistsSet {
+            artists = musicQuery.shared.artists
         }else{
-            setTable()
-            tableIndexView.indexes = self.indexes
-            tableIndexView.tableView = self.tableView
-            tableIndexView.setup()
-            view.bringSubview(toFront: searchView)
-            view.bringSubview(toFront: tableIndexView)
+            artists = musicQuery.shared.allArtists()
         }
-        setHeaders()
+        if !artists.isEmpty {
+            setupDict()
+            searchVisible = true
+            if !controllerSet {
+                configureSearchController()
+                controllerSet = true
+            }
+            if grid{
+                setCollection()
+                //correctCollectionSections()
+                self.collectionIndexView.indexes = self.indexes
+                self.collectionIndexView.collectionView = self.collectionView
+                self.collectionIndexView.setup()
+                //collectionIndexView.backgroundColor = .clear
+                view.bringSubview(toFront: searchView)
+                view.bringSubview(toFront: collectionIndexView)
+            }else{
+                setTable()
+                tableIndexView.indexes = self.indexes
+                tableIndexView.tableView = self.tableView
+                tableIndexView.setup(color: UIColor.white)
+                view.bringSubview(toFront: searchView)
+                view.bringSubview(toFront: tableIndexView)
+            }
+            setHeaders()
+        }
         print("Artists loaded")
     }
     
@@ -112,7 +119,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         }
         tableIndexView.indexes = self.indexes
         tableIndexView.tableView = self.tableView
-        tableIndexView.setup()
+        tableIndexView.setup(color: UIColor.white)
         self.view.addSubview(tableIndexView)
     }
     
@@ -454,11 +461,6 @@ extension ArtistsVC{    //Other functions
     func setupDict() {
         result = [String: [Artist]]()
         indexes = [String]()
-        if musicQuery.shared.artistsSet {
-            artists = musicQuery.shared.artists
-        }else{
-            artists = musicQuery.shared.allArtists()
-        }
         let articles = ["The","A","An"]
         var anyNumber = false
         var anySpecial = false
@@ -505,7 +507,12 @@ extension ArtistsVC{    //Other functions
                 }
             }
         }
-        //indexes = Array(result.keys).sorted(by: <)
+        print(indexes)
+        indexes = indexes.sorted {
+            (s1, s2) -> Bool in return s1.localizedStandardCompare(s2) == .orderedAscending
+        }
+        //indexes.sort(by: <)
+        print(indexes)
         if anyNumber {
             indexes.append("#")
         }

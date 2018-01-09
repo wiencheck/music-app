@@ -800,6 +800,7 @@ extension EightNowPlayingVC {       //Kolory i UI
 extension EightNowPlayingVC: MPMediaPickerControllerDelegate {
     
     @IBAction func pickerBtnPressed() {
+        //dismiss(animated: true, completion: nil)
         presentPicker()
     }
     

@@ -21,6 +21,7 @@ class ArtistSongs: UIViewController {
     var songsByAlbums: [MPMediaItem]!
     var albums: [AlbumB]!
     var sort: Sort!
+    var currentSort: Sort!
     var receivedID: MPMediaEntityPersistentID!
     var sections: Int!
     var headers = [UIView]()
@@ -42,7 +43,9 @@ class ArtistSongs: UIViewController {
         super.viewDidLoad()
         tabBarController?.delegate = self
         sort = GlobalSettings.artistSort
+        currentSort = GlobalSettings.artistAlbumsSort
         setup()
+        //doSort()
         print("\(indexes.count) \((result[indexes[0]]?.count)! + 1)")
     }
     
@@ -383,7 +386,7 @@ extension ArtistSongs {
             sections = indexesInt.count
             alpIndexView.indexes = self.indexes
             alpIndexView.tableView = self.tableView
-            alpIndexView.setup(color: UIColor.lightBackground)
+            alpIndexView.setup(color: UIColor.white)
             albIndexView.isHidden = true
             alpIndexView.isHidden = false
         }else if sort == .album {
@@ -409,7 +412,7 @@ extension ArtistSongs {
             upperBar.title = songsByAlbums[0].albumArtist
             albIndexView.indexes = self.indexes
             albIndexView.tableView = self.tableView
-            albIndexView.setup(color: UIColor.lightBackground)
+            albIndexView.setup(color: UIColor.white)
             albIndexView.isHidden = false
             alpIndexView.isHidden = true
         }
@@ -566,3 +569,51 @@ extension ArtistSongs: UITabBarControllerDelegate {
         }
     }
 }
+
+extension ArtistSongs { //Sortowanie
+    
+    @IBAction func AlSortBtnPressed(){
+        presentAlert()
+    }
+    
+    func doSort() {
+        switch currentSort {
+        case .alphabetically:
+            albums.sort(by:{ ($0.name! < $1.name!)})
+        case .yearAscending:
+            albums.sort(by:{ ($0.year! < $1.year!)})
+        case .yearDescending:
+            albums.sort(by:{ ($0.year! > $1.year!)})
+        default:
+            print("default")
+        }
+    }
+    
+    func presentAlert() {
+        let alert = UIAlertController(title: "Choose sorting method for albums", message: "", preferredStyle: .actionSheet)
+        let alpha = UIAlertAction(title: "Alphabetically", style: .default) { _ in
+            GlobalSettings.changeArtistAlbumsSort(.alphabetically)
+            self.currentSort = .alphabetically
+            self.doSort()
+            self.tableView.reloadData()
+        }
+        alert.addAction(alpha)
+        let yearA = UIAlertAction(title: "Year ascending", style: .default) { _ in
+            GlobalSettings.changeArtistAlbumsSort(Sort.yearAscending)
+            self.currentSort = .yearAscending
+            self.doSort()
+            self.tableView.reloadData()
+        }
+        alert.addAction(yearA)
+        let yearD = UIAlertAction(title: "Year descending", style: .default) { _ in
+            GlobalSettings.changeArtistAlbumsSort(Sort.yearDescending)
+            self.currentSort = .yearDescending
+            self.doSort()
+            self.tableView.reloadData()
+        }
+        alert.addAction(yearD)
+        present(alert, animated: true, completion: nil)
+    }
+    
+}
+
