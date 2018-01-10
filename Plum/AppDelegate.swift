@@ -52,7 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         if musicQuery.shared.albumBy(item: item).songsIn == 1 {
                             Plum.shared.landInSongs(item, new: true)
                         }else{
-                            Plum.shared.landInArtist(item, new: true)
+                            Plum.shared.landInAlbum(item, new: true)
                         }
                     case .songs:
                         Plum.shared.isShuffle = true

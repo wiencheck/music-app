@@ -2,7 +2,7 @@
 //  IndexView.swift
 //  SampleContactList
 //
-//  Created by Adam Wienconek on 14.10.2017.
+//  Created by Adam Wienconek on 14.10.02017.
 //  Copyright © 2017 Stephen Lindauer. All rights reserved.
 //
 
@@ -82,7 +82,7 @@ class TableIndexView: UIView {
         
         let gestureRecogniser = UIPanGestureRecognizer(target: self, action: #selector(indexViewWasDragged))
         addGestureRecognizer(gestureRecogniser)
-        self.alpha = 0.2
+        self.alpha = 0.02
         //self.alpha = 0.0
     }
     
@@ -122,7 +122,7 @@ class TableIndexView: UIView {
     }
     
     func hide(){
-        self.alpha = 0.2
+        self.alpha = 0.02
     }
 }
 
@@ -165,7 +165,7 @@ class CollectionIndexView: UIView {
         
         let gestureRecogniser = UIPanGestureRecognizer(target: self, action: #selector(indexViewWasDragged))
         addGestureRecognizer(gestureRecogniser)
-        self.alpha = 0.2
+        self.alpha = 0.02
     }
     
     @objc func indexViewWasDragged(_ gesture: UIPanGestureRecognizer){
@@ -205,6 +205,6 @@ class CollectionIndexView: UIView {
     }
     
     func hide(){
-        self.alpha = 0.2
+        self.alpha = 0.02
     }
 }
