@@ -25,7 +25,7 @@ protocol UpNextDelegate {
 class QueueVC: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var upperBar: UIView!
+    @IBOutlet weak var upperBar: UIToolbar!
     @IBOutlet weak var addBtn: UIButton!
     @IBOutlet weak var mainLabel: UILabel!
     @IBOutlet weak var ratingBtn: UIButton!
@@ -90,7 +90,8 @@ extension QueueVC: UITableViewDelegate, UITableViewDataSource {     //TableView 
         tableView.dataSource = self
         tableView.allowsSelectionDuringEditing = true
         tableView.setEditing(true, animated: false)
-        tableView.contentInset = UIEdgeInsetsMake(0, 0, 49, 0)
+        tableView.contentInset = UIEdgeInsetsMake(64, 0, 49, 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 49, 0)
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -354,8 +355,9 @@ extension QueueVC: UITableViewDelegate, UITableViewDataSource {     //TableView 
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        upperBar.alpha = 1 + scrollView.contentOffset.y/100
-        if scrollView.contentOffset.y < -120 {
+        let off = scrollView.contentOffset.y + 64
+        upperBar.alpha = 1 + off/100
+        if off < -120 {
             doneBtnPressed()
         }
     }
@@ -527,7 +529,8 @@ extension QueueVC: MPMediaPickerControllerDelegate {    //Media Picker
     }
     
     func dark() {
-        upperBar.backgroundColor = UIColor(red: 0.105882352941176, green: 0.105882352941176, blue: 0.105882352941176, alpha: 0.8)
+        //upperBar.backgroundColor = UIColor(red: 0.105882352941176, green: 0.105882352941176, blue: 0.105882352941176, alpha: 0.8)
+        upperBar.barStyle = .blackTranslucent
         mainLabel.textColor = .white
         addBtn.tintColor = GlobalSettings.tint.color
         UIApplication.shared.statusBarStyle = .lightContent
@@ -537,7 +540,8 @@ extension QueueVC: MPMediaPickerControllerDelegate {    //Media Picker
     }
     
     func light() {
-        upperBar.backgroundColor = UIColor(red: 0.972549019607843, green: 0.972549019607843, blue: 0.972549019607843, alpha: 0.8)
+        //upperBar.backgroundColor = UIColor(red: 0.972549019607843, green: 0.972549019607843, blue: 0.972549019607843, alpha: 0.8)
+        upperBar.barStyle = .default
         mainLabel.textColor = .black
         addBtn.tintColor = GlobalSettings.tint.color
         UIApplication.shared.statusBarStyle = .default

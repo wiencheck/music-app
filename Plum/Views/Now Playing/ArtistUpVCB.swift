@@ -15,7 +15,7 @@ class ArtistUpVCB: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var indexView: TableIndexView!
-    @IBOutlet weak var upperBar: UIView!
+    @IBOutlet weak var upperBar: UIToolbar!
     @IBOutlet weak var shufBtn: UIButton!
     @IBOutlet weak var artistLabel: UILabel!
     @IBOutlet weak var ratingBtn: UIButton!
@@ -38,7 +38,8 @@ class ArtistUpVCB: UIViewController {
         super.viewDidLoad()
         setupDict()
         setup()
-        tableView.contentInset = UIEdgeInsetsMake(0, 0, 49, 0)
+        tableView.contentInset = UIEdgeInsetsMake(64, 0, 49, 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 49, 0)
         reload()
         NotificationCenter.default.addObserver(self, selector: #selector(reload), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
         separatorColor = tableView.separatorColor
@@ -282,8 +283,9 @@ extension ArtistUpVCB {
 extension ArtistUpVCB {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        upperBar.alpha = 1 + scrollView.contentOffset.y/100
-        if scrollView.contentOffset.y < -120 {
+        let off = scrollView.contentOffset.y + 64
+        upperBar.alpha = 1 + off/100
+        if off < -120 {
             doneBtnPressed()
         }
     }
@@ -356,7 +358,8 @@ extension ArtistUpVCB {
     }
     
     func dark() {
-        upperBar.backgroundColor = UIColor(red: 0.105882352941176, green: 0.105882352941176, blue: 0.105882352941176, alpha: 0.8)
+        //upperBar.backgroundColor = UIColor(red: 0.105882352941176, green: 0.105882352941176, blue: 0.105882352941176, alpha: 0.8)
+        upperBar.barStyle = .blackTranslucent
         artistLabel.textColor = .white
         shufBtn.setImage(#imageLiteral(resourceName: "shuffle").imageScaled(toFit: CGSize(width: 32, height: 16)).tintPictogram(with: GlobalSettings.tint.color), for: .normal)
         UIApplication.shared.statusBarStyle = .lightContent
@@ -367,7 +370,8 @@ extension ArtistUpVCB {
     }
     
     func light() {
-        upperBar.backgroundColor = UIColor(red: 0.972549019607843, green: 0.972549019607843, blue: 0.972549019607843, alpha: 0.8)
+        //upperBar.backgroundColor = UIColor(red: 0.972549019607843, green: 0.972549019607843, blue: 0.972549019607843, alpha: 0.8)
+        upperBar.barStyle = .default
         artistLabel.textColor = .black
         shufBtn.setImage(#imageLiteral(resourceName: "shuffle").imageScaled(toFit: CGSize(width: 32, height: 16)).tintPictogram(with: GlobalSettings.tint.color), for: .normal)
         UIApplication.shared.statusBarStyle = .default

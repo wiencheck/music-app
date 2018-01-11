@@ -98,7 +98,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         popupPresented = true
         nowPlaying.popupItem.title = "Welcome to Plum"
         nowPlaying.popupItem.subtitle = "Pick some music to play"
-        popupBar.isUserInteractionEnabled = false
+        popupBar.isUserInteractionEnabled = true
     }
     
     @objc func updatePopup() {

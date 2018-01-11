@@ -12,7 +12,7 @@ import MediaPlayer
 class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
     
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var upperBar: UIView!
+    @IBOutlet weak var upperBar: UIToolbar!
     @IBOutlet weak var shufBtn: UIButton!
     @IBOutlet weak var albumLabel: UILabel!
     @IBOutlet weak var artistLabel: UILabel!
@@ -34,7 +34,8 @@ class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.contentInset = UIEdgeInsetsMake(0, 0, 49, 0)
+        tableView.contentInset = UIEdgeInsetsMake(64, 0, 49, 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 49, 0)
         separatorColor = tableView.separatorColor
         setColors()
         setup()
@@ -184,8 +185,9 @@ extension AlbumUpVC: UITableViewDelegate, UITableViewDataSource{
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        upperBar.alpha = 1 + scrollView.contentOffset.y/100
-        if scrollView.contentOffset.y < -120 {
+        let off = scrollView.contentOffset.y + 64
+        upperBar.alpha = 1 + off/100
+        if off < -120 {
             doneBtnPressed()
         }
     }
@@ -264,7 +266,8 @@ extension AlbumUpVC: UITableViewDelegate, UITableViewDataSource{
     }
     
     func dark() {
-        upperBar.backgroundColor = UIColor(red: 0.105882352941176, green: 0.105882352941176, blue: 0.105882352941176, alpha: 0.8)
+        //upperBar.backgroundColor = UIColor(red: 0.105882352941176, green: 0.105882352941176, blue: 0.105882352941176, alpha: 0.8)
+        upperBar.barStyle = .blackTranslucent
         artistLabel.textColor = .white
         albumLabel.textColor = .white
         shufBtn.setImage(#imageLiteral(resourceName: "shuffle").imageScaled(toFit: CGSize(width: 32, height: 16)).tintPictogram(with: GlobalSettings.tint.color), for: .normal)
@@ -275,7 +278,8 @@ extension AlbumUpVC: UITableViewDelegate, UITableViewDataSource{
     }
     
     func light() {
-        upperBar.backgroundColor = UIColor(red: 0.972549019607843, green: 0.972549019607843, blue: 0.972549019607843, alpha: 0.8)
+        //upperBar.backgroundColor = UIColor(red: 0.972549019607843, green: 0.972549019607843, blue: 0.972549019607843, alpha: 0.8)
+        upperBar.barStyle = .default
         artistLabel.textColor = .black
         albumLabel.textColor = .black
         shufBtn.setImage(#imageLiteral(resourceName: "shuffle").imageScaled(toFit: CGSize(width: 32, height: 16)).tintPictogram(with: GlobalSettings.tint.color), for: .normal)

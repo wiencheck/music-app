@@ -693,7 +693,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = PlumWidget/PlumWidget.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: ADAM WIENCONEK (NFU8AEPKAC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: ADAM WIENCONEK (NFU8AEPKAC)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 5346R7RC8E;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -702,7 +702,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wiencheck.plum.upnext;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "df90cf11-6579-42e4-89e0-ce4abce696cc";
 				PROVISIONING_PROFILE_SPECIFIER = PlumWidgetDevelopment;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
@@ -717,7 +717,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = PlumWidget/PlumWidget.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: ADAM WIENCONEK (5346R7RC8E)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: ADAM WIENCONEK (5346R7RC8E)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 5346R7RC8E;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -726,8 +726,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wiencheck.plum.upnext;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = PlumWidgetDistribution;
+				PROVISIONING_PROFILE = "df90cf11-6579-42e4-89e0-ce4abce696cc";
+				PROVISIONING_PROFILE_SPECIFIER = PlumWidgetDevelopment;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -860,7 +860,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Plum/Plum.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer: ADAM WIENCONEK (NFU8AEPKAC)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: ADAM WIENCONEK (NFU8AEPKAC)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 5346R7RC8E;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -891,7 +891,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Plum/Plum.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: ADAM WIENCONEK (5346R7RC8E)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: ADAM WIENCONEK (5346R7RC8E)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 5346R7RC8E;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -904,8 +904,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wiencheck.plum;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "71511eea-61e7-480a-8e50-c059ece62173";
-				PROVISIONING_PROFILE_SPECIFIER = PlumDistribution;
+				PROVISIONING_PROFILE = "4d49a265-3310-458e-ac02-e28ef3ce5da0";
+				PROVISIONING_PROFILE_SPECIFIER = PlumDevelopment;
 				SWIFT_OBJC_BRIDGING_HEADER = "Plum/Classes/MGImage/Plum-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
