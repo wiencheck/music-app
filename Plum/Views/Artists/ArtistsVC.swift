@@ -467,7 +467,7 @@ extension ArtistsVC{    //Other functions
         var anyNumber = false
         var anySpecial = false
         for artist in artists {
-            let objStr = artist.name!
+            let objStr = artist.name.trimmingCharacters(in: .whitespaces)
             let article = objStr.components(separatedBy: " ").first!
             if articles.contains(article) {
                 if objStr.components(separatedBy: " ").count > 1 {

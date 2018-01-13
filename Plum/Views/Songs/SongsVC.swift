@@ -443,7 +443,7 @@ extension SongsVC {
         var anyNumber = false
         var anySpecial = false
         for song in songs {
-            let objStr = song.title!
+            let objStr = song.title!.trimmingCharacters(in: .whitespaces)
             let article = objStr.components(separatedBy: " ").first!
             if articles.contains(article) {
                 if objStr.components(separatedBy: " ").count > 1 {

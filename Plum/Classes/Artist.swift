@@ -20,7 +20,7 @@ fileprivate struct ArtistKey {
 
 @objcMembers class Artist: NSObject{
     let ID: MPMediaEntityPersistentID!
-    let name: String!
+    let name: String
     let artwork: UIImage
     let albumsIn: Int
     let songsIn: Int

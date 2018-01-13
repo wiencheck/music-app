@@ -648,7 +648,7 @@ extension AlbumsVC {
         var anyNumber = false
         var anySpecial = false
         for song in albums {
-            let objStr = song.name!
+            let objStr = song.name.trimmingCharacters(in: .whitespaces)
             let article = objStr.components(separatedBy: " ").first!
             if articles.contains(article) {
                 if objStr.components(separatedBy: " ").count > 1 {

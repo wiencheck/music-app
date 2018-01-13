@@ -94,7 +94,11 @@ class ArtistSongs: UIViewController {
 extension ArtistSongs: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return indexes.count
+        if sort == .alphabetically{
+            return indexes.count+1
+        }else{
+            return indexes.count
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -462,7 +466,7 @@ extension ArtistSongs {
         var anySpecial = false
         indexes = [String]()
         for song in songs {
-            let objStr = song.title!
+            let objStr = song.title!.trimmingCharacters(in: .whitespaces)
             let article = objStr.components(separatedBy: " ").first!
             if articles.contains(article) {
                 if objStr.components(separatedBy: " ").count > 1 {
@@ -521,7 +525,7 @@ extension ArtistSongs {
         indexesInt = [Int]()
         for album in albums {
             let name = album.name
-            var word = (name?.components(separatedBy: " ").first)!
+            var word = (name.components(separatedBy: " ").first)!
             if result[word] != nil {
                 word += " "
                 result[word] = []
@@ -539,7 +543,7 @@ extension ArtistSongs {
     func sortAlbums() {
         switch sort {
         case .alphabetically:
-            albums.sort { $0.name! < $1.name! }
+            albums.sort { $0.name < $1.name }
         case .yearAscending:
             albums.sort { Int($0.year)! < Int($1.year)! }
         case .yearDescending:
@@ -579,7 +583,7 @@ extension ArtistSongs { //Sortowanie
     func doSort() {
         switch currentSort {
         case .alphabetically:
-            albums.sort(by:{ ($0.name! < $1.name!)})
+            albums.sort(by:{ ($0.name < $1.name)})
         case .yearAscending:
             albums.sort(by:{ ($0.year < $1.year)})
         case .yearDescending:

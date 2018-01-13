@@ -24,7 +24,7 @@ import MediaPlayer
 @objcMembers class AlbumB: NSObject{
     let items: [MPMediaItem]
     let ID: MPMediaEntityPersistentID
-    let name: String?
+    let name: String
     let artwork: UIImage?
     let artist: String?
     let songsIn: Int
@@ -87,7 +87,7 @@ import MediaPlayer
         items = collection.items
         let item = items[0]
         ID = item.albumPersistentID
-        name = item.albumTitle
+        name = item.albumTitle ?? "Unknown album"
         if let img = item.artwork?.image(at: CGSize(width: 80, height: 80)){
             artwork = img
         }else{

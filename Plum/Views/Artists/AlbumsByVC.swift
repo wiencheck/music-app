@@ -172,7 +172,7 @@ extension AlbumsByVC { //Sortowanie
     func sort() {
         switch currentSort {
         case .alphabetically:
-            als.sort(by:{ ($0.name! < $1.name!)})
+            als.sort(by:{ ($0.name < $1.name)})
         case .yearAscending:
 //            als.sort(by:{
 //                guard let year0 = $0.year, let year1 = $1.year else { return false }

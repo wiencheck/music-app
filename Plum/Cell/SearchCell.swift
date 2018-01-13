@@ -40,7 +40,7 @@ class SearchCell: UITableViewCell {
     
     func setup(album: AlbumB) {
         artwork.image = album.artwork
-        title.text = album.name!
+        title.text = album.name
         if album.year == "" {
             detail.text = "\(album.songsIn) songs"
         }else{
