@@ -677,7 +677,10 @@ extension PlaylistsVC: UICollectionViewDelegateFlowLayout {
         let height = self.view.frame.size.height
         let width = self.view.frame.size.width
         let Waspect: CGFloat = 0.45
-        let Haspect: CGFloat = 0.35
+        var Haspect: CGFloat = 0.35
+        if UIDevice.current.modelName == "iPhone X" {
+            Haspect = 0.27
+        }
         return CGSize(width: width*Waspect, height: height*Haspect)
     }
     

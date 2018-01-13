@@ -729,7 +729,10 @@ extension ArtistsVC: UICollectionViewDelegateFlowLayout {
         let height = self.view.frame.size.height
         let width = self.view.frame.size.width
         let Waspect: CGFloat = 0.29
-        let Haspect: CGFloat = 0.22
+        var Haspect: CGFloat = 0.22
+        if UIDevice.current.modelName == "iPhone X" {
+            Haspect = 0.18
+        }
         return CGSize(width: width*Waspect, height: height*Haspect)
     }
     

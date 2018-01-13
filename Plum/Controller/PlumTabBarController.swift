@@ -8,6 +8,7 @@
 import UIKit
 
 public var popupPresented = false
+public var popupActive = false
 
 class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     
@@ -98,7 +99,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         popupPresented = true
         nowPlaying.popupItem.title = "Welcome to Plum"
         nowPlaying.popupItem.subtitle = "Pick some music to play"
-        popupBar.isUserInteractionEnabled = false
+        popupBar.isUserInteractionEnabled = popupActive
     }
     
     @objc func updatePopup() {
@@ -193,7 +194,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
             return "eight_se"
         }else{
             print("Rozpoznano simulator")
-            return "eight_6plus"
+            return "eight_6"
         }
     }
     

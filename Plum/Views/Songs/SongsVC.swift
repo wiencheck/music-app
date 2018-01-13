@@ -583,7 +583,7 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
             tableView.contentInsetAdjustmentBehavior = .never
         }
         tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
-        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        tableView.scrollIndicatorInsets = tableView.contentInset
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
