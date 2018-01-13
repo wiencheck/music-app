@@ -851,7 +851,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         if let defaults = UserDefaults.init(suiteName: "group.adw.Plum") {
             var arr = [[String]]()
             for i in 0 ..< 6 {
-                if queue[i].assetURL != nil {
+                if !queue[i].isCloudItem {
                     arr.append([queue[i].title ?? "Unknown title", queue[i].albumArtist ?? "Unknown artist"])
                     defaults.set(arr[i], forKey: "queue\(i)")
                 }else{

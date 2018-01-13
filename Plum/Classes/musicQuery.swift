@@ -14,10 +14,10 @@ import MobileCoreServices
 import os.log
 
 class musicQuery{
+    
     var delegate: MySpotlightDelegate?
     static let shared = musicQuery()
-    //let mainQuery: MPMediaQuery
-    var detailQuery: MPMediaQuery!
+    private var query: MPMediaQuery
     var currentSongsCount: Int!
     var songs: [MPMediaItem]!
     var artists: [Artist]!
@@ -31,9 +31,8 @@ class musicQuery{
     var songsSet = false
     
     private init(){
-        //mainQuery = MPMediaQuery()
+        query = MPMediaQuery()
         print("Musicquery init start")
-        //setArrays()
         print("Musicquery init end")
     }
     
@@ -53,49 +52,17 @@ class musicQuery{
         arraysSet = true
     }
     
-    /*private func savePlaylists() {
-        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(playlists, toFile: Playlist.ArchiveURL.path)
-        if isSuccessfulSave {
-            print("playlists successfully saved.")
-        } else {
-            print("Failed to save playlists...")
-        }
+    private func filterQuery() {
+        let cloudPredicate = MPMediaPropertyPredicate(value: NSNumber(value: false), forProperty: MPMediaItemPropertyIsCloudItem, comparisonType: .equalTo)
+        let drmPredicate = MPMediaPropertyPredicate(value: NSNumber(value: false), forProperty: MPMediaItemPropertyHasProtectedAsset, comparisonType: .equalTo)
+        query.addFilterPredicate(cloudPredicate)
+        query.addFilterPredicate(drmPredicate)
     }
-    
-    private func loadPlaylists() -> [Playlist]?  {
-        return NSKeyedUnarchiver.unarchiveObject(withFile: Playlist.ArchiveURL.path) as? [Playlist]
-    }
-    
-    private func saveAlbums() {
-        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(albums, toFile: AlbumB.ArchiveURL.path)
-        if isSuccessfulSave {
-            print("Albums successfully saved.")
-        } else {
-            print("Failed to save albums...")
-        }
-    }
-    
-    private func loadAlbums() -> [AlbumB]? {
-        return NSKeyedUnarchiver.unarchiveObject(withFile: AlbumB.ArchiveURL.path) as? [AlbumB]
-    }
-    
-    private func saveArtists() {
-        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(artists, toFile: Artist.ArchiveURL.path)
-        if isSuccessfulSave {
-            print("Artists successfully saved.")
-        } else {
-            print("Failed to save artists...")
-        }
-    }
-    
-    private func loadArtists() -> [Artist]? {
-        return NSKeyedUnarchiver.unarchiveObject(withFile: Artist.ArchiveURL.path) as? [Artist]
-    }*/
     
     func allSongs() -> [MPMediaItem]{
-        detailQuery = MPMediaQuery.songs()
-        filterCloudItems(detailQuery)
-        let songs = detailQuery?.items
+        query = MPMediaQuery.songs()
+        filterQuery()
+        let songs = query.items
         currentSongsCount = songs?.count
         self.songs = songs
         songsSet = true
@@ -103,22 +70,20 @@ class musicQuery{
     }
     
     func songsByArtistID(artist: MPMediaEntityPersistentID) -> [MPMediaItem]{
-        detailQuery = MPMediaQuery.songs()
-        filterCloudItems(detailQuery)
+        query = MPMediaQuery.songs()
+        filterQuery()
         let predicate = MPMediaPropertyPredicate(value: artist, forProperty: MPMediaItemPropertyAlbumArtistPersistentID, comparisonType: .equalTo)
-        detailQuery?.addFilterPredicate(predicate)
-        return detailQuery.items!
+        query.addFilterPredicate(predicate)
+        return query.items!
     }
     
     func allArtists() -> [Artist]{
-        detailQuery = MPMediaQuery.artists()
-        detailQuery.groupingType = MPMediaGrouping.albumArtist
+        query = MPMediaQuery.songs()
+        query.groupingType = .albumArtist
+        filterQuery()
         var artists = [Artist]()
-        for collection in detailQuery.collections!{
-            let newArtist = Artist(Collection: collection)
-            if !newArtist.isCloud{
-                artists.append(newArtist)
-            }
+        for collection in query.collections!{
+            artists.append(Artist(Collection: collection))
         }
         self.artists = artists
         artistsSet = true
@@ -126,12 +91,11 @@ class musicQuery{
     }
     
     func artistAlbumsID(artist: MPMediaEntityPersistentID) -> [AlbumB]{
-        detailQuery = MPMediaQuery.albums()
-        let predicate = MPMediaPropertyPredicate(value: artist, forProperty: MPMediaItemPropertyAlbumArtistPersistentID, comparisonType: .equalTo)
-        detailQuery?.addFilterPredicate(predicate)
-        filterCloudItems(detailQuery)
+        query = MPMediaQuery.albums()
+        filterQuery()
+        query.addFilterPredicate(MPMediaPropertyPredicate(value: artist, forProperty: MPMediaItemPropertyAlbumArtistPersistentID, comparisonType: .equalTo))
         var albums = [AlbumB]()
-        if let det = detailQuery.collections{
+        if let det = query.collections{
             for i in 0 ..< det.count{
                 albums.append(AlbumB(collection: det[i]))
             }
@@ -140,14 +104,13 @@ class musicQuery{
     }
     
     func allAlbums() -> [AlbumB]{
-        detailQuery = MPMediaQuery.albums()
-        filterCloudItems(detailQuery)
+        query = MPMediaQuery.songs()
+        filterQuery()
+        query.groupingType = .album
         var albums = [AlbumB]()
-        for album in detailQuery.collections!{
+        for album in query.collections!{
             let a = AlbumB(collection: album)
-            if !a.isCloud {
-                albums.append(a)
-            }
+            albums.append(a)
         }
         self.albums = albums
         albumsSet = true
@@ -155,46 +118,43 @@ class musicQuery{
     }
     
     func albumID(album: MPMediaEntityPersistentID) -> AlbumB{
-        detailQuery = MPMediaQuery.albums()
+        query = MPMediaQuery.albums()
+        filterQuery()
         let predicate = MPMediaPropertyPredicate(value: album, forProperty: MPMediaItemPropertyAlbumPersistentID, comparisonType: .equalTo)
-        detailQuery?.addFilterPredicate(predicate)
-        return AlbumB(collection: (detailQuery.collections?.first)!)
+        query.addFilterPredicate(predicate)
+        return AlbumB(collection: (query.collections?.first)!)
     }
     
     func songsByAlbumID(album: MPMediaEntityPersistentID) -> [MPMediaItem]{
-        detailQuery = MPMediaQuery.songs()
-        let predicate = MPMediaPropertyPredicate(value: album, forProperty: MPMediaItemPropertyAlbumPersistentID, comparisonType: .equalTo)
-        detailQuery.addFilterPredicate(predicate)
-        filterCloudItems(detailQuery)
-        return detailQuery.items!
+        query = MPMediaQuery.songs()
+        filterQuery()
+        return query.items!
     }
     
     func albumBy(item: MPMediaItem) -> AlbumB{
-        detailQuery = MPMediaQuery.albums()
+        query = MPMediaQuery.albums()
+        filterQuery()
         let predicate = MPMediaPropertyPredicate(value: item.albumPersistentID, forProperty: MPMediaItemPropertyAlbumPersistentID, comparisonType: .equalTo)
-        detailQuery.addFilterPredicate(predicate)
-        return AlbumB(collection: (detailQuery.collections?.first)!)
+        query.addFilterPredicate(predicate)
+        return AlbumB(collection: (query.collections?.first)!)
     }
     
     func artistBy(item: MPMediaItem) -> Artist{
-        detailQuery = MPMediaQuery.artists()
+        query = MPMediaQuery.artists()
+        filterQuery()
         let predicate = MPMediaPropertyPredicate(value: item.artistPersistentID, forProperty: MPMediaItemPropertyArtistPersistentID, comparisonType: .equalTo)
-        detailQuery.addFilterPredicate(predicate)
-        return Artist(Collection: (detailQuery.collections?.first)!)
+        query.addFilterPredicate(predicate)
+        return Artist(Collection: (query.collections?.first)!)
     }
     
     func allPlaylists() -> [Playlist] {
-        let query = MPMediaQuery.songs()
+        query = MPMediaQuery.songs()
+        filterQuery()
         query.groupingType = .playlist
         var lists = [Playlist]()
         for list in query.collections! {
             if let l = list as? MPMediaPlaylist {
                 lists.append(Playlist(collection: l))
-//                let id = l.persistentID
-//                let parent = l.value(forProperty: "parentPersistentID")
-//                let name = l.name
-//                let folder = l.value(forProperty: "isFolder")
-//                print("Name: \(name), folder: \(folder), id: \(id), parent: \(parent)")
             }
         }
         self.playlists = lists
@@ -202,26 +162,13 @@ class musicQuery{
         return lists
     }
     
-//    func playlistsV() -> [Playlist] {
-//        detailQuery = MPMediaQuery.songs()
-//        detailQuery.groupingType = .playlist
-//        var lists = [Playlist]()
-//        for coll in detailQuery.collections! {
-//            if coll.value(forProperty: "isFolder") as! Bool {
-//                lists.append(Playlist(collection: coll))
-//            }else if coll.value(forProperty: "parentPersistentID") as? UInt64 == 0 {
-//                lists.append(Playlist(collection: coll))
-//            }
-//        }
-//        return lists
-//    }
-    
     func playlistsForParent(_ id: MPMediaEntityPersistentID) -> [Playlist] {
-        detailQuery = MPMediaQuery.playlists()
+        query = MPMediaQuery.playlists()
+        filterQuery()
         let predicate = MPMediaPropertyPredicate(value: id, forProperty: "parentPersistentID", comparisonType: .equalTo)
-        detailQuery.addFilterPredicate(predicate)
+        query.addFilterPredicate(predicate)
         var lists = [Playlist]()
-        for coll in detailQuery.collections! {
+        for coll in query.collections! {
             if let list = coll as? MPMediaPlaylist {
                 lists.append(Playlist(collection: list))
             }
@@ -230,10 +177,10 @@ class musicQuery{
     }
     
     /*func playlistsIncluding(artist: MPMediaEntityPersistentID) -> [Playlist]{
-        detailQuery = MPMediaQuery.songs()
-        detailQuery.groupingType = .playlist
+        query = MPMediaQuery.songs()
+        query.groupingType = .playlist
         var playlists = [Playlist]()
-        for collection in detailQuery.collections!{
+        for collection in query.collections!{
             let items = collection.items
             for song in items{
                 if song.albumArtistPersistentID == artist{
@@ -246,23 +193,20 @@ class musicQuery{
     }*/
     
     func playlistForID(playlist: MPMediaEntityPersistentID) -> Playlist {
-        detailQuery = MPMediaQuery.playlists()
+        query = MPMediaQuery.playlists()
+        filterQuery()
         let predicate = MPMediaPropertyPredicate(value: playlist, forProperty: MPMediaPlaylistPropertyPersistentID, comparisonType: .equalTo)
-        detailQuery.addFilterPredicate(predicate)
-        let list = Playlist(collection: detailQuery.collections![0] as! MPMediaPlaylist)
+        query.addFilterPredicate(predicate)
+        let list = Playlist(collection: query.collections![0] as! MPMediaPlaylist)
         return list
     }
     
-    func filterCloudItems(_ q: MPMediaQuery){
-        let cloudPredicate = MPMediaPropertyPredicate(value: NSNumber(value: false), forProperty: MPMediaItemPropertyIsCloudItem)
-        q.addFilterPredicate(cloudPredicate)
-    }
-    
     func songForID(ID: MPMediaEntityPersistentID) -> MPMediaItem{
-        detailQuery = MPMediaQuery.songs()
+        query = MPMediaQuery.songs()
+        filterQuery()
         let predicate = MPMediaPropertyPredicate(value: ID, forProperty: MPMediaItemPropertyPersistentID, comparisonType: .equalTo)
-        detailQuery.addFilterPredicate(predicate)
-        return (detailQuery.items?.first)!
+        query.addFilterPredicate(predicate)
+        return (query.items?.first)!
     }
     
     func addToSpotlight(){
@@ -331,3 +275,42 @@ class musicQuery{
 protocol MySpotlightDelegate {
     func indexingEnded()
 }
+
+/*private func savePlaylists() {
+ let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(playlists, toFile: Playlist.ArchiveURL.path)
+ if isSuccessfulSave {
+ print("playlists successfully saved.")
+ } else {
+ print("Failed to save playlists...")
+ }
+ }
+ 
+ private func loadPlaylists() -> [Playlist]?  {
+ return NSKeyedUnarchiver.unarchiveObject(withFile: Playlist.ArchiveURL.path) as? [Playlist]
+ }
+ 
+ private func saveAlbums() {
+ let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(albums, toFile: AlbumB.ArchiveURL.path)
+ if isSuccessfulSave {
+ print("Albums successfully saved.")
+ } else {
+ print("Failed to save albums...")
+ }
+ }
+ 
+ private func loadAlbums() -> [AlbumB]? {
+ return NSKeyedUnarchiver.unarchiveObject(withFile: AlbumB.ArchiveURL.path) as? [AlbumB]
+ }
+ 
+ private func saveArtists() {
+ let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(artists, toFile: Artist.ArchiveURL.path)
+ if isSuccessfulSave {
+ print("Artists successfully saved.")
+ } else {
+ print("Failed to save artists...")
+ }
+ }
+ 
+ private func loadArtists() -> [Artist]? {
+ return NSKeyedUnarchiver.unarchiveObject(withFile: Artist.ArchiveURL.path) as? [Artist]
+ }*/

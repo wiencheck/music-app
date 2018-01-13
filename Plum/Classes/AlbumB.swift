@@ -29,7 +29,6 @@ import MediaPlayer
     let artist: String?
     let songsIn: Int
     var year: String
-    var isCloud: Bool
     var manyArtists: Bool
     
     //MARK: NSCoding
@@ -109,13 +108,6 @@ import MediaPlayer
             let _year = yearNumber.intValue
             if (_year != 0) {
                 self.year = "\(_year)"
-            }
-        }
-        isCloud = true
-        for item in items{
-            if !item.isCloudItem{
-                isCloud = false
-                break
             }
         }
     }

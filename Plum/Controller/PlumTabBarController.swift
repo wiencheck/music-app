@@ -8,9 +8,10 @@
 import UIKit
 
 public var popupPresented = false
-public var popupActive = false
 
 class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
+    
+    private var popupActive = false
     
     var nowPlaying: EightNowPlayingVC!
     let player = Plum.shared
@@ -180,7 +181,6 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     }
     
     func setIdentifier() -> String{
-        let device = UIDevice.current.modelName
         print(device)
         if device == "iPhone 5" || device == "iPhone 5s" || device == "iPhone 5c" || device == "iPhone SE" || device == "iPod Touch 6" {
             return "eight_se"

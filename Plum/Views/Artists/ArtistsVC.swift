@@ -40,6 +40,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     var hideKeyboard = false
     var currentTheme: Theme!
     var searchVisible: Bool!
+    var cellSize = CGSize()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -130,6 +131,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         }else{
             collectionView.backgroundColor = UIColor.lightBackground
         }
+        cellSize = calculateCollectionViewCellSize(itemsPerRow: 3, frame: self.view.frame)
         collectionView.delegate = self
         collectionView.dataSource = self
         self.view.addSubview(collectionView)
@@ -616,7 +618,7 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         
         let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
         NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
-        if UIDevice.current.modelName == "iPhone X" {
+        if device == "iPhone X" {
             if grid {
                 heightInset = 136
             }else{
@@ -726,14 +728,7 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
 extension ArtistsVC: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let height = self.view.frame.size.height
-        let width = self.view.frame.size.width
-        let Waspect: CGFloat = 0.29
-        var Haspect: CGFloat = 0.22
-        if UIDevice.current.modelName == "iPhone X" {
-            Haspect = 0.18
-        }
-        return CGSize(width: width*Waspect, height: height*Haspect)
+        return cellSize
     }
     
     func setHeaders() {

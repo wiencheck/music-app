@@ -10,7 +10,7 @@ import UIKit
 
 class IconsVC: UIViewController {
     
-    var icons: [UIImage] = []
+    var icons: [UIImage] = [#imageLiteral(resourceName: "six.png")]
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var segment: UISegmentedControl!
@@ -24,9 +24,6 @@ class IconsVC: UIViewController {
         flow.minimumInteritemSpacing = 10
         flow.minimumLineSpacing = 4
         //collectionView.setCollectionViewLayout(flow, animated: false)
-        for _ in 0 ..< 30 {
-            icons.append(#imageLiteral(resourceName: "rounded_icon"))
-        }
         // Do any additional setup after loading the view.
     }
 

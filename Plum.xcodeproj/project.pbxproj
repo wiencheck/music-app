@@ -38,11 +38,11 @@
 		385921411FA8869600CF9059 /* AlbumsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385921401FA8869600CF9059 /* AlbumsVC.swift */; };
 		385921431FA88A7600CF9059 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 385921421FA88A7600CF9059 /* SettingsVC.swift */; };
 		3859DFE31FC4B5EC00F188CE /* ScaleVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3859DFE21FC4B5EC00F188CE /* ScaleVC.swift */; };
-		386A5AC41FFFE06800934DA8 /* LNPopupController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 386A5AC31FFFE06800934DA8 /* LNPopupController.framework */; };
-		386A5AC51FFFE06800934DA8 /* LNPopupController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 386A5AC31FFFE06800934DA8 /* LNPopupController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		386B22752000D77100C5DCC9 /* BigSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386B22742000D77100C5DCC9 /* BigSlider.swift */; };
 		386C51AF200A1FDF00932B28 /* IconsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386C51AE200A1FDF00932B28 /* IconsVC.swift */; };
 		386C51B1200A206E00932B28 /* IconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386C51B0200A206E00932B28 /* IconCell.swift */; };
+		386C51B6200A291B00932B28 /* LNPopupController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 386C51B5200A291B00932B28 /* LNPopupController.framework */; };
+		386C51B7200A291B00932B28 /* LNPopupController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 386C51B5200A291B00932B28 /* LNPopupController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		386CD58D1F6FC3560075EFD9 /* artistAlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386CD58C1F6FC3560075EFD9 /* artistAlbumCell.swift */; };
 		386CD58F1F6FC4350075EFD9 /* AlbumsByVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386CD58E1F6FC4350075EFD9 /* AlbumsByVC.swift */; };
 		3871BC231FBC3DD80027CA2A /* ColorsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3871BC221FBC3DD80027CA2A /* ColorsVC.swift */; };
@@ -113,7 +113,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				386A5AC51FFFE06800934DA8 /* LNPopupController.framework in Embed Frameworks */,
+				386C51B7200A291B00932B28 /* LNPopupController.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -151,10 +151,10 @@
 		385921401FA8869600CF9059 /* AlbumsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumsVC.swift; sourceTree = "<group>"; };
 		385921421FA88A7600CF9059 /* SettingsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		3859DFE21FC4B5EC00F188CE /* ScaleVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleVC.swift; sourceTree = "<group>"; };
-		386A5AC31FFFE06800934DA8 /* LNPopupController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = LNPopupController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		386B22742000D77100C5DCC9 /* BigSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigSlider.swift; sourceTree = "<group>"; };
 		386C51AE200A1FDF00932B28 /* IconsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconsVC.swift; sourceTree = "<group>"; };
 		386C51B0200A206E00932B28 /* IconCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IconCell.swift; sourceTree = "<group>"; };
+		386C51B5200A291B00932B28 /* LNPopupController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = LNPopupController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		386CD58C1F6FC3560075EFD9 /* artistAlbumCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = artistAlbumCell.swift; sourceTree = "<group>"; };
 		386CD58E1F6FC4350075EFD9 /* AlbumsByVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumsByVC.swift; sourceTree = "<group>"; };
 		3871BC221FBC3DD80027CA2A /* ColorsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsVC.swift; sourceTree = "<group>"; };
@@ -220,7 +220,7 @@
 			files = (
 				380C2EBA1FB1AE6400A6731B /* AudioToolbox.framework in Frameworks */,
 				38944CA31FA0F024005CB30C /* MediaPlayer.framework in Frameworks */,
-				386A5AC41FFFE06800934DA8 /* LNPopupController.framework in Frameworks */,
+				386C51B6200A291B00932B28 /* LNPopupController.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,25 +265,25 @@
 			isa = PBXGroup;
 			children = (
 				38121E9C1FA07A1700C2A3BD /* AlbumCell.swift */,
-				38121EA21FA0856400C2A3BD /* AlbumsCollectionCell.swift */,
-				38C4BCA91F94BAF700DABE81 /* CollectionViewCell.swift */,
-				3822211D1FA5EA4000004B21 /* QueueActionsCell.swift */,
-				38E729511F2F422900F35780 /* SongCell.swift */,
 				38A12EA51F7270DB00E3E53E /* AlbumInfoCell.swift */,
-				386CD58C1F6FC3560075EFD9 /* artistAlbumCell.swift */,
-				38A12EA71F72834E00E3E53E /* QueueCell.swift */,
+				38121EA21FA0856400C2A3BD /* AlbumsCollectionCell.swift */,
 				3812DEEC1F7D2E5600DA9840 /* AlbumSectionCell.swift */,
-				38345F451FABBBCA003DA1F2 /* PlaylistCell.swift */,
-				387678E41F7E99CE00F1AFD7 /* SongInAlbumCell.swift */,
-				385825511FA33C8600697186 /* ArtistUpCell.swift */,
+				386CD58C1F6FC3560075EFD9 /* artistAlbumCell.swift */,
 				38FFA1371F83DD950079FF4B /* ArtistCell.swift */,
-				38D142561FB367CF003F08F5 /* SearchHeader.swift */,
-				3803CD531FBB5B1A009F5EA8 /* SearchCell.swift */,
-				3871BC251FBC42A30027CA2A /* ColorCell.swift */,
+				385825511FA33C8600697186 /* ArtistUpCell.swift */,
 				3801C6091FC83DDA00EFBC52 /* CollectionActionCell.swift */,
-				389A24761FD8871B0092F979 /* QueueCellLite.swift */,
-				382D68191FFD34C600C51BC2 /* ShuffleCell.swift */,
+				38C4BCA91F94BAF700DABE81 /* CollectionViewCell.swift */,
+				3871BC251FBC42A30027CA2A /* ColorCell.swift */,
 				386C51B0200A206E00932B28 /* IconCell.swift */,
+				38345F451FABBBCA003DA1F2 /* PlaylistCell.swift */,
+				3822211D1FA5EA4000004B21 /* QueueActionsCell.swift */,
+				38A12EA71F72834E00E3E53E /* QueueCell.swift */,
+				389A24761FD8871B0092F979 /* QueueCellLite.swift */,
+				3803CD531FBB5B1A009F5EA8 /* SearchCell.swift */,
+				38D142561FB367CF003F08F5 /* SearchHeader.swift */,
+				382D68191FFD34C600C51BC2 /* ShuffleCell.swift */,
+				38E729511F2F422900F35780 /* SongCell.swift */,
+				387678E41F7E99CE00F1AFD7 /* SongInAlbumCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -291,10 +291,10 @@
 		38BB692D1FC5F09B0097F6E7 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				38E98BC21F70177200D29FB4 /* Ext.swift */,
-				38401DF81F88F16E00EF64F1 /* Colors.swift */,
-				38401DF61F88EB9C00EF64F1 /* VolumeSlider.swift */,
 				386B22742000D77100C5DCC9 /* BigSlider.swift */,
+				38401DF81F88F16E00EF64F1 /* Colors.swift */,
+				38E98BC21F70177200D29FB4 /* Ext.swift */,
+				38401DF61F88EB9C00EF64F1 /* VolumeSlider.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -327,14 +327,14 @@
 		38BB69301FC5F0C20097F6E7 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				382D68151FFD2BE600C51BC2 /* AlbumB.swift */,
+				382D68111FFD2BCF00C51BC2 /* Artist.swift */,
 				389333A81FDDC109004A071B /* MGImage */,
 				38E7294F1F2F40B600F35780 /* musicQuery.swift */,
+				382D68131FFD2BD900C51BC2 /* Playlist.swift */,
 				38AF9C781F2F72A800FA73B8 /* Plum.swift */,
 				384F9BF01F7A647D0053E22C /* RemoteCommandManager.swift */,
 				3858254E1FA33A2800697186 /* SettingsStructs.swift */,
-				382D68111FFD2BCF00C51BC2 /* Artist.swift */,
-				382D68131FFD2BD900C51BC2 /* Playlist.swift */,
-				382D68151FFD2BE600C51BC2 /* AlbumB.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -359,13 +359,13 @@
 		38BB69341FC5F0F90097F6E7 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				38401DD31F88CAB800EF64F1 /* PermissionVC.swift */,
-				385921421FA88A7600CF9059 /* SettingsVC.swift */,
 				3871BC221FBC3DD80027CA2A /* ColorsVC.swift */,
-				3843ADBE1FBF39EA005E1C2F /* LyricsVC.swift */,
-				3843ADC21FBF44A9005E1C2F /* SetRatingsVC.swift */,
-				3859DFE21FC4B5EC00F188CE /* ScaleVC.swift */,
 				386C51AE200A1FDF00932B28 /* IconsVC.swift */,
+				3843ADBE1FBF39EA005E1C2F /* LyricsVC.swift */,
+				38401DD31F88CAB800EF64F1 /* PermissionVC.swift */,
+				3859DFE21FC4B5EC00F188CE /* ScaleVC.swift */,
+				3843ADC21FBF44A9005E1C2F /* SetRatingsVC.swift */,
+				385921421FA88A7600CF9059 /* SettingsVC.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -411,10 +411,10 @@
 			isa = PBXGroup;
 			children = (
 				38944C9F1FA0EFA4005CB30C /* AlbumUpVC.swift */,
-				3801102B1FC4595300B3F35B /* EightNowPlayingVC.swift */,
-				38F722EB1FC0409900A45CF9 /* QueueVC.swift */,
 				38AC0F4F1FDC54DC0049AD09 /* ArtistUpVCB.swift */,
 				388A60191FF28014009C5381 /* DummyVC.swift */,
+				3801102B1FC4595300B3F35B /* EightNowPlayingVC.swift */,
+				38F722EB1FC0409900A45CF9 /* QueueVC.swift */,
 			);
 			path = "Now Playing";
 			sourceTree = "<group>";
@@ -422,7 +422,7 @@
 		38E68AB41F28C17500BFF4E2 = {
 			isa = PBXGroup;
 			children = (
-				386A5AC31FFFE06800934DA8 /* LNPopupController.framework */,
+				386C51B5200A291B00932B28 /* LNPopupController.framework */,
 				38E68ABF1F28C17500BFF4E2 /* Plum */,
 				3878D4FC1FD7F91500A6C42B /* PlumWidget */,
 				38E68ABE1F28C17500BFF4E2 /* Products */,
@@ -506,7 +506,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0910;
-				LastUpgradeCheck = 0910;
+				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = "Adam Wienconek";
 				TargetAttributes = {
 					3878D4F81FD7F91500A6C42B = {
@@ -706,7 +706,7 @@
 				DEVELOPMENT_TEAM = 5346R7RC8E;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = PlumWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wiencheck.plum.upnext;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -730,7 +730,7 @@
 				DEVELOPMENT_TEAM = 5346R7RC8E;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = PlumWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wiencheck.plum.upnext;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -795,7 +795,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -877,7 +877,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Plum/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wiencheck.plum;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -908,7 +908,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Plum/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.wiencheck.plum;
 				PRODUCT_NAME = "$(TARGET_NAME)";

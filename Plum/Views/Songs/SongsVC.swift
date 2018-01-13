@@ -561,7 +561,7 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchView.frame.size.height = searchController.searchBar.frame.height
         if searchVisible {
             searchView.isHidden = false
-            if UIDevice.current.modelName == "iPhone X" {
+            if device == "iPhone X" {
                 heightInset = 140
             }else{
                 heightInset = 112

@@ -41,7 +41,7 @@ class PlaylistsVC: UIViewController {
     var pickedName: String!
     var hideKeyboard = false
     var currentTheme = GlobalSettings.theme
-    
+    var cellSize = CGSize()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -111,6 +111,7 @@ class PlaylistsVC: UIViewController {
     }
     
     func setCollection(){
+        cellSize = calculateCollectionViewCellSize(itemsPerRow: 2, frame: self.view.frame)
         collectionView.delegate = self
         collectionView.dataSource = self
         self.view.addSubview(collectionView)
@@ -565,7 +566,7 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         
         let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
         NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
-        if UIDevice.current.modelName == "iPhone X" {
+        if device == "iPhone X" {
             if grid {
                 heightInset = 136
             }else{
@@ -674,14 +675,7 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
 extension PlaylistsVC: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let height = self.view.frame.size.height
-        let width = self.view.frame.size.width
-        let Waspect: CGFloat = 0.45
-        var Haspect: CGFloat = 0.35
-        if UIDevice.current.modelName == "iPhone X" {
-            Haspect = 0.27
-        }
-        return CGSize(width: width*Waspect, height: height*Haspect)
+        return cellSize
     }
     
     /*func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

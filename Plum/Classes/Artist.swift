@@ -24,7 +24,6 @@ fileprivate struct ArtistKey {
     let artwork: UIImage
     let albumsIn: Int
     let songsIn: Int
-    var isCloud: Bool
     
     init(Collection: MPMediaItemCollection){
         let item = Collection.representativeItem
@@ -37,13 +36,6 @@ fileprivate struct ArtistKey {
         }
         self.songsIn = Collection.items.count
         albumsIn = musicQuery.shared.artistAlbumsID(artist: self.ID).count
-        isCloud = true
-        for song in Collection.items{
-            if !song.isCloudItem{
-                isCloud = false
-                break
-            }
-        }
     }
     
     /*func encode(with aCoder: NSCoder) {

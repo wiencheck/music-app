@@ -38,6 +38,7 @@ class AlbumsVC: UIViewController {
     var controllerSet = false
     var hideKeyboard = false
     var currentTheme = Theme.light
+    var cellSize = CGSize()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,6 +105,7 @@ class AlbumsVC: UIViewController {
     }
     
     func setCollection(){
+        cellSize = calculateCollectionViewCellSize(itemsPerRow: 3, frame: self.view.frame)
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         //collectionView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
@@ -462,7 +464,7 @@ extension AlbumsVC: UISearchBarDelegate, UISearchResultsUpdating {
         
         let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
         NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
-        if UIDevice.current.modelName == "iPhone X" {
+        if device == "iPhone X" {
             if grid {
                 heightInset = 136
             }else{
@@ -590,7 +592,7 @@ extension AlbumsVC: UICollectionViewDelegateFlowLayout {
         let width = self.view.frame.size.width
         let Waspect: CGFloat = 0.29
         var Haspect: CGFloat = 0.22
-        if UIDevice.current.modelName == "iPhone X" {
+        if device == "iPhone X" {
             Haspect = 0.18
         }
         return CGSize(width: width*Waspect, height: height*Haspect)

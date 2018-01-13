@@ -397,7 +397,7 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         searchView.addSubview(searchController.searchBar)
         let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
         NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
-        if UIDevice.current.modelName == "iPhone X" {
+        if device == "iPhone X" {
             heightInset = 140
         }else{
             heightInset = 112

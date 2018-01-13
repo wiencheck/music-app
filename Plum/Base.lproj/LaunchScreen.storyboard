@@ -21,18 +21,31 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clearsContextBeforeDrawing="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rounded_icon" translatesAutoresizingMaskIntoConstraints="NO" id="9yV-Y6-uWo">
-                                <rect key="frame" x="147.5" y="293.5" width="80" height="80"/>
+                            <tabBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UbL-R5-4by">
+                                <rect key="frame" x="0.0" y="618" width="375" height="49"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <items>
+                                    <tabBarItem title="Loading..." id="E44-bA-RB1"/>
+                                </items>
+                            </tabBar>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fhG-7n-D4h">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="80" id="sGg-9b-unN"/>
-                                    <constraint firstAttribute="width" constant="80" id="xJl-cV-Fd0"/>
+                                    <constraint firstAttribute="height" constant="64" id="8Vd-xn-f3O"/>
                                 </constraints>
-                            </imageView>
+                                <items>
+                                    <navigationItem title="Stay tuned..." id="lXW-u1-bpD"/>
+                                </items>
+                            </navigationBar>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="9yV-Y6-uWo" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="moR-D8-006"/>
-                            <constraint firstItem="9yV-Y6-uWo" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="raV-PG-nGw"/>
+                            <constraint firstAttribute="trailing" secondItem="fhG-7n-D4h" secondAttribute="trailing" id="01I-Wa-UKy"/>
+                            <constraint firstAttribute="trailing" secondItem="UbL-R5-4by" secondAttribute="trailing" id="9yI-0q-G1L"/>
+                            <constraint firstItem="fhG-7n-D4h" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="OW6-Ao-Esk"/>
+                            <constraint firstItem="fhG-7n-D4h" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="aP2-uO-mw8"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="UbL-R5-4by" secondAttribute="bottom" id="pBg-oe-CgN"/>
+                            <constraint firstItem="UbL-R5-4by" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="wT8-Zw-rz7"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -41,7 +54,4 @@
             <point key="canvasLocation" x="52" y="374.66266866566718"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="rounded_icon" width="1000" height="1000"/>
-    </resources>
 </document>

@@ -12,6 +12,8 @@ import MediaPlayer
 import CoreSpotlight
 import UserNotifications
 
+public let device = UIDevice.current.modelName
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

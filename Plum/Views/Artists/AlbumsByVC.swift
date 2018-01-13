@@ -25,7 +25,7 @@ class AlbumsByVC: UITableViewController {
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         //tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
         tableView.backgroundColor = UIColor.lightBackground
-        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 49+GlobalSettings.bottomInset, 0)
         tableView.scrollIndicatorInsets = tableView.contentInset
         tableView.separatorColor = UIColor.lightSeparator
         als = musicQuery.shared.artistAlbumsID(artist: receivedID)
