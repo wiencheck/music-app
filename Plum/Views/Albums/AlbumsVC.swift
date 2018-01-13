@@ -90,7 +90,9 @@ class AlbumsVC: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        instruct("grid", message: "As you can see this screen is organized in grid, but you can easily change it in settings!\nPress and hold on any item to see more options", completion: nil)
+        if grid {
+            instruct("grid", message: "As you can see this screen is organized in grid, but you can easily change it in settings!\nPress and hold on any item to see more options", completion: nil)
+        }
     }
     
     func setTable(){
@@ -700,8 +702,7 @@ extension AlbumsVC {
                 }
             }
         }
-        //indexes.sort(by: <)
-        indexes = indexes.sorted {
+        indexes.sort {
             (s1, s2) -> Bool in return s1.localizedStandardCompare(s2) == .orderedAscending
         }
         if anyNumber {
@@ -714,7 +715,6 @@ extension AlbumsVC {
         for index in indexes {
             albums.append(contentsOf: result[index]!)
         }
-        //songs = result.flatMap(){ $0.1 }
     }
 }
 

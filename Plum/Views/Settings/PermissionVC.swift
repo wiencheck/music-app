@@ -9,7 +9,7 @@
 import UIKit
 import MediaPlayer
 
-class PermissionVC: UIViewController {
+@available(iOS 10.0, *) class PermissionVC: UIViewController {
     
     var timet: Timer!
     @IBOutlet weak var text: UITextView!
@@ -23,7 +23,7 @@ class PermissionVC: UIViewController {
         timet.fire()
     }
     
-    @IBAction func doneBtn(_ sender: Any){
+    @available(iOS 10.0, *) @IBAction func doneBtn(_ sender: Any){
         UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: nil)
     }
     

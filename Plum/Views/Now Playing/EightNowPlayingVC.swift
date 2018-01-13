@@ -146,16 +146,17 @@ class EightNowPlayingVC: UIViewController {
     
     
     @IBAction func lyricsModePressed() {
-        GlobalSettings.changeLyrics(!GlobalSettings.lyrics)
-        //instruct("lyrics", message: "When enabled, lyrics will be presented on your lock screen automatically and outside the app by pressing the button in control center", completion: {
-            //self.askNotification()
-        //})
-        askNotification()
-        if GlobalSettings.lyrics {
-            lyricsButton.setImage(#imageLiteral(resourceName: "lyricsbutton"), for: .normal)
-            ratingButton.setImage(#imageLiteral(resourceName: "noratingsbutton"), for: .normal)
+        if #available(iOS 10.0, *) {
+            GlobalSettings.changeLyrics(!GlobalSettings.lyrics)
+            askNotification()
+            if GlobalSettings.lyrics {
+                lyricsButton.setImage(#imageLiteral(resourceName: "lyricsbutton"), for: .normal)
+                ratingButton.setImage(#imageLiteral(resourceName: "noratingsbutton"), for: .normal)
+            }else{
+                lyricsButton.setImage(#imageLiteral(resourceName: "nolyricsbutton"), for: .normal)
+            }
         }else{
-            lyricsButton.setImage(#imageLiteral(resourceName: "nolyricsbutton"), for: .normal)
+            updatePrompt()
         }
     }
     
@@ -777,14 +778,18 @@ extension EightNowPlayingVC {       //Kolory i UI
     }
     
     func askNotification() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert], completionHandler: { enabled, error in
-            if !enabled {
-                self.notificationPermissionError(error)
-            }
-        })
+        if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert], completionHandler: { enabled, error in
+                if !enabled {
+                    self.notificationPermissionError(error)
+                }
+            })
+        }else{
+            updatePrompt()
+        }
     }
     
-    func notificationPermissionError(_ error: Error?) {
+    @available(iOS 10.0, *) func notificationPermissionError(_ error: Error?) {
         if error != nil {
             print(error!)
         }

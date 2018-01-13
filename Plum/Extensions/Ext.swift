@@ -152,6 +152,13 @@ extension UIView {
         self.layer.addSublayer(border)
     }
     
+    func addTopBorderWithColor(color: UIColor, width: CGFloat, x: CGFloat) {
+        let border = CALayer()
+        border.backgroundColor = color.cgColor
+        border.frame = CGRect(x: x, y: 0, width: self.frame.size.width, height: width)
+        self.layer.addSublayer(border)
+    }
+    
     func addRightBorderWithColor(color: UIColor, width: CGFloat) {
         let border = CALayer()
         border.backgroundColor = color.cgColor
@@ -173,3 +180,12 @@ extension UIView {
         self.layer.addSublayer(border)
     }
 }
+
+extension UIViewController {
+    func updatePrompt() {
+        let alert = UIAlertController(title: "This feature requires iOS10.0 or later", message: "To use it, you will have to update your firmware", preferredStyle: .alert)
+        self.present(alert, animated: true, completion: nil)
+    }
+}
+
+

@@ -59,7 +59,7 @@ class AlbumCell: UITableViewCell {
         let songsCount = album.songsIn
         self.artworkImage.image = album.artwork
         titleLabel.text = album.name ?? "Unknown album"
-        let genre = album.year ?? ""
+        let genre = album.year
         //Year
         let attYear = NSMutableAttributedString(string: genre)
         var attComa = NSMutableAttributedString(string: "")

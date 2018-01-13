@@ -488,7 +488,9 @@ extension PlaylistsVC {
                 }
             }
         }
-        //indexes = Array(result.keys).sorted(by: <)
+        indexes.sort {
+            (s1, s2) -> Bool in return s1.localizedStandardCompare(s2) == .orderedAscending
+        }
         if anyNumber {
             indexes.append("#")
         }

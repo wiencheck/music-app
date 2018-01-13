@@ -82,6 +82,10 @@ class ArtistCell: UITableViewCell {
         attAlbums.append(attSongs)
         attAlbums.append(songs)
         detailLabel.attributedText = attAlbums
-        artistImage.image = list.image
+        if list.isFolder {
+            artistImage.image = #imageLiteral(resourceName: "folder")
+        }else{
+            artistImage.image = list.image
+        }
     }
 }

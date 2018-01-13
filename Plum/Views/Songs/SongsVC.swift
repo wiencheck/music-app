@@ -196,6 +196,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
                     cell.setup(item: item, titColor: .black, artColor: .black, albColor: UIColor.gray)
                 }
                 cell.backgroundColor = .clear
+                //cell.contentView.addBottomBorderWithColor(color: UIColor.lightSeparator, width: 1, x: 16)
                 return cell
             }
         }else{
@@ -213,11 +214,13 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
                         cell.setup(item: item!, titColor: .black, artColor: .black, albColor: UIColor.gray)
                     }
                     cell.backgroundColor = .clear
+                    //cell.contentView.addTopBorderWithColor(color: UIColor.lightSeparator, width: 0.5, x: 16)
                     return cell
                 }else {
                     let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as! QueueActionsCell
                     cell.delegate = self
                     cell.backgroundColor = .clear
+                    //cell.contentView.addTopBorderWithColor(color: UIColor.lightSeparator, width: 1, x: 16)
                     return cell
                 }
             }
@@ -481,6 +484,9 @@ extension SongsVC {
                     }
                 }
             }
+        }
+        indexes.sort {
+            (s1, s2) -> Bool in return s1.localizedStandardCompare(s2) == .orderedAscending
         }
         if anyNumber {
             indexes.append("#")

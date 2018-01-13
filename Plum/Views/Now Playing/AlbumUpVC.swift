@@ -284,7 +284,11 @@ extension AlbumUpVC: UITableViewDelegate, UITableViewDataSource{
         albumLabel.textColor = .black
         shufBtn.setImage(#imageLiteral(resourceName: "shuffle").imageScaled(toFit: CGSize(width: 32, height: 16)).tintPictogram(with: GlobalSettings.tint.color), for: .normal)
         UIApplication.shared.statusBarStyle = .default
-        fxView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
+        if #available(iOS 10, *) {
+            fxView = UIVisualEffectView(effect: UIBlurEffect(style: .prominent))
+        }else{
+            fxView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
+        }
         self.tableView.separatorColor = UIColor(red: 0.929411764705882, green: 0.929411764705882, blue: 0.933333333333333, alpha: 1.0)
         tabBarController?.tabBar.barStyle = .default
     }

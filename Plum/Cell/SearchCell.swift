@@ -41,10 +41,10 @@ class SearchCell: UITableViewCell {
     func setup(album: AlbumB) {
         artwork.image = album.artwork
         title.text = album.name!
-        if album.year == nil {
+        if album.year == "" {
             detail.text = "\(album.songsIn) songs"
         }else{
-            detail.text = "\(album.year!) - \(album.songsIn) songs"
+            detail.text = "\(album.year) - \(album.songsIn) songs"
         }
     }
 

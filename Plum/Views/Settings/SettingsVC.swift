@@ -70,31 +70,37 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     @objc func rating(_ sender: UISwitch){
         if sender.isOn {
             lyricsSwitch.isOn = false
-            GlobalSettings.changeLyrics(false)
+            if #available(iOS 10.0, *) {
+                GlobalSettings.changeLyrics(false)
+            }
         }
         GlobalSettings.changeRating(sender.isOn)
     }
     
     @objc func lyricsSwitched(_ sender: UISwitch) {
-        if sender.isOn{
-            UNUserNotificationCenter.current().requestAuthorization(options: [.alert], completionHandler: { enabled, error in
-                if !enabled {
-                    self.notificationPermissionError(error)
-                }
-            })
+        if #available(iOS 10.0, *) {
+            if sender.isOn{
+                UNUserNotificationCenter.current().requestAuthorization(options: [.alert], completionHandler: { enabled, error in
+                    if !enabled {
+                        self.notificationPermissionError(error)
+                    }
+                })
+            }
+            if sender.isOn {
+                ratingSwitch.isOn = false
+                GlobalSettings.changeRating(false, full: GlobalSettings.full)
+            }
+            GlobalSettings.changeLyrics(sender.isOn)
+        }else{
+            updatePrompt()
         }
-        if sender.isOn {
-            ratingSwitch.isOn = false
-            GlobalSettings.changeRating(false, full: GlobalSettings.full)
-        }
-        GlobalSettings.changeLyrics(sender.isOn)
     }
     
     @objc func roundSwitched(_ sender: UISwitch) {
         GlobalSettings.changeRound(sender.isOn)
     }
     
-    func notificationPermissionError(_ error: Error?) {
+    @available(iOS 10.0, *) func notificationPermissionError(_ error: Error?) {
         if error != nil {
             print(error!)
         }

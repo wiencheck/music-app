@@ -25,7 +25,7 @@ class AlbumsByVC: UITableViewController {
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         //tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
         tableView.backgroundColor = UIColor.lightBackground
-        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
+        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
         tableView.scrollIndicatorInsets = tableView.contentInset
         tableView.separatorColor = UIColor.lightSeparator
         als = musicQuery.shared.artistAlbumsID(artist: receivedID)
@@ -174,9 +174,13 @@ extension AlbumsByVC { //Sortowanie
         case .alphabetically:
             als.sort(by:{ ($0.name! < $1.name!)})
         case .yearAscending:
-            als.sort(by:{ ($0.year! < $1.year!)})
+//            als.sort(by:{
+//                guard let year0 = $0.year, let year1 = $1.year else { return false }
+//                return year0 < year1
+//            })
+            als.sort(by:{ ($0.year < $1.year)})
         case .yearDescending:
-            als.sort(by:{ ($0.year! > $1.year!)})
+            als.sort(by:{ ($0.year > $1.year)})
         default:
             print("default")
         }

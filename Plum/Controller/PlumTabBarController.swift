@@ -31,7 +31,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         }
         moreNavigationController.navigationBar.tintColor = GlobalSettings.tint.color
         self.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color], for: UIControlState.normal)
-        self.tabBar.unselectedItemTintColor = UIColor.gray
+        //self.tabBar.unselectedItemTintColor = UIColor.gray
         delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(updatePopup), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
         nextBtn = UIBarButtonItem(barButtonSystemItem: .fastForward, target: self, action: #selector(nextBtnPressed))
@@ -59,27 +59,27 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         customizeMoreTab()
     }
     
-    override func viewDidLayoutSubviews() {
-        instruct("miniplayer", message: "Tap twice on the miniplayer bar or drag it upwards to open now playing view", completion: {
-            self.instruct("slider", message: "Swipe on the right edge of the screen to use quick scrolling", completion: nil)
-        })
-        self.instruct("slider", message: "Swipe on the right edge of the screen to use quick scrolling", completion: nil)
-    }
+//    fileprivate func displayPermissionsError() {
+//        let alertVC = UIAlertController(title: "This is a demo", message: "Unauthorized or restricted access. Cannot play media. Fix in Settings?" , preferredStyle: .alert)
+//        
+//        //cancel
+//        if let settingsURL = URL(string: UIApplicationOpenSettingsURLString), UIApplication.shared.canOpenURL(settingsURL) {
+//            alertVC.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
+//            if #available(iOS 10.0, *) {
+//                let settingsAction = UIAlertAction(title: "Settings", style: .default, handler: { (action) in
+//                    UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: nil)
+//                })
+//            }
+//            alertVC.addAction(settingsAction)
+//        } else {
+//            alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler:nil))
+//        }
+//        present(alertVC, animated: true, completion: nil)
+//    }
     
-    fileprivate func displayPermissionsError() {
-        let alertVC = UIAlertController(title: "This is a demo", message: "Unauthorized or restricted access. Cannot play media. Fix in Settings?" , preferredStyle: .alert)
-        
-        //cancel
-        if let settingsURL = URL(string: UIApplicationOpenSettingsURLString), UIApplication.shared.canOpenURL(settingsURL) {
-            alertVC.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
-            let settingsAction = UIAlertAction(title: "Settings", style: .default, handler: { (action) in
-                UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: nil)
-            })
-            alertVC.addAction(settingsAction)
-        } else {
-            alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler:nil))
-        }
-        present(alertVC, animated: true, completion: nil)
+    override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+        instruct("miniplayer", message: "Tap twice on the miniplayer bar or drag it upwards to open now playing view", completion: nil)
+        instruct("slider", message: "Swipe on the right edge of the screen to use quick scrolling", completion: nil)
     }
     
     @objc func updateProgress() {
@@ -98,7 +98,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         popupPresented = true
         nowPlaying.popupItem.title = "Welcome to Plum"
         nowPlaying.popupItem.subtitle = "Pick some music to play"
-        popupBar.isUserInteractionEnabled = true
+        popupBar.isUserInteractionEnabled = false
     }
     
     @objc func updatePopup() {

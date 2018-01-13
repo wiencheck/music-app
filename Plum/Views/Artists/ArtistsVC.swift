@@ -508,7 +508,7 @@ extension ArtistsVC{    //Other functions
             }
         }
         print(indexes)
-        indexes = indexes.sorted {
+        indexes.sort {
             (s1, s2) -> Bool in return s1.localizedStandardCompare(s2) == .orderedAscending
         }
         //indexes.sort(by: <)

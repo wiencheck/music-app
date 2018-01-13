@@ -581,9 +581,9 @@ extension ArtistSongs { //Sortowanie
         case .alphabetically:
             albums.sort(by:{ ($0.name! < $1.name!)})
         case .yearAscending:
-            albums.sort(by:{ ($0.year! < $1.year!)})
+            albums.sort(by:{ ($0.year < $1.year)})
         case .yearDescending:
-            albums.sort(by:{ ($0.year! > $1.year!)})
+            albums.sort(by:{ ($0.year > $1.year)})
         default:
             print("default")
         }

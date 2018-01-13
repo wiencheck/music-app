@@ -81,14 +81,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        if GlobalSettings.lyrics && Plum.shared.player.rate != 0.0 {
-            Plum.shared.postLyrics()
+        if #available(iOS 10.0, *) {
+            if GlobalSettings.lyrics && Plum.shared.player.rate != 0.0 {
+                Plum.shared.postLyrics()
+            }
         }
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        Plum.shared.removeLyrics()
+        if #available(iOS 10.0, *) {
+            Plum.shared.removeLyrics()
+        }
         Plum.shared.shouldPost = false
     }
 
@@ -99,21 +103,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        Plum.shared.removeLyrics()
+        if #available(iOS 10.0, *) {
+            Plum.shared.removeLyrics()
+        }
         if let defaultsT = UserDefaults.init(suiteName: "group.adw.Plum") {
             defaultsT.set(false, forKey: "widgetActive")
             defaultsT.synchronize()
-        }
-    }
-    
-    fileprivate func authorized() {
-        MPMediaLibrary.requestAuthorization { (authStatus) in
-            switch authStatus {
-            case .authorized:
-                self.letGo()
-            default:
-                self.hijack()
-            }
         }
     }
 
@@ -282,7 +277,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.bool(forKey: "rating") {
             GlobalSettings.changeRating(defaults.bool(forKey: "rating"))
         }else if defaults.bool(forKey: "lyrics") {
-            GlobalSettings.changeLyrics(defaults.bool(forKey: "lyrics"))
+            if #available(iOS 10.0, *) {
+                GlobalSettings.changeLyrics(defaults.bool(forKey: "lyrics"))
+            }
         }
         if let alg = defaults.value(forKey: "albumsGrid") as? Bool {
             GlobalSettings.changeAlbums(grid: alg)

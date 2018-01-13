@@ -28,7 +28,7 @@ import MediaPlayer
     let artwork: UIImage?
     let artist: String?
     let songsIn: Int
-    var year: String!
+    var year: String
     var isCloud: Bool
     var manyArtists: Bool
     
@@ -103,6 +103,7 @@ import MediaPlayer
             }
         }
         songsIn = items.count
+        year = ""
         let yearNumber: NSNumber = item.value(forProperty: "year") as! NSNumber
         if (yearNumber.isKind(of: NSNumber.self)) {
             let _year = yearNumber.intValue
