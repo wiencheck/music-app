@@ -67,6 +67,7 @@ class PlaylistsVC: UIViewController {
                 view.bringSubview(toFront: collectionIndexView)
             }else{
                 setTable()
+                tableView.tableFooterView = UIView(frame: .zero)
                 tableView.separatorColor = UIColor.lightSeparator
                 tableIndexView.indexes = self.indexes
                 tableIndexView.tableView = self.tableView

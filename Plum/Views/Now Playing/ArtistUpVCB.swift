@@ -44,6 +44,7 @@ class ArtistUpVCB: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(reload), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
         separatorColor = tableView.separatorColor
         setColors()
+        tableView.tableFooterView = UIView(frame: .zero)
         view.addSubview(indexView)
     }
     
@@ -364,7 +365,7 @@ extension ArtistUpVCB {
         shufBtn.setImage(#imageLiteral(resourceName: "shuffle").imageScaled(toFit: CGSize(width: 32, height: 16)).tintPictogram(with: GlobalSettings.tint.color), for: .normal)
         UIApplication.shared.statusBarStyle = .lightContent
         fxView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
-        self.tableView.separatorColor = .black
+        self.tableView.separatorColor = UIColor.darkSeparator
         tabBarController?.tabBar.barStyle = .blackOpaque
         indexView.backgroundColor = UIColor(red: 0.105882352941176, green: 0.105882352941176, blue: 0.105882352941176, alpha: 0.8)
     }
@@ -380,7 +381,7 @@ extension ArtistUpVCB {
         }else{
             fxView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
         }
-        self.tableView.separatorColor = UIColor(red: 0.929411764705882, green: 0.929411764705882, blue: 0.933333333333333, alpha: 1.0)
+        self.tableView.separatorColor = UIColor.lightSeparator
         tabBarController?.tabBar.barStyle = .default
         indexView.backgroundColor = UIColor(red: 0.972549019607843, green: 0.972549019607843, blue: 0.972549019607843, alpha: 0.8)
     }

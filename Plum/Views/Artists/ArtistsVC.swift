@@ -76,6 +76,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
                 tableIndexView.setup(color: UIColor.white)
                 view.bringSubview(toFront: searchView)
                 view.bringSubview(toFront: tableIndexView)
+                tableView.tableFooterView = UIView(frame: .zero)
             }
             setHeaders()
         }

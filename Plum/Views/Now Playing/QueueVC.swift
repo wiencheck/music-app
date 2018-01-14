@@ -44,6 +44,7 @@ class QueueVC: UIViewController {
         setupTable()
         addBtn.setImage(#imageLiteral(resourceName: "add").imageScaled(toFit: CGSize(width: 21, height: 21)).withRenderingMode(.alwaysTemplate), for: .normal)
         setColors()
+        tableView.tableFooterView = UIView(frame: .zero)
         NotificationCenter.default.addObserver(self, selector: #selector(reload), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
     }
     
@@ -535,7 +536,7 @@ extension QueueVC: MPMediaPickerControllerDelegate {    //Media Picker
         addBtn.tintColor = GlobalSettings.tint.color
         UIApplication.shared.statusBarStyle = .lightContent
         fxView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
-        self.tableView.separatorColor = .black
+        self.tableView.separatorColor = UIColor.darkSeparator
         tabBarController?.tabBar.barStyle = .blackOpaque
     }
     
@@ -550,7 +551,7 @@ extension QueueVC: MPMediaPickerControllerDelegate {    //Media Picker
         }else{
             fxView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
         }
-        self.tableView.separatorColor = UIColor(red: 0.929411764705882, green: 0.929411764705882, blue: 0.933333333333333, alpha: 1.0)
+        self.tableView.separatorColor = UIColor.lightSeparator
         tabBarController?.tabBar.barStyle = .default
     }
     

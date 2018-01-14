@@ -70,6 +70,7 @@ class AlbumsVC: UIViewController {
                 tableIndexView.indexes = self.indexes
                 tableIndexView.tableView = self.tableView
                 tableIndexView.setup(color: UIColor.white)
+                tableView.tableFooterView = UIView(frame: .zero)
                 view.bringSubview(toFront: searchView)
                 view.bringSubview(toFront: tableIndexView)
             }

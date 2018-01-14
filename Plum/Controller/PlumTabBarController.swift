@@ -181,7 +181,6 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     }
     
     func setIdentifier() -> String{
-        print(device)
         if device == "iPhone 5" || device == "iPhone 5s" || device == "iPhone 5c" || device == "iPhone SE" || device == "iPod Touch 6" {
             return "eight_se"
         }else if device == "iPhone 6" || device == "iPhone 6s" || device == "iPhone 7" || device == "iPhone 8" {
@@ -193,7 +192,6 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         }else if device.contains("iPad"){
             return "eight_se"
         }else{
-            print("Rozpoznano simulator")
             return "eight_6"
         }
     }

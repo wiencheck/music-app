@@ -32,6 +32,7 @@ class AlbumsByVC: UITableViewController {
         title = als.first?.artist
         currentSort = GlobalSettings.artistAlbumsSort
         sort()
+        tableView.tableFooterView = UIView(frame: .zero)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {

@@ -33,6 +33,7 @@ class FolderVC: UITableViewController {
             tableView.backgroundColor = UIColor.lightBackground
             tableView.separatorColor = UIColor.lightSeparator
         }
+        tableView.tableFooterView = UIView(frame: .zero)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {

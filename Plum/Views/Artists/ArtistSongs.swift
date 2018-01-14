@@ -46,12 +46,10 @@ class ArtistSongs: UIViewController {
         currentSort = GlobalSettings.artistAlbumsSort
         setup()
         //doSort()
-        print("\(indexes.count) \((result[indexes[0]]?.count)! + 1)")
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
+        automaticallyAdjustsScrollViewInsets = false
         tableView.contentInset = UIEdgeInsetsMake(64, 0, GlobalSettings.bottomInset + 49, 0)
-        tableView.reloadData()
+        tableView.tableFooterView = UIView(frame: .zero)
+        //print("\(indexes.count) \((result[indexes[0]]?.count)! + 1)")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -409,7 +407,7 @@ extension ArtistSongs {
                 let header = tableView.dequeueReusableCell(withIdentifier: "infoCell") as! AlbumInfoCell
                 header.setup(album: album, play: false)
                 let v = header.contentView
-                v.addBottomBorderWithColor(color: UIColor.lightSeparator, width: 1, x: 16)
+                v.addBottomBorderWithColor(color: UIColor.lightSeparator, width: 0.5, x: 16)
                 headers.append(v)
             }
             songs = songsByAlbums

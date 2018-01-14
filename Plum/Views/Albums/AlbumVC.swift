@@ -45,6 +45,7 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
             songs[i].index = i
         }
         title = album.artist
+        tableView.tableFooterView = UIView(frame: .zero)
     }
     
     @IBAction func ratingPressed() {
@@ -152,7 +153,7 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
             }
         }
         let v = header.contentView
-        v.addBottomBorderWithColor(color: UIColor.lightSeparator, width: 1, x: 14)
+        v.addBottomBorderWithColor(color: UIColor.lightSeparator, width: 0.5, x: 14)
         return v
     }
 

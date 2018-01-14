@@ -55,7 +55,6 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             for index in indexes {
                 cellTypes.append(Array<Int>(repeating: 0, count: (result[index]?.count)!))
             }
-            //tableView.separatorStyle = .none
             indexView.indexes = self.indexes
             indexView.tableView = self.tableView
             indexView.setup(color: UIColor.white)
@@ -63,6 +62,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             configureSearchController()
             view.bringSubview(toFront: indexView)
         }
+        tableView.tableFooterView = UIView(frame: .zero)
         print("Songs loaded")
     }
     

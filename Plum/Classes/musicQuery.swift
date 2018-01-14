@@ -128,6 +128,8 @@ class musicQuery{
     func songsByAlbumID(album: MPMediaEntityPersistentID) -> [MPMediaItem]{
         query = MPMediaQuery.songs()
         filterQuery()
+        let predicate = MPMediaPropertyPredicate(value: album, forProperty: MPMediaItemPropertyAlbumPersistentID, comparisonType: .equalTo)
+        query.addFilterPredicate(predicate)
         return query.items!
     }
     

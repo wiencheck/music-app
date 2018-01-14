@@ -39,6 +39,7 @@ class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
         separatorColor = tableView.separatorColor
         setColors()
         setup()
+        tableView.tableFooterView = UIView(frame: .zero)
         NotificationCenter.default.addObserver(self, selector: #selector(reload), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
     }
     
@@ -56,11 +57,12 @@ class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
     }
     
     func setup(){
-        songs = musicQuery.shared.songsByAlbumID(album: (Plum.shared.currentItem?.albumPersistentID)!)
+        let item = Plum.shared.currentItem
+        songs = musicQuery.shared.songsByAlbumID(album: item!.albumPersistentID)
         cellTypes = Array<Int>(repeating: 0, count: songs.count)
-        let item = songs[0]
-        artistLabel.text = item.albumArtist ?? "Unknown artist"
-        albumLabel.text = item.albumTitle ?? "Unknown album"    }
+        artistLabel.text = item!.albumArtist ?? "Unknown artist"
+        albumLabel.text = item!.albumTitle ?? "Unknown album"
+    }
     
     func doneBtnPressed(){
         let bar = self.tabBarController as! UpNextTabBarController
@@ -273,7 +275,7 @@ extension AlbumUpVC: UITableViewDelegate, UITableViewDataSource{
         shufBtn.setImage(#imageLiteral(resourceName: "shuffle").imageScaled(toFit: CGSize(width: 32, height: 16)).tintPictogram(with: GlobalSettings.tint.color), for: .normal)
         UIApplication.shared.statusBarStyle = .lightContent
         fxView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
-        self.tableView.separatorColor = .black
+        self.tableView.separatorColor = UIColor.darkSeparator
         tabBarController?.tabBar.barStyle = .blackOpaque
     }
     
@@ -289,7 +291,7 @@ extension AlbumUpVC: UITableViewDelegate, UITableViewDataSource{
         }else{
             fxView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
         }
-        self.tableView.separatorColor = UIColor(red: 0.929411764705882, green: 0.929411764705882, blue: 0.933333333333333, alpha: 1.0)
+        self.tableView.separatorColor = UIColor.lightSeparator
         tabBarController?.tabBar.barStyle = .default
     }
 }

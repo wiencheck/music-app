@@ -49,6 +49,13 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
         configureSearchController()
         view.bringSubview(toFront: tableIndexView)
         tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+        tableView.tableFooterView = UIView(frame: .zero)
+        for key in indexes {
+            let ar = result[key]
+            for it in ar! {
+                print(it.title)
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -96,7 +103,7 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
         if shouldShowResults {
             return 1
         }else{
-            return indexesInt.count
+            return indexes.count
         }
     }
     
@@ -104,11 +111,7 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
         if shouldShowResults {
             return filteredSongs.count
         }else{
-            if section == 0 {
-                return 1
-            }else{
-                return (result[indexes[section]]?.count)!
-            }
+            return (result[indexes[section]]?.count)!
         }
     }
     
@@ -411,7 +414,7 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
         indexes.append(" - ")
         indexesInt.append(0)
         result[" - "] = [MPMediaItem()]
-        if bcount > 11 {
+        if bcount > 36 {
             let difference: Int = bcount / 12
             var index = difference
             indexes.append("#1")
@@ -422,21 +425,29 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
                 index += difference
             }
             var stoppedAt = 0
-            for i in 1 ..< indexes.count{
+            for i in 1 ..< indexes.count {
                 result[indexes[i]] = []
-                for j in stoppedAt ..< bcount{
-                    if j > indexesInt[i]{
-                        stoppedAt = j
-                        break
-                    }
-                    result[indexes[i]]?.append(songs[j])
+                while stoppedAt < bcount {
+                    result[indexes[i]]?.append(songs[stoppedAt])
+                    stoppedAt += 1
+                    if stoppedAt == indexesInt[i] + difference { break }
                 }
             }
+//            for i in 1 ..< indexes.count{
+//                result[indexes[i]] = []
+//                for j in stoppedAt ..< bcount{
+//                    if j > indexesInt[i]{
+//                        stoppedAt = j
+//                        break
+//                    }
+//                    result[indexes[i]]?.append(songs[j])
+//                }
+//            }
         }else{
             indexesInt.append(0)
-            indexes.append("A")
-            result["A"] = []
-            result["A"]?.append(contentsOf: songs)
+            indexes.append("#\(bcount)")
+            result["#\(bcount)"] = []
+            result["#\(bcount)"]?.append(contentsOf: songs)
         }
     }
     
