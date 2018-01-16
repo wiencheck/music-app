@@ -13,6 +13,7 @@ class PlaylistCell: UICollectionViewCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var detail: UILabel!
     @IBOutlet weak var artwork: UIImageView!
+    var rounded = true
     
     func setup(list: Playlist){
         title.lineBreakMode = .byWordWrapping
@@ -31,7 +32,9 @@ class PlaylistCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         layoutIfNeeded()
-        artwork.layer.cornerRadius = 6.0
+        if rounded {
+            artwork.layer.cornerRadius = 6.0
+        }
         artwork.clipsToBounds = true
     }
     

@@ -35,6 +35,7 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
     var shouldShowResults = false
     var heightInset: CGFloat!
     var hideKeyboard = false
+    let device = GlobalSettings.device
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,12 +51,6 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
         view.bringSubview(toFront: tableIndexView)
         tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         tableView.tableFooterView = UIView(frame: .zero)
-        for key in indexes {
-            let ar = result[key]
-            for it in ar! {
-                print(it.title)
-            }
-        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

@@ -42,6 +42,7 @@ class PlaylistsVC: UIViewController {
     var hideKeyboard = false
     var currentTheme = GlobalSettings.theme
     var cellSize = CGSize()
+    let device = GlobalSettings.device
 
     override func viewDidLoad() {
         super.viewDidLoad()

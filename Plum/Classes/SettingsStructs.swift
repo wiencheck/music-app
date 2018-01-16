@@ -47,6 +47,10 @@ struct GlobalSettings{
     static var full = false                                       //UI
     static var bottomInset: CGFloat!
     static var actions = [Rating]()
+    static var device = ""
+    static func setDevice(_ t: String) {
+        device = t
+    }
     static func changeRating(_ t: Bool, full: Bool = false){
         if lyrics && t {
             if #available(iOS 10.0, *) {

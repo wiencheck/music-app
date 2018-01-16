@@ -31,6 +31,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     var hideKeyboard = false
     var currentTheme: Theme!
     var searchVisible: Bool!
+    let device = GlobalSettings.device
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var indexView: TableIndexView!

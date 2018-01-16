@@ -12,8 +12,6 @@ import MediaPlayer
 import CoreSpotlight
 import UserNotifications
 
-public let device = UIDevice.current.modelName
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -163,6 +161,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func setInitialSettings(){
+        if defaults.value(forKey: "device") == nil {
+            defaults.set(UIDevice.current.modelName, forKey: "device")
+        }
         if defaults.value(forKey: "colorFlow") == nil{
             defaults.set(true, forKey: "colorFlow")
         }
@@ -225,6 +226,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func readSettings(){
+        if let dev = defaults.string(forKey: "device") {
+            print("Reading device: \(dev)")
+            GlobalSettings.setDevice(dev)
+        }
         if let rats = defaults.array(forKey: "ratings") as? [String] {
             print("Ratingi = \(rats)")
             var en = [Rating]()

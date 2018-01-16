@@ -24,7 +24,6 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //_ = viewControllers?.first
         self.tabBar.tintColor = GlobalSettings.tint.color
         if GlobalSettings.theme == .light {
             tabBar.barStyle = .default
@@ -181,18 +180,19 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     }
     
     func setIdentifier() -> String{
+        let device = GlobalSettings.device
         if device == "iPhone 5" || device == "iPhone 5s" || device == "iPhone 5c" || device == "iPhone SE" || device == "iPod Touch 6" {
             return "eight_se"
         }else if device == "iPhone 6" || device == "iPhone 6s" || device == "iPhone 7" || device == "iPhone 8" {
             return "eight_6"
-        }else if device == "iPhone 6 Plus" || device == "iPhone 7 Plus" || device == "iPhone 8 Plus" {
+        }else if device == "iPhone 6 Plus" || device == "iPhone 6s Plus" || device == "iPhone 7 Plus" || device == "iPhone 8 Plus" {
             return "eight_6plus"
         }else if device == "iPhone X" {
             return "eight_x"
         }else if device.contains("iPad"){
             return "eight_se"
         }else{
-            return "eight_6"
+            return "eight_6plus"
         }
     }
     

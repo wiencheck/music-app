@@ -41,6 +41,8 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     var currentTheme: Theme!
     var searchVisible: Bool!
     var cellSize = CGSize()
+    var roundedCorners = false
+    let device = GlobalSettings.device
 
     override func viewDidLoad() {
         super.viewDidLoad()

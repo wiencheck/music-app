@@ -42,6 +42,7 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     var cellTypes = [Int]()
     var activeRow = 0
     var heightInset: CGFloat!
+    let device = GlobalSettings.device
 
     override func viewDidLoad() {
         super.viewDidLoad()

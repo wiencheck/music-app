@@ -39,6 +39,7 @@ class AlbumsVC: UIViewController {
     var hideKeyboard = false
     var currentTheme = Theme.light
     var cellSize = CGSize()
+    let device = GlobalSettings.device
 
     override func viewDidLoad() {
         super.viewDidLoad()

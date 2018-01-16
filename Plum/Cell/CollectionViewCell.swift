@@ -13,6 +13,7 @@ class CollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var mainLabel: UILabel!
     @IBOutlet weak var detailLabel: UILabel!
     @IBOutlet weak var artwork: UIImageView!
+    var rounded = true
     
     func setup(artist: Artist){
         mainLabel.lineBreakMode = .byWordWrapping
@@ -46,7 +47,9 @@ class CollectionViewCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         layoutIfNeeded()
-        artwork.layer.cornerRadius = 6.0
+        if rounded {
+            artwork.layer.cornerRadius = 6.0
+        }
         artwork.clipsToBounds = true
     }
 }

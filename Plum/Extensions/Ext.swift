@@ -189,6 +189,7 @@ extension UIViewController {
 }
 
 public func calculateCollectionViewCellSize(itemsPerRow: Int, frame: CGRect) -> CGSize{
+    let device = GlobalSettings.device
     switch itemsPerRow {
     case 2:
         let height = frame.height
