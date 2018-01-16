@@ -40,6 +40,7 @@ class AlbumsVC: UIViewController {
     var currentTheme = Theme.light
     var cellSize = CGSize()
     let device = GlobalSettings.device
+    //var roundedCorners = GlobalSettings.roundedCorners
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,34 +58,46 @@ class AlbumsVC: UIViewController {
                 configureSearchController()
                 controllerSet = true
             }
-            if grid{
-                setCollection()
-                //correctCollectionSections()
-                self.collectionIndexView.indexes = self.indexes
-                self.collectionIndexView.collectionView = self.collectionView
-                self.collectionIndexView.setup()
-                view.bringSubview(toFront: searchView)
-                view.bringSubview(toFront: collectionIndexView)
-            }else{
-                setTable()
-                tableView.separatorColor = UIColor.lightSeparator
-                tableIndexView.indexes = self.indexes
-                tableIndexView.tableView = self.tableView
-                tableIndexView.setup(color: UIColor.white)
-                tableView.tableFooterView = UIView(frame: .zero)
-                view.bringSubview(toFront: searchView)
-                view.bringSubview(toFront: tableIndexView)
-            }
+            gridAndTable()
             setHeaders()
         }
         print("Albums loaded")
     }
     
+    func gridAndTable() {
+        if grid{
+            setCollection()
+            //correctCollectionSections()
+            self.collectionIndexView.indexes = self.indexes
+            self.collectionIndexView.collectionView = self.collectionView
+            self.collectionIndexView.setup()
+            tableIndexView.isHidden = true
+            collectionIndexView.isHidden = false
+            view.bringSubview(toFront: searchView)
+            view.bringSubview(toFront: collectionIndexView)
+        }else{
+            setTable()
+            collectionIndexView.isHidden = true
+            tableIndexView.isHidden = false
+            tableView.separatorColor = UIColor.lightSeparator
+            tableIndexView.indexes = self.indexes
+            tableIndexView.tableView = self.tableView
+            tableIndexView.setup(color: UIColor.white)
+            tableView.tableFooterView = UIView(frame: .zero)
+            view.bringSubview(toFront: searchView)
+            view.bringSubview(toFront: tableIndexView)
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
         if grid != GlobalSettings.albumsGrid{
-            self.viewDidLoad()
+            self.gridAndTable()
         }
+//        if roundedCorners != GlobalSettings.roundedCorners {
+//            roundedCorners = GlobalSettings.roundedCorners
+//            collectionView.reloadData()
+//        }
         definesPresentationContext = true
     }
     
@@ -281,6 +294,7 @@ extension AlbumsVC: UICollectionViewDelegate, UICollectionViewDataSource, UIGest
         }else{
             if cellTypes[indexPath.section][indexPath.row] == 0 {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! AlbumsCollectionCell
+                //cell.rounded = roundedCorners
                 cell.setup(album: (result[indexes[indexPath.section]]?[indexPath.row])!)
                 return cell
             }else{

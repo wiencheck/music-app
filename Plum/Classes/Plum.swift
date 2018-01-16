@@ -851,7 +851,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         if let defaults = UserDefaults.init(suiteName: "group.adw.Plum") {
             var arr = [[String]]()
             for i in 0 ..< 6 {
-                if !queue[i].isCloudItem {
+                if queue[i].assetURL != nil {
                     arr.append([queue[i].title ?? "Unknown title", queue[i].albumArtist ?? "Unknown artist"])
                     defaults.set(arr[i], forKey: "queue\(i)")
                 }else{
@@ -870,15 +870,15 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
                 }
                 defaults.set(year, forKey: "currentYear")
             }
-            if let d = defaults.value(forKey: "widgetActive") as? Bool {
-                if !d {
-                    defaults.set(true, forKey: "widgetActive")
-                    NCWidgetController.widgetController().setHasContent(true, forWidgetWithBundleIdentifier: "com.adw.plum.PlumWidget")
-                }
-            }else{
-                defaults.set(true, forKey: "widgetActive")
-                NCWidgetController.widgetController().setHasContent(true, forWidgetWithBundleIdentifier: "com.adw.plum.PlumWidget")
-            }
+//            if let d = defaults.value(forKey: "widgetActive") as? Bool {
+//                if !d {
+//                    defaults.set(true, forKey: "widgetActive")
+//                    NCWidgetController.widgetController().setHasContent(true, forWidgetWithBundleIdentifier: "com.wiencheck.plum.upnext")
+//                }
+//            }else{
+//                defaults.set(true, forKey: "widgetActive")
+//                NCWidgetController.widgetController().setHasContent(true, forWidgetWithBundleIdentifier: "com.wiencheck.plum.upnext")
+//            }
             defaults.synchronize()
         }
     }

@@ -188,6 +188,7 @@ struct GlobalSettings{
     static var round = false
     static func changeRound(_ t: Bool) {
         round = t
+        
     }
     static var playlistsGrid = false
     static func changePlaylists(grid: Bool) {

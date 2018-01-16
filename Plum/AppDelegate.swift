@@ -11,6 +11,7 @@ import AVFoundation
 import MediaPlayer
 import CoreSpotlight
 import UserNotifications
+import NotificationCenter
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -22,10 +23,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var s: UIStoryboard!
     var defaults: UserDefaults!
     var rating: Bool!
+    let widget = NCWidgetController.widgetController()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         if let _ = MPMediaQuery.songs().items {
             letGo()
+            widget.setHasContent(true, forWidgetWithBundleIdentifier: "com.wiencheck.plum.upnext")
         }else{
             hijack()
         }
@@ -109,6 +112,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let defaultsT = UserDefaults.init(suiteName: "group.adw.Plum") {
             defaultsT.set(false, forKey: "widgetActive")
             defaultsT.synchronize()
+            widget.setHasContent(false, forWidgetWithBundleIdentifier: "com.wiencheck.plum.upnext")
         }
     }
 
@@ -223,6 +227,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: "artistAlbumsSort") == nil {
             defaults.set("alphabetically", forKey: "artistAlbumsSort")
         }
+        if defaults.value(forKey: "roundedCorners") == nil {
+            defaults.set(true, forKey: "roundedCorners")
+        }
     }
     
     func readSettings(){
@@ -297,7 +304,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let plg = defaults.value(forKey: "playlistsGrid") as? Bool {
             GlobalSettings.changePlaylists(grid: plg)
         }
-        GlobalSettings.changeColor(true)
+//        if let rou = defaults.value(forKey: "roundedCorners") as? Bool {
+//            GlobalSettings.changeRoundedCorners(rou)
+//        }
+        GlobalSettings.changeColor(true)    //do zrobienia ciemny blur
     }
     
     func setCustomizing() {
