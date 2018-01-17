@@ -211,6 +211,12 @@ class musicQuery{
         return (query.items?.first)!
     }
     
+    func allPodcasts() -> [MPMediaItem] {
+        query = MPMediaQuery.podcasts()
+        filterQuery()
+        return query.items!
+    }
+    
     func addToSpotlight(){
         print("Indeksowanie rozpoczete...")
         self.networkIndicator(true)

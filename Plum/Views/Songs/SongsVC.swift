@@ -46,6 +46,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         }else{
             songs = musicQuery.shared.allSongs()
         }
+        //songs.append(contentsOf: musicQuery.shared.allPodcasts())
         if !songs.isEmpty {
             tableView.delegate = self
             tableView.dataSource = self
@@ -246,7 +247,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             if cellTypesSearch[searchActiveRow] != 0 {
                 cellTypesSearch[searchActiveRow] = 0
                 tableView.reloadRows(at: [IndexPath(row: searchActiveRow, section: 0)], with: .fade)
-            }else{
+            }
                 searchActiveRow = indexPath.row
                 if cellTypesSearch[searchActiveRow] == 0 {
                     if Plum.shared.isPlayin() {
@@ -283,7 +284,6 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
                     cellTypesSearch[searchActiveRow] = 0
                     tableView.reloadRows(at: [indexPath], with: .right)
                 }
-            }
         }else{
             if cellTypes[activeIndexSection][activeIndexRow] != 0 {
                 cellTypes[activeIndexSection][activeIndexRow] = 0
@@ -666,6 +666,7 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
             //tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
             tableView.contentOffset.y = -heightInset
             hideKeyboard = true
+            searchActiveRow = 0
         }
 //        if filteredSongs.count != 0 {
 //            tableView.reloadData()

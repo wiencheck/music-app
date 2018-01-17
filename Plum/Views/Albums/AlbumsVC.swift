@@ -5,7 +5,6 @@
 //  Created by Adam Wienconek on 31.10.2017.
 //  Copyright © 2017 Adam Wienconek. All rights reserved.
 //
-
 import UIKit
 import MediaPlayer
 
@@ -40,8 +39,7 @@ class AlbumsVC: UIViewController {
     var currentTheme = Theme.light
     var cellSize = CGSize()
     let device = GlobalSettings.device
-    //var roundedCorners = GlobalSettings.roundedCorners
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBarController?.delegate = self
@@ -58,46 +56,34 @@ class AlbumsVC: UIViewController {
                 configureSearchController()
                 controllerSet = true
             }
-            gridAndTable()
+            if grid{
+                setCollection()
+                //correctCollectionSections()
+                self.collectionIndexView.indexes = self.indexes
+                self.collectionIndexView.collectionView = self.collectionView
+                self.collectionIndexView.setup()
+                view.bringSubview(toFront: searchView)
+                view.bringSubview(toFront: collectionIndexView)
+            }else{
+                setTable()
+                tableView.separatorColor = UIColor.lightSeparator
+                tableIndexView.indexes = self.indexes
+                tableIndexView.tableView = self.tableView
+                tableIndexView.setup(color: UIColor.white)
+                tableView.tableFooterView = UIView(frame: .zero)
+                view.bringSubview(toFront: searchView)
+                view.bringSubview(toFront: tableIndexView)
+            }
             setHeaders()
         }
         print("Albums loaded")
     }
     
-    func gridAndTable() {
-        if grid{
-            setCollection()
-            //correctCollectionSections()
-            self.collectionIndexView.indexes = self.indexes
-            self.collectionIndexView.collectionView = self.collectionView
-            self.collectionIndexView.setup()
-            tableIndexView.isHidden = true
-            collectionIndexView.isHidden = false
-            view.bringSubview(toFront: searchView)
-            view.bringSubview(toFront: collectionIndexView)
-        }else{
-            setTable()
-            collectionIndexView.isHidden = true
-            tableIndexView.isHidden = false
-            tableView.separatorColor = UIColor.lightSeparator
-            tableIndexView.indexes = self.indexes
-            tableIndexView.tableView = self.tableView
-            tableIndexView.setup(color: UIColor.white)
-            tableView.tableFooterView = UIView(frame: .zero)
-            view.bringSubview(toFront: searchView)
-            view.bringSubview(toFront: tableIndexView)
-        }
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
         if grid != GlobalSettings.albumsGrid{
-            self.gridAndTable()
+            self.viewDidLoad()
         }
-//        if roundedCorners != GlobalSettings.roundedCorners {
-//            roundedCorners = GlobalSettings.roundedCorners
-//            collectionView.reloadData()
-//        }
         definesPresentationContext = true
     }
     
@@ -148,7 +134,7 @@ class AlbumsVC: UIViewController {
     @IBAction func NPBtnPressed(_ sender: Any){
         
     }
-
+    
 }
 
 extension AlbumsVC: UITableViewDelegate, UITableViewDataSource{     //Table
@@ -259,7 +245,7 @@ extension AlbumsVC: UITableViewDelegate, UITableViewDataSource{     //Table
             return [shuffle, next, play]
         }
     }
-
+    
 }
 
 extension AlbumsVC: UICollectionViewDelegate, UICollectionViewDataSource, UIGestureRecognizerDelegate, CollectionActionCellDelegate{       //Collection
@@ -294,7 +280,6 @@ extension AlbumsVC: UICollectionViewDelegate, UICollectionViewDataSource, UIGest
         }else{
             if cellTypes[indexPath.section][indexPath.row] == 0 {
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! AlbumsCollectionCell
-                //cell.rounded = roundedCorners
                 cell.setup(album: (result[indexes[indexPath.section]]?[indexPath.row])!)
                 return cell
             }else{
@@ -686,13 +671,13 @@ extension AlbumsVC {
                             indexes.append("\(secondStr.uppercased().first!)")
                         }
                     }
-//                    if result["\(secondStr.first!)"] != nil {
-//                        result["\(secondStr.uppercased().first!)"]?.append(song)
-//                    }else{
-//                        result["\(secondStr.uppercased().first!)"] = []
-//                        result["\(secondStr.uppercased().first!)"]?.append(song)
-//                        indexes.append("\(secondStr.uppercased().first!)")
-//                    }
+                    //                    if result["\(secondStr.first!)"] != nil {
+                    //                        result["\(secondStr.uppercased().first!)"]?.append(song)
+                    //                    }else{
+                    //                        result["\(secondStr.uppercased().first!)"] = []
+                    //                        result["\(secondStr.uppercased().first!)"]?.append(song)
+                    //                        indexes.append("\(secondStr.uppercased().first!)")
+                    //                    }
                 }
             }else{
                 if let prefi = article.first {
@@ -738,6 +723,3 @@ extension AlbumsVC {
         }
     }
 }
-
-
-

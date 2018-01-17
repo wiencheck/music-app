@@ -920,7 +920,7 @@ SOFTWARE.</string>
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="62" id="nDx-dP-2X2" userLabel="Cell" customClass="SearchCell" customModule="Plum" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="62" id="nDx-dP-2X2" userLabel="Cell" customClass="SearchCell" customModule="Plum" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="320" height="62"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nDx-dP-2X2" id="LNL-22-Kn4">
@@ -974,7 +974,7 @@ SOFTWARE.</string>
                                             <outlet property="title" destination="gvr-4M-IYJ" id="2kP-Jp-fpx"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="header" rowHeight="27" id="GiO-N4-q4N" customClass="SearchHeader" customModule="Plum" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="header" rowHeight="27" id="GiO-N4-q4N" customClass="SearchHeader" customModule="Plum" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="90" width="320" height="27"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="GiO-N4-q4N" id="FaJ-Tg-zwf">
@@ -1022,7 +1022,7 @@ SOFTWARE.</string>
                                             <outlet property="moreBtn" destination="X0r-oX-a9C" id="GBE-h8-yxO"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="historyCell" textLabel="Ok9-yK-HKk" rowHeight="37" style="IBUITableViewCellStyleDefault" id="roM-qS-n47">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="historyCell" textLabel="Ok9-yK-HKk" rowHeight="37" style="IBUITableViewCellStyleDefault" id="roM-qS-n47">
                                         <rect key="frame" x="0.0" y="117" width="320" height="37"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="roM-qS-n47" id="Itn-9H-eyM">
@@ -1039,7 +1039,7 @@ SOFTWARE.</string>
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="queueCell" rowHeight="62" id="dIP-Ti-sDz" customClass="QueueActionsCell" customModule="Plum" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="queueCell" rowHeight="62" id="dIP-Ti-sDz" customClass="QueueActionsCell" customModule="Plum" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="154" width="320" height="62"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dIP-Ti-sDz" id="ecY-NI-IwL">
@@ -1172,7 +1172,7 @@ SOFTWARE.</string>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="shuffleCell" id="XxO-yd-Cca" customClass="ShuffleCell" customModule="Plum" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="shuffleCell" id="XxO-yd-Cca" customClass="ShuffleCell" customModule="Plum" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="XxO-yd-Cca" id="txX-PD-SEZ">
@@ -1209,7 +1209,7 @@ SOFTWARE.</string>
                                             <outlet property="label" destination="NlA-2h-Wtv" id="pGA-AV-wEh"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="songCell" rowHeight="62" id="hsX-u5-DUP" customClass="SongCell" customModule="Plum" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="songCell" rowHeight="62" id="hsX-u5-DUP" customClass="SongCell" customModule="Plum" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="320" height="62"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hsX-u5-DUP" id="2wN-Hx-mEn">
@@ -1257,7 +1257,7 @@ SOFTWARE.</string>
                                             <outlet property="titleLabel" destination="0h5-3z-aAe" id="HDh-Af-SHn"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="queueCell" rowHeight="62" id="9jH-pC-CYi" customClass="QueueActionsCell" customModule="Plum" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="queueCell" rowHeight="62" id="9jH-pC-CYi" customClass="QueueActionsCell" customModule="Plum" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="134" width="320" height="62"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9jH-pC-CYi" id="dWW-PI-KPS">
@@ -1505,7 +1505,7 @@ SOFTWARE.</string>
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="songCell" rowHeight="62" id="PPF-Lm-xkI" customClass="SongCell" customModule="Plum" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="songCell" rowHeight="62" id="PPF-Lm-xkI" customClass="SongCell" customModule="Plum" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="320" height="62"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PPF-Lm-xkI" id="v4g-OO-gwp">
@@ -1553,7 +1553,7 @@ SOFTWARE.</string>
                                             <outlet property="titleLabel" destination="LNF-iG-NoP" id="It0-K9-Mca"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="shuffleCell" id="Xze-gd-o2k" customClass="ShuffleCell" customModule="Plum" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="shuffleCell" id="Xze-gd-o2k" customClass="ShuffleCell" customModule="Plum" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="90" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Xze-gd-o2k" id="P2K-HN-j0S">
@@ -1590,7 +1590,7 @@ SOFTWARE.</string>
                                             <outlet property="label" destination="XK4-xo-6tj" id="Oly-Fi-1dj"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="infoCell" rowHeight="112" id="LyI-8T-8hS" customClass="AlbumInfoCell" customModule="Plum" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="infoCell" rowHeight="112" id="LyI-8T-8hS" customClass="AlbumInfoCell" customModule="Plum" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="134" width="320" height="112"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LyI-8T-8hS" id="gla-Sa-fbh">
@@ -1690,7 +1690,7 @@ SOFTWARE.</string>
                                             <outlet property="yearLabel" destination="9Gv-6J-qJp" id="XiA-L4-7gW"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="queueCell" rowHeight="62" id="7Qh-yZ-peN" customClass="QueueActionsCell" customModule="Plum" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="queueCell" rowHeight="62" id="7Qh-yZ-peN" customClass="QueueActionsCell" customModule="Plum" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="246" width="320" height="62"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7Qh-yZ-peN" id="41I-0Q-Qtk">
@@ -1780,7 +1780,7 @@ SOFTWARE.</string>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="albumSongCell" rowHeight="44" id="hAy-cF-JbG" customClass="SongInAlbumCell" customModule="Plum" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="albumSongCell" rowHeight="44" id="hAy-cF-JbG" customClass="SongInAlbumCell" customModule="Plum" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="308" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hAy-cF-JbG" id="2w4-Qa-gEv">
@@ -1833,7 +1833,7 @@ SOFTWARE.</string>
                                             <outlet property="trackNumberLabel" destination="ToB-8V-ImT" id="8Zd-cX-imT"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="extendedSongCell" rowHeight="54" id="ek6-PT-RS3" customClass="SongInAlbumCell" customModule="Plum" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="extendedSongCell" rowHeight="54" id="ek6-PT-RS3" customClass="SongInAlbumCell" customModule="Plum" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="352" width="320" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ek6-PT-RS3" id="rYf-Yu-86u">
@@ -1903,7 +1903,7 @@ SOFTWARE.</string>
                                             <outlet property="trackNumberLabel" destination="sHp-SK-1kK" id="gFb-d4-pMJ"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="letterCell" textLabel="SWo-4N-V9Q" rowHeight="21" style="IBUITableViewCellStyleDefault" id="jEo-om-dOw">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="letterCell" textLabel="SWo-4N-V9Q" rowHeight="21" style="IBUITableViewCellStyleDefault" id="jEo-om-dOw">
                                         <rect key="frame" x="0.0" y="406" width="320" height="21"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jEo-om-dOw" id="7dQ-qG-1Y0">
@@ -3922,7 +3922,7 @@ I will push the new build in a few minutes.</string>
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="58" id="x8u-8E-VKa" customClass="QueueCell" customModule="Plum" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="58" id="x8u-8E-VKa" customClass="QueueCell" customModule="Plum" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="320" height="58"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="x8u-8E-VKa" id="JB9-G0-c80">
@@ -3955,7 +3955,7 @@ I will push the new build in a few minutes.</string>
                                             <outlet property="title" destination="9xZ-tA-Cfc" id="j26-Uv-7oe"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="header" rowHeight="27" id="4fa-5P-yZQ" customClass="SearchHeader" customModule="Plum" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="header" rowHeight="27" id="4fa-5P-yZQ" customClass="SearchHeader" customModule="Plum" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="86" width="320" height="27"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4fa-5P-yZQ" id="DoE-cs-U4m">
@@ -4085,7 +4085,7 @@ I will push the new build in a few minutes.</string>
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="queueCell" rowHeight="52" id="x45-0U-EYg">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="queueCell" rowHeight="52" id="x45-0U-EYg">
                                         <rect key="frame" x="0.0" y="28" width="320" height="52"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="x45-0U-EYg" id="mTT-Ot-AEd">
@@ -4169,7 +4169,7 @@ I will push the new build in a few minutes.</string>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="songCell" rowHeight="50" id="v99-88-wAT" customClass="SongInAlbumCell" customModule="Plum" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="songCell" rowHeight="50" id="v99-88-wAT" customClass="SongInAlbumCell" customModule="Plum" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="80" width="320" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="v99-88-wAT" id="Omo-4N-hIs">
@@ -4325,7 +4325,7 @@ I will push the new build in a few minutes.</string>
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="songCell" rowHeight="58" id="UVz-Bw-dGQ" customClass="ArtistUpCell" customModule="Plum" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="songCell" rowHeight="58" id="UVz-Bw-dGQ" customClass="ArtistUpCell" customModule="Plum" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="320" height="58"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="UVz-Bw-dGQ" id="MeS-xS-oVx">
@@ -4372,7 +4372,7 @@ I will push the new build in a few minutes.</string>
                                             <outlet property="title" destination="oGY-Lc-B5S" id="RAu-B6-JjY"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="queueCell" rowHeight="58" id="JxQ-47-5pf">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="queueCell" rowHeight="58" id="JxQ-47-5pf">
                                         <rect key="frame" x="0.0" y="86" width="320" height="58"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JxQ-47-5pf" id="WiE-6Y-TmZ">
@@ -4731,7 +4731,7 @@ I will push the new build in a few minutes.</string>
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="albumCell" rowHeight="94" id="79c-Rc-TTG" customClass="AlbumCell" customModule="Plum" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="albumCell" rowHeight="94" id="79c-Rc-TTG" customClass="AlbumCell" customModule="Plum" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="320" height="94"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="79c-Rc-TTG" id="fSS-9Y-1JP">
@@ -4861,7 +4861,7 @@ I will push the new build in a few minutes.</string>
                                                             </state>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                                    <integer key="value" value="4"/>
+                                                                    <integer key="value" value="3"/>
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                             <connections>
@@ -4876,7 +4876,7 @@ I will push the new build in a few minutes.</string>
                                                             </state>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                                    <integer key="value" value="4"/>
+                                                                    <integer key="value" value="3"/>
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                             <connections>
@@ -4891,7 +4891,7 @@ I will push the new build in a few minutes.</string>
                                                             </state>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                                    <integer key="value" value="4"/>
+                                                                    <integer key="value" value="3"/>
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                             <connections>
@@ -4988,7 +4988,7 @@ I will push the new build in a few minutes.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pIK-RV-iqK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="862.31884057971024" y="1726.6304347826087"/>
+            <point key="canvasLocation" x="860.625" y="1726.056338028169"/>
         </scene>
         <!--Artists-->
         <scene sceneID="r4X-WV-BmG">
@@ -5079,7 +5079,7 @@ I will push the new build in a few minutes.</string>
                                                             </state>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                                    <integer key="value" value="4"/>
+                                                                    <integer key="value" value="3"/>
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                             <connections>
@@ -5094,7 +5094,7 @@ I will push the new build in a few minutes.</string>
                                                             </state>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                                    <integer key="value" value="4"/>
+                                                                    <integer key="value" value="3"/>
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                             <connections>
@@ -5109,7 +5109,7 @@ I will push the new build in a few minutes.</string>
                                                             </state>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                                    <integer key="value" value="4"/>
+                                                                    <integer key="value" value="3"/>
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                             <connections>
@@ -5138,7 +5138,7 @@ I will push the new build in a few minutes.</string>
                                 <rect key="frame" x="0.0" y="424" width="414" height="312"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="artistCell" rowHeight="94" id="RKI-SV-8ff" customClass="ArtistCell" customModule="Plum" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="artistCell" rowHeight="94" id="RKI-SV-8ff" customClass="ArtistCell" customModule="Plum" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="94"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RKI-SV-8ff" id="Dql-3P-NVZ">
@@ -5341,7 +5341,7 @@ I will push the new build in a few minutes.</string>
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="playlistCell" rowHeight="94" id="lk9-dT-WRc" userLabel="playlistCell" customClass="ArtistCell" customModule="Plum" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="playlistCell" rowHeight="94" id="lk9-dT-WRc" userLabel="playlistCell" customClass="ArtistCell" customModule="Plum" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="320" height="94"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lk9-dT-WRc" id="TgR-Be-hnE">
@@ -5470,7 +5470,7 @@ I will push the new build in a few minutes.</string>
                                                             </state>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                                    <integer key="value" value="4"/>
+                                                                    <integer key="value" value="3"/>
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                             <connections>
@@ -5485,7 +5485,7 @@ I will push the new build in a few minutes.</string>
                                                             </state>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                                    <integer key="value" value="4"/>
+                                                                    <integer key="value" value="3"/>
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                             <connections>
@@ -5500,7 +5500,7 @@ I will push the new build in a few minutes.</string>
                                                             </state>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                                    <integer key="value" value="4"/>
+                                                                    <integer key="value" value="3"/>
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                             <connections>
@@ -5618,7 +5618,7 @@ I will push the new build in a few minutes.</string>
                                 <rect key="frame" x="0.0" y="274" width="414" height="462"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="shuffleCell" id="19i-nc-40X" customClass="ShuffleCell" customModule="Plum" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="shuffleCell" id="19i-nc-40X" customClass="ShuffleCell" customModule="Plum" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="19i-nc-40X" id="eBE-Uu-vfG">
@@ -5626,7 +5626,7 @@ I will push the new build in a few minutes.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="shuffle" translatesAutoresizingMaskIntoConstraints="NO" id="rvM-To-a4W">
-                                                    <rect key="frame" x="279" y="15.5" width="32" height="13"/>
+                                                    <rect key="frame" x="373" y="15.5" width="32" height="13"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="13" id="216-ph-Kg1"/>
                                                         <constraint firstAttribute="width" constant="32" id="xJN-Io-NXn"/>
@@ -5655,7 +5655,7 @@ I will push the new build in a few minutes.</string>
                                             <outlet property="label" destination="9gw-yi-gdS" id="YGU-4d-BZU"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="songCell" rowHeight="62" id="2TK-uW-2Tr" customClass="SongCell" customModule="Plum" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="songCell" rowHeight="62" id="2TK-uW-2Tr" customClass="SongCell" customModule="Plum" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="414" height="62"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2TK-uW-2Tr" id="f8T-QC-QyY">
@@ -5670,13 +5670,13 @@ I will push the new build in a few minutes.</string>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Run run run run run" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iis-6E-BkK">
-                                                    <rect key="frame" x="71" y="10" width="239" height="21"/>
+                                                    <rect key="frame" x="71" y="10" width="333" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Huh what the fuck" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="op5-Je-tK9">
-                                                    <rect key="frame" x="71" y="31.5" width="225" height="15"/>
+                                                    <rect key="frame" x="71" y="31.5" width="319" height="15"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="15" id="kr1-CD-Yn5"/>
                                                     </constraints>
@@ -5705,7 +5705,7 @@ I will push the new build in a few minutes.</string>
                                             <outlet property="titleLabel" destination="iis-6E-BkK" id="RHv-79-O0T"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="queueCell" rowHeight="62" id="Vh5-hz-exs" customClass="QueueActionsCell" customModule="Plum" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="queueCell" rowHeight="62" id="Vh5-hz-exs" customClass="QueueActionsCell" customModule="Plum" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="134" width="414" height="62"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Vh5-hz-exs" id="o7w-t9-q0q">
@@ -5713,10 +5713,10 @@ I will push the new build in a few minutes.</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="JuE-ii-tGN">
-                                                    <rect key="frame" x="7" y="13" width="306" height="36"/>
+                                                    <rect key="frame" x="7" y="13" width="400" height="36"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iK9-vS-TRg">
-                                                            <rect key="frame" x="0.0" y="0.0" width="92" height="36"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="123.5" height="36"/>
                                                             <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="36" id="lPc-Ti-g0Q"/>
@@ -5737,7 +5737,7 @@ I will push the new build in a few minutes.</string>
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F6Z-A5-gvB">
-                                                            <rect key="frame" x="107" y="0.0" width="92" height="36"/>
+                                                            <rect key="frame" x="138.5" y="0.0" width="123" height="36"/>
                                                             <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                             <state key="normal" title="Play Next">
                                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -5755,7 +5755,7 @@ I will push the new build in a few minutes.</string>
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WJ7-DM-sNI">
-                                                            <rect key="frame" x="214" y="0.0" width="92" height="36"/>
+                                                            <rect key="frame" x="276.5" y="0.0" width="123.5" height="36"/>
                                                             <color key="backgroundColor" red="0.5" green="0.0" blue="0.5" alpha="1" colorSpace="calibratedRGB"/>
                                                             <state key="normal" title="Play Last">
                                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -5983,7 +5983,7 @@ I will push the new build in a few minutes.</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="hO0-6B-0g0"/>
-        <segue reference="g4J-C0-9Kx"/>
+        <segue reference="rwj-QE-6F9"/>
         <segue reference="GRh-Pt-2wL"/>
     </inferredMetricsTieBreakers>
 </document>

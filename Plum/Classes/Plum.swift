@@ -146,6 +146,8 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
             observed = true
         }
         addTodayObservers()
+        let widget = NCWidgetController.widgetController()
+        widget.setHasContent(true, forWidgetWithBundleIdentifier: "com.wiencheck.plum.upnext")
     }
     
     deinit {
@@ -585,6 +587,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         }else{
             self.playFromDefQueue(index: index, new: new)
         }
+        writeQueue()
     }
     
     func landInArtist(_ item: MPMediaItem, new: Bool){
@@ -605,6 +608,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         }else{
             self.playFromDefQueue(index: index, new: new)
         }
+        writeQueue()
     }
     
     func landInSongs(_ item: MPMediaItem, new: Bool) {
@@ -625,6 +629,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         }else{
             self.playFromDefQueue(index: index, new: new)
         }
+        writeQueue()
     }
     
     func setNextPrev() -> (prev: MPMediaItem?, next: MPMediaItem?){

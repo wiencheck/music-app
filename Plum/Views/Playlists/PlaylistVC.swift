@@ -208,7 +208,7 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
         }else{
             if cellTypes[activeIndexSection]?[activeIndexRow] != 0 {
                 cellTypes[activeIndexSection]?[activeIndexRow] = 0
-                tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection+1)], with: .fade)
+                tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .fade)
             }
             
             if indexPath.section == 0 {

@@ -109,11 +109,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if #available(iOS 10.0, *) {
             Plum.shared.removeLyrics()
         }
-        if let defaultsT = UserDefaults.init(suiteName: "group.adw.Plum") {
-            defaultsT.set(false, forKey: "widgetActive")
-            defaultsT.synchronize()
-            widget.setHasContent(false, forWidgetWithBundleIdentifier: "com.wiencheck.plum.upnext")
-        }
+        widget.setHasContent(false, forWidgetWithBundleIdentifier: "com.wiencheck.plum.upnext")
     }
 
     func setAuth(_ auth: Bool){

@@ -39,7 +39,7 @@ class AlbumsCollectionCell: UICollectionViewCell {
         super.layoutSubviews()
         layoutIfNeeded()
         if rounded {
-            artwork.layer.cornerRadius = 6.0
+            artwork.layer.cornerRadius = 3.0
         }
         artwork.clipsToBounds = true
     }
