@@ -79,7 +79,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
 //    }
     
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-        instruct("miniplayer", message: "Tap twice on the miniplayer bar or drag it upwards to open now playing view", completion: nil)
+        instruct("miniplayer", message: "Tap on the miniplayer bar or drag it upwards to open now playing view.\nGo to settings to enable double tap to open.", completion: nil)
         instruct("slider", message: "Swipe on the right edge of the screen to use quick scrolling", completion: nil)
     }
     
@@ -154,14 +154,22 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
             self.popupInteractionStyle = .drag
             self.popupBar.progressViewStyle = .bottom
             self.popupContentView.popupCloseButtonStyle = .none
-            self.popupBar.popupOpenGestureRecognizer.numberOfTapsRequired = 2
+            if GlobalSettings.doubleBar {
+                self.popupBar.popupOpenGestureRecognizer.numberOfTapsRequired = 2
+            }else{
+                self.popupBar.popupOpenGestureRecognizer.numberOfTapsRequired = 1
+            }
             print("classic")
         } else {
             self.popupBar.barStyle = .prominent
             self.popupInteractionStyle = .snap
             self.popupBar.progressViewStyle = .bottom
             self.popupContentView.popupCloseButtonStyle = .none
-            self.popupBar.popupOpenGestureRecognizer.numberOfTapsRequired = 2
+            if GlobalSettings.doubleBar {
+                self.popupBar.popupOpenGestureRecognizer.numberOfTapsRequired = 2
+            }else{
+                self.popupBar.popupOpenGestureRecognizer.numberOfTapsRequired = 1
+            }
             print("modern")
         }
     }

@@ -188,7 +188,11 @@ struct GlobalSettings{
     static var round = false
     static func changeRound(_ t: Bool) {
         round = t
-        
+    }
+    static var doubleBar = true
+    static func changeDoubleBar(_ t: Bool) {
+        doubleBar = t
+        defaults.set(doubleBar, forKey: "doubleBar")
     }
     static var playlistsGrid = false
     static func changePlaylists(grid: Bool) {

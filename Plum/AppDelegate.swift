@@ -226,6 +226,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: "roundedCorners") == nil {
             defaults.set(true, forKey: "roundedCorners")
         }
+        if defaults.value(forKey: "doubleBar") == nil {
+            defaults.set(false, forKey: "doubleBar")
+        }
     }
     
     func readSettings(){
@@ -277,6 +280,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GlobalSettings.changeTheme(Theme.light)
         if let blu = defaults.value(forKey: "blur") as? Bool {
             GlobalSettings.changeBlur(blu)
+        }
+        if let dou = defaults.value(forKey: "doubleBar") as? Bool {
+            GlobalSettings.changeDoubleBar(dou)
         }
         if let dep = defaults.value(forKey: "deploy") as? String {
             GlobalSettings.changeDeploy(Deploy(rawValue: dep)!)

@@ -20,9 +20,10 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     @IBOutlet weak var ratingSwitch: UISwitch!
     @IBOutlet weak var currentStyle: UILabel!
     @IBOutlet weak var currentMiniPlayer: UILabel!
-    @IBOutlet weak var roundSwitch: UISwitch!
+    //@IBOutlet weak var roundSwitch: UISwitch!
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var lyricsSwitch: UISwitch!
+    @IBOutlet weak var doubleBarSwitch: UISwitch!
     @IBOutlet weak var colorView: UIView!
     @IBOutlet weak var deployLabel: UILabel!
     var timer: Timer!
@@ -52,7 +53,8 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         playlistsGridSwitch.addTarget(self, action: #selector(playlistsGrid(_:)), for: .valueChanged)
         ratingSwitch.addTarget(self, action: #selector(rating(_:)), for: .valueChanged)
         lyricsSwitch.addTarget(self, action: #selector(lyricsSwitched(_:)), for: .valueChanged)
-        roundSwitch.addTarget(self, action: #selector(roundSwitched(_:)), for: .valueChanged)
+        //roundSwitch.addTarget(self, action: #selector(roundSwitched(_:)), for: .valueChanged)
+        doubleBarSwitch.addTarget(self, action: #selector(doubleBarSwitched(_:)), for: .valueChanged)
     }
     
     @objc func artistsGrid(_ sender: UISwitch){
@@ -96,8 +98,19 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         }
     }
     
-    @objc func roundSwitched(_ sender: UISwitch) {
-        GlobalSettings.changeRound(sender.isOn)
+//    @objc func roundSwitched(_ sender: UISwitch) {
+//        GlobalSettings.changeRound(sender.isOn)
+//    }
+    
+    @objc func doubleBarSwitched(_ sender: UISwitch) {
+        GlobalSettings.changeDoubleBar(sender.isOn)
+        let tab = self.tabBarController as! PlumTabBarController
+        if sender.isOn {
+            self.popupBar.popupOpenGestureRecognizer.numberOfTapsRequired = 2
+        }else{
+            self.popupBar.popupOpenGestureRecognizer.numberOfTapsRequired = 1
+        }
+        tab.setPopup()
     }
     
     @available(iOS 10.0, *) func notificationPermissionError(_ error: Error?) {
@@ -198,8 +211,9 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         ratingSwitch.isOn = GlobalSettings.rating
         lyricsSwitch.isOn = GlobalSettings.lyrics
         currentMiniPlayer.text = GlobalSettings.popupStyle.rawValue
-        roundSwitch.isOn = GlobalSettings.round
+        //roundSwitch.isOn = GlobalSettings.round
         currentStyle.text = GlobalSettings.theme.rawValue
+        doubleBarSwitch.isOn = GlobalSettings.doubleBar
     }
     
     func selfExplanatory() {
