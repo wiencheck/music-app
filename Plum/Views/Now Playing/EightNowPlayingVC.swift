@@ -646,7 +646,7 @@ extension EightNowPlayingVC {       //Kolory i UI
         let track = #imageLiteral(resourceName: "track")
         timeSlider.setMinimumTrackImage(track.tintPictogram(with: UIColor.white.withAlphaComponent(0.6)), for: .normal)
         timeSlider.setMaximumTrackImage(track.tintPictogram(with: UIColor.white.withAlphaComponent(0.3)), for: .normal)
-        if GlobalSettings.round {
+        if GlobalSettings.roundedSlider {
             let size = CGSize(width: 20, height: 20)
             timeSlider.setThumbImage(#imageLiteral(resourceName: "volumeThumb").imageScaled(toFit: size).tintPictogram(with: .white), for: .normal)
         }else{
@@ -755,7 +755,7 @@ extension EightNowPlayingVC {       //Kolory i UI
     
     func customTrackSlider(slider: UISlider, min: UIColor, max: UIColor, thumb: UIColor) {
         var thumbImg: UIImage
-        if GlobalSettings.round {
+        if GlobalSettings.roundedSlider {
             thumbImg = #imageLiteral(resourceName: "volumeThumb").imageScaled(toFit: CGSize(width: 18, height: 18)).tintPictogram(with: thumb)
             slider.setThumbImage(thumbImg, for: .normal)
         }else{

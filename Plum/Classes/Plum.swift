@@ -107,6 +107,8 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     static let previousTrackNotification = Notification.Name("previousTrackNotification")
     static let nextTrackNotification = Notification.Name("nextTrackNotification")
     static let playBackStateChanged = Notification.Name("playBackStateChanged")
+    static let queueChanged = Notification.Name("queueChanged")
+    static let trackChanged = Notification.Name("trackChanged")
     var shouldResumeAfterInterruption = false
     var timeObserverToken: Any?
     var timer: Timer!
@@ -229,6 +231,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
             usrQueue.insert(item, at: usrIndex + 1)
         }
         writeQueue()
+        NotificationCenter.default.post(name: Plum.queueChanged, object: nil)
     }
     
     func addLast(item: MPMediaItem){
@@ -240,6 +243,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
             usrQueue.append(item)
         }
         writeQueue()
+        NotificationCenter.default.post(name: Plum.queueChanged, object: nil)
     }
     
     func next(){
@@ -282,7 +286,8 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
                 clearQueue()
                 }
             }
-        postPlaybackStateChanged()
+        //postPlaybackStateChanged()
+        //postTrackChanged()
     }
     
     func prev(){
@@ -310,7 +315,8 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
                         clearQueue()
                     }
                 }
-            postPlaybackStateChanged()
+            //postPlaybackStateChanged()
+            //postTrackChanged()
         }
         else{
             player.currentTime = 0.0
@@ -339,6 +345,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
                     print(error)
                 }
                 player.rate = 1.0
+                postPlaybackStateChanged()
             }else{
                 print("player is already playing")
             }
@@ -346,7 +353,6 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         if #available(iOS 10.0, *) {
             if shouldPost && GlobalSettings.lyrics { postLyrics() }
         }
-        postPlaybackStateChanged()
     }
     
     func pause(){
@@ -361,11 +367,11 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
                 print(error)
             }
             player.rate = 0.0
+            postPlaybackStateChanged()
+            state = .paused
         }else{
             print("player is currently not playing")
         }
-        postPlaybackStateChanged()
-        state = .paused
     }
     
     func togglePlayPause(){
@@ -447,16 +453,18 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         }
     }
     
-    func currentIndex() -> Int{
-        var index = 0
-        if(isShuffle){
-            index = shufIndex
-        }else if(isUsrQueue){
-            index = usrIndex
-        }else if(!isShuffle){
-            index = defIndex
+    var currentIndex: Int {
+        get {
+            var index = 0
+            if(isShuffle){
+                index = shufIndex
+            }else if(isUsrQueue){
+                index = usrIndex
+            }else if(!isShuffle){
+                index = defIndex
+            }
+            return index
         }
-        return index
     }
     
     func repeatMode(_ enable: Bool) {
@@ -545,6 +553,8 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
                 timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(Plum.updatePlaybackRateData), userInfo: nil, repeats: true)
                 timer.fire()
                 writeQueue()
+                postTrackChanged()
+                //postPlaybackStateChanged()
                 //updateGeneralMetadata()
             }catch let error{
                 print("Failed to initialize with URL\n\(error)")
@@ -742,6 +752,12 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         }
     }
     
+    func postTrackChanged() {
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: Plum.trackChanged, object: nil)
+        }
+    }
+    
     @available(iOS 10.0, *) func postLyrics() {
         if currentItem != nil && shouldPost && player.isPlaying {
             let content = UNMutableNotificationContent()
@@ -772,6 +788,19 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     @available(iOS 10.0, *) func removeLyrics() {
         UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: ["lyricsOnLS"])
         lyricsPosted = false
+    }
+    
+    func getCurrentQueue() -> [MPMediaItem] {
+        var queue = [MPMediaItem]()
+        if isUsrQueue {
+            queue.append(contentsOf: usrQueue)
+        }
+        if isShuffle {
+            queue.append(contentsOf: shufQueue)
+        }else{
+            queue.append(contentsOf: defQueue)
+        }
+        return queue
     }
     
     func writeQueue() {

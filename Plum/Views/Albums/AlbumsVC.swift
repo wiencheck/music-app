@@ -634,6 +634,7 @@ extension AlbumsVC: UICollectionViewDelegateFlowLayout {
             }
             v.addSubview(label)
             v.bringSubview(toFront: label)
+            v.clipsToBounds = true
             headers.append(v)
         }
     }

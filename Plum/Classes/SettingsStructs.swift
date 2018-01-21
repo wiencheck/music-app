@@ -185,9 +185,15 @@ struct GlobalSettings{
         self.remote.switchRatingCommands(t)
         defaults.set(t, forKey: "lyrics")
     }
-    static var round = false
+    static var roundedSlider = false
     static func changeRound(_ t: Bool) {
-        round = t
+        roundedSlider = t
+        defaults.set(t, forKey: "roundedSlider")
+    }
+    static var searchOnTop = true
+    static func changeSearchOnTop(_ t: Bool) {
+        searchOnTop = t
+        defaults.set(t, forKey: "searchOnTop")
     }
     static var doubleBar = true
     static func changeDoubleBar(_ t: Bool) {

@@ -408,6 +408,7 @@ extension ArtistSongs {
                 header.setup(album: album, play: false)
                 let v = header.contentView
                 v.addBottomBorderWithColor(color: UIColor.lightSeparator, width: 0.5, x: 16)
+                v.clipsToBounds = true
                 headers.append(v)
             }
             songs = songsByAlbums

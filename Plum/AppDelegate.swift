@@ -229,6 +229,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: "doubleBar") == nil {
             defaults.set(false, forKey: "doubleBar")
         }
+        if defaults.value(forKey: "roundedSlider") == nil {
+            defaults.set(false, forKey: "roundedSlider")
+        }
+        if defaults.value(forKey: "searchOnTop") == nil {
+            defaults.set(true, forKey: "searchOnTop")
+        }
     }
     
     func readSettings(){
@@ -306,6 +312,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let plg = defaults.value(forKey: "playlistsGrid") as? Bool {
             GlobalSettings.changePlaylists(grid: plg)
         }
+        if let roun = defaults.value(forKey: "roundedSlider") as? Bool {
+            GlobalSettings.changeRound(roun)
+        }
+        if let sea = defaults.value(forKey: "searchOnTop") as? Bool {
+            GlobalSettings.changeSearchOnTop(sea)
+        }
 //        if let rou = defaults.value(forKey: "roundedCorners") as? Bool {
 //            GlobalSettings.changeRoundedCorners(rou)
 //        }
@@ -322,7 +334,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UISwitch.appearance().onTintColor = GlobalSettings.tint.color
         UITableViewCell.appearance().backgroundColor = UIColor.clear
         let s = UIView()
-        s.backgroundColor = GlobalSettings.tint.color.withAlphaComponent(0.8)
+        s.backgroundColor = GlobalSettings.tint.color.withAlphaComponent(0.3)
         UITableViewCell.appearance().selectedBackgroundView = s
     }
     

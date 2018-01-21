@@ -698,6 +698,7 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
             label.text = index
             v.addSubview(label)
             v.bringSubview(toFront: label)
+            v.clipsToBounds = true
             headers.append(v)
         }
     }

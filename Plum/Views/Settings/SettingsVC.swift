@@ -20,10 +20,11 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     @IBOutlet weak var ratingSwitch: UISwitch!
     @IBOutlet weak var currentStyle: UILabel!
     @IBOutlet weak var currentMiniPlayer: UILabel!
-    //@IBOutlet weak var roundSwitch: UISwitch!
+    @IBOutlet weak var roundSwitch: UISwitch!
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var lyricsSwitch: UISwitch!
     @IBOutlet weak var doubleBarSwitch: UISwitch!
+    //@IBOutlet weak var searchTopSwitch: UISwitch!
     @IBOutlet weak var colorView: UIView!
     @IBOutlet weak var deployLabel: UILabel!
     var timer: Timer!
@@ -34,7 +35,6 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateProgressBar), userInfo: nil, repeats: true)
         tabBarController?.delegate = self
         musicQuery.shared.delegate = self
-        
         tableView.contentInset = UIEdgeInsetsMake(64, 0, GlobalSettings.bottomInset, 0)
         spotlightButton.alpha = 1.0
         progressBar.alpha = 0.0
@@ -44,7 +44,12 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         reload()
+        UITableViewCell.appearance().backgroundColor = .white
         self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        UITableViewCell.appearance().backgroundColor = .clear
     }
     
     func handleSwitches(){
@@ -53,8 +58,13 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         playlistsGridSwitch.addTarget(self, action: #selector(playlistsGrid(_:)), for: .valueChanged)
         ratingSwitch.addTarget(self, action: #selector(rating(_:)), for: .valueChanged)
         lyricsSwitch.addTarget(self, action: #selector(lyricsSwitched(_:)), for: .valueChanged)
-        //roundSwitch.addTarget(self, action: #selector(roundSwitched(_:)), for: .valueChanged)
+        roundSwitch.addTarget(self, action: #selector(roundedSliderSwitched(_:)), for: .valueChanged)
         doubleBarSwitch.addTarget(self, action: #selector(doubleBarSwitched(_:)), for: .valueChanged)
+        //searchTopSwitch.addTarget(self, action: #selector(searchTopSwitched(_:)), for: .valueChanged)
+    }
+    
+    @objc func searchTopSwitched(_ sender: UISwitch) {
+        GlobalSettings.changeSearchOnTop(sender.isOn)
     }
     
     @objc func artistsGrid(_ sender: UISwitch){
@@ -98,9 +108,9 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         }
     }
     
-//    @objc func roundSwitched(_ sender: UISwitch) {
-//        GlobalSettings.changeRound(sender.isOn)
-//    }
+    @objc func roundedSliderSwitched(_ sender: UISwitch) {
+        GlobalSettings.changeRound(sender.isOn)
+    }
     
     @objc func doubleBarSwitched(_ sender: UISwitch) {
         GlobalSettings.changeDoubleBar(sender.isOn)
@@ -211,9 +221,10 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         ratingSwitch.isOn = GlobalSettings.rating
         lyricsSwitch.isOn = GlobalSettings.lyrics
         currentMiniPlayer.text = GlobalSettings.popupStyle.rawValue
-        //roundSwitch.isOn = GlobalSettings.round
+        roundSwitch.isOn = GlobalSettings.roundedSlider
         currentStyle.text = GlobalSettings.theme.rawValue
         doubleBarSwitch.isOn = GlobalSettings.doubleBar
+        //searchTopSwitch.isOn = GlobalSettings.searchOnTop
     }
     
     func selfExplanatory() {
