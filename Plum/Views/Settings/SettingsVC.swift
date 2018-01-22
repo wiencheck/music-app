@@ -173,6 +173,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
             performSegue(withIdentifier: "scale", sender: nil)
         case "blur":
             later()
+            //changeIcon()
         case "theme":
             //explainStyle()
             later()
@@ -195,6 +196,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
             performSegue(withIdentifier: "lyricsSettings", sender: nil)
         case "artist":
             explainArtistsGrid()
+            //changeIcon()
         case "album":
             explainAlbumsGrid()
         case "playlist":
@@ -225,6 +227,16 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         currentStyle.text = GlobalSettings.theme.rawValue
         doubleBarSwitch.isOn = GlobalSettings.doubleBar
         //searchTopSwitch.isOn = GlobalSettings.searchOnTop
+    }
+    
+    func changeIcon() {
+        if #available(iOS 10.3, *) {
+            UIApplication.shared.setAlternateIconName("six") { (error) in
+                if let error = error {
+                    print("error: \(error)")
+                }
+            }
+        }
     }
     
     func selfExplanatory() {

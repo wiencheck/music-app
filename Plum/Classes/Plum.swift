@@ -554,7 +554,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
                 timer.fire()
                 writeQueue()
                 postTrackChanged()
-                //postPlaybackStateChanged()
+                postPlaybackStateChanged()
                 //updateGeneralMetadata()
             }catch let error{
                 print("Failed to initialize with URL\n\(error)")

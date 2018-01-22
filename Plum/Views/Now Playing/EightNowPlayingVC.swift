@@ -13,6 +13,7 @@ class EightNowPlayingVC: UIViewController {
     
     var scale: Double!
     
+    var tab: PlumTabBarController!
     let player = Plum.shared
     //@IBOutlet weak var volView: UIView!
     //var mpVolView: MPVolumeView!
@@ -92,6 +93,7 @@ class EightNowPlayingVC: UIViewController {
         //            backgroundImgView.contentMode = .scaleAspectFill
         //            view.addSubview(fx)
         //        }
+        tab.popupContentView.popupInteractionGestureRecognizer.delegate = self
         scale = 20
         updateUI()
         setColors()
@@ -161,6 +163,7 @@ class EightNowPlayingVC: UIViewController {
     }
     
     @IBAction func playBackBtn(_ sender: Any) {
+        //tab.popupContentView.popupInteractionGestureRecognizer.isEnabled = false
         if(player.isPlayin()){
             playbackBtn.setImage(#imageLiteral(resourceName: "play-butt"), for: .normal)
             player.pause()
@@ -210,8 +213,21 @@ class EightNowPlayingVC: UIViewController {
 extension EightNowPlayingVC: UIGestureRecognizerDelegate {
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//        if lyricsTextView.isDragging {
+//            return false
+//        }else{
+//            return true
+//        }
         return false
     }
+    
+//    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+//        tab.popupContentView.popupInteractionGestureRecognizer.isEnabled = true
+//    }
+//
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        tab.popupContentView.popupInteractionGestureRecognizer.isEnabled = false
+//    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let location = touches.first?.location(in: view)

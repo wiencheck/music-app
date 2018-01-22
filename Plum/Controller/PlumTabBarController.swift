@@ -93,6 +93,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     func emptyPopup() {
         let story = UIStoryboard.init(name: "Main", bundle: nil)
         nowPlaying = story.instantiateViewController(withIdentifier: identifier) as! EightNowPlayingVC
+        nowPlaying.tab = self
         self.presentPopupBar(withContentViewController: nowPlaying, animated: true, completion: nil)
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
         timer.fire()
@@ -106,6 +107,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         if !popupPresented {
             let story = UIStoryboard.init(name: "Main", bundle: nil)
             nowPlaying = story.instantiateViewController(withIdentifier: identifier) as! EightNowPlayingVC
+            nowPlaying.tab = self
             self.presentPopupBar(withContentViewController: nowPlaying, animated: true, completion: nil)
             popupPresented = true
         }
