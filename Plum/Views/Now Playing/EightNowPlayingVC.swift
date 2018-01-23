@@ -15,6 +15,7 @@ class EightNowPlayingVC: UIViewController {
     
     var tab: PlumTabBarController!
     let player = Plum.shared
+    //var finger: CGPoint = CGPoint(x: 0, y: 0)
     //@IBOutlet weak var volView: UIView!
     //var mpVolView: MPVolumeView!
     @IBOutlet weak var artworkImage: UIImageView!
@@ -231,6 +232,16 @@ extension EightNowPlayingVC: UIGestureRecognizerDelegate {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let location = touches.first?.location(in: view)
+        //finger = location!
+//        if finger.y >= artworkImage.frame.maxY {
+//            if tab.popupContentView.popupInteractionGestureRecognizer.isEnabled {
+//                tab.popupContentView.popupInteractionGestureRecognizer.isEnabled = false
+//            }
+//        }else{
+//            if !tab.popupContentView.popupInteractionGestureRecognizer.isEnabled {
+//                tab.popupContentView.popupInteractionGestureRecognizer.isEnabled = true
+//            }
+//        }
         if !ratingsView.frame.contains(location!){
             UIView.animate(withDuration: 0.2, animations: {
                 self.titleView.alpha = 1.0

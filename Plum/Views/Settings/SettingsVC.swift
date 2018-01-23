@@ -205,10 +205,21 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
             explainDeploy()
         case "indexing":
             spotlightBtnPressed()
+        case "icons":
+            icons()
         default:
             selfExplanatory()
         }
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func icons() {
+        if #available(iOS 10.3, *) {
+            performSegue(withIdentifier: "icons", sender: nil)
+        }else{
+            let alert = UIAlertController(title: "Available only on iOS 10.3, or later", message: "To use this feature you have to update your software", preferredStyle: .alert)
+            present(alert, animated: true, completion: nil)
+        }
     }
     
     func reload(){
@@ -227,16 +238,6 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         currentStyle.text = GlobalSettings.theme.rawValue
         doubleBarSwitch.isOn = GlobalSettings.doubleBar
         //searchTopSwitch.isOn = GlobalSettings.searchOnTop
-    }
-    
-    func changeIcon() {
-        if #available(iOS 10.3, *) {
-            UIApplication.shared.setAlternateIconName("six") { (error) in
-                if let error = error {
-                    print("error: \(error)")
-                }
-            }
-        }
     }
     
     func selfExplanatory() {
