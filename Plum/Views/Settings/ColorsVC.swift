@@ -23,20 +23,29 @@ class ColorsVC: UICollectionViewController {
     var colors: [Color]!
     @IBOutlet weak var upperBar: UINavigationItem!
     let defaults = UserDefaults.standard
+    var navBarColor: UIColor!
+    var navBarText: UIColor!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView?.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
+        if GlobalSettings.theme == .dark {
+            collectionView?.backgroundColor = UIColor.darkBackground
+        }else{
+            collectionView?.backgroundColor = UIColor.lightBackground
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         UIApplication.shared.statusBarStyle = .default
-        self.navigationController?.navigationBar.barTintColor = .white
-        self.navigationController?.navigationBar.tintColor = .black
+        self.navigationController?.navigationBar.barTintColor = navBarColor
+        self.navigationController?.navigationBar.tintColor = navBarText
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navBarColor = navigationController?.navigationBar.barTintColor
+        navBarText = navigationController?.navigationBar.tintColor
         loadColors()
         colorBar(color: GlobalSettings.tint)
     }
@@ -53,6 +62,12 @@ class ColorsVC: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! ColorCell
         cell.setup(color: colors[indexPath.row])
+        cell.colorView.layer.cornerRadius = 6.0
+        if GlobalSettings.theme == .dark {
+            cell.label.textColor = .white
+        }else{
+            cell.label.textColor = .darkGray
+        }
         return cell
     }
     

@@ -30,6 +30,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableIndexView: TableIndexView!
     @IBOutlet weak var searchView: BlurView!
+    @IBOutlet weak var tool: UIToolbar!
     var pickedID: MPMediaEntityPersistentID!
     var result = [String:[Artist]]()
     var artists: [Artist]!
@@ -48,7 +49,9 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidLoad()
         tabBarController?.delegate = self
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: NSNotification.Name(rawValue: "themeChanged"), object: nil)
         currentTheme = GlobalSettings.theme
+        updateTheme()
         grid = GlobalSettings.artistsGrid
         if musicQuery.shared.artistsSet {
             artists = musicQuery.shared.artists
@@ -64,18 +67,10 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
             }
             if grid{
                 setCollection()
-                //correctCollectionSections()
-                self.collectionIndexView.indexes = self.indexes
-                self.collectionIndexView.collectionView = self.collectionView
-                self.collectionIndexView.setup()
-                //collectionIndexView.backgroundColor = .clear
                 view.bringSubview(toFront: searchView)
                 view.bringSubview(toFront: collectionIndexView)
             }else{
                 setTable()
-                tableIndexView.indexes = self.indexes
-                tableIndexView.tableView = self.tableView
-                tableIndexView.setup(color: UIColor.white)
                 view.bringSubview(toFront: searchView)
                 view.bringSubview(toFront: tableIndexView)
                 tableView.tableFooterView = UIView(frame: .zero)
@@ -107,14 +102,6 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func setTable(){
-        //self.tableView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
-        if currentTheme == .dark {
-            tableView.backgroundColor = UIColor.darkBackground
-            tableView.separatorColor = UIColor.black
-        }else{
-            tableView.backgroundColor = UIColor.lightBackground
-            tableView.separatorColor = UIColor.lightSeparator
-        }
         tableView.delegate = self
         tableView.dataSource = self
         view.addSubview(tableView)
@@ -128,12 +115,6 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func setCollection(){
-        //self.collectionView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
-        if currentTheme == .dark {
-            collectionView.backgroundColor = UIColor.darkBackground
-        }else{
-            collectionView.backgroundColor = UIColor.lightBackground
-        }
         cellSize = calculateCollectionViewCellSize(itemsPerRow: 3, frame: self.view.frame)
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -169,7 +150,25 @@ extension ArtistsVC: UITableViewDelegate, UITableViewDataSource{    //Table
         if shouldShowResults {
             return UIView()
         }else{
-            return headers[section]
+            let index = indexes[section]
+            let v = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 27))
+            v.backgroundColor = .clear
+            let label = UILabel(frame: CGRect(x: 12, y: 3, width: v.frame.width, height: 21))
+            label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+            let tool = UIToolbar(frame: v.frame)
+            v.addSubview(tool)
+            label.text = index
+            if currentTheme == .dark {
+                label.textColor = .white
+                tool.barStyle = .blackTranslucent
+            }else{
+                label.textColor = UIColor.gray
+                tool.barStyle = .default
+            }
+            v.addSubview(label)
+            v.bringSubview(toFront: label)
+            v.clipsToBounds = true
+            return v
         }
     }
     
@@ -244,18 +243,10 @@ extension ArtistsVC: UITableViewDelegate, UITableViewDataSource{    //Table
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "artistCell", for: indexPath) as! ArtistCell
         if shouldShowResults {
-            if currentTheme == .dark {
-                cell.setup(artist: filteredArtists[indexPath.row], titColor: .white, detColor: .lightText)
-            }else{
-                cell.setup(artist: filteredArtists[indexPath.row], titColor: .black, detColor: .black)
-            }
+            cell.setup(artist: filteredArtists[indexPath.row])
             return cell
         }else{
-            if currentTheme == .dark {
-                cell.setup(artist: result[indexes[indexPath.section]]![indexPath.row], titColor: .white, detColor: .lightText)
-            }else{
-                cell.setup(artist: result[indexes[indexPath.section]]![indexPath.row], titColor: .black, detColor: .black)
-            }
+            cell.setup(artist: result[indexes[indexPath.section]]![indexPath.row])
             return cell
         }
     }
@@ -290,7 +281,25 @@ extension ArtistsVC: UICollectionViewDelegate, UICollectionViewDataSource, Colle
         }else{
             if kind == UICollectionElementKindSectionHeader {
                 let u = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "header", for: indexPath)
-                u.addSubview(headers[indexPath.section])
+                let index = indexes[indexPath.section]
+                let v = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 27))
+                v.backgroundColor = .clear
+                let label = UILabel(frame: CGRect(x: 12, y: 3, width: v.frame.width, height: 21))
+                label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+                let tool = UIToolbar(frame: v.frame)
+                v.addSubview(tool)
+                label.text = index
+                if currentTheme == .dark {
+                    label.textColor = .white
+                    tool.barStyle = .blackTranslucent
+                }else{
+                    label.textColor = UIColor.gray
+                    tool.barStyle = .default
+                }
+                v.addSubview(label)
+                v.bringSubview(toFront: label)
+                v.clipsToBounds = true
+                u.addSubview(v)
                 return u
             }else{
                 return UICollectionReusableView()
@@ -756,6 +765,37 @@ extension ArtistsVC: UICollectionViewDelegateFlowLayout {
             v.clipsToBounds = true
             headers.append(v)
         }
+    }
+    
+    @objc func updateTheme() {
+        currentTheme = GlobalSettings.theme
+        guard let bar = navigationController?.navigationBar else { return }
+        switch currentTheme {
+        case .light:
+            tool.barStyle = .default
+            bar.barStyle = .default
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
+        case .dark:
+            tool.barStyle = .blackTranslucent
+            bar.barStyle = .blackTranslucent
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+        default:
+            tool.barStyle = .blackTranslucent
+            bar.barStyle = .blackTranslucent
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+        }
+        tableView.backgroundColor = UIColor.background
+        tableView.separatorColor = UIColor.separator
+        collectionView.backgroundColor = UIColor.background
+        let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
+        NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: tool, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
+        bar.tintColor = GlobalSettings.tint.color
+        tableView.backgroundColor = UIColor.background
+        tableIndexView.backgroundColor = UIColor.indexBackground
+        collectionIndexView.backgroundColor = UIColor.indexBackground
+        //setHeaders()
+        tableView.reloadData()
+        collectionView.reloadData()
     }
 }
 

@@ -20,6 +20,7 @@ class AlbumInfoCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var yearLabel: UILabel!
     @IBOutlet weak var artwork: UIImageView!
+    @IBOutlet weak var tool: UIToolbar!
     var songs: [MPMediaItem]!
     var album: AlbumB!
     override func awakeFromNib() {
@@ -35,6 +36,9 @@ class AlbumInfoCell: UITableViewCell {
     func setup(album: AlbumB, play: Bool){
         self.contentView.isUserInteractionEnabled = true
         artwork.isUserInteractionEnabled = true
+        songsLabel.textColor = UIColor.mainLabel
+        titleLabel.textColor = UIColor.mainLabel
+        yearLabel.textColor = UIColor.mainLabel
         self.album = album
         songs = album.items
         titleLabel.text = album.name

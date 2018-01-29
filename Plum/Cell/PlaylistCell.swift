@@ -16,6 +16,8 @@ class PlaylistCell: UICollectionViewCell {
     var rounded = true
     
     func setup(list: Playlist){
+        title.textColor = UIColor.mainLabel
+        detail.textColor = UIColor.detailLabel
         title.lineBreakMode = .byWordWrapping
         title.numberOfLines = 1
         title.text = list.name

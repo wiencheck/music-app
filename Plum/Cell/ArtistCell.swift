@@ -23,12 +23,12 @@ class ArtistCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
     }
     
-    func setup(artist: Artist, titColor: UIColor, detColor: UIColor){
+    func setup(artist: Artist){
         let albumsCount = artist.albumsIn
         let songsCount = artist.songsIn
         self.artistLabel.text = artist.name
-        artistLabel.textColor = titColor
-        detailLabel.textColor = detColor
+        artistLabel.textColor = UIColor.mainLabel
+        detailLabel.textColor = UIColor.detailLabel
         let alCSt = "\(albumsCount)"
         let sonCSt = "\(songsCount)"
         var alSt = " albums, "
@@ -54,12 +54,12 @@ class ArtistCell: UITableViewCell {
         artistImage.image = artist.artwork
     }
     
-    func setup(list: Playlist, titColor: UIColor, detColor: UIColor) {
+    func setup(list: Playlist) {
         let albumsCount = list.albumsIn
         let songsCount = list.songsIn
         self.artistLabel.text = list.name
-        artistLabel.textColor = titColor
-        detailLabel.textColor = detColor
+        artistLabel.textColor = UIColor.mainLabel
+        detailLabel.textColor = UIColor.detailLabel
         let alCSt = "\(albumsCount)"
         let sonCSt = "\(songsCount)"
         var alSt = " albums, "

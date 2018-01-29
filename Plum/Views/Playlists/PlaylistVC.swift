@@ -120,14 +120,7 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
             }else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! SongCell
                 let item = filteredSongs[indexPath.row]
-                if GlobalSettings.theme == .dark {
-                    cell.setup(item: item, titColor: .white, artColor: .white, albColor: UIColor.lightText)
-                    cell.titleLabel.textColor = .white
-                }else{
-                    cell.setup(item: item, titColor: .black, artColor: .black, albColor: .black)
-                    cell.titleLabel.textColor = .black
-                }
-                cell.backgroundColor = .clear
+                cell.setup(item: item)
                 return cell
             }
         }else{
@@ -139,23 +132,7 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
                 if(cellTypes[indexPath.section]?[indexPath.row] == 0){
                     let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! SongCell
                     let item = result[indexes[indexPath.section]]?[indexPath.row]
-                    if(item != Plum.shared.currentItem){
-                        if GlobalSettings.theme == .dark {
-                            cell.setup(item: item!, titColor: .white, artColor: .white, albColor: UIColor.lightText)
-                            cell.titleLabel.textColor = .white
-                        }else{
-                            cell.setup(item: item!, titColor: .black, artColor: .black, albColor: UIColor.gray)
-                            cell.titleLabel.textColor = .black
-                        }
-                    }else{
-                        if GlobalSettings.theme == .dark {
-                            cell.setup(item: item!, titColor: .white, artColor: .white, albColor: UIColor.lightText)
-                            cell.titleLabel.textColor = .white
-                        }else{
-                            cell.setup(item: item!, titColor: .black, artColor: .black, albColor: .black)
-                            cell.titleLabel.textColor = .black
-                        }
-                    }
+                    cell.setup(item: item!)
                     cell.backgroundColor = .clear
                     return cell
                 }else {

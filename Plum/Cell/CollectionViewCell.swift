@@ -42,6 +42,8 @@ class CollectionViewCell: UICollectionViewCell {
         }
         detailLabel.text = st
         artwork.image = artist.artwork
+        mainLabel.textColor = UIColor.mainLabel
+        detailLabel.textColor = UIColor.detailLabel
     }
     
     override func layoutSubviews() {

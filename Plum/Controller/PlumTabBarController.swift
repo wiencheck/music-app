@@ -50,18 +50,22 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
                 musicQuery.shared.addToSpotlight()
             }
         }
-        customizeMoreTab()
         //twitter()
     }
     
     @objc func updateTheme() {
         if GlobalSettings.theme == .light {
             tabBar.barStyle = .default
+            UITextField.appearance().keyboardAppearance = .light
+            UIApplication.shared.statusBarStyle = .default
         }else{
             tabBar.barStyle = .black
+            UITextField.appearance().keyboardAppearance = .dark
+            UIApplication.shared.statusBarStyle = .lightContent
         }
         tabBar.tintColor = GlobalSettings.tint.color
         self.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color], for: .selected)
+        customizeMoreTab()
         updatePopupBarAppearance()
     }
     
@@ -164,13 +168,31 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     }
     
     func customizeMoreTab() {
+        let bar = moreNavigationController.navigationBar
+        if GlobalSettings.theme == .light {
+            bar.barStyle = .default
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
+        }else{
+            bar.barStyle = .blackTranslucent
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+        }
         if let more = self.moreNavigationController.topViewController?.view as? UITableView {
             //more.delegate = self
-            more.backgroundColor = UIColor.lightBackground
-            more.separatorStyle = .none
-            for cell in more.visibleCells {
-                cell.backgroundColor = .clear
-                cell.textLabel?.textColor = UIColor.black
+            more.tableFooterView = UIView()
+            if GlobalSettings.theme == .dark {
+                more.backgroundColor = UIColor.darkBackground
+                more.separatorColor = UIColor.darkSeparator
+                for cell in more.visibleCells {
+                    cell.backgroundColor = .clear
+                    cell.textLabel?.textColor = UIColor.white
+                }
+            }else{
+                more.backgroundColor = UIColor.lightBackground
+                more.separatorColor = UIColor.lightSeparator
+                for cell in more.visibleCells {
+                    cell.backgroundColor = .clear
+                    cell.textLabel?.textColor = UIColor.black
+                }
             }
         }
         

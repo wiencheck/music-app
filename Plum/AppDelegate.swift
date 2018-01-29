@@ -130,24 +130,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func letGo() {
-        //_ = GlobalSettings()
         GlobalSettings.remote = RemoteCommandManager()
         defaults = UserDefaults.standard
         setInitialSettings()
         readSettings()
         setCustomizing()
         setInitialInstructions()
-//        DispatchQueue.global(qos: .background).async {
-//            musicQuery.shared.setArrays()
-//        }
-        //musicQuery.shared.setArrays()
+        setColors()
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         let initialViewController = storyboard.instantiateViewController(withIdentifier: "plumTab")
         
         self.window?.rootViewController = initialViewController
         let tabBar = self.window?.rootViewController as! PlumTabBarController
-        //let tabBar = self.window?.rootViewController as! UITabBarController
         var junkViewControllers = [UIViewController]()
         // returns 0 if not set, hence having the tabItem's tags starting at 1.
         var tagNumber : Int = defaults.integer(forKey: "0")
@@ -288,7 +283,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let the = defaults.value(forKey: "theme") as? String {
             GlobalSettings.changeTheme(Theme(rawValue: the)!)
         }
-        GlobalSettings.changeTheme(Theme.light)
         if let blu = defaults.value(forKey: "blur") as? Bool {
             GlobalSettings.changeBlur(blu)
         }
@@ -397,6 +391,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         if defaults.value(forKey: "miniplayer") == nil {
             defaults.set(false, forKey: "miniplayer")
+        }
+    }
+    
+    private func setColors() {
+        if GlobalSettings.theme == .dark {
+            UIColor.mainLabel = UIColor.white
+            UIColor.detailLabel = UIColor.lightText
+            UIColor.separator = UIColor.darkSeparator
+            UIColor.background = UIColor.darkBackground
+            UIColor.indexBackground = UIColor.darkGray
+        }else{
+            UIColor.mainLabel = UIColor.black
+            UIColor.detailLabel = UIColor.lightText
+            UIColor.separator = UIColor.lightSeparator
+            UIColor.background = UIColor.lightBackground
+            UIColor.indexBackground = UIColor.white
         }
     }
 }

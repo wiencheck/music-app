@@ -29,6 +29,7 @@ class PlaylistsVC: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionIndexView: CollectionIndexView!
     @IBOutlet weak var searchView: BlurView!
+    @IBOutlet weak var tool: UIToolbar!
     var pickedID: MPMediaEntityPersistentID!
     var pickedList: Playlist!
     var gesture: UILongPressGestureRecognizer!
@@ -47,6 +48,7 @@ class PlaylistsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBarController?.delegate = self
+        NotificationCenter.default.addObserver(self, selector: #selector(setTheme), name: NSNotification.Name(rawValue: "themeChanged"), object: nil)
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         grid = GlobalSettings.playlistsGrid
         setTheme()
@@ -178,22 +180,12 @@ extension PlaylistsVC: UITableViewDelegate, UITableViewDataSource {
         if shouldShowResults {
             let cell = tableView.dequeueReusableCell(withIdentifier: "playlistCell", for: indexPath) as! ArtistCell
             let item = filteredPlaylists[indexPath.row]
-            if currentTheme == .dark {
-                cell.setup(list: item, titColor: .white, detColor: .lightText)
-            }else{
-                cell.setup(list: item, titColor: .black, detColor: .black)
-            }
-            cell.backgroundColor = .clear
+            cell.setup(list: item)
             return cell
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "playlistCell", for: indexPath) as! ArtistCell
             let item = result[indexes[indexPath.section]]?[indexPath.row]
-            if currentTheme == .dark {
-                cell.setup(list: item!, titColor: .white, detColor: .lightText)
-            }else{
-                cell.setup(list: item!, titColor: .black, detColor: .black)
-            }
-            cell.backgroundColor = .clear
+            cell.setup(list: item!)
             return cell
         }
     }
@@ -734,37 +726,30 @@ extension PlaylistsVC: UICollectionViewDelegateFlowLayout {
         }
     }
     
-    func setTheme() {
-        let tool = UIToolbar(frame: searchView.bounds)
+    @objc func setTheme() {
         guard let bar = navigationController?.navigationBar else { return }
         switch currentTheme {
         case .light:
             tool.barStyle = .default
-            tableIndexView.backgroundColor = UIColor.white
-            collectionIndexView.backgroundColor = UIColor.white
             bar.barStyle = .default
             bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
-            tableView.backgroundColor = UIColor.lightBackground
-            tableView.separatorColor = .lightGray
         case .dark:
             tool.barStyle = .blackTranslucent
-            tableIndexView.backgroundColor = UIColor.darkGray
-            collectionIndexView.backgroundColor = UIColor.darkGray
             bar.barStyle = .blackTranslucent
             bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
-            tableView.backgroundColor = UIColor.darkBackground
-            tableView.separatorColor = .black
         default:
             tool.barStyle = .blackTranslucent
-            tableIndexView.backgroundColor = UIColor.darkGray
-            collectionIndexView.backgroundColor = UIColor.darkGray
             bar.barStyle = .blackTranslucent
             bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
-            tableView.backgroundColor = UIColor.lightBackground
-            tableView.separatorColor = .lightGray
         }
-        searchView.addSubview(tool)
         bar.tintColor = GlobalSettings.tint.color
+        tableView.backgroundColor = UIColor.background
+        tableView.separatorColor = .separator
+        collectionView.backgroundColor = UIColor.background
+        tableIndexView.backgroundColor = UIColor.indexBackground
+        collectionIndexView.backgroundColor = UIColor.indexBackground
+        collectionView.reloadData()
+        tableView.reloadData()
     }
     
 }

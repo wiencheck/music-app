@@ -332,6 +332,11 @@ extension UIColor {
     static let darkBackground = UIColor(red: 0.176470588235294, green: 0.176470588235294, blue: 0.176470588235294, alpha: 1.0)
     static let lightSeparator = UIColor(red:0.87, green:0.87, blue:0.87, alpha:1.0)
     static let darkSeparator = UIColor(red: 0.215686274509804, green: 0.215686274509804, blue: 0.215686274509804, alpha: 1.0)
+    static var mainLabel = UIColor()
+    static var detailLabel = UIColor()
+    static var separator = UIColor()
+    static var background = UIColor()
+    static var indexBackground = UIColor()
 }
 
 

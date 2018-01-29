@@ -340,11 +340,11 @@
                                         <rect key="frame" x="0.0" y="763.5" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="y7z-nq-baD" id="wqw-4Z-Q9w">
-                                            <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="286" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Land in" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TyW-wu-v31">
-                                                    <rect key="frame" x="15" y="14" width="50" height="18"/>
+                                                    <rect key="frame" x="16" y="14" width="50" height="18"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <nil key="textColor"/>
@@ -399,7 +399,7 @@
                                         <rect key="frame" x="0.0" y="907.5" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="IZ4-vB-Zwf" id="RhQ-Kc-Sph">
-                                            <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="286" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ap5-nz-TkF">
@@ -452,7 +452,7 @@
                                         <rect key="frame" x="0.0" y="995.5" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="VV1-ZB-dOo" id="Fd9-id-Afz">
-                                            <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="286" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Adjust color" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FPI-2i-rbW">
@@ -485,19 +485,33 @@
                         <barButtonItem key="backBarButtonItem" title=" " id="EWZ-sN-TRl"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="abou" destination="ap5-nz-TkF" id="KvO-k5-lhG"/>
+                        <outlet property="albG" destination="SJA-MN-VX1" id="FDq-FQ-ibL"/>
                         <outlet property="albumsGridSwitch" destination="5uk-ns-ZAH" id="gqV-36-UEd"/>
+                        <outlet property="appI" destination="yHK-Qd-mpO" id="WN4-41-kfc"/>
+                        <outlet property="artG" destination="dk8-xy-Ar8" id="rBx-f3-jew"/>
                         <outlet property="artistsGridSwitch" destination="qe4-LX-7dX" id="xrK-GI-sxl"/>
                         <outlet property="colorView" destination="N1o-R5-8ut" id="2fM-Z9-q26"/>
                         <outlet property="currentMiniPlayer" destination="0JJ-Q5-070" id="rHt-3G-9YX"/>
                         <outlet property="currentStyle" destination="gdr-Ug-OhO" id="YpB-oZ-caX"/>
                         <outlet property="deployLabel" destination="x2N-mJ-Zhq" id="bSP-df-Pit"/>
+                        <outlet property="doubT" destination="0Pg-Ts-ytq" id="Ijh-9q-QNS"/>
                         <outlet property="doubleBarSwitch" destination="Hl7-Ds-UOU" id="ixq-qy-w8V"/>
+                        <outlet property="landI" destination="TyW-wu-v31" id="WhC-4E-mFL"/>
+                        <outlet property="lyrM" destination="QiF-xA-V4C" id="ZUm-Ua-2li"/>
                         <outlet property="lyricsSwitch" destination="JmB-aI-EYX" id="67Z-kw-IC8"/>
+                        <outlet property="miniS" destination="Myr-GC-m5W" id="scU-QT-A60"/>
+                        <outlet property="playG" destination="j9R-B8-a1A" id="S3A-xR-TNO"/>
                         <outlet property="playlistsGridSwitch" destination="4P9-EJ-N7t" id="9sq-nr-gF1"/>
                         <outlet property="progressBar" destination="D8S-si-gKO" id="5il-Jj-u9O"/>
+                        <outlet property="ratM" destination="cBh-O7-PhK" id="aQs-db-fd8"/>
+                        <outlet property="ratSet" destination="gT8-hN-2cY" id="UZZ-zO-SKp"/>
                         <outlet property="ratingSwitch" destination="7AP-UF-XxH" id="WuO-yt-Oiv"/>
+                        <outlet property="rounS" destination="Civ-cB-D91" id="QQ2-Mc-cdY"/>
                         <outlet property="roundSwitch" destination="0Ea-mg-b0N" id="iDL-cf-gsw"/>
                         <outlet property="spotlightButton" destination="qwF-aV-bZC" id="JgZ-3D-gBX"/>
+                        <outlet property="them" destination="fzz-B8-i1A" id="JOe-vT-Dwg"/>
+                        <outlet property="tintC" destination="g9D-qw-BPo" id="uk1-R9-YGD"/>
                         <segue destination="q12-An-wiz" kind="show" identifier="colors" id="71p-87-rEu"/>
                         <segue destination="DwD-4M-o7H" kind="show" identifier="scale" id="dM4-n6-gYU"/>
                         <segue destination="bKC-yf-ZkA" kind="show" identifier="ratings" id="l6g-YW-QXF"/>
@@ -2280,11 +2294,16 @@ SOFTWARE.</string>
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="111.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
+                                        <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kno-S1-Btq">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="111.5"/>
+                                            <items>
+                                                <barButtonItem id="DS0-Sr-i0s"/>
+                                            </items>
+                                        </toolbar>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This Name Of Album Socks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1tB-Iy-HZg">
-                                            <rect key="frame" x="116" y="16" width="205" height="20"/>
+                                            <rect key="frame" x="116" y="16" width="184" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="20" id="CXW-d4-Y14"/>
-                                                <constraint firstAttribute="width" constant="205" id="S2c-Te-iRb"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -2332,18 +2351,24 @@ SOFTWARE.</string>
                                             </connections>
                                         </button>
                                     </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstItem="1tB-Iy-HZg" firstAttribute="leading" secondItem="tQ2-Eu-BIl" secondAttribute="trailing" constant="10" id="1Lr-do-dX5"/>
+                                        <constraint firstAttribute="bottom" secondItem="kno-S1-Btq" secondAttribute="bottom" id="681-93-1sr"/>
                                         <constraint firstItem="tQ2-Eu-BIl" firstAttribute="leading" secondItem="VuX-fc-ti6" secondAttribute="leadingMargin" constant="6" id="D2d-Tp-OEx"/>
+                                        <constraint firstItem="kno-S1-Btq" firstAttribute="leading" secondItem="VuX-fc-ti6" secondAttribute="leading" id="Lzi-Nh-jdx"/>
                                         <constraint firstItem="ady-Nf-9zC" firstAttribute="leading" secondItem="tQ2-Eu-BIl" secondAttribute="trailing" constant="10" id="MWH-gW-cS6"/>
                                         <constraint firstItem="3SE-T8-GJ2" firstAttribute="leading" secondItem="tQ2-Eu-BIl" secondAttribute="trailing" constant="10" id="RQi-MU-QdI"/>
+                                        <constraint firstItem="kno-S1-Btq" firstAttribute="top" secondItem="VuX-fc-ti6" secondAttribute="top" id="RcW-Y4-OUQ"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="gD5-If-gyO" secondAttribute="bottom" constant="4" id="TA6-cT-6dc"/>
                                         <constraint firstItem="gD5-If-gyO" firstAttribute="leading" secondItem="VuX-fc-ti6" secondAttribute="leadingMargin" constant="5" id="aUe-OV-nsX"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="tQ2-Eu-BIl" secondAttribute="bottom" constant="3" id="cCA-Du-WVd"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="1tB-Iy-HZg" secondAttribute="trailing" constant="4" id="eIL-3V-qNG"/>
                                         <constraint firstItem="1tB-Iy-HZg" firstAttribute="top" secondItem="VuX-fc-ti6" secondAttribute="top" constant="16" id="jcM-QZ-SKD"/>
                                         <constraint firstItem="ady-Nf-9zC" firstAttribute="top" secondItem="1tB-Iy-HZg" secondAttribute="bottom" constant="9" id="ltW-Er-R9N"/>
                                         <constraint firstItem="3SE-T8-GJ2" firstAttribute="top" secondItem="ady-Nf-9zC" secondAttribute="bottom" constant="9" id="o56-7I-7cI"/>
                                         <constraint firstItem="tQ2-Eu-BIl" firstAttribute="top" secondItem="VuX-fc-ti6" secondAttribute="topMargin" constant="3" id="pGw-Ga-3y9"/>
+                                        <constraint firstAttribute="trailing" secondItem="kno-S1-Btq" secondAttribute="trailing" id="riP-L2-xie"/>
                                     </constraints>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
@@ -2359,6 +2384,7 @@ SOFTWARE.</string>
                                     <outlet property="artwork" destination="tQ2-Eu-BIl" id="PI1-Gl-mmN"/>
                                     <outlet property="songsLabel" destination="ady-Nf-9zC" id="lJi-M7-6NL"/>
                                     <outlet property="titleLabel" destination="1tB-Iy-HZg" id="Ci3-fa-vVu"/>
+                                    <outlet property="tool" destination="kno-S1-Btq" id="paq-b5-8wn"/>
                                     <outlet property="yearLabel" destination="3SE-T8-GJ2" id="Kek-lF-WG3"/>
                                 </connections>
                             </tableViewCell>
@@ -5341,6 +5367,7 @@ I will push the new build in a few minutes.</string>
                         <outlet property="searchView" destination="dOc-hV-Wjl" id="Zvw-pP-3yT"/>
                         <outlet property="tableIndexView" destination="zMg-Tt-FlO" id="Pa4-PU-jz6"/>
                         <outlet property="tableView" destination="wyJ-xZ-gty" id="wnj-pZ-Xib"/>
+                        <outlet property="tool" destination="czn-O5-sNJ" id="KAg-LA-cdn"/>
                         <segue destination="O5b-aR-CcB" kind="show" identifier="album" id="g4J-C0-9Kx"/>
                         <segue destination="Y0c-SE-ysp" kind="show" identifier="artistAlbums" id="GRh-Pt-2wL"/>
                     </connections>
@@ -5634,12 +5661,12 @@ I will push the new build in a few minutes.</string>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="fSQ-Uk-yVX" firstAttribute="top" secondItem="YqG-zJ-58s" secondAttribute="top" id="UHN-9G-lpU"/>
-                                    <constraint firstAttribute="bottom" secondItem="fSQ-Uk-yVX" secondAttribute="bottom" id="XcT-z1-nHX"/>
-                                    <constraint firstAttribute="trailing" secondItem="fSQ-Uk-yVX" secondAttribute="trailing" id="fIm-Iw-80e"/>
+                                    <constraint firstItem="fSQ-Uk-yVX" firstAttribute="leading" secondItem="YqG-zJ-58s" secondAttribute="leading" id="6KV-n3-Juv"/>
+                                    <constraint firstAttribute="trailing" secondItem="fSQ-Uk-yVX" secondAttribute="trailing" id="NlB-ny-Q6o"/>
+                                    <constraint firstItem="fSQ-Uk-yVX" firstAttribute="top" secondItem="YqG-zJ-58s" secondAttribute="top" id="bo4-Ab-APP"/>
                                     <constraint firstAttribute="height" constant="52" id="jiT-MV-MLa"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="52" id="kmU-FN-ivU"/>
-                                    <constraint firstItem="fSQ-Uk-yVX" firstAttribute="leading" secondItem="YqG-zJ-58s" secondAttribute="leading" id="pM5-Rf-qa2"/>
+                                    <constraint firstAttribute="bottom" secondItem="fSQ-Uk-yVX" secondAttribute="bottom" id="wBH-wm-rCL"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -5677,6 +5704,7 @@ I will push the new build in a few minutes.</string>
                         <outlet property="searchView" destination="YqG-zJ-58s" id="TeY-PZ-GIv"/>
                         <outlet property="tableIndexView" destination="MJY-1m-vgY" id="iob-jY-FzB"/>
                         <outlet property="tableView" destination="zDc-at-bwM" id="Pnd-dx-Qqr"/>
+                        <outlet property="tool" destination="fSQ-Uk-yVX" id="J4P-Jc-gxM"/>
                         <segue destination="3n3-F7-SRO" kind="show" identifier="playlist" id="hO0-6B-0g0"/>
                         <segue destination="Jfv-DI-HnR" kind="show" identifier="folder" id="ZYw-qy-Bmr"/>
                     </connections>
@@ -6065,8 +6093,8 @@ I will push the new build in a few minutes.</string>
         <image name="zeroVol" width="175" height="298"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="FjZ-8D-iAU"/>
-        <segue reference="SrT-cb-STQ"/>
-        <segue reference="yuS-dr-Z4q"/>
+        <segue reference="hO0-6B-0g0"/>
+        <segue reference="g4J-C0-9Kx"/>
+        <segue reference="GRh-Pt-2wL"/>
     </inferredMetricsTieBreakers>
 </document>

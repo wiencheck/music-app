@@ -170,19 +170,11 @@ extension ArtistSongs: UITableViewDelegate, UITableViewDataSource {
                 if typesSongs[indexPath.section-1][indexPath.row] == 0 {
                     let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! SongCell
                     let item = result[indexes[indexPath.section-1]]?[indexPath.row]
-                    if GlobalSettings.theme == .dark {
-                        cell.artSetup(item: item!, titColor: .white, artColor: .white, albColor: UIColor.lightText)
-                        cell.titleLabel.textColor = .white
-                    }else{
-                        cell.artSetup(item: item!, titColor: .black, artColor: .black, albColor: .black)
-                        cell.titleLabel.textColor = .black
-                    }
-                    cell.backgroundColor = .clear
+                    cell.setup(item: item!)
                     return cell
                 }else{
                     let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as! QueueActionsCell
                     cell.delegate = self
-                    cell.backgroundColor = .clear
                     return cell
                 }
             }else{

@@ -50,12 +50,7 @@ class FolderVC: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! ArtistCell
-        if currentTheme == .dark {
-            cell.setup(list: playlists[indexPath.row], titColor: .white, detColor: .lightText)
-        }else{
-            cell.setup(list: playlists[indexPath.row], titColor: .black, detColor: .black)
-        }
-        cell.backgroundColor = .clear
+        cell.setup(list: playlists[indexPath.row])
         return cell
     }
     

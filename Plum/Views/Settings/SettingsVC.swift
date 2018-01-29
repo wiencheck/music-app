@@ -27,10 +27,27 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     //@IBOutlet weak var searchTopSwitch: UISwitch!
     @IBOutlet weak var colorView: UIView!
     @IBOutlet weak var deployLabel: UILabel!
+    @IBOutlet weak var artG :UILabel!
+    @IBOutlet weak var albG :UILabel!
+    @IBOutlet weak var playG :UILabel!
+    @IBOutlet weak var appI :UILabel!
+    @IBOutlet weak var them :UILabel!
+    @IBOutlet weak var miniS :UILabel!
+    @IBOutlet weak var tintC :UILabel!
+    @IBOutlet weak var rounS :UILabel!
+    @IBOutlet weak var ratM :UILabel!
+    @IBOutlet weak var ratSet :UILabel!
+    @IBOutlet weak var lyrM :UILabel!
+    @IBOutlet weak var abou :UILabel!
+    @IBOutlet weak var doubT :UILabel!
+    @IBOutlet weak var landI: UILabel!
     var timer: Timer!
+    var currentTheme: Theme!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "Settings"
+        updateTheme()
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateProgressBar), userInfo: nil, repeats: true)
         tabBarController?.delegate = self
@@ -167,6 +184,101 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         timer.invalidate()
     }
     
+//    override func numberOfSections(in tableView: UITableView) -> Int {
+//        return 6
+//    }
+//
+//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        switch section {
+//        case 0:     //Grid
+//            return 3
+//        case 1:     //Appearance
+//            return 5
+//        case 2:     //Ratings
+//            return 2
+//        case 3:     //Lyrics
+//            return 1
+//        case 4:     //Search
+//            return 2
+//        case 5:     //Other
+//            return 2
+//        default:
+//            return 0
+//        }
+//    }
+    
+//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        switch indexPath.section {
+//        case 0:     //Grid
+//            let cell = tableView.dequeueReusableCell(withIdentifier: "switch", for: indexPath) as! SwitchCell
+//            switch indexPath.row {
+//            case 0:
+//                cell.setup(title: "Artists", on: GlobalSettings.artistsGrid)
+//            case 1:
+//                cell.setup(title: "Albums", on: GlobalSettings.albumsGrid)
+//            default:
+//                cell.setup(title: "Playlists", on: GlobalSettings.playlistsGrid)
+//            }
+//            return cell
+//        case 1:     //Appearance
+//            switch indexPath.row {
+//            case 0:
+//                let cell = tableView.dequeueReusableCell(withIdentifier: "detail", for: indexPath) as! DetailCell
+//                cell.setup(title: "App icon", detail: "")
+//                return cell
+//            case 1:
+//                let cell = tableView.dequeueReusableCell(withIdentifier: "detail", for: indexPath) as! DetailCell
+//                cell.setup(title: "Theme", detail: GlobalSettings.theme.rawValue)
+//                return cell
+//            case 2:
+//                let cell = tableView.dequeueReusableCell(withIdentifier: "detail", for: indexPath) as! DetailCell
+//                cell.setup(title: "Miniplayer style", detail: GlobalSettings.popupStyle.rawValue)
+//                return cell
+//            case 3:
+//                let cell = tableView.dequeueReusableCell(withIdentifier: "tint", for: indexPath) as! ColorTintCell
+//                cell.setup(title: "Tint color", color: GlobalSettings.tint.color)
+//                return cell
+//            default:
+//                let cell = tableView.dequeueReusableCell(withIdentifier: "switch", for: indexPath) as! SwitchCell
+//                cell.setup(title: "Rounded now-playing slider", on: GlobalSettings.roundedSlider)
+//                return cell
+//            }
+//        case 2:     //Ratings
+//            switch indexPath.row {
+//            case 0:
+//                let cell = tableView.dequeueReusableCell(withIdentifier: "switch", for: indexPath) as! SwitchCell
+//                cell.setup(title: "Rating mode", on: GlobalSettings.rating)
+//                return cell
+//            default:
+//                let cell = tableView.dequeueReusableCell(withIdentifier: "detail", for: indexPath) as! DetailCell
+//                cell.setup(title: "Setting", detail: "")
+//                return cell
+//            }
+//        case 3:     //Lyrics
+//            let cell = tableView.dequeueReusableCell(withIdentifier: "switch", for: indexPath) as! SwitchCell
+//            cell.setup(title: "Lyrics mode", on: GlobalSettings.lyrics)
+//            return cell
+//        case 4:     //Search
+//            let cell = tableView.dequeueReusableCell(withIdentifier: "detail", for: indexPath) as! DetailCell
+//            cell.setup(title: "Land in", detail: GlobalSettings.deployIn.rawValue)
+//            return cell
+//        case 5:     //Other
+//            switch indexPath.row {
+//            case 0:
+//                let cell = tableView.dequeueReusableCell(withIdentifier: "detail", for: indexPath) as! DetailCell
+//                cell.setup(title: "About", detail: "")
+//                return cell
+//            default:
+//                let cell = tableView.dequeueReusableCell(withIdentifier: "switch", for: indexPath) as!
+//                SwitchCell
+//                cell.setup(title: "Double tap on playing bar", on: GlobalSettings.doubleBar)
+//                return cell
+//            }
+//        default:
+//            return UITableViewCell()
+//        }
+//    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let identifier = tableView.cellForRow(at: indexPath)?.reuseIdentifier
             else { return }
@@ -240,6 +352,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         currentStyle.text = GlobalSettings.theme.rawValue
         doubleBarSwitch.isOn = GlobalSettings.doubleBar
         //searchTopSwitch.isOn = GlobalSettings.searchOnTop
+        tableView.reloadData()
     }
     
     func selfExplanatory() {
@@ -301,24 +414,24 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         let alert = UIAlertController(title: "Time for decision", message: "Light: Certain elements on now playing screen, like lyrics background, UpNext background and upper bar will be white colored\n\nDark: Same as light, only it's totally opposite\n\nMixed: Navigation elements will be dark, while content will be light", preferredStyle: .actionSheet)
         let dark = UIAlertAction(title: "Dark", style: .default, handler: {(action) in
             GlobalSettings.changeTheme(.dark)
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "themeChanged"), object: nil)
             self.reload()
-            //self.updateTheme()
-            //self.themeAlert()
+            self.updateTheme()
+            self.setColors()
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "themeChanged"), object: nil)
         })
         let light = UIAlertAction(title: "Light", style: .default, handler: {(action) in
             GlobalSettings.changeTheme(.light)
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "themeChanged"), object: nil)
+            self.setColors()
             self.reload()
-            //self.updateTheme()
-            //self.themeAlert()
+            self.updateTheme()
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "themeChanged"), object: nil)
         })
         let mixed = UIAlertAction(title: "Mixed", style: .default, handler: {(action) in
             GlobalSettings.changeTheme(.mixed)
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "themeChanged"), object: nil)
             self.reload()
-            //self.updateTheme()
-            //self.themeAlert()
+            self.updateTheme()
+            self.setColors()
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "themeChanged"), object: nil)
         })
         alert.addAction(light)
         alert.addAction(dark)
@@ -383,11 +496,81 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         present(alert, animated: true, completion: nil)
     }
     
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if currentTheme == .dark {
+            cell.backgroundColor = .black
+            for sub in cell.subviews {
+                if let s = sub as? UILabel {
+                    s.textColor = .white
+                }
+            }
+        }else{
+            cell.backgroundColor = .white
+            for sub in cell.subviews {
+                if let s = sub as? UILabel {
+                    s.textColor = .black
+                }
+            }
+        }
+    }
+    
     func updateTheme() {
-        tableView.backgroundColor = UIColor.darkBackground
-        UITableViewCell.appearance().backgroundColor = .black
-        UILabel.appearance().tintColor = .white
-        tableView.reloadData()
+        currentTheme = GlobalSettings.theme
+        if currentTheme == .dark {
+            tableView.backgroundColor = .darkBackground
+            artG.textColor = .white
+            albG.textColor = .white
+            playG.textColor = .white
+            appI.textColor = .white
+            them.textColor = .white
+            miniS.textColor = .white
+            tintC.textColor = .white
+            rounS.textColor = .white
+            ratM.textColor = .white
+            ratSet.textColor = .white
+            lyrM.textColor = .white
+            abou.textColor = .white
+            doubT.textColor = .white
+            landI.textColor = .white
+            tableView.separatorColor = UIColor.darkSeparator
+            navigationController?.navigationBar.barStyle = .blackTranslucent
+            UITextField.appearance().keyboardAppearance = .dark
+        }else{
+            tableView.backgroundColor = UIColor.groupTableViewBackground
+            artG.textColor = .black
+            albG.textColor = .black
+            playG.textColor = .black
+            appI.textColor = .black
+            them.textColor = .black
+            miniS.textColor = .black
+            tintC.textColor = .black
+            rounS.textColor = .black
+            ratM.textColor = .black
+            ratSet.textColor = .black
+            lyrM.textColor = .black
+            abou.textColor = .black
+            doubT.textColor = .black
+            landI.textColor = .black
+            tableView.separatorColor = UIColor.lightSeparator
+            navigationController?.navigationBar.barStyle = .default
+            UITextField.appearance().keyboardAppearance = .light
+        }
+    }
+    
+    func setColors() {
+        if GlobalSettings.theme == .dark {
+            UIColor.mainLabel = UIColor.white
+            UIColor.detailLabel = UIColor.gray
+            UIColor.separator = UIColor.darkSeparator
+            UIColor.background = UIColor.darkBackground
+            UIColor.indexBackground = UIColor.darkGray
+        }else{
+            UIColor.mainLabel = UIColor.black
+            UIColor.detailLabel = UIColor.gray
+            UIColor.separator = UIColor.lightSeparator
+            UIColor.background = UIColor.lightBackground
+            UIColor.indexBackground = UIColor.white
+        }
     }
 }
 

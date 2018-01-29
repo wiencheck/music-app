@@ -26,9 +26,9 @@ class SongCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func setup(item: MPMediaItem, titColor: UIColor, artColor: UIColor, albColor: UIColor){
+    func setup(item: MPMediaItem){
         titleLabel.text = item.title
-        titleLabel.textColor = titColor
+        titleLabel.textColor = UIColor.mainLabel
         if let art = item.artwork {
             artworkView.image = art.image(at: CGSize(width: 30, height: 30))
         }else{
@@ -37,7 +37,7 @@ class SongCell: UITableViewCell {
         let art = item.albumArtist ?? "Unknown"
         let range = NSRange(location: 0, length: art.count)
         let nart = NSMutableAttributedString(string: art)
-        nart.addAttribute(NSAttributedStringKey.foregroundColor, value: artColor, range: range)
+        nart.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.mainLabel, range: range)
         var alb = ""
         if GlobalSettings.rating {
             alb = " " + item.labelFromRating()
@@ -49,15 +49,15 @@ class SongCell: UITableViewCell {
             alb = " " + (item.albumTitle ?? "Unknown")
             let nalb = NSMutableAttributedString(string: alb)
             let range2 = NSRange(location: 0, length: alb.count)
-            nalb.addAttribute(NSAttributedStringKey.foregroundColor, value: albColor, range: range2)
+            nalb.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.detailLabel, range: range2)
             nart.append(nalb)
         }
         artAlLabel.attributedText = nart
     }
     
-    func artSetup(item: MPMediaItem, titColor: UIColor, artColor: UIColor, albColor: UIColor){
+    func artSetup(item: MPMediaItem){
         titleLabel.text = item.title
-        titleLabel.textColor = titColor
+        titleLabel.textColor = UIColor.mainLabel
         if let art = item.artwork {
             artworkView.image = art.image(at: CGSize(width: 30, height: 30))
         }else{
@@ -66,7 +66,7 @@ class SongCell: UITableViewCell {
         let art = item.albumTitle ?? "Unknown"
         let range = NSRange(location: 0, length: art.count)
         let nart = NSMutableAttributedString(string: art)
-        nart.addAttribute(NSAttributedStringKey.foregroundColor, value: artColor, range: range)
+        nart.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.detailLabel, range: range)
         var alb = ""
         if GlobalSettings.rating {
             alb = " " + item.labelFromRating()

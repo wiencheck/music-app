@@ -40,7 +40,6 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: Notification.Name(rawValue: "themeChanged"), object: nil)
-        setTheme()
         tabBarController?.delegate = self
         if musicQuery.shared.songsSet{
             songs = musicQuery.shared.songs
@@ -60,12 +59,13 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             }
             indexView.indexes = self.indexes
             indexView.tableView = self.tableView
-            indexView.setup(color: UIColor.white)
+            indexView.setup()
             searchVisible = true
             configureSearchController()
             view.bringSubview(toFront: indexView)
         }
         tableView.tableFooterView = UIView(frame: .zero)
+        setTheme()
         print("Songs loaded")
     }
     
@@ -119,17 +119,28 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
                     label.textColor = UIColor.gray
                     tool.barStyle = .default
                 }
-                //v.addSubview(gradient)
                 v.addSubview(tool)
                 label.text = index
                 v.addSubview(label)
                 v.bringSubview(toFront: label)
                 v.clipsToBounds = true
                 return v;
-                //headers.append(v)
             }
         }
     }
+//    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int){
+//        view.backgroundColor = .clear
+//        let header = view as! UITableViewHeaderFooterView
+//        let tool = UIToolbar(frame: header.bounds)
+//        tool.barStyle = .default
+//        header.addSubview(tool)
+//        header.textLabel?.textColor = UIColor.white
+//        header.sendSubview(toBack: tool)
+//    }
+//
+//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        return indexes[section]
+//    }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
@@ -217,13 +228,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             }else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! SongCell
                 let item = filteredSongs[indexPath.row]
-                if currentTheme == .dark {
-                    cell.setup(item: item, titColor: .white, artColor: .white, albColor: UIColor.lightText)
-                }else{
-                    cell.setup(item: item, titColor: .black, artColor: .black, albColor: UIColor.gray)
-                }
-                cell.backgroundColor = .clear
-                //cell.contentView.addBottomBorderWithColor(color: UIColor.lightSeparator, width: 1, x: 16)
+                cell.setup(item: item)
                 return cell
             }
         }else{
@@ -235,19 +240,11 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
                 if(cellTypes[indexPath.section][indexPath.row] == 0){
                     let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! SongCell
                     let item = result[indexes[indexPath.section]]?[indexPath.row]
-                    if currentTheme == .dark {
-                        cell.setup(item: item!, titColor: .white, artColor: .white, albColor: UIColor.lightText)
-                    }else{
-                        cell.setup(item: item!, titColor: .black, artColor: .black, albColor: UIColor.gray)
-                    }
-                    cell.backgroundColor = .clear
-                    //cell.contentView.addTopBorderWithColor(color: UIColor.lightSeparator, width: 0.5, x: 16)
+                    cell.setup(item: item!)
                     return cell
                 }else {
                     let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as! QueueActionsCell
                     cell.delegate = self
-                    cell.backgroundColor = .clear
-                    //cell.contentView.addTopBorderWithColor(color: UIColor.lightSeparator, width: 1, x: 16)
                     return cell
                 }
             }
@@ -728,45 +725,29 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
     @objc func updateTheme() {
         setTheme()
         setHeaders()
-        //tableView.reloadData()
+        tableView.reloadData()
     }
     
     func setTheme() {
         currentTheme = GlobalSettings.theme
-        //let tool = UIToolbar(frame: searchView.bounds)
-        //tool.clipsToBounds = true
         guard let bar = navigationController?.navigationBar else { return }
         switch currentTheme {
         case .light:
-            UIApplication.shared.statusBarStyle = .default
             tool.barStyle = .default
-            indexView.backgroundColor = UIColor.white
             bar.barStyle = .default
-            //bar.isTranslucent = false
             bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
-            let background = UIImageView(image: #imageLiteral(resourceName: "gradient_background"))
-            background.contentMode = .scaleAspectFill
-            //tableView.backgroundView = background
-            tableView.backgroundColor = UIColor.lightBackground
-            tableView.separatorColor = UIColor.lightSeparator
         case .dark:
-            UIApplication.shared.statusBarStyle = .lightContent
             tool.barStyle = .blackTranslucent
-            indexView.backgroundColor = UIColor.darkGray
             bar.barStyle = .blackTranslucent
             bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
-            tableView.backgroundColor = UIColor.darkBackground
-            tableView.separatorColor = UIColor.darkSeparator
         default:
-            UIApplication.shared.statusBarStyle = .lightContent
             tool.barStyle = .blackTranslucent
-            indexView.backgroundColor = UIColor.darkGray
             bar.barStyle = .blackTranslucent
             bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
-            tableView.backgroundColor = UIColor.lightBackground
-            tableView.separatorColor = .lightSeparator
         }
-        //searchView.addSubview(tool)
+        tableView.backgroundColor = UIColor.background
+        tableView.separatorColor = UIColor.separator
+        //indexView.backgroundColor = UIColor.indexBackground
         let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
         NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: tool, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
         bar.tintColor = GlobalSettings.tint.color

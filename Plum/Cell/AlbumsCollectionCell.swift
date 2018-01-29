@@ -22,17 +22,10 @@ class AlbumsCollectionCell: UICollectionViewCell {
         //let count = album.songsIn
         //var st = ""
         let genre = album.items[0].albumArtist ?? ""
-//        if genre != "" {
-//            if count > 1 {
-//                st = "\(genre) ･ \(count)"
-//            }else{
-//                st = "\(genre) ･ 1 song"
-//            }
-//        }else{
-//            st = "\(count) songs"
-//        }
         detailLabel.text = genre
         artwork.image = album.artwork
+        mainLabel.textColor = UIColor.mainLabel
+        detailLabel.textColor = UIColor.detailLabel
     }
     
     override func layoutSubviews() {

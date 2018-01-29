@@ -38,10 +38,13 @@ class SongInAlbumCell: UITableViewCell {
             durationLabel.textColor = GlobalSettings.tint.color
             durationLabel.text = item.labelFromRating()
         }else{
-            durationLabel.textColor = UIColor.black
+            durationLabel.textColor = UIColor.mainLabel
             durationLabel.text = "\(item.playbackDuration.calculateFromTimeInterval().minute):\(item.playbackDuration.calculateFromTimeInterval().second)"
         }
         self.item = item
+        artistLabel?.textColor = UIColor.detailLabel
+        titleLabel.textColor = UIColor.mainLabel
+        trackNumberLabel.textColor = UIColor.mainLabel
     }
     
     func setupA(item: MPMediaItem){
@@ -55,25 +58,14 @@ class SongInAlbumCell: UITableViewCell {
         if GlobalSettings.rating{
             durationLabel.textColor = GlobalSettings.tint.color
             durationLabel.text = item.labelFromRating()
-            /*switch item.rating{
-            case 1:
-                durationLabel.text = "★☆☆☆☆"
-            case 2:
-                durationLabel.text = "★★☆☆☆"
-            case 3:
-                durationLabel.text = "★★★☆☆"
-            case 4:
-                durationLabel.text = "★★★★☆"
-            case 5:
-                durationLabel.text = "★★★★★"
-            default:
-                durationLabel.text = "\(item.playbackDuration.calculateFromTimeInterval().minute):\(item.playbackDuration.calculateFromTimeInterval().second)"
-            }*/
         }else{
-            durationLabel.textColor = UIColor.black
+            durationLabel.textColor = UIColor.mainLabel
             durationLabel.text = "\(item.playbackDuration.calculateFromTimeInterval().minute):\(item.playbackDuration.calculateFromTimeInterval().second)"
         }
         self.item = item
+        artistLabel?.textColor = UIColor.detailLabel
+        titleLabel.textColor = UIColor.mainLabel
+        trackNumberLabel.textColor = UIColor.mainLabel
     }
 
 }

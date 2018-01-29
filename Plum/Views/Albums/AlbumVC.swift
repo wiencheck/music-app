@@ -30,8 +30,8 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
         tableView.scrollIndicatorInsets = tableView.contentInset
-        tableView.backgroundColor = UIColor.lightBackground
-        tableView.separatorColor = UIColor.lightSeparator
+        updateTheme()
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: NSNotification.Name(rawValue: "themeChanged"), object: nil)
         tableView.delaysContentTouches = false
         readSettings()
         if receivedID != nil{
@@ -77,6 +77,7 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath) as! ShuffleCell
             cell.setup(style: .light)
+            cell.label.textColor = UIColor.mainLabel
             return cell
         }else{
             if album.manyArtists{
@@ -138,35 +139,21 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
         let header = tableView.dequeueReusableCell(withIdentifier: "infoCell") as! AlbumInfoCell
         header.setup(album: album, play: true)
         header.delegate = self
-        header.contentView.backgroundColor = UIColor.lightBackground
-//        for (UIView *currentView in self.subviews)
-//        {
-//            if([currentView isKindOfClass:[UIScrollView class]])
-//            {
-//                ((UIScrollView *)currentView).delaysContentTouches = NO;
-//                break;
-//            }
-//        }
+        header.backgroundColor = UIColor.background
         for current in header.subviews {
             if current .isKind(of: UIScrollView.self) {
                 (current as! UIScrollView).delaysContentTouches = false
             }
         }
+        if GlobalSettings.theme == .dark {
+            header.tool.barStyle = .blackTranslucent
+        }else{
+            header.tool.barStyle = .default
+        }
         let v = header.contentView
-        v.addBottomBorderWithColor(color: UIColor.lightSeparator, width: 0.5, x: 14)
+        //v.addBottomBorderWithColor(color: UIColor.separator, width: 0.5, x: 14)
         return v
     }
-
-//    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-//        let v = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 1))
-//        v.backgroundColor = UIColor.clear
-//        v.addBottomBorderWithColor(color: UIColor.lightSeparator, width: 1, x: 16)
-//        return v
-//    }
-//    
-//    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-//        return 1
-//    }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if cellTypes[activeIndexRow] != 0 {
@@ -293,6 +280,18 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
         player.shuffleCurrent()
         player.playFromShufQueue(index: 0, new: true)
         player.play()
+    }
+    
+    @objc func updateTheme() {
+        if GlobalSettings.theme == .dark {
+            tableView.backgroundColor = UIColor.darkBackground
+            navigationController?.navigationBar.barStyle = .blackTranslucent
+            tableView.separatorColor = UIColor.darkSeparator
+        }else{
+            tableView.backgroundColor = UIColor.lightBackground
+            navigationController?.navigationBar.barStyle = .default
+            tableView.separatorColor = UIColor.lightSeparator
+        }
     }
 }
 
