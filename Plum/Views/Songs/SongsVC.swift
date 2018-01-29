@@ -26,7 +26,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     var shouldShowResults = false
     var cellTypesSearch = [Int]()
     var searchActiveRow = 0
-    var headers: [UIView]!
+    var headers = [UIView]()
     var heightInset: CGFloat!
     var hideKeyboard = false
     var currentTheme: Theme!
@@ -35,10 +35,11 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var indexView: TableIndexView!
-    @IBOutlet weak var searchView: BlurView!
+    @IBOutlet weak var searchView: UIView!
+    @IBOutlet weak var tool: UIToolbar!
     override func viewDidLoad() {
         super.viewDidLoad()
-        currentTheme = GlobalSettings.theme
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: Notification.Name(rawValue: "themeChanged"), object: nil)
         setTheme()
         tabBarController?.delegate = self
         if musicQuery.shared.songsSet{
@@ -51,7 +52,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             tableView.delegate = self
             tableView.dataSource = self
             setupDict()
-            setHeaders()
+            //setHeaders()
             indexes.insert("", at: 0)
             result[""] = [MPMediaItem()]
             for index in indexes {
@@ -66,6 +67,10 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         }
         tableView.tableFooterView = UIView(frame: .zero)
         print("Songs loaded")
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "themeChanged"), object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -101,7 +106,27 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             if section == 0 {
                 return UIView()
             }else{
-                return headers[section-1]
+                let index = indexes[section]
+                let v = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 27))
+                v.backgroundColor = .clear
+                let label = UILabel(frame: CGRect(x: 12, y: 5, width: v.frame.width, height: 21))
+                let tool = UIToolbar(frame: v.frame)
+                label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+                if currentTheme == .dark {
+                    label.textColor = .white
+                    tool.barStyle = .blackTranslucent
+                }else{
+                    label.textColor = UIColor.gray
+                    tool.barStyle = .default
+                }
+                //v.addSubview(gradient)
+                v.addSubview(tool)
+                label.text = index
+                v.addSubview(label)
+                v.bringSubview(toFront: label)
+                v.clipsToBounds = true
+                return v;
+                //headers.append(v)
             }
         }
     }
@@ -231,12 +256,12 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if shouldShowResults {
-            return 62
+            return 64
         }else{
             if indexPath.section == 0 {
                 return 44
             }else{
-                return 62
+                return 64
             }
         }
     }
@@ -559,6 +584,7 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchController.hidesNavigationBarDuringPresentation = false;
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.isTranslucent = true
+        searchController.searchBar.clipsToBounds = true
         searchView.frame.size.height = searchController.searchBar.frame.height
         if searchVisible {
             searchView.isHidden = false
@@ -675,25 +701,21 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
     }
     
     func setHeaders() {
-        headers = [UIView]()
+        headers.removeAll()
         for index in indexes {
             let v = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 27))
             v.backgroundColor = .clear
-            let label = UILabel(frame: CGRect(x: 12, y: 3, width: v.frame.width, height: 21))
+            let label = UILabel(frame: CGRect(x: 12, y: 5, width: v.frame.width, height: 21))
             let tool = UIToolbar(frame: v.frame)
             label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
             if currentTheme == .dark {
                 label.textColor = .white
                 tool.barStyle = .blackTranslucent
-                v.addSubview(tool)
             }else{
                 label.textColor = UIColor.gray
                 tool.barStyle = .default
-//                let im = UIImageView(frame: v.frame)
-//                im.image = #imageLiteral(resourceName: "gradient_background")
-//                im.contentMode = .scaleToFill
-//                v.addSubview(im)
             }
+            //v.addSubview(gradient)
             v.addSubview(tool)
             label.text = index
             v.addSubview(label)
@@ -703,31 +725,40 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         }
     }
     
+    @objc func updateTheme() {
+        setTheme()
+        setHeaders()
+        //tableView.reloadData()
+    }
+    
     func setTheme() {
-        let tool = UIToolbar(frame: searchView.bounds)
+        currentTheme = GlobalSettings.theme
+        //let tool = UIToolbar(frame: searchView.bounds)
+        //tool.clipsToBounds = true
         guard let bar = navigationController?.navigationBar else { return }
         switch currentTheme {
         case .light:
+            UIApplication.shared.statusBarStyle = .default
             tool.barStyle = .default
             indexView.backgroundColor = UIColor.white
             bar.barStyle = .default
             //bar.isTranslucent = false
             bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
-//            tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "gradient_background"))
-//            let im = UIImageView(frame: searchView.bounds)
-//            im.contentMode = .scaleToFill
-//            im.image = #imageLiteral(resourceName: "gradient_background")
-//            searchView.addSubview(im)
+            let background = UIImageView(image: #imageLiteral(resourceName: "gradient_background"))
+            background.contentMode = .scaleAspectFill
+            //tableView.backgroundView = background
             tableView.backgroundColor = UIColor.lightBackground
             tableView.separatorColor = UIColor.lightSeparator
         case .dark:
+            UIApplication.shared.statusBarStyle = .lightContent
             tool.barStyle = .blackTranslucent
             indexView.backgroundColor = UIColor.darkGray
             bar.barStyle = .blackTranslucent
             bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
             tableView.backgroundColor = UIColor.darkBackground
-            tableView.separatorColor = .black
+            tableView.separatorColor = UIColor.darkSeparator
         default:
+            UIApplication.shared.statusBarStyle = .lightContent
             tool.barStyle = .blackTranslucent
             indexView.backgroundColor = UIColor.darkGray
             bar.barStyle = .blackTranslucent
@@ -735,7 +766,9 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
             tableView.backgroundColor = UIColor.lightBackground
             tableView.separatorColor = .lightSeparator
         }
-        searchView.addSubview(tool)
+        //searchView.addSubview(tool)
+        let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
+        NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: tool, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
         bar.tintColor = GlobalSettings.tint.color
     }
     

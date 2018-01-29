@@ -214,4 +214,8 @@ public func calculateCollectionViewCellSize(itemsPerRow: Int, frame: CGRect) -> 
     }
 }
 
+extension CharacterSet {
+    static let latin = CharacterSet.init(charactersIn: "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+}
+
 

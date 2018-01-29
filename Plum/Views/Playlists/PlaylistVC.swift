@@ -41,7 +41,7 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidLoad()
         tabBarController?.delegate = self
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
-        receivedList = musicQuery.shared.playlistForID(playlist: receivedID)
+        //receivedList = musicQuery.shared.playlistForID(playlist: receivedID)
         //tableView.separatorStyle = .none
         navigationItem.title = receivedList.name
         //title = receivedList.name
@@ -170,12 +170,12 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if shouldShowResults {
-            return 62
+            return 64
         }else{
             if indexPath.section == 0 {
                 return 44
             }else{
-                return 62
+                return 64
             }
         }
     }

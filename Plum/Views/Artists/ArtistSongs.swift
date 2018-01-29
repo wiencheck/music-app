@@ -144,7 +144,7 @@ extension ArtistSongs: UITableViewDelegate, UITableViewDataSource {
                     return 44
                 }
             }else{
-                return 62
+                return 64
             }
         }
     }

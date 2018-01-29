@@ -242,6 +242,11 @@ extension EightNowPlayingVC: UIGestureRecognizerDelegate {
 //                tab.popupContentView.popupInteractionGestureRecognizer.isEnabled = true
 //            }
 //        }
+        if tab.popupContentView.popupInteractionGestureRecognizer.isEnabled {
+            if location!.y >= artworkImage.frame.maxY || timeSlider.frame.contains(location!) {
+                tab.popupContentView.popupInteractionGestureRecognizer.isEnabled = false
+            }
+        }
         if !ratingsView.frame.contains(location!){
             UIView.animate(withDuration: 0.2, animations: {
                 self.titleView.alpha = 1.0
@@ -251,7 +256,12 @@ extension EightNowPlayingVC: UIGestureRecognizerDelegate {
             ratingsView.isUserInteractionEnabled = false
             ratingLabel.isUserInteractionEnabled = false
         }
-        
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if !tab.popupContentView.popupInteractionGestureRecognizer.isEnabled {
+            tab.popupContentView.popupInteractionGestureRecognizer.isEnabled = true
+        }
     }
     
     func setArtworkDoubleTap(){

@@ -62,6 +62,7 @@ class FolderVC: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = playlists[indexPath.row]
         pickedID = item.ID
+        pickedList = item
         performSegue(withIdentifier: "playlist", sender: nil)
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -124,6 +125,7 @@ class FolderVC: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let destination = segue.destination as? PlaylistVC {
             destination.receivedID = pickedID
+            destination.receivedList = pickedList
         }
     }
     

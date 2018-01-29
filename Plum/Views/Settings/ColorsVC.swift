@@ -58,6 +58,7 @@ class ColorsVC: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         setColor(color: colors[indexPath.row])
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "themeChanged"), object: nil)
         alert()
     }
     

@@ -29,6 +29,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let _ = MPMediaQuery.songs().items {
             letGo()
             widget.setHasContent(true, forWidgetWithBundleIdentifier: "com.wiencheck.plum.upnext")
+            if let c = UserDefaults.standard.value(forKey: "launchesCount") as? Int {
+                UserDefaults.standard.set(c+1, forKey: "launchesCount")
+            }else{
+                UserDefaults.standard.set(1, forKey: "launchesCount")
+            }
         }else{
             hijack()
         }
@@ -280,9 +285,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let alpha = defaults.value(forKey: "tintAlpha") as! CGFloat
             GlobalSettings.changeTint(Color(n: col, c: UIColor(red:red, green:green, blue:blue, alpha:alpha), b: .white))
         }
-//        if let the = defaults.value(forKey: "theme") as? String {
-//            GlobalSettings.changeTheme(Theme(rawValue: the)!)
-//        }
+        if let the = defaults.value(forKey: "theme") as? String {
+            GlobalSettings.changeTheme(Theme(rawValue: the)!)
+        }
         GlobalSettings.changeTheme(Theme.light)
         if let blu = defaults.value(forKey: "blur") as? Bool {
             GlobalSettings.changeBlur(blu)

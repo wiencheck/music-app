@@ -131,6 +131,7 @@ class PlaylistsVC: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let d = segue.destination as? PlaylistVC{
             d.receivedID = self.pickedID
+            d.receivedList = pickedList
         }else if let d = segue.destination as? FolderVC {
             d.barTitle = self.pickedName
             d.receivedID = self.pickedID
@@ -201,6 +202,7 @@ extension PlaylistsVC: UITableViewDelegate, UITableViewDataSource {
         if shouldShowResults {
             let item = filteredPlaylists[indexPath.row]
             pickedID = item.ID
+            pickedList = item
             if item.isFolder {
                 pickedName = item.name
                 performSegue(withIdentifier: "folder", sender: nil)
@@ -210,6 +212,7 @@ extension PlaylistsVC: UITableViewDelegate, UITableViewDataSource {
         }else{
             let item = result[indexes[indexPath.section]]?[indexPath.row]
             pickedID = item?.ID
+            pickedList = item
             if (item?.isFolder)! {
                 pickedName = item?.name
                 performSegue(withIdentifier: "folder", sender: nil)
@@ -319,6 +322,7 @@ extension PlaylistsVC: UICollectionViewDelegate, UICollectionViewDataSource, Col
         if shouldShowResults {
             let item = filteredPlaylists[indexPath.row]
             pickedID = item.ID
+            pickedList = item
             if item.isFolder {
                 pickedName = item.name
                 performSegue(withIdentifier: "folder", sender: nil)

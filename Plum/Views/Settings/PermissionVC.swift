@@ -33,6 +33,7 @@ import MediaPlayer
             text.isHidden = true
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             appDelegate.letGo()
+            UserDefaults.standard.set(1, forKey: "launchesCount")
             performSegue(withIdentifier: "granted", sender: nil)
             timet.invalidate()
         }else{

@@ -50,6 +50,8 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         UITableViewCell.appearance().backgroundColor = .clear
+        UILabel.appearance().tintColor = nil
+        
     }
     
     func handleSwitches(){
@@ -175,8 +177,8 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
             later()
             //changeIcon()
         case "theme":
-            //explainStyle()
-            later()
+            explainStyle()
+            //later()
             //performSegue(withIdentifier: "icons", sender: nil)
         case "about":
             performSegue(withIdentifier: "about", sender: nil)
@@ -296,21 +298,27 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
 //    }
     
     func explainStyle(){
-        let alert = UIAlertController(title: "Time for decision", message: "Light: Certain elements on now playing screen, like lyrics background, UpNext background and upper bar will be white colored\n\nDark: Same as light, only it's totally opossite\n\nMixed: Navigation elements will be dark, while content will be light", preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "Time for decision", message: "Light: Certain elements on now playing screen, like lyrics background, UpNext background and upper bar will be white colored\n\nDark: Same as light, only it's totally opposite\n\nMixed: Navigation elements will be dark, while content will be light", preferredStyle: .actionSheet)
         let dark = UIAlertAction(title: "Dark", style: .default, handler: {(action) in
             GlobalSettings.changeTheme(.dark)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "themeChanged"), object: nil)
             self.reload()
-            self.themeAlert()
+            //self.updateTheme()
+            //self.themeAlert()
         })
         let light = UIAlertAction(title: "Light", style: .default, handler: {(action) in
             GlobalSettings.changeTheme(.light)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "themeChanged"), object: nil)
             self.reload()
-            self.themeAlert()
+            //self.updateTheme()
+            //self.themeAlert()
         })
         let mixed = UIAlertAction(title: "Mixed", style: .default, handler: {(action) in
             GlobalSettings.changeTheme(.mixed)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "themeChanged"), object: nil)
             self.reload()
-            self.themeAlert()
+            //self.updateTheme()
+            //self.themeAlert()
         })
         alert.addAction(light)
         alert.addAction(dark)
@@ -373,6 +381,13 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         let ok = UIAlertAction(title: "Can't wait!", style: .default, handler: nil)
         alert.addAction(ok)
         present(alert, animated: true, completion: nil)
+    }
+    
+    func updateTheme() {
+        tableView.backgroundColor = UIColor.darkBackground
+        UITableViewCell.appearance().backgroundColor = .black
+        UILabel.appearance().tintColor = .white
+        tableView.reloadData()
     }
 }
 

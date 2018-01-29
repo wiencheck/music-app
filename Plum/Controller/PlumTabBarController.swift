@@ -24,22 +24,15 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tabBar.tintColor = GlobalSettings.tint.color
-        if GlobalSettings.theme == .light {
-            tabBar.barStyle = .default
-        }else{
-            tabBar.barStyle = .black
-        }
-        moreNavigationController.navigationBar.tintColor = GlobalSettings.tint.color
-        self.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color], for: UIControlState.normal)
-        //self.tabBar.unselectedItemTintColor = UIColor.gray
         delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(updatePopup), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: NSNotification.Name(rawValue: "themeChanged"), object: nil)
         nextBtn = UIBarButtonItem(barButtonSystemItem: .fastForward, target: self, action: #selector(nextBtnPressed))
         identifier = setIdentifier()
         setPopup()
         emptyPopup()
-        _ = musicQuery.shared.allSongs()
+        updateTheme()
+        //_ = musicQuery.shared.allSongs()
         DispatchQueue.global(qos: .background).async {
             musicQuery.shared.setArrays()
             if let count = UserDefaults.standard.value(forKey: "count") as? Int {
@@ -58,25 +51,19 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
             }
         }
         customizeMoreTab()
+        //twitter()
     }
     
-//    fileprivate func displayPermissionsError() {
-//        let alertVC = UIAlertController(title: "This is a demo", message: "Unauthorized or restricted access. Cannot play media. Fix in Settings?" , preferredStyle: .alert)
-//        
-//        //cancel
-//        if let settingsURL = URL(string: UIApplicationOpenSettingsURLString), UIApplication.shared.canOpenURL(settingsURL) {
-//            alertVC.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:nil))
-//            if #available(iOS 10.0, *) {
-//                let settingsAction = UIAlertAction(title: "Settings", style: .default, handler: { (action) in
-//                    UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: nil)
-//                })
-//            }
-//            alertVC.addAction(settingsAction)
-//        } else {
-//            alertVC.addAction(UIAlertAction(title: "OK", style: .default, handler:nil))
-//        }
-//        present(alertVC, animated: true, completion: nil)
-//    }
+    @objc func updateTheme() {
+        if GlobalSettings.theme == .light {
+            tabBar.barStyle = .default
+        }else{
+            tabBar.barStyle = .black
+        }
+        tabBar.tintColor = GlobalSettings.tint.color
+        self.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color], for: .selected)
+        updatePopupBarAppearance()
+    }
     
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         instruct("miniplayer", message: "Tap on the miniplayer bar or drag it upwards to open now playing view.\nGo to settings to enable double tap to open.", completion: nil)
@@ -203,6 +190,33 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
             return "eight_se"
         }else{
             return "eight_6plus"
+        }
+    }
+    
+    @objc func twitter() {
+        let defaults = UserDefaults.standard
+        let count = defaults.integer(forKey: "launchesCount")
+        if let followed = defaults.value(forKey: "twitterFollowed") as? Bool {
+            if (count == 1 || count % 5 == 0) && !followed {
+                let alert = UIAlertController(title: "Twitter", message: "Follow Plum's page on Twitter to see latest news and announcements", preferredStyle: .alert)
+                let take = UIAlertAction(title: "Take me there", style: .default) { _ in
+                    let twUrl = URL(string: "twitter://user?screen_name=plumplayer")
+                    let twUrlWeb = URL(string: "https://twitter.com/plumplayer")
+                    if UIApplication.shared.canOpenURL(twUrl!) {
+                        UIApplication.shared.open(twUrl!, options: [:], completionHandler: nil)
+                    }else{
+                        UIApplication.shared.open(twUrlWeb!, options: [:], completionHandler: nil)
+                    }
+                    defaults.set(true, forKey: "twitterFollowed")
+                }
+                let no = UIAlertAction(title: "I'll pass", style: .cancel, handler: nil)
+                alert.addAction(take)
+                alert.addAction(no)
+                present(alert, animated: true, completion: nil)
+            }
+        }else{
+            defaults.set(false, forKey: "twitterFollowed")
+            twitter()
         }
     }
     
