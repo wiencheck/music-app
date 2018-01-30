@@ -19,6 +19,8 @@ class SearchCell: UITableViewCell {
     var album: AlbumB?
     
     func setup(song: MPMediaItem) {
+        title.textColor = UIColor.mainLabel
+        detail.textColor = UIColor.detailLabel
         if let art = song.artwork {
             artwork.image = art.image(at: CGSize(width: 30, height: 30))
         }else{
@@ -33,12 +35,16 @@ class SearchCell: UITableViewCell {
     }
     
     func setup(artist: Artist) {
+        title.textColor = UIColor.mainLabel
+        detail.textColor = UIColor.detailLabel
         artwork.image = artist.artwork
         title.text = artist.name
         detail.text = "\(artist.albumsIn) albums, \(artist.songsIn) songs"
     }
     
     func setup(album: AlbumB) {
+        title.textColor = UIColor.mainLabel
+        detail.textColor = UIColor.detailLabel
         artwork.image = album.artwork
         title.text = album.name
         if album.year == "" {

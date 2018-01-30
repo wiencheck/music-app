@@ -218,4 +218,9 @@ extension CharacterSet {
     static let latin = CharacterSet.init(charactersIn: "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 }
 
+extension Notification.Name {
+    static let playbackChanged = Notification.Name("playbackChanged")
+    static let themeChanged = Notification.Name("themeChanged")
+}
+
 

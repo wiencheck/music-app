@@ -81,10 +81,11 @@ class ArtistUpVCB: UIViewController {
         indexView.indexes = [String]()
         indexView.indexes = self.indexes
         indexView.tableView = self.tableView
+        indexView.setup()
         if lightTheme {
-            indexView.setup(color: UIColor(red: 0.972549019607843, green: 0.972549019607843, blue: 0.972549019607843, alpha: 0.8))
+            indexView.backgroundColor = UIColor(red: 0.972549019607843, green: 0.972549019607843, blue: 0.972549019607843, alpha: 0.8)
         }else{
-            indexView.setup(color: UIColor(red: 0.105882352941176, green: 0.105882352941176, blue: 0.105882352941176, alpha: 0.8))
+            indexView.backgroundColor = UIColor(red: 0.105882352941176, green: 0.105882352941176, blue: 0.105882352941176, alpha: 0.8)
         }
     }
     

@@ -24,6 +24,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     @IBOutlet weak var progressBar: UIProgressView!
     @IBOutlet weak var lyricsSwitch: UISwitch!
     @IBOutlet weak var doubleBarSwitch: UISwitch!
+    @IBOutlet weak var oledSwitch: UISwitch!
     //@IBOutlet weak var searchTopSwitch: UISwitch!
     @IBOutlet weak var colorView: UIView!
     @IBOutlet weak var deployLabel: UILabel!
@@ -41,8 +42,8 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     @IBOutlet weak var abou :UILabel!
     @IBOutlet weak var doubT :UILabel!
     @IBOutlet weak var landI: UILabel!
+    @IBOutlet weak var oledL: UILabel!
     var timer: Timer!
-    var currentTheme: Theme!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,7 +62,6 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         reload()
-        UITableViewCell.appearance().backgroundColor = .white
         self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
     }
     
@@ -79,6 +79,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         lyricsSwitch.addTarget(self, action: #selector(lyricsSwitched(_:)), for: .valueChanged)
         roundSwitch.addTarget(self, action: #selector(roundedSliderSwitched(_:)), for: .valueChanged)
         doubleBarSwitch.addTarget(self, action: #selector(doubleBarSwitched(_:)), for: .valueChanged)
+        oledSwitch.addTarget(self, action: #selector(oledSwitched(_:)), for: .valueChanged)
         //searchTopSwitch.addTarget(self, action: #selector(searchTopSwitched(_:)), for: .valueChanged)
     }
     
@@ -140,6 +141,14 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
             self.popupBar.popupOpenGestureRecognizer.numberOfTapsRequired = 1
         }
         tab.setPopup()
+    }
+    
+    @objc func oledSwitched(_ sender: UISwitch) {
+        GlobalSettings.changeOled(sender.isOn)
+        setColors()
+        updateTheme()
+        //tableView.backgroundColor = UIColor.background
+        NotificationCenter.default.post(name: .themeChanged, object: nil)
     }
     
     @available(iOS 10.0, *) func notificationPermissionError(_ error: Error?) {
@@ -287,11 +296,10 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
             performSegue(withIdentifier: "scale", sender: nil)
         case "blur":
             later()
-            //changeIcon()
         case "theme":
             explainStyle()
-            //later()
-            //performSegue(withIdentifier: "icons", sender: nil)
+        case "oled":
+            explainOled()
         case "about":
             performSegue(withIdentifier: "about", sender: nil)
         case "miniplayer":
@@ -310,7 +318,6 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
             performSegue(withIdentifier: "lyricsSettings", sender: nil)
         case "artist":
             explainArtistsGrid()
-            //changeIcon()
         case "album":
             explainAlbumsGrid()
         case "playlist":
@@ -351,8 +358,8 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         roundSwitch.isOn = GlobalSettings.roundedSlider
         currentStyle.text = GlobalSettings.theme.rawValue
         doubleBarSwitch.isOn = GlobalSettings.doubleBar
+        oledSwitch.isOn = GlobalSettings.oled
         //searchTopSwitch.isOn = GlobalSettings.searchOnTop
-        tableView.reloadData()
     }
     
     func selfExplanatory() {
@@ -414,24 +421,21 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         let alert = UIAlertController(title: "Time for decision", message: "Light: Certain elements on now playing screen, like lyrics background, UpNext background and upper bar will be white colored\n\nDark: Same as light, only it's totally opposite\n\nMixed: Navigation elements will be dark, while content will be light", preferredStyle: .actionSheet)
         let dark = UIAlertAction(title: "Dark", style: .default, handler: {(action) in
             GlobalSettings.changeTheme(.dark)
+            self.setColors()
             self.reload()
             self.updateTheme()
-            self.setColors()
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "themeChanged"), object: nil)
         })
         let light = UIAlertAction(title: "Light", style: .default, handler: {(action) in
             GlobalSettings.changeTheme(.light)
             self.setColors()
             self.reload()
             self.updateTheme()
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "themeChanged"), object: nil)
         })
         let mixed = UIAlertAction(title: "Mixed", style: .default, handler: {(action) in
             GlobalSettings.changeTheme(.mixed)
+            self.setColors()
             self.reload()
             self.updateTheme()
-            self.setColors()
-            NotificationCenter.default.post(name: Notification.Name(rawValue: "themeChanged"), object: nil)
         })
         alert.addAction(light)
         alert.addAction(dark)
@@ -462,6 +466,13 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         })
         alert.addAction(light)
         alert.addAction(dark)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func explainOled() {
+        let alert = UIAlertController(title: "High contrast?", message: "If enabled, background will be purely black, this mode is great for OLED screens like in the iPhone X", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "Cool!", style: .default, handler: nil)
+        alert.addAction(ok)
         present(alert, animated: true, completion: nil)
     }
     
@@ -496,73 +507,46 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         present(alert, animated: true, completion: nil)
     }
     
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if currentTheme == .dark {
-            cell.backgroundColor = .black
-            for sub in cell.subviews {
-                if let s = sub as? UILabel {
-                    s.textColor = .white
-                }
-            }
-        }else{
-            cell.backgroundColor = .white
-            for sub in cell.subviews {
-                if let s = sub as? UILabel {
-                    s.textColor = .black
-                }
-            }
-        }
-    }
-    
     func updateTheme() {
-        currentTheme = GlobalSettings.theme
-        if currentTheme == .dark {
-            tableView.backgroundColor = .darkBackground
-            artG.textColor = .white
-            albG.textColor = .white
-            playG.textColor = .white
-            appI.textColor = .white
-            them.textColor = .white
-            miniS.textColor = .white
-            tintC.textColor = .white
-            rounS.textColor = .white
-            ratM.textColor = .white
-            ratSet.textColor = .white
-            lyrM.textColor = .white
-            abou.textColor = .white
-            doubT.textColor = .white
-            landI.textColor = .white
-            tableView.separatorColor = UIColor.darkSeparator
+        tableView.backgroundColor = UIColor.background
+        artG.textColor = UIColor.mainLabel
+        albG.textColor = UIColor.mainLabel
+        playG.textColor = UIColor.mainLabel
+        appI.textColor = UIColor.mainLabel
+        them.textColor = UIColor.mainLabel
+        miniS.textColor = UIColor.mainLabel
+        tintC.textColor = UIColor.mainLabel
+        rounS.textColor = UIColor.mainLabel
+        ratM.textColor = UIColor.mainLabel
+        ratSet.textColor = UIColor.mainLabel
+        lyrM.textColor = UIColor.mainLabel
+        abou.textColor = UIColor.mainLabel
+        doubT.textColor = UIColor.mainLabel
+        landI.textColor = UIColor.mainLabel
+        oledL.textColor = UIColor.mainLabel
+        tableView.separatorColor = UIColor.separator
+        if GlobalSettings.theme == .dark {
             navigationController?.navigationBar.barStyle = .blackTranslucent
             UITextField.appearance().keyboardAppearance = .dark
+            //UITableViewCell.appearance().backgroundColor = .black
         }else{
-            tableView.backgroundColor = UIColor.groupTableViewBackground
-            artG.textColor = .black
-            albG.textColor = .black
-            playG.textColor = .black
-            appI.textColor = .black
-            them.textColor = .black
-            miniS.textColor = .black
-            tintC.textColor = .black
-            rounS.textColor = .black
-            ratM.textColor = .black
-            ratSet.textColor = .black
-            lyrM.textColor = .black
-            abou.textColor = .black
-            doubT.textColor = .black
-            landI.textColor = .black
-            tableView.separatorColor = UIColor.lightSeparator
             navigationController?.navigationBar.barStyle = .default
             UITextField.appearance().keyboardAppearance = .light
+            //UITableViewCell.appearance().backgroundColor = .white
         }
+        tableView.reloadData()
     }
     
     func setColors() {
         if GlobalSettings.theme == .dark {
+            if GlobalSettings.oled {
+                UIColor.background = UIColor.black
+            }else{
+                UIColor.background = UIColor.darkBackground
+            }
             UIColor.mainLabel = UIColor.white
-            UIColor.detailLabel = UIColor.gray
+            UIColor.detailLabel = UIColor.lightGray
             UIColor.separator = UIColor.darkSeparator
-            UIColor.background = UIColor.darkBackground
             UIColor.indexBackground = UIColor.darkGray
         }else{
             UIColor.mainLabel = UIColor.black

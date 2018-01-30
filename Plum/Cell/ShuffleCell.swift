@@ -18,11 +18,7 @@ class ShuffleCell: UITableViewCell {
     }
     
     func setup(style: Theme) {
-        if style == Theme.dark {
-            label.textColor = UIColor.white
-        }else{
-            label.textColor = UIColor.black
-        }
+        label.textColor = UIColor.mainLabel
         label.text = "Shuffle"
         icon.image = #imageLiteral(resourceName: "shuffle")
     }

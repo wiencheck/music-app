@@ -18,6 +18,7 @@ class AlbumsByVC: UITableViewController {
     var pickedID: MPMediaEntityPersistentID!
     let defaults = UserDefaults.standard
     var currentSort: Sort!
+    @IBOutlet weak var themeBtn: UIBarButtonItem!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +34,12 @@ class AlbumsByVC: UITableViewController {
         currentSort = GlobalSettings.artistAlbumsSort
         sort()
         tableView.tableFooterView = UIView(frame: .zero)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
+        updateTheme()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .themeChanged, object: nil)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -77,12 +84,11 @@ class AlbumsByVC: UITableViewController {
         if (indexPath.row == 0){
             let cell = tableView.dequeueReusableCell(withIdentifier: "allSongsCell", for: indexPath)
             cell.textLabel?.text = "All songs"
-            cell.backgroundColor = .clear
+            cell.textLabel?.textColor = UIColor.mainLabel
             return cell
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "albumCell", for: indexPath) as? AlbumCell
             cell?.setupArtist(album: als[indexPath.row - 1])
-            cell?.backgroundColor = .clear
             return cell!
         }
     }
@@ -213,4 +219,32 @@ extension AlbumsByVC { //Sortowanie
         present(alert, animated: true, completion: nil)
     }
     
+    @objc func updateTheme() {
+        guard let bar = navigationController?.navigationBar else { return }
+        switch GlobalSettings.theme {
+        case .light:
+            bar.barStyle = .default
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
+            themeBtn.image = #imageLiteral(resourceName: "light_bar")
+        case .dark:
+            bar.barStyle = .blackTranslucent
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+            themeBtn.image = #imageLiteral(resourceName: "dark_bar")
+        default:
+            bar.barStyle = .blackTranslucent
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+        }
+        bar.tintColor = GlobalSettings.tint.color
+        tableView.backgroundColor = UIColor.background
+        tableView.separatorColor = UIColor.separator
+        tableView.reloadData()
+    }
+    
+    @IBAction func themeBtnPressed(_ sender: UIBarButtonItem) {
+        if GlobalSettings.theme == .dark {
+            GlobalSettings.changeTheme(.light)
+        }else{
+            GlobalSettings.changeTheme(.dark)
+        }
+    }
 }

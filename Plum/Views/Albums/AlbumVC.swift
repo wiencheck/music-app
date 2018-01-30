@@ -23,6 +23,7 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
     var cellTypes = [Int]()
     var absoluteIndex = 0
     var activeIndexRow = 0
+    @IBOutlet weak var themeBtn: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,8 +31,7 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         self.tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
         tableView.scrollIndicatorInsets = tableView.contentInset
-        updateTheme()
-        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: NSNotification.Name(rawValue: "themeChanged"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
         tableView.delaysContentTouches = false
         readSettings()
         if receivedID != nil{
@@ -46,6 +46,7 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
         }
         title = album.artist
         tableView.tableFooterView = UIView(frame: .zero)
+        updateTheme()
     }
     
     @IBAction func ratingPressed() {
@@ -144,11 +145,6 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
             if current .isKind(of: UIScrollView.self) {
                 (current as! UIScrollView).delaysContentTouches = false
             }
-        }
-        if GlobalSettings.theme == .dark {
-            header.tool.barStyle = .blackTranslucent
-        }else{
-            header.tool.barStyle = .default
         }
         let v = header.contentView
         //v.addBottomBorderWithColor(color: UIColor.separator, width: 0.5, x: 14)
@@ -282,16 +278,25 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
         player.play()
     }
     
+    @IBAction func themeBtnPressed(_ sender: UIBarButtonItem) {
+        if GlobalSettings.theme == .dark {
+            GlobalSettings.changeTheme(.light)
+        }else{
+            GlobalSettings.changeTheme(.dark)
+        }
+    }
+    
     @objc func updateTheme() {
         if GlobalSettings.theme == .dark {
-            tableView.backgroundColor = UIColor.darkBackground
             navigationController?.navigationBar.barStyle = .blackTranslucent
-            tableView.separatorColor = UIColor.darkSeparator
+            themeBtn.image = #imageLiteral(resourceName: "dark_bar")
         }else{
-            tableView.backgroundColor = UIColor.lightBackground
             navigationController?.navigationBar.barStyle = .default
-            tableView.separatorColor = UIColor.lightSeparator
+            themeBtn.image = #imageLiteral(resourceName: "light_bar")
         }
+        tableView.backgroundColor = UIColor.background
+        tableView.separatorColor = UIColor.separator
+        tableView.reloadData()
     }
 }
 

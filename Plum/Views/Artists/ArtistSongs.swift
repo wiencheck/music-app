@@ -38,6 +38,7 @@ class ArtistSongs: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var alpIndexView: TableIndexView!
     @IBOutlet weak var albIndexView: TableIndexView!
+    @IBOutlet weak var themeBtn: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,11 +46,15 @@ class ArtistSongs: UIViewController {
         sort = GlobalSettings.artistSort
         currentSort = GlobalSettings.artistAlbumsSort
         setup()
-        //doSort()
         automaticallyAdjustsScrollViewInsets = false
         tableView.contentInset = UIEdgeInsetsMake(64, 0, GlobalSettings.bottomInset + 49, 0)
         tableView.tableFooterView = UIView(frame: .zero)
-        //print("\(indexes.count) \((result[indexes[0]]?.count)! + 1)")
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
+        updateTheme()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .themeChanged, object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -380,7 +385,7 @@ extension ArtistSongs {
             sections = indexesInt.count
             alpIndexView.indexes = self.indexes
             alpIndexView.tableView = self.tableView
-            alpIndexView.setup(color: UIColor.white)
+            alpIndexView.setup()
             albIndexView.isHidden = true
             alpIndexView.isHidden = false
         }else if sort == .album {
@@ -394,12 +399,12 @@ extension ArtistSongs {
             }
             sections = albums.count
             songsByAlbums = [MPMediaItem]()
+            headers.removeAll()
             for album in albums {
                 songsByAlbums.append(contentsOf: album.items)
                 let header = tableView.dequeueReusableCell(withIdentifier: "infoCell") as! AlbumInfoCell
                 header.setup(album: album, play: false)
                 let v = header.contentView
-                v.addBottomBorderWithColor(color: UIColor.lightSeparator, width: 0.5, x: 16)
                 v.clipsToBounds = true
                 headers.append(v)
             }
@@ -407,14 +412,12 @@ extension ArtistSongs {
             upperBar.title = songsByAlbums[0].albumArtist
             albIndexView.indexes = self.indexes
             albIndexView.tableView = self.tableView
-            albIndexView.setup(color: UIColor.white)
+            albIndexView.setup()
             albIndexView.isHidden = false
             alpIndexView.isHidden = true
         }
-        tableView.separatorColor = UIColor.lightSeparator
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundColor = UIColor.lightBackground
     }
     
     func alphabetically() {
@@ -608,6 +611,38 @@ extension ArtistSongs { //Sortowanie
         }
         alert.addAction(yearD)
         present(alert, animated: true, completion: nil)
+    }
+    
+    @IBAction func themeBtnPressed(_ sender: UIBarButtonItem) {
+        if GlobalSettings.theme == .dark {
+            GlobalSettings.changeTheme(.light)
+        }else{
+            GlobalSettings.changeTheme(.dark)
+        }
+    }
+    
+    @objc func updateTheme() {
+        guard let bar = navigationController?.navigationBar else { return }
+        switch GlobalSettings.theme {
+        case .light:
+            bar.barStyle = .default
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
+            themeBtn.image = #imageLiteral(resourceName: "light_bar")
+        case .dark:
+            bar.barStyle = .blackTranslucent
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+            themeBtn.image = #imageLiteral(resourceName: "dark_bar")
+        default:
+            bar.barStyle = .blackTranslucent
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+        }
+        tableView.backgroundColor = UIColor.background
+        tableView.separatorColor = UIColor.separator
+        albIndexView.backgroundColor = UIColor.indexBackground
+        alpIndexView.backgroundColor = UIColor.indexBackground
+        bar.tintColor = GlobalSettings.tint.color
+        setup()
+        tableView.reloadData()
     }
     
 }

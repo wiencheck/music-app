@@ -18,6 +18,7 @@ class FolderVC: UITableViewController {
     var pickedList: Playlist!
     var barTitle: String!
     var currentTheme: Theme!
+    @IBOutlet weak var themeBtn: UIBarButtonItem!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,14 +27,9 @@ class FolderVC: UITableViewController {
         print(receivedID)
         setup()
         tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
-        if currentTheme == .dark {
-            tableView.backgroundColor = UIColor.darkBackground
-            tableView.separatorColor = UIColor.black
-        }else{
-            tableView.backgroundColor = UIColor.lightBackground
-            tableView.separatorColor = UIColor.lightSeparator
-        }
         tableView.tableFooterView = UIView(frame: .zero)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
+        updateTheme()
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -125,28 +121,33 @@ class FolderVC: UITableViewController {
     }
     
     func setup() {
-        /*playlists = [Playlist]()
-        if musicQuery.shared.arraysSet {
-            for list in musicQuery.shared.playlists {
-                if list.parentID == receivedID {
-                    playlists.append(list)
-                }
-            }
-        }else{
-            if musicQuery.shared.arraysSet {
-                for list in musicQuery.shared.allPlaylists() {
-                    if list.parentID == receivedID{
-                        playlists.append(list)
-                    }
-                }
-            }
-        }*/
         playlists = [Playlist]()
         for list in musicQuery.shared.playlists {
             if list.parentID == receivedID {
                 playlists.append(list)
             }
         }
+    }
+    
+    @objc func updateTheme() {
+        guard let bar = navigationController?.navigationBar else { return }
+        switch currentTheme {
+        case .light:
+            bar.barStyle = .default
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
+            themeBtn.image = #imageLiteral(resourceName: "light_bar")
+        case .dark:
+            bar.barStyle = .blackTranslucent
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+            themeBtn.image = #imageLiteral(resourceName: "dark_bar")
+        default:
+            bar.barStyle = .blackTranslucent
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+        }
+        bar.tintColor = GlobalSettings.tint.color
+        tableView.backgroundColor = UIColor.background
+        tableView.separatorColor = UIColor.separator
+        tableView.reloadData()
     }
 
 }

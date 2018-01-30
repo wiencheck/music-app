@@ -20,7 +20,6 @@
 		381795AD2017DB700088A02D /* sixyy@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 381795AB2017DB6E0088A02D /* sixyy@3x.png */; };
 		381795B02017EA0F0088A02D /* modern@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 381795AE2017EA0C0088A02D /* modern@3x.png */; };
 		381795B12017EA0F0088A02D /* modern@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 381795AF2017EA0D0088A02D /* modern@2x.png */; };
-		3817D0DB1FE1780300659C9C /* BlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3817D0DA1FE1780300659C9C /* BlurView.swift */; };
 		3822211E1FA5EA4000004B21 /* QueueActionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3822211D1FA5EA4000004B21 /* QueueActionsCell.swift */; };
 		382D68101FFD2B1200C51BC2 /* initPlum.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 382D680F1FFD2B0700C51BC2 /* initPlum.m4a */; };
 		382D68121FFD2BCF00C51BC2 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 382D68111FFD2BCF00C51BC2 /* Artist.swift */; };
@@ -199,7 +198,6 @@
 		381795AB2017DB6E0088A02D /* sixyy@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sixyy@3x.png"; sourceTree = "<group>"; };
 		381795AE2017EA0C0088A02D /* modern@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "modern@3x.png"; sourceTree = "<group>"; };
 		381795AF2017EA0D0088A02D /* modern@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "modern@2x.png"; sourceTree = "<group>"; };
-		3817D0DA1FE1780300659C9C /* BlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlurView.swift; sourceTree = "<group>"; };
 		3822211D1FA5EA4000004B21 /* QueueActionsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueActionsCell.swift; sourceTree = "<group>"; };
 		382D680F1FFD2B0700C51BC2 /* initPlum.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = initPlum.m4a; sourceTree = "<group>"; };
 		382D68111FFD2BCF00C51BC2 /* Artist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
@@ -562,7 +560,6 @@
 			isa = PBXGroup;
 			children = (
 				38CC1A141F9CAEA500B2AA8D /* IndexViews.swift */,
-				3817D0DA1FE1780300659C9C /* BlurView.swift */,
 			);
 			path = "Small Views";
 			sourceTree = "<group>";
@@ -879,7 +876,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3803CD541FBB5B1A009F5EA8 /* SearchCell.swift in Sources */,
-				3817D0DB1FE1780300659C9C /* BlurView.swift in Sources */,
 				38121EA31FA0856400C2A3BD /* AlbumsCollectionCell.swift in Sources */,
 				38E729521F2F422900F35780 /* SongCell.swift in Sources */,
 				38FFA1381F83DD950079FF4B /* ArtistCell.swift in Sources */,

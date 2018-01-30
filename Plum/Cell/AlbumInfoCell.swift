@@ -39,6 +39,11 @@ class AlbumInfoCell: UITableViewCell {
         songsLabel.textColor = UIColor.mainLabel
         titleLabel.textColor = UIColor.mainLabel
         yearLabel.textColor = UIColor.mainLabel
+        if GlobalSettings.theme == .dark {
+            tool.barStyle = .blackTranslucent
+        }else{
+            tool.barStyle = .default
+        }
         self.album = album
         songs = album.items
         titleLabel.text = album.name

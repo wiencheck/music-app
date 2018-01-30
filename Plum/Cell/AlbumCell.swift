@@ -29,6 +29,8 @@ class AlbumCell: UITableViewCell {
         let songsCount = album.songsIn
         self.artworkImage.image = album.artwork
         titleLabel.text = album.name
+        titleLabel.textColor = UIColor.mainLabel
+        detailLabel.textColor = UIColor.detailLabel
         let genre = album.items[0].albumArtist ?? ""
         let attYear = NSMutableAttributedString(string: genre)
         let attYearR = NSRange(location: 0, length: attYear.length)
@@ -59,6 +61,8 @@ class AlbumCell: UITableViewCell {
         let songsCount = album.songsIn
         self.artworkImage.image = album.artwork
         titleLabel.text = album.name
+        titleLabel.textColor = UIColor.mainLabel
+        detailLabel.textColor = UIColor.detailLabel
         let genre = album.year
         //Year
         let attYear = NSMutableAttributedString(string: genre)

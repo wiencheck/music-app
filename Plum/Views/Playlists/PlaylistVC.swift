@@ -30,7 +30,9 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
     var receivedList: Playlist!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableIndexView: TableIndexView!
-    @IBOutlet weak var searchView: BlurView!
+    @IBOutlet weak var searchView: UIView!
+    @IBOutlet weak var tool: UIToolbar!
+    @IBOutlet weak var themeBtn: UIBarButtonItem!
     var filteredSongs = [MPMediaItem]()
     var shouldShowResults = false
     var heightInset: CGFloat!
@@ -41,16 +43,18 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidLoad()
         tabBarController?.delegate = self
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
-        //receivedList = musicQuery.shared.playlistForID(playlist: receivedID)
-        //tableView.separatorStyle = .none
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
         navigationItem.title = receivedList.name
-        //title = receivedList.name
         setTable()
-        tableView.separatorColor = UIColor.lightSeparator
         configureSearchController()
         view.bringSubview(toFront: tableIndexView)
         tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         tableView.tableFooterView = UIView(frame: .zero)
+        updateTheme()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .themeChanged, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -84,7 +88,7 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
         if songs.count > 11 {
             tableIndexView.indexes = self.indexes
             tableIndexView.tableView = self.tableView
-            tableIndexView.setup(color: UIColor.white)
+            tableIndexView.setup()
         }else{
             tableIndexView.isHidden = true
         }
@@ -115,7 +119,6 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
             if cellTypesSearch[indexPath.row] != 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as! QueueActionsCell
                 cell.delegate = self
-                cell.backgroundColor = .clear
                 return cell
             }else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! SongCell
@@ -548,6 +551,39 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
             tableView.contentOffset.y = -heightInset
             hideKeyboard = true
         }
+    }
+    
+    @IBAction func themeBtnPressed(_ sender: UIBarButtonItem) {
+        if GlobalSettings.theme == .dark {
+            GlobalSettings.changeTheme(.light)
+        }else{
+            GlobalSettings.changeTheme(.dark)
+        }
+    }
+    
+    @objc func updateTheme() {
+        tableView.backgroundColor = UIColor.background
+        tableView.separatorColor = UIColor.separator
+        tableIndexView.backgroundColor = UIColor.indexBackground
+        guard let bar = navigationController?.navigationBar else { return }
+        switch GlobalSettings.theme {
+        case .light:
+            tool.barStyle = .default
+            bar.barStyle = .default
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
+            themeBtn.image = #imageLiteral(resourceName: "light_bar")
+        case .dark:
+            tool.barStyle = .blackTranslucent
+            bar.barStyle = .blackTranslucent
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+            themeBtn.image = #imageLiteral(resourceName: "dark_bar")
+        default:
+            tool.barStyle = .blackTranslucent
+            bar.barStyle = .blackTranslucent
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+        }
+        bar.tintColor = GlobalSettings.tint.color
+        tableView.reloadData()
     }
     
 }

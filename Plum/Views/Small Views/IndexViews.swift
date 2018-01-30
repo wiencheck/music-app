@@ -50,42 +50,6 @@ class TableIndexView: UIView {
         //self.alpha = 0.0
     }
     
-    func setup(color: UIColor) {
-        self.layer.cornerRadius = 10.0
-        self.backgroundColor = color
-        translatesAutoresizingMaskIntoConstraints = false
-        var views = [String:UILabel]()
-        var verticalLayoutString = "V:|"
-        
-        for i in 0..<indexes.count {
-            let label = UILabel(frame: CGRect(x: 0, y: i * 20, width: 20, height: 20))
-            label.text = indexes[i]
-            label.textColor = GlobalSettings.tint.color
-            label.font = UIFont.systemFont(ofSize: 12)
-            label.textAlignment = .center
-            label.translatesAutoresizingMaskIntoConstraints = false
-            addSubview(label)
-            views["label\(i)"] = label
-            
-            if i == 0 {
-                verticalLayoutString += "[label\(i)]"
-            }
-            else {
-                verticalLayoutString += "[label\(i)(==label0)]"
-            }
-            
-            addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[label\(i)]|", options: NSLayoutFormatOptions.alignAllCenterY, metrics: [:], views: views))
-        }
-        
-        verticalLayoutString += "|"
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: verticalLayoutString, options: NSLayoutFormatOptions.alignAllCenterX, metrics: [:], views: views))
-        
-        let gestureRecogniser = UIPanGestureRecognizer(target: self, action: #selector(indexViewWasDragged))
-        addGestureRecognizer(gestureRecogniser)
-        self.alpha = 0.02
-        //self.alpha = 0.0
-    }
-    
     @objc func indexViewWasDragged(_ gesture: UIPanGestureRecognizer){
         if gesture.state == .began{
             show()

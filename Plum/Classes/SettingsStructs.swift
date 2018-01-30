@@ -91,6 +91,24 @@ struct GlobalSettings{
     static func changeTheme(_ t: Theme) {
         self.theme = t
         defaults.set(t.rawValue, forKey: "theme")
+        if GlobalSettings.theme == .dark {
+            if GlobalSettings.oled {
+                UIColor.background = UIColor.black
+            }else{
+                UIColor.background = UIColor.darkBackground
+            }
+            UIColor.mainLabel = UIColor.white
+            UIColor.detailLabel = UIColor.lightGray
+            UIColor.separator = UIColor.darkSeparator
+            UIColor.indexBackground = UIColor.darkGray
+        }else{
+            UIColor.mainLabel = UIColor.black
+            UIColor.detailLabel = UIColor.gray
+            UIColor.separator = UIColor.lightSeparator
+            UIColor.background = UIColor.lightBackground
+            UIColor.indexBackground = UIColor.white
+        }
+        NotificationCenter.default.post(name: .themeChanged, object: nil)
     }
     
     static var blur: Bool = false                                       //UI
@@ -139,6 +157,12 @@ struct GlobalSettings{
     static func changePopupDrag(_ t: Bool) {
         self.popupDrag = t
         defaults.set(t, forKey: "popupDrag")
+    }
+    
+    static var oled = false
+    static func changeOled(_ t: Bool) {
+        self.oled = t
+        defaults.set(t, forKey: "oled")
     }
     
 //    static func changeFeedbackContent(which: String, message: String, value: Int) {

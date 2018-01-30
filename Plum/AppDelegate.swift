@@ -235,6 +235,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: "searchOnTop") == nil {
             defaults.set(true, forKey: "searchOnTop")
         }
+        if defaults.value(forKey: "oled") == nil {
+            defaults.set(false, forKey: "oled")
+        }
     }
     
     func readSettings(){
@@ -317,9 +320,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let sea = defaults.value(forKey: "searchOnTop") as? Bool {
             GlobalSettings.changeSearchOnTop(sea)
         }
-//        if let rou = defaults.value(forKey: "roundedCorners") as? Bool {
-//            GlobalSettings.changeRoundedCorners(rou)
-//        }
+        if let oled = defaults.value(forKey: "oled") as? Bool {
+            GlobalSettings.changeOled(oled)
+        }
         GlobalSettings.changeColor(true)    //do zrobienia ciemny blur
     }
     
@@ -396,14 +399,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private func setColors() {
         if GlobalSettings.theme == .dark {
+            if GlobalSettings.oled {
+                UIColor.background = UIColor.black
+            }else{
+                UIColor.background = UIColor.darkBackground
+            }
             UIColor.mainLabel = UIColor.white
-            UIColor.detailLabel = UIColor.lightText
+            UIColor.detailLabel = UIColor.lightGray
             UIColor.separator = UIColor.darkSeparator
-            UIColor.background = UIColor.darkBackground
             UIColor.indexBackground = UIColor.darkGray
         }else{
             UIColor.mainLabel = UIColor.black
-            UIColor.detailLabel = UIColor.lightText
+            UIColor.detailLabel = UIColor.gray
             UIColor.separator = UIColor.lightSeparator
             UIColor.background = UIColor.lightBackground
             UIColor.indexBackground = UIColor.white

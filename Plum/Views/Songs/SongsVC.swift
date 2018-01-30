@@ -33,13 +33,14 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     var searchVisible: Bool!
     let device = GlobalSettings.device
     
+    @IBOutlet weak var themeBtn: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var indexView: TableIndexView!
     @IBOutlet weak var searchView: UIView!
     @IBOutlet weak var tool: UIToolbar!
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: Notification.Name(rawValue: "themeChanged"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
         tabBarController?.delegate = self
         if musicQuery.shared.songsSet{
             songs = musicQuery.shared.songs
@@ -70,7 +71,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "themeChanged"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: .themeChanged, object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -86,10 +87,10 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         definesPresentationContext = false
     }
     
-    @IBAction func ratingPressed() {
-        GlobalSettings.changeRating(!GlobalSettings.rating)
-        tableView.reloadData()
-    }
+//    @IBAction func ratingPressed() {
+//        GlobalSettings.changeRating(!GlobalSettings.rating)
+//        tableView.reloadData()
+//    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         if shouldShowResults {
@@ -728,15 +729,25 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         tableView.reloadData()
     }
     
+    @IBAction func themeBtnPressed(_ sender: UIBarButtonItem) {
+        if GlobalSettings.theme == .dark {
+            GlobalSettings.changeTheme(.light)
+        }else{
+            GlobalSettings.changeTheme(.dark)
+        }
+    }
+    
     func setTheme() {
         currentTheme = GlobalSettings.theme
         guard let bar = navigationController?.navigationBar else { return }
         switch currentTheme {
         case .light:
+            themeBtn.image = #imageLiteral(resourceName: "light_bar")
             tool.barStyle = .default
             bar.barStyle = .default
             bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
         case .dark:
+            themeBtn.image = #imageLiteral(resourceName: "dark_bar")
             tool.barStyle = .blackTranslucent
             bar.barStyle = .blackTranslucent
             bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
@@ -747,9 +758,7 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         }
         tableView.backgroundColor = UIColor.background
         tableView.separatorColor = UIColor.separator
-        //indexView.backgroundColor = UIColor.indexBackground
-        let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
-        NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: tool, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
+        indexView.backgroundColor = UIColor.indexBackground
         bar.tintColor = GlobalSettings.tint.color
     }
     

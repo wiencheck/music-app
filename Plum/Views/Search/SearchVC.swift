@@ -21,7 +21,9 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     let player = Plum.shared
     var titles = ["Artists", "Albums", "Songs", "Playlists"]
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var searchView: BlurView!
+    @IBOutlet weak var searchView: UIView!
+    @IBOutlet weak var tool: UIToolbar!
+    @IBOutlet weak var themeBtn: UIBarButtonItem!
     var songs: [MPMediaItem]?
     var filteredSongs: [MPMediaItem]?
     var shouldCompactSongs: Bool!
@@ -55,6 +57,20 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         tableView.dataSource = self
         tableView.backgroundColor = .lightBackground
         shouldShowResults = false
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
+        updateTheme()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .themeChanged, object: nil)
+    }
+    
+    @IBAction func themeBtnPressed(_ sender: UIBarButtonItem) {
+        if GlobalSettings.theme == .dark {
+            GlobalSettings.changeTheme(.light)
+        }else{
+            GlobalSettings.changeTheme(.dark)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -220,13 +236,11 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
                 cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SearchCell
                 cell.setup(artist: filteredArtists![indexPath.row])
                 cell.accessoryType = .disclosureIndicator
-                cell.backgroundColor = .clear
                 return cell
             }else if indexPath.section == 1 && filteredAlbums?.count != 0 {
                 cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SearchCell
                 cell.setup(album: filteredAlbums![indexPath.row])
                 cell.accessoryType = .disclosureIndicator
-                cell.backgroundColor = .clear
                 return cell
             }else if indexPath.section == 2 && filteredSongs?.count != 0 {
                 if cellTypes[indexPath.row] != 0 {
@@ -238,7 +252,6 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
                     let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SearchCell
                     cell.setup(song: filteredSongs![indexPath.row])
                     cell.accessoryType = .none
-                    cell.backgroundColor = .clear
                     return cell
                 }
             }else {
@@ -560,6 +573,19 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     
     func playLast() {
         player.addLast(item: pickedSong)
+    }
+    
+    @objc func updateTheme() {
+        tableView.backgroundColor = UIColor.background
+        tableView.separatorColor = UIColor.separator
+        if GlobalSettings.theme == .dark {
+            tool.barStyle = .blackTranslucent
+            themeBtn.image = #imageLiteral(resourceName: "dark_bar")
+        }else{
+            tool.barStyle = .default
+            themeBtn.image = #imageLiteral(resourceName: "light_bar")
+        }
+        tableView.reloadData()
     }
 }
 

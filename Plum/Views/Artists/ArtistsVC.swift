@@ -29,8 +29,10 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var collectionIndexView: CollectionIndexView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableIndexView: TableIndexView!
-    @IBOutlet weak var searchView: BlurView!
+    @IBOutlet weak var searchView: UIView!
     @IBOutlet weak var tool: UIToolbar!
+    @IBOutlet weak var themeBtn: UIBarButtonItem!
+    
     var pickedID: MPMediaEntityPersistentID!
     var result = [String:[Artist]]()
     var artists: [Artist]!
@@ -110,7 +112,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         }
         tableIndexView.indexes = self.indexes
         tableIndexView.tableView = self.tableView
-        tableIndexView.setup(color: UIColor.white)
+        tableIndexView.setup()
         self.view.addSubview(tableIndexView)
     }
     
@@ -150,25 +152,26 @@ extension ArtistsVC: UITableViewDelegate, UITableViewDataSource{    //Table
         if shouldShowResults {
             return UIView()
         }else{
-            let index = indexes[section]
-            let v = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 27))
-            v.backgroundColor = .clear
-            let label = UILabel(frame: CGRect(x: 12, y: 3, width: v.frame.width, height: 21))
-            label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-            let tool = UIToolbar(frame: v.frame)
-            v.addSubview(tool)
-            label.text = index
-            if currentTheme == .dark {
-                label.textColor = .white
-                tool.barStyle = .blackTranslucent
-            }else{
-                label.textColor = UIColor.gray
-                tool.barStyle = .default
-            }
-            v.addSubview(label)
-            v.bringSubview(toFront: label)
-            v.clipsToBounds = true
-            return v
+//            let index = indexes[section]
+//            let v = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 27))
+//            v.backgroundColor = .clear
+//            let label = UILabel(frame: CGRect(x: 12, y: 3, width: v.frame.width, height: 21))
+//            label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+//            let tool = UIToolbar(frame: v.frame)
+//            v.addSubview(tool)
+//            label.text = index
+//            if currentTheme == .dark {
+//                label.textColor = .white
+//                tool.barStyle = .blackTranslucent
+//            }else{
+//                label.textColor = UIColor.gray
+//                tool.barStyle = .default
+//            }
+//            v.addSubview(label)
+//            v.bringSubview(toFront: label)
+//            v.clipsToBounds = true
+//            return v
+            return headers[section]
         }
     }
     
@@ -674,6 +677,7 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         shouldShowResults = false
+        //heightInset = heightInset + 27
         if grid {
             collectionIndexView.isHidden = false
             collectionView.reloadData()
@@ -695,6 +699,7 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
             tableIndexView.isHidden = false
         }else{
             shouldShowResults = true
+            //heightInset = heightInset - 27
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces
         let strippedString = searchString!.trimmingCharacters(in: whitespaceCharacterSet)
@@ -743,8 +748,17 @@ extension ArtistsVC: UICollectionViewDelegateFlowLayout {
         return cellSize
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        if shouldShowResults {
+            return CGSize.zero
+        }else{
+            return CGSize(width: view.frame.width, height: 27)
+        }
+    }
+    
     func setHeaders() {
         headers = [UIView]()
+        headers.removeAll()
         for index in indexes {
             let v = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 27))
             v.backgroundColor = .clear
@@ -767,6 +781,14 @@ extension ArtistsVC: UICollectionViewDelegateFlowLayout {
         }
     }
     
+    @IBAction func themeBtnPressed(_ sender: UIBarButtonItem) {
+        if GlobalSettings.theme == .dark {
+            GlobalSettings.changeTheme(.light)
+        }else{
+            GlobalSettings.changeTheme(.dark)
+        }
+    }
+    
     @objc func updateTheme() {
         currentTheme = GlobalSettings.theme
         guard let bar = navigationController?.navigationBar else { return }
@@ -775,10 +797,12 @@ extension ArtistsVC: UICollectionViewDelegateFlowLayout {
             tool.barStyle = .default
             bar.barStyle = .default
             bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
+            themeBtn.image = #imageLiteral(resourceName: "light_bar")
         case .dark:
             tool.barStyle = .blackTranslucent
             bar.barStyle = .blackTranslucent
             bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+            themeBtn.image = #imageLiteral(resourceName: "dark_bar")
         default:
             tool.barStyle = .blackTranslucent
             bar.barStyle = .blackTranslucent
@@ -787,13 +811,11 @@ extension ArtistsVC: UICollectionViewDelegateFlowLayout {
         tableView.backgroundColor = UIColor.background
         tableView.separatorColor = UIColor.separator
         collectionView.backgroundColor = UIColor.background
-        let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
-        NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: tool, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
         bar.tintColor = GlobalSettings.tint.color
         tableView.backgroundColor = UIColor.background
         tableIndexView.backgroundColor = UIColor.indexBackground
         collectionIndexView.backgroundColor = UIColor.indexBackground
-        //setHeaders()
+        setHeaders()
         tableView.reloadData()
         collectionView.reloadData()
     }

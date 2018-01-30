@@ -28,8 +28,9 @@ class PlaylistsVC: UIViewController {
     @IBOutlet weak var tableIndexView: TableIndexView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionIndexView: CollectionIndexView!
-    @IBOutlet weak var searchView: BlurView!
+    @IBOutlet weak var searchView: UIView!
     @IBOutlet weak var tool: UIToolbar!
+    @IBOutlet weak var themeBtn: UIBarButtonItem!
     var pickedID: MPMediaEntityPersistentID!
     var pickedList: Playlist!
     var gesture: UILongPressGestureRecognizer!
@@ -41,14 +42,12 @@ class PlaylistsVC: UIViewController {
     var controllerSet = false
     var pickedName: String!
     var hideKeyboard = false
-    var currentTheme = GlobalSettings.theme
     var cellSize = CGSize()
     let device = GlobalSettings.device
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBarController?.delegate = self
-        NotificationCenter.default.addObserver(self, selector: #selector(setTheme), name: NSNotification.Name(rawValue: "themeChanged"), object: nil)
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         grid = GlobalSettings.playlistsGrid
         setTheme()
@@ -71,15 +70,20 @@ class PlaylistsVC: UIViewController {
             }else{
                 setTable()
                 tableView.tableFooterView = UIView(frame: .zero)
-                tableView.separatorColor = UIColor.lightSeparator
                 tableIndexView.indexes = self.indexes
                 tableIndexView.tableView = self.tableView
-                tableIndexView.setup(color: UIColor.white)
+                tableIndexView.setup()
                 view.bringSubview(toFront: searchView)
                 view.bringSubview(toFront: tableIndexView)
             }
         }
+        setTheme()
+        NotificationCenter.default.addObserver(self, selector: #selector(setTheme), name: .themeChanged, object: nil)
         print("Playlists loaded")
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .themeChanged, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -90,14 +94,6 @@ class PlaylistsVC: UIViewController {
             self.viewDidLoad()
         }
     }
-    
-//    override func viewDidAppear(_ animated: Bool) {
-//        if grid {
-//            collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-//        }else{
-//            tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-//        }
-//    }
     
     override func viewWillDisappear(_ animated: Bool) {
         self.definesPresentationContext = false
@@ -726,17 +722,27 @@ extension PlaylistsVC: UICollectionViewDelegateFlowLayout {
         }
     }
     
+    @IBAction func themeBtnPressed(_ sender: UIBarButtonItem) {
+        if GlobalSettings.theme == .dark {
+            GlobalSettings.changeTheme(.light)
+        }else{
+            GlobalSettings.changeTheme(.dark)
+        }
+    }
+    
     @objc func setTheme() {
         guard let bar = navigationController?.navigationBar else { return }
-        switch currentTheme {
+        switch GlobalSettings.theme {
         case .light:
             tool.barStyle = .default
             bar.barStyle = .default
             bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
+            themeBtn.image = #imageLiteral(resourceName: "light_bar")
         case .dark:
             tool.barStyle = .blackTranslucent
             bar.barStyle = .blackTranslucent
             bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+            themeBtn.image = #imageLiteral(resourceName: "dark_bar")
         default:
             tool.barStyle = .blackTranslucent
             bar.barStyle = .blackTranslucent

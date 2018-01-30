@@ -12,8 +12,11 @@ class SearchHeader: UITableViewCell {
     
     @IBOutlet weak var moreBtn: UIButton!
     @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var tool: UIToolbar!
     var callback: ((SearchHeader) -> ())?
     func setup(title: String, count: Int){
+        moreBtn.tintColor = UIColor.mainLabel
+        label.textColor = UIColor.mainLabel
         if count > 0 {
             label.text = "\(count) \(title)"
         }else{
@@ -26,11 +29,11 @@ class SearchHeader: UITableViewCell {
         }else{
             moreBtn.isHidden = true
         }
-        let tool = UIToolbar(frame: self.frame)
-        tool.barStyle = .default
-        contentView.addSubview(tool)
-        contentView.bringSubview(toFront: label)
-        contentView.bringSubview(toFront: moreBtn)
+        if GlobalSettings.theme == .dark {
+            tool.barStyle = .blackTranslucent
+        }else{
+            tool.barStyle = .default
+        }
     }
     
     @objc func buttonPressed(_ sender: UIButton){

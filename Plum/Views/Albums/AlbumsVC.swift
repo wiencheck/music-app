@@ -18,7 +18,10 @@ class AlbumsVC: UIViewController {
     @IBOutlet weak var tableIndexView: TableIndexView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionIndexView: CollectionIndexView!
-    @IBOutlet weak var searchView: BlurView!
+    @IBOutlet weak var searchView: UIView!
+    @IBOutlet weak var tool: UIToolbar!
+    @IBOutlet weak var themeBtn: UIBarButtonItem!
+
     var albums = [AlbumB]()
     var indexes = [String]()
     var result = [String: [AlbumB]]()
@@ -58,7 +61,6 @@ class AlbumsVC: UIViewController {
             }
             if grid{
                 setCollection()
-                //correctCollectionSections()
                 self.collectionIndexView.indexes = self.indexes
                 self.collectionIndexView.collectionView = self.collectionView
                 self.collectionIndexView.setup()
@@ -66,16 +68,17 @@ class AlbumsVC: UIViewController {
                 view.bringSubview(toFront: collectionIndexView)
             }else{
                 setTable()
-                tableView.separatorColor = UIColor.lightSeparator
                 tableIndexView.indexes = self.indexes
                 tableIndexView.tableView = self.tableView
-                tableIndexView.setup(color: UIColor.white)
+                tableIndexView.setup()
                 tableView.tableFooterView = UIView(frame: .zero)
                 view.bringSubview(toFront: searchView)
                 view.bringSubview(toFront: tableIndexView)
             }
             setHeaders()
         }
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
+        updateTheme()
         print("Albums loaded")
     }
     
@@ -109,9 +112,7 @@ class AlbumsVC: UIViewController {
         cellSize = calculateCollectionViewCellSize(itemsPerRow: 3, frame: self.view.frame)
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
-        //collectionView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
         collectionView.backgroundColor = UIColor.lightBackground
-        //correctCollectionSections()
         for index in indexes {
             cellTypes.append(Array<Int>(repeating: 0, count: (result[index]?.count)!))
         }
@@ -171,6 +172,25 @@ extension AlbumsVC: UITableViewDelegate, UITableViewDataSource{     //Table
         if shouldShowResults {
             return UIView()
         }else{
+//            let index = indexes[section]
+//            let v = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 27))
+//            v.backgroundColor = .clear
+//            let label = UILabel(frame: CGRect(x: 12, y: 3, width: v.frame.width, height: 21))
+//            label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+//            let tool = UIToolbar(frame: v.frame)
+//            v.addSubview(tool)
+//            label.text = index
+//            if currentTheme == .dark {
+//                label.textColor = .white
+//                tool.barStyle = .blackTranslucent
+//            }else{
+//                label.textColor = UIColor.gray
+//                tool.barStyle = .default
+//            }
+//            v.addSubview(label)
+//            v.bringSubview(toFront: label)
+//            v.clipsToBounds = true
+//            return v
             return headers[section]
         }
     }
@@ -412,25 +432,25 @@ extension AlbumsVC{     //Other functions
         player.play()
     }
     
-    func correctCollectionSections(){
-        var tmp: AlbumB!
-        for sect in 0 ..< indexes.count - 1{
-            if (result[indexes[sect]]?.count)! % 3 == 1{
-                if sect != indexes.count-1{
-                    tmp = result[indexes[sect]]?.last
-                    result[indexes[sect + 1]]?.insert(tmp!, at: 0)
-                    result[indexes[sect]]?.removeLast()
-                }
-            }else if (result[indexes[sect]]?.count)! % 3 == 2{
-                tmp = result[indexes[sect]]?.last
-                result[indexes[sect + 1]]?.insert(tmp!, at: 0)
-                result[indexes[sect]]?.removeLast()
-                tmp = result[indexes[sect]]?.last
-                result[indexes[sect + 1]]?.insert(tmp!, at: 0)
-                result[indexes[sect]]?.removeLast()
-            }
-        }
-    }
+//    func correctCollectionSections(){
+//        var tmp: AlbumB!
+//        for sect in 0 ..< indexes.count - 1{
+//            if (result[indexes[sect]]?.count)! % 3 == 1{
+//                if sect != indexes.count-1{
+//                    tmp = result[indexes[sect]]?.last
+//                    result[indexes[sect + 1]]?.insert(tmp!, at: 0)
+//                    result[indexes[sect]]?.removeLast()
+//                }
+//            }else if (result[indexes[sect]]?.count)! % 3 == 2{
+//                tmp = result[indexes[sect]]?.last
+//                result[indexes[sect + 1]]?.insert(tmp!, at: 0)
+//                result[indexes[sect]]?.removeLast()
+//                tmp = result[indexes[sect]]?.last
+//                result[indexes[sect + 1]]?.insert(tmp!, at: 0)
+//                result[indexes[sect]]?.removeLast()
+//            }
+//        }
+//    }
     
 }
 
@@ -589,20 +609,20 @@ extension AlbumsVC: UISearchBarDelegate, UISearchResultsUpdating {
 extension AlbumsVC: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let height = self.view.frame.size.height
-        let width = self.view.frame.size.width
-        let Waspect: CGFloat = 0.29
-        var Haspect: CGFloat = 0.22
-        if device == "iPhone X" {
-            Haspect = 0.18
+        return cellSize
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        if shouldShowResults {
+            return CGSize.zero
+        }else{
+            return CGSize(width: view.frame.width, height: 27)
         }
-        return CGSize(width: width*Waspect, height: height*Haspect)
     }
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if shouldShowResults {
             let u = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "header", for: indexPath)
-            u.alpha = 0.0
             return u
         }else{
             if kind == UICollectionElementKindSectionHeader {
@@ -617,6 +637,7 @@ extension AlbumsVC: UICollectionViewDelegateFlowLayout {
     
     func setHeaders() {
         headers = [UIView]()
+        headers.removeAll()
         for index in indexes {
             let v = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 27))
             v.backgroundColor = .clear
@@ -637,6 +658,47 @@ extension AlbumsVC: UICollectionViewDelegateFlowLayout {
             v.clipsToBounds = true
             headers.append(v)
         }
+    }
+    
+    @IBAction func themeBtnPressed(_ sender: UIBarButtonItem) {
+        if GlobalSettings.theme == .dark {
+            GlobalSettings.changeTheme(.light)
+        }else{
+            GlobalSettings.changeTheme(.dark)
+        }
+    }
+    
+    @objc func updateTheme() {
+        currentTheme = GlobalSettings.theme
+        guard let bar = navigationController?.navigationBar else { return }
+        switch currentTheme {
+        case .light:
+            tool.barStyle = .default
+            bar.barStyle = .default
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
+            themeBtn.image = #imageLiteral(resourceName: "light_bar")
+        case .dark:
+            tool.barStyle = .blackTranslucent
+            bar.barStyle = .blackTranslucent
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+            themeBtn.image = #imageLiteral(resourceName: "dark_bar")
+        default:
+            tool.barStyle = .blackTranslucent
+            bar.barStyle = .blackTranslucent
+            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+        }
+        tableView.backgroundColor = UIColor.background
+        tableView.separatorColor = UIColor.separator
+        collectionView.backgroundColor = UIColor.background
+        let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
+        NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: tool, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
+        bar.tintColor = GlobalSettings.tint.color
+        tableView.backgroundColor = UIColor.background
+        tableIndexView.backgroundColor = UIColor.indexBackground
+        collectionIndexView.backgroundColor = UIColor.indexBackground
+        setHeaders()
+        tableView.reloadData()
+        collectionView.reloadData()
     }
     
 }
@@ -672,13 +734,6 @@ extension AlbumsVC {
                             indexes.append("\(secondStr.uppercased().first!)")
                         }
                     }
-                    //                    if result["\(secondStr.first!)"] != nil {
-                    //                        result["\(secondStr.uppercased().first!)"]?.append(song)
-                    //                    }else{
-                    //                        result["\(secondStr.uppercased().first!)"] = []
-                    //                        result["\(secondStr.uppercased().first!)"]?.append(song)
-                    //                        indexes.append("\(secondStr.uppercased().first!)")
-                    //                    }
                 }
             }else{
                 if let prefi = article.first {
