@@ -105,7 +105,7 @@ class EightNowPlayingVC: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         //viewActive = false
         shoudlChangeBar = false
-        UIApplication.shared.statusBarStyle = .default
+        UIApplication.shared.statusBarStyle = .themed
     }
     
     override func viewDidAppear(_ animated: Bool) {

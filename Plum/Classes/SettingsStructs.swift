@@ -91,8 +91,8 @@ struct GlobalSettings{
     static func changeTheme(_ t: Theme) {
         self.theme = t
         defaults.set(t.rawValue, forKey: "theme")
-        if GlobalSettings.theme == .dark {
-            if GlobalSettings.oled {
+        if theme == .dark {
+            if oled {
                 UIColor.background = UIColor.black
             }else{
                 UIColor.background = UIColor.darkBackground
@@ -100,13 +100,17 @@ struct GlobalSettings{
             UIColor.mainLabel = UIColor.white
             UIColor.detailLabel = UIColor.lightGray
             UIColor.separator = UIColor.darkSeparator
-            UIColor.indexBackground = UIColor.darkGray
+            UIColor.indexBackground = UIColor.black
+            UIStatusBarStyle.themed = UIStatusBarStyle.lightContent
+            UITextField.appearance().keyboardAppearance = .dark
         }else{
             UIColor.mainLabel = UIColor.black
             UIColor.detailLabel = UIColor.gray
             UIColor.separator = UIColor.lightSeparator
             UIColor.background = UIColor.lightBackground
             UIColor.indexBackground = UIColor.white
+            UIStatusBarStyle.themed = UIStatusBarStyle.default
+            UITextField.appearance().keyboardAppearance = .light
         }
         NotificationCenter.default.post(name: .themeChanged, object: nil)
     }

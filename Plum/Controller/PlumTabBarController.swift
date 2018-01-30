@@ -56,13 +56,10 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     @objc func updateTheme() {
         if GlobalSettings.theme == .light {
             tabBar.barStyle = .default
-            UITextField.appearance().keyboardAppearance = .light
-            UIApplication.shared.statusBarStyle = .default
         }else{
             tabBar.barStyle = .black
-            UITextField.appearance().keyboardAppearance = .dark
-            UIApplication.shared.statusBarStyle = .lightContent
         }
+        UIApplication.shared.statusBarStyle = UIStatusBarStyle.themed
         tabBar.tintColor = GlobalSettings.tint.color
         self.tabBarItem.setTitleTextAttributes([NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color], for: .selected)
         customizeMoreTab()

@@ -51,9 +51,8 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidLoad()
         tabBarController?.delegate = self
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
-        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: NSNotification.Name(rawValue: "themeChanged"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
         currentTheme = GlobalSettings.theme
-        updateTheme()
         grid = GlobalSettings.artistsGrid
         if musicQuery.shared.artistsSet {
             artists = musicQuery.shared.artists
@@ -79,6 +78,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
             }
             setHeaders()
         }
+        updateTheme()
         print("Artists loaded")
     }
     

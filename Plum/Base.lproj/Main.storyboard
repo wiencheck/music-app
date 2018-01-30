@@ -311,7 +311,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gT8-hN-2cY">
-                                                    <rect key="frame" x="16" y="11" width="224" height="21"/>
+                                                    <rect key="frame" x="8" y="11" width="224" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="NNN-nO-VFc"/>
                                                         <constraint firstAttribute="width" constant="224" id="jgi-uQ-WHt"/>
@@ -1264,6 +1264,7 @@ SOFTWARE.</string>
                     <tabBarItem key="tabBarItem" tag="5" title="Search" image="tab_search" id="kTp-01-8gy"/>
                     <navigationItem key="navigationItem" title="Search" id="vaz-fj-GUk">
                         <barButtonItem key="backBarButtonItem" title=" " id="Muy-Ik-pjq"/>
+                        <barButtonItem key="leftBarButtonItem" title="Item" image="nostar_bar" id="HlA-It-vV7"/>
                         <barButtonItem key="rightBarButtonItem" image="light_bar" id="Hx8-73-cc4">
                             <connections>
                                 <action selector="themeBtnPressed:" destination="fje-en-lJC" id="cII-70-ILM"/>
@@ -1515,7 +1516,7 @@ SOFTWARE.</string>
                     </view>
                     <tabBarItem key="tabBarItem" tag="4" title="Songs" image="tab_songs" id="VHL-1H-Ust"/>
                     <navigationItem key="navigationItem" title="Songs" id="DqK-A4-Q1Z">
-                        <barButtonItem key="rightBarButtonItem" title="Theme" image="light_bar" id="UMa-eV-JfP">
+                        <barButtonItem key="rightBarButtonItem" image="light_bar" id="UMa-eV-JfP">
                             <connections>
                                 <action selector="themeBtnPressed:" destination="0U7-7i-GxC" id="Wv2-we-Z3B"/>
                             </connections>
@@ -1610,7 +1611,7 @@ SOFTWARE.</string>
                     <navigationItem key="navigationItem" title="Title" id="Nul-ir-pHJ">
                         <barButtonItem key="backBarButtonItem" title=" " id="dnV-DS-dye"/>
                         <rightBarButtonItems>
-                            <barButtonItem title="Item" id="udn-84-0Xq">
+                            <barButtonItem image="light_bar" id="udn-84-0Xq">
                                 <connections>
                                     <action selector="themeBtnPressed:" destination="Y0c-SE-ysp" id="V3v-Ft-D28"/>
                                 </connections>
@@ -2094,7 +2095,7 @@ SOFTWARE.</string>
                     </view>
                     <navigationItem key="navigationItem" title="Title" id="HKA-M6-Q1r">
                         <rightBarButtonItems>
-                            <barButtonItem title="Item" id="MTf-kk-rL7">
+                            <barButtonItem image="light_bar" id="MTf-kk-rL7">
                                 <connections>
                                     <action selector="themeBtnPressed:" destination="Mzv-cc-r99" id="rDi-8M-8XC"/>
                                 </connections>
@@ -2477,7 +2478,7 @@ SOFTWARE.</string>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Title" id="eSR-10-Pgt">
-                        <barButtonItem key="rightBarButtonItem" title="Rating" id="4dG-F4-R9g">
+                        <barButtonItem key="rightBarButtonItem" image="light_bar" id="4dG-F4-R9g">
                             <connections>
                                 <action selector="themeBtnPressed:" destination="O5b-aR-CcB" id="NOn-8s-Zm0"/>
                             </connections>
@@ -5133,7 +5134,7 @@ I will push the new build in a few minutes.</string>
                     <tabBarItem key="tabBarItem" tag="2" title="Albums" image="tab_album" selectedImage="tab_album_selected" id="fYs-LN-EMD"/>
                     <navigationItem key="navigationItem" title="Albums" id="SLf-ki-WSm">
                         <barButtonItem key="backBarButtonItem" title=" " id="KwD-X9-HnG"/>
-                        <barButtonItem key="rightBarButtonItem" title="Item" id="19H-YG-W6V">
+                        <barButtonItem key="rightBarButtonItem" image="light_bar" id="19H-YG-W6V">
                             <connections>
                                 <action selector="themeBtnPressed:" destination="FOt-Hq-IVd" id="J0L-HA-zGu"/>
                             </connections>
@@ -5414,7 +5415,7 @@ I will push the new build in a few minutes.</string>
                     <tabBarItem key="tabBarItem" tag="3" title="Artists" image="tab_guitar" id="ZmR-Bk-M08"/>
                     <navigationItem key="navigationItem" title="Artists" id="S7s-a2-WKL">
                         <barButtonItem key="backBarButtonItem" title=" " id="zXV-BQ-jY7"/>
-                        <barButtonItem key="rightBarButtonItem" title="Item" id="NPx-Z4-pme">
+                        <barButtonItem key="rightBarButtonItem" image="light_bar" id="NPx-Z4-pme">
                             <connections>
                                 <action selector="themeBtnPressed:" destination="evX-Ku-ETv" id="8nA-O4-Sjj"/>
                             </connections>
@@ -5758,7 +5759,7 @@ I will push the new build in a few minutes.</string>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Playlists" id="Pze-Cv-mhi">
                         <barButtonItem key="backBarButtonItem" title="  " id="Gxe-rd-9vD"/>
-                        <barButtonItem key="rightBarButtonItem" title="Item" id="niT-gf-ib7">
+                        <barButtonItem key="rightBarButtonItem" image="light_bar" id="niT-gf-ib7">
                             <connections>
                                 <action selector="themeBtnPressed:" destination="Idp-nk-ma0" id="RRu-sf-TJ0"/>
                             </connections>
@@ -6005,7 +6006,7 @@ I will push the new build in a few minutes.</string>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Title" id="sV6-O6-4SP">
-                        <barButtonItem key="rightBarButtonItem" title="Rating" id="gVq-mp-qcI">
+                        <barButtonItem key="rightBarButtonItem" image="light_bar" id="gVq-mp-qcI">
                             <connections>
                                 <action selector="themeBtnPressed:" destination="3n3-F7-SRO" id="zgB-IF-gZa"/>
                             </connections>
@@ -6146,6 +6147,7 @@ I will push the new build in a few minutes.</string>
         <image name="light_bar" width="25" height="25"/>
         <image name="maxVol" width="300" height="300"/>
         <image name="next-butt" width="43" height="47"/>
+        <image name="nostar_bar" width="25" height="25"/>
         <image name="play-butt" width="45" height="53"/>
         <image name="plum" width="500" height="500"/>
         <image name="prev-butt" width="43" height="47"/>
@@ -6163,7 +6165,7 @@ I will push the new build in a few minutes.</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="hO0-6B-0g0"/>
-        <segue reference="LCY-3G-uHV"/>
-        <segue reference="uGV-fK-q4R"/>
+        <segue reference="Yqr-BV-TWW"/>
+        <segue reference="7Xq-dO-ndj"/>
     </inferredMetricsTieBreakers>
 </document>

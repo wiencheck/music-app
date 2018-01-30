@@ -340,4 +340,8 @@ extension UIColor {
     static var indexBackground = UIColor()
 }
 
+extension UIStatusBarStyle {
+    static var themed = UIStatusBarStyle.default
+}
+
 

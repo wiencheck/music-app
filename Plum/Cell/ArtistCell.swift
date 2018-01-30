@@ -28,7 +28,7 @@ class ArtistCell: UITableViewCell {
         let songsCount = artist.songsIn
         self.artistLabel.text = artist.name
         artistLabel.textColor = UIColor.mainLabel
-        detailLabel.textColor = UIColor.detailLabel
+        detailLabel.textColor = UIColor.mainLabel
         let alCSt = "\(albumsCount)"
         let sonCSt = "\(songsCount)"
         var alSt = " albums, "
@@ -59,7 +59,7 @@ class ArtistCell: UITableViewCell {
         let songsCount = list.songsIn
         self.artistLabel.text = list.name
         artistLabel.textColor = UIColor.mainLabel
-        detailLabel.textColor = UIColor.detailLabel
+        detailLabel.textColor = UIColor.mainLabel
         let alCSt = "\(albumsCount)"
         let sonCSt = "\(songsCount)"
         var alSt = " albums, "

@@ -404,16 +404,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }else{
                 UIColor.background = UIColor.darkBackground
             }
+            UIStatusBarStyle.themed = UIStatusBarStyle.lightContent
             UIColor.mainLabel = UIColor.white
             UIColor.detailLabel = UIColor.lightGray
             UIColor.separator = UIColor.darkSeparator
-            UIColor.indexBackground = UIColor.darkGray
+            UIColor.indexBackground = UIColor.black
         }else{
             UIColor.mainLabel = UIColor.black
             UIColor.detailLabel = UIColor.gray
             UIColor.separator = UIColor.lightSeparator
             UIColor.background = UIColor.lightBackground
             UIColor.indexBackground = UIColor.white
+            UIStatusBarStyle.themed = UIStatusBarStyle.default
         }
     }
 }

@@ -145,9 +145,8 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     
     @objc func oledSwitched(_ sender: UISwitch) {
         GlobalSettings.changeOled(sender.isOn)
-        setColors()
+        GlobalSettings.changeTheme(GlobalSettings.theme)
         updateTheme()
-        //tableView.backgroundColor = UIColor.background
         NotificationCenter.default.post(name: .themeChanged, object: nil)
     }
     
@@ -421,25 +420,22 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         let alert = UIAlertController(title: "Time for decision", message: "Light: Certain elements on now playing screen, like lyrics background, UpNext background and upper bar will be white colored\n\nDark: Same as light, only it's totally opposite\n\nMixed: Navigation elements will be dark, while content will be light", preferredStyle: .actionSheet)
         let dark = UIAlertAction(title: "Dark", style: .default, handler: {(action) in
             GlobalSettings.changeTheme(.dark)
-            self.setColors()
             self.reload()
             self.updateTheme()
         })
         let light = UIAlertAction(title: "Light", style: .default, handler: {(action) in
             GlobalSettings.changeTheme(.light)
-            self.setColors()
             self.reload()
             self.updateTheme()
         })
         let mixed = UIAlertAction(title: "Mixed", style: .default, handler: {(action) in
             GlobalSettings.changeTheme(.mixed)
-            self.setColors()
             self.reload()
             self.updateTheme()
         })
         alert.addAction(light)
         alert.addAction(dark)
-        alert.addAction(mixed)
+        //alert.addAction(mixed)
         present(alert, animated: true, completion: nil)
     }
     
@@ -537,25 +533,27 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         tableView.reloadData()
     }
     
-    func setColors() {
-        if GlobalSettings.theme == .dark {
-            if GlobalSettings.oled {
-                UIColor.background = UIColor.black
-            }else{
-                UIColor.background = UIColor.darkBackground
-            }
-            UIColor.mainLabel = UIColor.white
-            UIColor.detailLabel = UIColor.lightGray
-            UIColor.separator = UIColor.darkSeparator
-            UIColor.indexBackground = UIColor.darkGray
-        }else{
-            UIColor.mainLabel = UIColor.black
-            UIColor.detailLabel = UIColor.gray
-            UIColor.separator = UIColor.lightSeparator
-            UIColor.background = UIColor.lightBackground
-            UIColor.indexBackground = UIColor.white
-        }
-    }
+//    func setColors() {
+//        if GlobalSettings.theme == .dark {
+//            if GlobalSettings.oled {
+//                UIColor.background = UIColor.black
+//            }else{
+//                UIColor.background = UIColor.darkBackground
+//            }
+//            UIColor.mainLabel = UIColor.white
+//            UIColor.detailLabel = UIColor.lightGray
+//            UIColor.separator = UIColor.darkSeparator
+//            UIColor.indexBackground = UIColor.darkGray
+//            UIStatusBarStyle.themed = UIStatusBarStyle.lightContent
+//        }else{
+//            UIColor.mainLabel = UIColor.black
+//            UIColor.detailLabel = UIColor.gray
+//            UIColor.separator = UIColor.lightSeparator
+//            UIColor.background = UIColor.lightBackground
+//            UIColor.indexBackground = UIColor.white
+//            UIStatusBarStyle.themed = UIStatusBarStyle.default
+//        }
+//    }
 }
 
 extension SettingsVC: UITabBarControllerDelegate {

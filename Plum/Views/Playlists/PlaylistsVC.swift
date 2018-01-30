@@ -50,7 +50,6 @@ class PlaylistsVC: UIViewController {
         tabBarController?.delegate = self
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         grid = GlobalSettings.playlistsGrid
-        setTheme()
         setup()
         if !playlists.isEmpty {
             setupDict()
