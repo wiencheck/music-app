@@ -37,7 +37,6 @@ class ColorsVC: UICollectionViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        UIApplication.shared.statusBarStyle = .default
         self.navigationController?.navigationBar.barTintColor = navBarColor
         self.navigationController?.navigationBar.tintColor = navBarText
     }
@@ -73,7 +72,7 @@ class ColorsVC: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         setColor(color: colors[indexPath.row])
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "themeChanged"), object: nil)
+        NotificationCenter.default.post(name: .themeChanged, object: nil)
         alert()
     }
     
@@ -123,6 +122,7 @@ extension ColorsVC {
     func setColor(color: Color) {
         GlobalSettings.changeTint(color)
         colorBar(color: color)
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor : GlobalSettings.tint.color], for: .normal)
     }
     
 }

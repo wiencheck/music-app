@@ -34,6 +34,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     let device = GlobalSettings.device
     
     @IBOutlet weak var themeBtn: UIBarButtonItem!
+    @IBOutlet weak var ratingBtn: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var indexView: TableIndexView!
     @IBOutlet weak var searchView: UIView!
@@ -87,10 +88,15 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         definesPresentationContext = false
     }
     
-//    @IBAction func ratingPressed() {
-//        GlobalSettings.changeRating(!GlobalSettings.rating)
-//        tableView.reloadData()
-//    }
+    @IBAction func ratingPressed() {
+        GlobalSettings.changeRating(!GlobalSettings.rating)
+        if GlobalSettings.rating {
+            ratingBtn.image = #imageLiteral(resourceName: "star_bar")
+        }else{
+            ratingBtn.image = #imageLiteral(resourceName: "nostar_bar")
+        }
+        tableView.reloadData()
+    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         if shouldShowResults {
@@ -174,10 +180,14 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if indexPath.section == 0 {
-            return false
-        }else{
+        if shouldShowResults {
             return true
+        }else{
+            if indexPath.section == 0 {
+                return false
+            }else{
+                return true
+            }
         }
     }
     
@@ -236,6 +246,15 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             if indexPath.section == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath) as! ShuffleCell
                 cell.setup(style: currentTheme)
+                if GlobalSettings.theme == .dark {
+                    if GlobalSettings.oled {
+                        cell.backgroundColor = UIColor.clear
+                    }else{
+                        cell.backgroundColor = UIColor.darkTranslucent
+                    }
+                }else{
+                    cell.backgroundColor = UIColor.clear
+                }
                 return cell
             }else{
                 if(cellTypes[indexPath.section][indexPath.row] == 0){

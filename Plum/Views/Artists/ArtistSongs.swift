@@ -169,6 +169,11 @@ extension ArtistSongs: UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath) as! ShuffleCell
             cell.setup(style: .light)
+            if GlobalSettings.theme == .dark {
+                cell.backgroundColor = UIColor.darkTranslucent
+            }else{
+                cell.backgroundColor = UIColor.clear
+            }
             return cell
         }else{
             if sort == .alphabetically {
@@ -193,19 +198,16 @@ extension ArtistSongs: UITableViewDelegate, UITableViewDataSource {
                             let cell = tableView.dequeueReusableCell(withIdentifier: "extendedSongCell", for: indexPath) as! SongInAlbumCell
                             let item = result[indexes[indexPath.section]]?[indexPath.row-1]
                             cell.setupA(item: item!)
-                            cell.backgroundColor = .clear
                             return cell
                         }else{
                             let cell = tableView.dequeueReusableCell(withIdentifier: "albumSongCell", for: indexPath) as! SongInAlbumCell
                             let item = result[indexes[indexPath.section]]?[indexPath.row-1]
                             cell.setup(item: item!)
-                            cell.backgroundColor = .clear
                             return cell
                         }
                     }else{
                         let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as! QueueActionsCell
                         cell.delegate = self
-                        cell.backgroundColor = .clear
                         return cell
                     }
                 }
@@ -638,10 +640,10 @@ extension ArtistSongs { //Sortowanie
         }
         tableView.backgroundColor = UIColor.background
         tableView.separatorColor = UIColor.separator
-        albIndexView.backgroundColor = UIColor.indexBackground
-        alpIndexView.backgroundColor = UIColor.indexBackground
         bar.tintColor = GlobalSettings.tint.color
         setup()
+        albIndexView.backgroundColor = UIColor.indexBackground
+        alpIndexView.backgroundColor = UIColor.indexBackground
         tableView.reloadData()
     }
     

@@ -32,7 +32,6 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         setPopup()
         emptyPopup()
         updateTheme()
-        //_ = musicQuery.shared.allSongs()
         DispatchQueue.global(qos: .background).async {
             musicQuery.shared.setArrays()
             if let count = UserDefaults.standard.value(forKey: "count") as? Int {
@@ -50,7 +49,6 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
                 musicQuery.shared.addToSpotlight()
             }
         }
-        //twitter()
     }
     
     @objc func updateTheme() {
@@ -176,6 +174,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         if let more = self.moreNavigationController.topViewController?.view as? UITableView {
             //more.delegate = self
             more.tableFooterView = UIView()
+            more.tintColor = GlobalSettings.tint.color
             if GlobalSettings.theme == .dark {
                 more.backgroundColor = UIColor.darkBackground
                 more.separatorColor = UIColor.darkSeparator
@@ -209,33 +208,6 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
             return "eight_se"
         }else{
             return "eight_6plus"
-        }
-    }
-    
-    @objc func twitter() {
-        let defaults = UserDefaults.standard
-        let count = defaults.integer(forKey: "launchesCount")
-        if let followed = defaults.value(forKey: "twitterFollowed") as? Bool {
-            if (count == 1 || count % 5 == 0) && !followed {
-                let alert = UIAlertController(title: "Twitter", message: "Follow Plum's page on Twitter to see latest news and announcements", preferredStyle: .alert)
-                let take = UIAlertAction(title: "Take me there", style: .default) { _ in
-                    let twUrl = URL(string: "twitter://user?screen_name=plumplayer")
-                    let twUrlWeb = URL(string: "https://twitter.com/plumplayer")
-                    if UIApplication.shared.canOpenURL(twUrl!) {
-                        UIApplication.shared.open(twUrl!, options: [:], completionHandler: nil)
-                    }else{
-                        UIApplication.shared.open(twUrlWeb!, options: [:], completionHandler: nil)
-                    }
-                    defaults.set(true, forKey: "twitterFollowed")
-                }
-                let no = UIAlertAction(title: "I'll pass", style: .cancel, handler: nil)
-                alert.addAction(take)
-                alert.addAction(no)
-                present(alert, animated: true, completion: nil)
-            }
-        }else{
-            defaults.set(false, forKey: "twitterFollowed")
-            twitter()
         }
     }
     

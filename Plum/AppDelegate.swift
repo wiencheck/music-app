@@ -12,6 +12,7 @@ import MediaPlayer
 import CoreSpotlight
 import UserNotifications
 import NotificationCenter
+import StoreKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -24,15 +25,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var defaults: UserDefaults!
     var rating: Bool!
     let widget = NCWidgetController.widgetController()
+    var ratingDisplayed = false
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         if let _ = MPMediaQuery.songs().items {
             letGo()
             widget.setHasContent(true, forWidgetWithBundleIdentifier: "com.wiencheck.plum.upnext")
-            if let c = UserDefaults.standard.value(forKey: "launchesCount") as? Int {
-                UserDefaults.standard.set(c+1, forKey: "launchesCount")
-            }else{
-                UserDefaults.standard.set(1, forKey: "launchesCount")
+            if #available(iOS 10.3, *){
+                let shortestTime: UInt32 = 50
+                let longestTime: UInt32 = 500
+                guard let timeInterval = TimeInterval(exactly: arc4random_uniform(longestTime - shortestTime) + shortestTime) else { return true }
+                Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(requestReview), userInfo: nil, repeats: false)
             }
         }else{
             hijack()
@@ -106,6 +109,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        
     }
     
 
@@ -336,7 +340,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UISwitch.appearance().onTintColor = GlobalSettings.tint.color
         UITableViewCell.appearance().backgroundColor = UIColor.clear
         let s = UIView()
-        s.backgroundColor = GlobalSettings.tint.color.withAlphaComponent(0.3)
+        s.backgroundColor = GlobalSettings.tint.color.withAlphaComponent(1)
         UITableViewCell.appearance().selectedBackgroundView = s
     }
     
@@ -418,5 +422,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UIStatusBarStyle.themed = UIStatusBarStyle.default
         }
     }
+    
+    @available(iOS 10.3, *) @objc func requestReview() {
+        SKStoreReviewController.requestReview()
+    }
+    
 }
 

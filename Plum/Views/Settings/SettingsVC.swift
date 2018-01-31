@@ -11,6 +11,16 @@ import MediaPlayer
 import UserNotifications
 
 class SettingsVC: UITableViewController, MySpotlightDelegate {
+    
+    //Info/kontakt
+    @IBOutlet weak var appNameLabel: UILabel!
+    @IBOutlet weak var authorLabel: UILabel!
+    @IBOutlet weak var versionLabel: UILabel!
+    @IBOutlet weak var twitterBtn: UIButton!
+    @IBOutlet weak var facebookBtn: UIButton!
+    @IBOutlet weak var browserBtn: UIButton!
+    @IBOutlet weak var mailBtn: UIButton!
+    @IBOutlet weak var storeBtn: UIButton!
 
     let defaults = UserDefaults.standard
     @IBOutlet weak var artistsGridSwitch: UISwitch!
@@ -58,17 +68,22 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         progressBar.alpha = 0.0
         handleSwitches()
         reload()
+        setVersion()
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
+        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .themeChanged, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         reload()
-        self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         UITableViewCell.appearance().backgroundColor = .clear
         UILabel.appearance().tintColor = nil
-        
     }
     
     func handleSwitches(){
@@ -503,7 +518,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         present(alert, animated: true, completion: nil)
     }
     
-    func updateTheme() {
+    @objc func updateTheme() {
         tableView.backgroundColor = UIColor.background
         artG.textColor = UIColor.mainLabel
         albG.textColor = UIColor.mainLabel
@@ -531,6 +546,14 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
             //UITableViewCell.appearance().backgroundColor = .white
         }
         tableView.reloadData()
+        browserBtn.tintColor = GlobalSettings.tint.color
+        facebookBtn.tintColor = GlobalSettings.tint.color
+        twitterBtn.tintColor = GlobalSettings.tint.color
+        mailBtn.tintColor = GlobalSettings.tint.color
+        storeBtn.tintColor = GlobalSettings.tint.color
+        authorLabel.textColor = UIColor.mainLabel
+        appNameLabel.textColor = UIColor.mainLabel
+        attributedInfo()
     }
     
 //    func setColors() {
@@ -566,4 +589,89 @@ extension SettingsVC: UITabBarControllerDelegate {
             }
         }
     }
+}
+
+extension SettingsVC {  //Kontakt/Info
+    
+    func attributedInfo() {
+        let plum = NSMutableAttributedString(string: "Plum ")
+        let musicplayer = NSMutableAttributedString(string: "music player")
+        let createdby = NSMutableAttributedString(string: "Created by ")
+        let author = NSMutableAttributedString(string: "Adam Wienconek")
+        let plumRange = NSRange(location: 0, length: plum.length)
+        let musicplayerRange = NSRange(location: 0, length: musicplayer.length)
+        let createdbyRange = NSRange(location: 0, length: createdby.length)
+        let authorRange = NSRange(location: 0, length: author.length)
+        plum.addAttributes([
+            NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color,
+            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .semibold)
+            ], range: plumRange)
+        author.addAttributes([
+            NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color,
+            NSAttributedStringKey.font: UIFont.systemFont(ofSize: 15, weight: .semibold)
+            ], range: authorRange)
+        plum.append(musicplayer)
+        createdby.append(author)
+        appNameLabel.attributedText = plum
+        authorLabel.attributedText = createdby
+    }
+    
+    func setVersion() {
+        let version = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
+        versionLabel.text = "Version: \(version)"
+        browserBtn.imageView?.contentMode = .scaleAspectFit
+        twitterBtn.imageView?.contentMode = .scaleAspectFit
+        facebookBtn.imageView?.contentMode = .scaleAspectFit
+        mailBtn.imageView?.contentMode = .scaleAspectFit
+        storeBtn.imageView?.contentMode = .scaleAspectFit
+    }
+    
+    @IBAction func twitterPressed() {
+        openTwitter()
+    }
+    
+    @IBAction func facebookPressed() {
+        openFacebook()
+    }
+    
+    @IBAction func browserPressed() {
+        openBrowser()
+    }
+    
+    @IBAction func mailPressed() {
+        openMail()
+    }
+    
+    @IBAction func storePressed() {
+        openStore()
+    }
+    
+    func openTwitter() {
+        let twUrl = "twitter://user?screen_name=plumplayer"
+        let twUrlWeb = "https://twitter.com/plumplayer"
+        UIApplication.tryURL(urls: [twUrl, twUrlWeb])
+    }
+    
+    func openFacebook() {
+        //137448817046361
+        let fbUrl = "fb://profile/137448817046361"
+        let fbUrlWeb = "http://www.facebook.com/137448817046361"
+        UIApplication.tryURL(urls: [fbUrl, fbUrlWeb])
+    }
+    
+    func openBrowser() {
+        let plUrl = URL(string: "https://plummusicplayer.wordpress.com/")
+        UIApplication.shared.open(plUrl!)
+    }
+    
+    func openMail() {
+        let email = URL(string: "mailto:wiencheck@googlemail.com")
+        UIApplication.shared.open(email!)
+    }
+    
+    func openStore() {
+        let store = URL(string: "https://itunes.apple.com/us/app/plum-music-player/id1331897871?mt=8")
+        UIApplication.shared.open(store!)
+    }
+    
 }

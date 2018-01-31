@@ -446,6 +446,7 @@ extension EightNowPlayingVC: UITextViewDelegate {
         //fadeTextView()
         lyricsView.addSubview(lyricsTextView)
         view.superview?.addSubview(lyricsView)
+        lyricsTextView.scrollsToTop = true
         //self.lyricsTextView.scrollRectToVisible(CGRect(x: 0, y: 0, width: 1, height: 1), animated: false)
     }
     

@@ -223,4 +223,16 @@ extension Notification.Name {
     static let themeChanged = Notification.Name("themeChanged")
 }
 
+extension UIApplication {   //Open URL
+    class func tryURL(urls: [String]) {
+        let application = UIApplication.shared
+        for url in urls {
+            if application.canOpenURL(URL(string: url)!) {
+                application.openURL(URL(string: url)!)
+                return
+            }
+        }
+    }
+}
+
 

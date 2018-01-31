@@ -43,6 +43,14 @@ class FolderVC: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 94
     }
+    
+    @IBAction func themeBtnPressed() {
+        if GlobalSettings.theme == .dark{
+            GlobalSettings.changeTheme(.light)
+        }else{
+            GlobalSettings.changeTheme(.dark)
+        }
+    }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! ArtistCell
