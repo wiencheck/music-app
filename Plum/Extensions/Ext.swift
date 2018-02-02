@@ -228,7 +228,7 @@ extension UIApplication {   //Open URL
         let application = UIApplication.shared
         for url in urls {
             if application.canOpenURL(URL(string: url)!) {
-                application.openURL(URL(string: url)!)
+                application.open(URL(string: url)!, options: [:], completionHandler: nil)
                 return
             }
         }

@@ -28,7 +28,7 @@
                         <sections>
                             <tableViewSection id="l0b-dY-6LR">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="doubleTapBar" rowHeight="124" id="0Nw-Ug-ghz">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="info" rowHeight="124" id="0Nw-Ug-ghz">
                                         <rect key="frame" x="0.0" y="35" width="320" height="124"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="0Nw-Ug-ghz" id="YWO-4z-YEs">
@@ -60,7 +60,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="created by Adam Wienconek" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KGt-Xg-b0U">
-                                                    <rect key="frame" x="92" y="37" width="178" height="16"/>
+                                                    <rect key="frame" x="92" y="37" width="218" height="16"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -113,7 +113,7 @@
                                                 <constraint firstItem="rR7-Rj-ywc" firstAttribute="bottom" secondItem="tEl-RV-HYP" secondAttribute="bottom" id="0Y4-N9-wNB"/>
                                                 <constraint firstAttribute="trailing" secondItem="iXm-VO-XDJ" secondAttribute="trailing" constant="30" id="0rD-P2-Ljx"/>
                                                 <constraint firstItem="tEl-RV-HYP" firstAttribute="top" secondItem="YWO-4z-YEs" secondAttribute="top" constant="11" id="4En-mi-YG0"/>
-                                                <constraint firstAttribute="trailing" secondItem="KGt-Xg-b0U" secondAttribute="trailing" constant="50" id="EQ7-iX-sIu"/>
+                                                <constraint firstAttribute="trailing" secondItem="KGt-Xg-b0U" secondAttribute="trailing" constant="10" id="EQ7-iX-sIu"/>
                                                 <constraint firstAttribute="bottom" secondItem="iXm-VO-XDJ" secondAttribute="bottom" constant="10" id="PJC-W4-91s"/>
                                                 <constraint firstItem="KGt-Xg-b0U" firstAttribute="leading" secondItem="tEl-RV-HYP" secondAttribute="trailing" constant="10" id="QSo-A6-kk1"/>
                                                 <constraint firstItem="Ayk-ld-x71" firstAttribute="leading" secondItem="tEl-RV-HYP" secondAttribute="trailing" constant="10" id="RJr-xP-cQg"/>
@@ -126,6 +126,7 @@
                                                 <constraint firstItem="iXm-VO-XDJ" firstAttribute="leading" secondItem="YWO-4z-YEs" secondAttribute="leading" constant="30" id="rtV-6e-aVD"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <inset key="separatorInset" minX="1000" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>

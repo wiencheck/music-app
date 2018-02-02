@@ -342,6 +342,8 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
             spotlightBtnPressed()
         case "icons":
             icons()
+        case "info":
+            review()
         default:
             selfExplanatory()
         }
@@ -379,6 +381,13 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     func selfExplanatory() {
         let alert = UIAlertController(title: "🤔", message: "Well, this is really self-explanatory. Try it and see for yourself!", preferredStyle: .alert)
         let ok = UIAlertAction(title: "Okay, don't be mad!", style: .default, handler: nil)
+        alert.addAction(ok)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func review() {
+        let alert = UIAlertController(title: "", message: "If you enjoy using Plum, please leave a review in the App Store.\nFollow Twitter and Facebook profile for any news regarding Plum's development 😁", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "Okay!", style: .default, handler: nil)
         alert.addAction(ok)
         present(alert, animated: true, completion: nil)
     }
@@ -432,7 +441,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
 //    }
     
     func explainStyle(){
-        let alert = UIAlertController(title: "Time for decision", message: "Light: Certain elements on now playing screen, like lyrics background, UpNext background and upper bar will be white colored\n\nDark: Same as light, only it's totally opposite\n\nMixed: Navigation elements will be dark, while content will be light", preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "Time for decision", message: "Choose preferred theme", preferredStyle: .alert)
         let dark = UIAlertAction(title: "Dark", style: .default, handler: {(action) in
             GlobalSettings.changeTheme(.dark)
             self.reload()
@@ -443,11 +452,11 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
             self.reload()
             self.updateTheme()
         })
-        let mixed = UIAlertAction(title: "Mixed", style: .default, handler: {(action) in
-            GlobalSettings.changeTheme(.mixed)
-            self.reload()
-            self.updateTheme()
-        })
+//        let mixed = UIAlertAction(title: "Mixed", style: .default, handler: {(action) in
+//            GlobalSettings.changeTheme(.mixed)
+//            self.reload()
+//            self.updateTheme()
+//        })
         alert.addAction(light)
         alert.addAction(dark)
         //alert.addAction(mixed)
@@ -595,7 +604,7 @@ extension SettingsVC {  //Kontakt/Info
     
     func attributedInfo() {
         let plum = NSMutableAttributedString(string: "Plum ")
-        let musicplayer = NSMutableAttributedString(string: "music player")
+        let musicplayer = NSMutableAttributedString(string: "Music Player")
         let createdby = NSMutableAttributedString(string: "Created by ")
         let author = NSMutableAttributedString(string: "Adam Wienconek")
         let plumRange = NSRange(location: 0, length: plum.length)
@@ -661,17 +670,17 @@ extension SettingsVC {  //Kontakt/Info
     
     func openBrowser() {
         let plUrl = URL(string: "https://plummusicplayer.wordpress.com/")
-        UIApplication.shared.open(plUrl!)
+        UIApplication.shared.open(plUrl!, options: [:], completionHandler: nil)
     }
     
     func openMail() {
         let email = URL(string: "mailto:wiencheck@googlemail.com")
-        UIApplication.shared.open(email!)
+        UIApplication.shared.open(email!, options: [:], completionHandler: nil)
     }
     
     func openStore() {
         let store = URL(string: "https://itunes.apple.com/us/app/plum-music-player/id1331897871?mt=8")
-        UIApplication.shared.open(store!)
+        UIApplication.shared.open(store!, options: [:], completionHandler: nil)
     }
     
 }

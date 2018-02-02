@@ -28,16 +28,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var ratingDisplayed = false
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        defaults = UserDefaults.standard
         if let _ = MPMediaQuery.songs().items {
-            letGo()
             widget.setHasContent(true, forWidgetWithBundleIdentifier: "com.wiencheck.plum.upnext")
-            if #available(iOS 10.3, *){
-                let shortestTime: UInt32 = 50
-                let longestTime: UInt32 = 500
-                guard let timeInterval = TimeInterval(exactly: arc4random_uniform(longestTime - shortestTime) + shortestTime) else { return true }
-                Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(requestReview), userInfo: nil, repeats: false)
+            let count = defaults.integer(forKey: "launchesCount")
+            if count % 3 == 0 {
+                if #available(iOS 10.3, *){
+                    let shortestTime: UInt32 = 5
+                    let longestTime: UInt32 = 10
+                    guard let timeInterval = TimeInterval(exactly: arc4random_uniform(longestTime - shortestTime) + shortestTime) else { return true }
+                    Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(requestReview), userInfo: nil, repeats: false)
+                }
             }
+            defaults.set(count+1, forKey: "launchesCount")
+            print("Launch number \(count+1)")
+            letGo()
         }else{
+            defaults.set(1, forKey: "launchesCount")
             hijack()
         }
         return true
@@ -135,7 +142,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func letGo() {
         GlobalSettings.remote = RemoteCommandManager()
-        defaults = UserDefaults.standard
         setInitialSettings()
         readSettings()
         setCustomizing()
