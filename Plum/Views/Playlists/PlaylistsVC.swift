@@ -28,8 +28,6 @@ class PlaylistsVC: UIViewController {
     @IBOutlet weak var tableIndexView: TableIndexView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionIndexView: CollectionIndexView!
-    @IBOutlet weak var searchView: UIView!
-    @IBOutlet weak var tool: UIToolbar!
     @IBOutlet weak var themeBtn: UIBarButtonItem!
     var pickedID: MPMediaEntityPersistentID!
     var pickedList: Playlist!
@@ -44,6 +42,8 @@ class PlaylistsVC: UIViewController {
     var hideKeyboard = false
     var cellSize = CGSize()
     let device = GlobalSettings.device
+    var titleButton: UIButton!
+    var searchView: SearchBarContainerView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,6 +76,7 @@ class PlaylistsVC: UIViewController {
                 view.bringSubview(toFront: tableIndexView)
             }
         }
+        setTitleButton()
         setTheme()
         NotificationCenter.default.addObserver(self, selector: #selector(setTheme), name: .themeChanged, object: nil)
         print("Playlists loaded")
@@ -319,6 +320,7 @@ extension PlaylistsVC: UICollectionViewDelegate, UICollectionViewDataSource, Col
         }else{
             let item = result[indexes[indexPath.section]]?[indexPath.row]
             pickedID = item?.ID
+            pickedList = item
             if (item?.isFolder)! {
                 pickedName = item?.name
                 performSegue(withIdentifier: "folder", sender: nil)
@@ -548,41 +550,35 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchController.definesPresentationContext = true
         searchController.searchResultsUpdater = self
         searchController.dimsBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search for playlist"
+        searchController.searchBar.placeholder = "Search for playlists"
         searchController.searchBar.delegate = self
         searchController.searchBar.sizeToFit()
         searchController.searchBar.tintColor = GlobalSettings.tint.color
-        self.searchController.hidesNavigationBarDuringPresentation = false;
+        self.searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.isTranslucent = true
-        searchView.addSubview(searchController.searchBar)
-        
-        let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
-        NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
+        searchView = SearchBarContainerView(customSearchBar: searchController.searchBar)
+        searchView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44)
         if device == "iPhone X" {
-            if grid {
-                heightInset = 136
-            }else{
-                heightInset = 140
-            }
+            heightInset = 102
         }else{
-            heightInset = 112
+            heightInset = 74
         }
-        let bottomInset = 49 + GlobalSettings.bottomInset
         automaticallyAdjustsScrollViewInsets = false
-        collectionView.contentInset = UIEdgeInsetsMake(heightInset+14, 0, bottomInset, 0)
-        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset+14, 0, bottomInset, 0)
-        tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
-        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        let bottomInset = 49 + GlobalSettings.bottomInset
         if #available(iOS 11.0, *) {
             tableView.contentInsetAdjustmentBehavior = .never
             collectionView.contentInsetAdjustmentBehavior = .never
         }
+        collectionView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y < -174 {
-            searchController.searchBar.becomeFirstResponder()
+        if scrollView.contentOffset.y < -124 {
+            showSearchBar()
         }else if scrollView.contentOffset.y > -94 {
             if hideKeyboard {
                 searchController.searchBar.resignFirstResponder()
@@ -610,12 +606,27 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
             tableView.reloadData()
             tableIndexView.isHidden = false
         }
+        navigationItem.titleView = nil
+        navigationItem.titleView = titleButton
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchController.searchBar.resignFirstResponder()
     }
     
+    func setTitleButton() {
+        titleButton = UIButton(type: .system)
+        titleButton.frame = CGRect(x: 0, y: 0, width: 160, height: 40)
+        titleButton.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
+        let attributedH = NSAttributedString(string: "Search", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium), NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color])
+        titleButton.setAttributedTitle(attributedH, for: .highlighted)
+        navigationItem.titleView = titleButton
+    }
+    
+    @objc func showSearchBar() {
+        navigationItem.titleView = searchView
+        searchController.searchBar.becomeFirstResponder()
+    }
     
     func updateSearchResults(for searchController: UISearchController) {
         let searchString = searchController.searchBar.text
@@ -731,21 +742,24 @@ extension PlaylistsVC: UICollectionViewDelegateFlowLayout {
     
     @objc func setTheme() {
         guard let bar = navigationController?.navigationBar else { return }
+        let textField = searchController.searchBar.value(forKey: "searchField") as? UITextField
         switch GlobalSettings.theme {
         case .light:
-            tool.barStyle = .default
             bar.barStyle = .default
-            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
+            let attributedN = NSAttributedString(string: "Playlists", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium), NSAttributedStringKey.foregroundColor: UIColor.black])
+            titleButton.setAttributedTitle(attributedN, for: .normal)
             themeBtn.image = #imageLiteral(resourceName: "light_bar")
+            textField?.textColor = .black
         case .dark:
-            tool.barStyle = .blackTranslucent
             bar.barStyle = .blackTranslucent
-            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+            let attributedN = NSAttributedString(string: "Playlists", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium), NSAttributedStringKey.foregroundColor: UIColor.white])
+            titleButton.setAttributedTitle(attributedN, for: .normal)
             themeBtn.image = #imageLiteral(resourceName: "dark_bar")
+            textField?.textColor = .white
         default:
-            tool.barStyle = .blackTranslucent
             bar.barStyle = .blackTranslucent
-            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+            let attributedN = NSAttributedString(string: "Playlists", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium), NSAttributedStringKey.foregroundColor: UIColor.white])
+            titleButton.setAttributedTitle(attributedN, for: .normal)
         }
         bar.tintColor = GlobalSettings.tint.color
         tableView.backgroundColor = UIColor.background

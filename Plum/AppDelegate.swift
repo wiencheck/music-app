@@ -248,6 +248,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: "oled") == nil {
             defaults.set(false, forKey: "oled")
         }
+        if defaults.value(forKey: "ratingsIn") == nil {
+            defaults.set(true, forKey: "ratingsIn")
+        }
     }
     
     func readSettings(){
@@ -333,6 +336,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let oled = defaults.value(forKey: "oled") as? Bool {
             GlobalSettings.changeOled(oled)
         }
+        if let inR = defaults.value(forKey: "ratingsIn") as? Bool {
+            GlobalSettings.changeRatingsIn(inR)
+        }
         GlobalSettings.changeColor(true)    //do zrobienia ciemny blur
     }
     
@@ -348,6 +354,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let s = UIView()
         s.backgroundColor = GlobalSettings.tint.color.withAlphaComponent(1)
         UITableViewCell.appearance().selectedBackgroundView = s
+        UIButton.appearance(whenContainedInInstancesOf: [UISearchBar.self]).setImage(#imageLiteral(resourceName: "xcancel"), for: .normal)
+        UIButton.appearance(whenContainedInInstancesOf: [UISearchBar.self]).setTitle("", for: .normal)
     }
     
     func setInitialInstructions() {

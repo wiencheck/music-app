@@ -39,6 +39,8 @@ class ArtistSongs: UIViewController {
     @IBOutlet weak var alpIndexView: TableIndexView!
     @IBOutlet weak var albIndexView: TableIndexView!
     @IBOutlet weak var themeBtn: UIBarButtonItem!
+    //@IBOutlet weak var ratingBtn: UIBarButtonItem!
+    var titleBtn: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,9 +50,20 @@ class ArtistSongs: UIViewController {
         setup()
         automaticallyAdjustsScrollViewInsets = false
         tableView.contentInset = UIEdgeInsetsMake(64, 0, GlobalSettings.bottomInset + 49, 0)
+        tableView.scrollIndicatorInsets = tableView.contentInset
         tableView.tableFooterView = UIView(frame: .zero)
         NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
+       setTitleButton()
         updateTheme()
+    }
+    
+    func setTitleButton() {
+        titleBtn = UIButton(type: .system)
+        titleBtn.frame = CGRect(x: 0, y: 0, width: 160, height: 40)
+        let att = NSAttributedString(string: "Group", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium), NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color])
+        titleBtn.setAttributedTitle(att, for: .highlighted)
+        titleBtn.addTarget(self, action: #selector(sortBtnPressed), for: .touchUpInside)
+        navigationItem.titleView = titleBtn
     }
     
     deinit {
@@ -61,7 +74,7 @@ class ArtistSongs: UIViewController {
         instruct("artistslider", message: "Slider on the right edge of the screen works even here!", completion: nil)
     }
     
-    @IBAction func sortBtnPressed() {
+    @objc func sortBtnPressed() {
         activeIndexRow = 0
         activeIndexSection = 0
         absoluteIndex = 0
@@ -87,9 +100,32 @@ class ArtistSongs: UIViewController {
         
     }
     
-    @IBAction func ratingPressed() {
-        GlobalSettings.changeRating(!GlobalSettings.rating)
+//    @IBAction func ratingPressed() {
+//        GlobalSettings.changeRating(!GlobalSettings.rating)
+//        if GlobalSettings.rating {
+//            ratingBtn.image = #imageLiteral(resourceName: "star")
+//        }else{
+//            ratingBtn.image = #imageLiteral(resourceName: "no_star")
+//        }
+//        tableView.reloadData()
+//    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+//        if !GlobalSettings.ratingsIn {
+//            ratingBtn.image = nil
+//            ratingBtn.title = ""
+//            ratingBtn.isEnabled = false
+//        }else{
+//            ratingBtn.isEnabled = true
+//            if GlobalSettings.rating {
+//                ratingBtn.image = #imageLiteral(resourceName: "star")
+//            }else{
+//                ratingBtn.image = #imageLiteral(resourceName: "no_star")
+//            }
+//        }
         tableView.reloadData()
+        definesPresentationContext = true
     }
 
 }
@@ -625,14 +661,17 @@ extension ArtistSongs { //Sortowanie
     
     @objc func updateTheme() {
         guard let bar = navigationController?.navigationBar else { return }
+        let artistName = songs[0].albumArtist!
         switch GlobalSettings.theme {
         case .light:
             bar.barStyle = .default
-            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
+            let att = NSAttributedString(string: artistName, attributes: [NSAttributedStringKey.foregroundColor: UIColor.black, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium)])
+            titleBtn.setAttributedTitle(att, for: .normal)
             themeBtn.image = #imageLiteral(resourceName: "light_bar")
         case .dark:
             bar.barStyle = .blackTranslucent
-            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+            let att = NSAttributedString(string: artistName, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium)])
+            titleBtn.setAttributedTitle(att, for: .normal)
             themeBtn.image = #imageLiteral(resourceName: "dark_bar")
         default:
             bar.barStyle = .blackTranslucent

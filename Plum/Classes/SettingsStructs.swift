@@ -115,6 +115,12 @@ struct GlobalSettings{
         NotificationCenter.default.post(name: .themeChanged, object: nil)
     }
     
+    static var ratingsIn = true
+    static func changeRatingsIn(_ t: Bool){
+        ratingsIn = t
+        defaults.set(t, forKey: "ratingsIn")
+    }
+    
     static var blur: Bool = false                                       //UI
     static func changeBlur(_ t: Bool) {
         self.blur = t

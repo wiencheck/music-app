@@ -40,7 +40,7 @@ class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
         setColors()
         setup()
         tableView.tableFooterView = UIView(frame: .zero)
-        NotificationCenter.default.addObserver(self, selector: #selector(reload), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reload), name: .playbackChanged, object: nil)
     }
     
     @IBAction func ratingPressed() {

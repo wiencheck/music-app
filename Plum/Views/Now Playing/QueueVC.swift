@@ -45,7 +45,7 @@ class QueueVC: UIViewController {
         addBtn.setImage(#imageLiteral(resourceName: "add").imageScaled(toFit: CGSize(width: 21, height: 21)).withRenderingMode(.alwaysTemplate), for: .normal)
         setColors()
         tableView.tableFooterView = UIView(frame: .zero)
-        NotificationCenter.default.addObserver(self, selector: #selector(reload), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reload), name: .playbackChanged, object: nil)
     }
     
     deinit {

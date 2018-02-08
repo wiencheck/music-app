@@ -23,7 +23,12 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
     var cellTypes = [Int]()
     var absoluteIndex = 0
     var activeIndexRow = 0
+    var color = false
+    var backgroundColor: UIColor!
+    var mainLabel: UIColor!
+    var detailLabel: UIColor!
     @IBOutlet weak var themeBtn: UIBarButtonItem!
+    //@IBOutlet var ratingBtn: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +38,6 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
         tableView.scrollIndicatorInsets = tableView.contentInset
         NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
         tableView.delaysContentTouches = false
-        readSettings()
         if receivedID != nil{
             album = musicQuery.shared.albumID(album: receivedID)
         }else{
@@ -49,16 +53,31 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
         updateTheme()
     }
     
-    @IBAction func ratingPressed() {
-        GlobalSettings.changeRating(!GlobalSettings.rating)
-        tableView.reloadData()
-    }
+//    @IBAction func ratingPressed() {
+//        GlobalSettings.changeRating(!GlobalSettings.rating)
+//        if GlobalSettings.rating {
+//            ratingBtn.image = #imageLiteral(resourceName: "star")
+//        }else{
+//            ratingBtn.image = #imageLiteral(resourceName: "no_star")
+//        }
+//        tableView.reloadData()
+//    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        readSettings()
+//        if !GlobalSettings.ratingsIn {
+//            ratingBtn.image = nil
+//            ratingBtn.title = ""
+//            ratingBtn.isEnabled = false
+//        }else{
+//            ratingBtn.isEnabled = true
+//            if GlobalSettings.rating {
+//                ratingBtn.image = #imageLiteral(resourceName: "star")
+//            }else{
+//                ratingBtn.image = #imageLiteral(resourceName: "no_star")
+//            }
+//        }
         tableView.reloadData()
-        //songs = bigAssQuery.albumID(album: receivedID)
     }
 
     override func didReceiveMemoryWarning() {
@@ -240,23 +259,7 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
     }
     
     func artistBtn(){
-        cellTypes[activeIndexRow] = 0
-        self.tableView.reloadRows(at: [IndexPath(row: self.activeIndexRow+1, section: 0)], with: .fade)
         performSegue(withIdentifier: "artist", sender: nil)
-    }
-    @objc func longPress(_ longPress: UIGestureRecognizer){
-        if(cellTypes[activeIndexRow] == 1 || cellTypes[activeIndexRow] == 2){
-            cellTypes[activeIndexRow] = 0
-            tableView.reloadRows(at: [IndexPath(row: activeIndexRow+1, section: 0)], with: .left)
-        }
-        if longPress.state == .recognized{
-            let touchPoint = longPress.location(in: self.tableView)
-            if let indexPath = tableView.indexPathForRow(at: touchPoint){
-                pickedArtistID = songs[activeIndexRow].albumArtistPersistentID
-                self.cellTypes[activeIndexRow] = 2
-                self.tableView.reloadRows(at: [indexPath], with: .fade)
-            }
-        }
     }
     
     override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -264,10 +267,6 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
         let indexPath = IndexPath(row: activeIndexRow+1, section: 0)
         self.tableView.deselectRow(at: indexPath, animated: true)
         self.tableView.reloadRows(at: [indexPath], with: .fade)
-    }
-    
-    func readSettings(){
-        rating = GlobalSettings.rating
     }
     
     func shuffleAll() {
@@ -287,15 +286,24 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
     }
     
     @objc func updateTheme() {
-        if GlobalSettings.theme == .dark {
-            navigationController?.navigationBar.barStyle = .blackTranslucent
-            themeBtn.image = #imageLiteral(resourceName: "dark_bar")
+        if color {
+            guard let art = songs.first!.artwork?.image(at: CGSize(width: 300, height: 300)) else{return}
+            let colors = art.getColors()
+            
         }else{
-            navigationController?.navigationBar.barStyle = .default
-            themeBtn.image = #imageLiteral(resourceName: "light_bar")
+            if GlobalSettings.theme == .dark {
+                navigationController?.navigationBar.barStyle = .blackTranslucent
+                themeBtn.image = #imageLiteral(resourceName: "dark_bar")
+                navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+            }else{
+                navigationController?.navigationBar.barStyle = .default
+                themeBtn.image = #imageLiteral(resourceName: "light_bar")
+                navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
+            }
+            tableView.backgroundColor = UIColor.background
+            tableView.separatorColor = UIColor.separator
+            //ratingBtn.tintColor = GlobalSettings.tint.color
         }
-        tableView.backgroundColor = UIColor.background
-        tableView.separatorColor = UIColor.separator
         tableView.reloadData()
     }
 }

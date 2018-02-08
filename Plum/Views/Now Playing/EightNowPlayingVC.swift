@@ -65,7 +65,8 @@ class EightNowPlayingVC: UIViewController {
     var interval: TimeInterval = 0.05
     
     deinit{
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: .trackChanged, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .playbackChanged, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         timer.invalidate()
@@ -98,7 +99,8 @@ class EightNowPlayingVC: UIViewController {
         scale = 20
         updateUI()
         setColors()
-        NotificationCenter.default.addObserver(self, selector: #selector(updateUI), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateUI), name: .trackChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateUI), name: .playbackChanged, object: nil)
         timer.fire()
     }
     
@@ -806,7 +808,7 @@ extension EightNowPlayingVC {       //Kolory i UI
     }
     
     @objc func didEnterBackground() {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: .playbackChanged, object: nil)
         timer.invalidate()
     }
     
@@ -843,7 +845,6 @@ extension EightNowPlayingVC {       //Kolory i UI
 extension EightNowPlayingVC: MPMediaPickerControllerDelegate {
     
     @IBAction func pickerBtnPressed() {
-        //dismiss(animated: true, completion: nil)
         presentPicker()
     }
     

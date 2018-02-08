@@ -58,6 +58,7 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
         tableView.backgroundColor = .lightBackground
         shouldShowResults = false
         NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
+        tableView.tableFooterView = UIView(frame: .zero)
         updateTheme()
     }
     
@@ -578,12 +579,15 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
     @objc func updateTheme() {
         tableView.backgroundColor = UIColor.background
         tableView.separatorColor = UIColor.separator
+        let textField = searchController.searchBar.value(forKey: "searchField") as? UITextField
         if GlobalSettings.theme == .dark {
             tool.barStyle = .blackTranslucent
             themeBtn.image = #imageLiteral(resourceName: "dark_bar")
+            textField?.textColor = .white
         }else{
             tool.barStyle = .default
             themeBtn.image = #imageLiteral(resourceName: "light_bar")
+            textField?.textColor = .black
         }
         tableView.reloadData()
     }

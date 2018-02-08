@@ -29,8 +29,6 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var collectionIndexView: CollectionIndexView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableIndexView: TableIndexView!
-    @IBOutlet weak var searchView: UIView!
-    @IBOutlet weak var tool: UIToolbar!
     @IBOutlet weak var themeBtn: UIBarButtonItem!
     
     var pickedID: MPMediaEntityPersistentID!
@@ -46,6 +44,8 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     var cellSize = CGSize()
     var roundedCorners = false
     let device = GlobalSettings.device
+    var titleButton: UIButton!
+    var searchView: SearchBarContainerView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,16 +68,14 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
             }
             if grid{
                 setCollection()
-                view.bringSubview(toFront: searchView)
                 view.bringSubview(toFront: collectionIndexView)
             }else{
                 setTable()
-                view.bringSubview(toFront: searchView)
                 view.bringSubview(toFront: tableIndexView)
                 tableView.tableFooterView = UIView(frame: .zero)
             }
-            //setHeaders()
         }
+        setTitleButton()
         updateTheme()
         print("Artists loaded")
     }
@@ -629,35 +627,29 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         self.searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.isTranslucent = true
-        searchView.addSubview(searchController.searchBar)
-        
-        let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
-        NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
+        searchView = SearchBarContainerView(customSearchBar: searchController.searchBar)
+        searchView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44)
         if device == "iPhone X" {
-            if grid {
-                heightInset = 136
-            }else{
-                heightInset = 140
-            }
+            heightInset = 92
         }else{
-            heightInset = 112
+            heightInset = 64
         }
-        let bottomInset = 49 + GlobalSettings.bottomInset
         automaticallyAdjustsScrollViewInsets = false
-        collectionView.contentInset = UIEdgeInsetsMake(heightInset+4, 0, bottomInset, 0)
-        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset+4, 0, bottomInset, 0)
-        tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
-        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        let bottomInset = 49 + GlobalSettings.bottomInset
         if #available(iOS 11.0, *) {
             tableView.contentInsetAdjustmentBehavior = .never
             collectionView.contentInsetAdjustmentBehavior = .never
         }
+        collectionView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y < -160 {
-            searchController.searchBar.becomeFirstResponder()
-        }else if scrollView.contentOffset.y > -80 {
+        if scrollView.contentOffset.y < -124 {
+            showSearchBar()
+        }else if scrollView.contentOffset.y > -heightInset + 20 {
             if hideKeyboard {
                 searchController.searchBar.resignFirstResponder()
             }
@@ -677,7 +669,6 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         shouldShowResults = false
-        //heightInset = heightInset + 27
         if grid {
             collectionIndexView.isHidden = false
             collectionView.reloadData()
@@ -685,12 +676,27 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
             tableIndexView.isHidden = false
             tableView.reloadData()
         }
+        navigationItem.titleView = nil
+        navigationItem.titleView = titleButton
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchController.searchBar.resignFirstResponder()
     }
     
+    func setTitleButton() {
+        titleButton = UIButton(type: .system)
+        titleButton.frame = CGRect(x: 0, y: 0, width: 160, height: 40)
+        titleButton.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
+        let attributedH = NSAttributedString(string: "Search", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium), NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color])
+        titleButton.setAttributedTitle(attributedH, for: .highlighted)
+        navigationItem.titleView = titleButton
+    }
+    
+    @objc func showSearchBar() {
+        navigationItem.titleView = searchView
+        searchController.searchBar.becomeFirstResponder()
+    }
     
     func updateSearchResults(for searchController: UISearchController) {
         let searchString = searchController.searchBar.text
@@ -699,7 +705,6 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
             tableIndexView.isHidden = false
         }else{
             shouldShowResults = true
-            //heightInset = heightInset - 27
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces
         let strippedString = searchString!.trimmingCharacters(in: whitespaceCharacterSet)
@@ -727,14 +732,14 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
             collectionView.reloadData()
             if filteredArtists.count != 0 {
                 hideKeyboard = false
-                collectionView.contentOffset.y = -heightInset + 6
+                collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
                 hideKeyboard = true
             }
         }else{
             tableView.reloadData()
             if filteredArtists.count != 0 {
                 hideKeyboard = false
-                tableView.contentOffset.y = -heightInset
+                tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
                 hideKeyboard = true
             }
         }
@@ -792,21 +797,22 @@ extension ArtistsVC: UICollectionViewDelegateFlowLayout {
     @objc func updateTheme() {
         currentTheme = GlobalSettings.theme
         guard let bar = navigationController?.navigationBar else { return }
+        let textField = searchController.searchBar.value(forKey: "searchField") as? UITextField
         switch currentTheme {
         case .light:
-            tool.barStyle = .default
             bar.barStyle = .default
-            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
+            let attributedN = NSAttributedString(string: "Artists", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium), NSAttributedStringKey.foregroundColor: UIColor.black])
+            titleButton.setAttributedTitle(attributedN, for: .normal)
             themeBtn.image = #imageLiteral(resourceName: "light_bar")
+            textField?.textColor = .black
         case .dark:
-            tool.barStyle = .blackTranslucent
             bar.barStyle = .blackTranslucent
-            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+            let attributedN = NSAttributedString(string: "Artists", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium), NSAttributedStringKey.foregroundColor: UIColor.white])
+            titleButton.setAttributedTitle(attributedN, for: .normal)
             themeBtn.image = #imageLiteral(resourceName: "dark_bar")
+            textField?.textColor = .white
         default:
-            tool.barStyle = .blackTranslucent
             bar.barStyle = .blackTranslucent
-            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
         }
         tableView.backgroundColor = UIColor.background
         tableView.separatorColor = UIColor.separator

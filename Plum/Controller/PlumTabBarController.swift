@@ -11,7 +11,7 @@ public var popupPresented = false
 
 class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     
-    private var popupActive = false
+    private var popupActive = true
     
     var nowPlaying: EightNowPlayingVC!
     let player = Plum.shared
@@ -25,8 +25,8 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         delegate = self
-        NotificationCenter.default.addObserver(self, selector: #selector(updatePopup), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: NSNotification.Name(rawValue: "themeChanged"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updatePopup), name: .playbackChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
         nextBtn = UIBarButtonItem(barButtonSystemItem: .fastForward, target: self, action: #selector(nextBtnPressed))
         identifier = setIdentifier()
         setPopup()

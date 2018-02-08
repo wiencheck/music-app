@@ -35,6 +35,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     @IBOutlet weak var lyricsSwitch: UISwitch!
     @IBOutlet weak var doubleBarSwitch: UISwitch!
     @IBOutlet weak var oledSwitch: UISwitch!
+    @IBOutlet weak var ratingsInSwitch: UISwitch!
     //@IBOutlet weak var searchTopSwitch: UISwitch!
     @IBOutlet weak var colorView: UIView!
     @IBOutlet weak var deployLabel: UILabel!
@@ -95,7 +96,11 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         roundSwitch.addTarget(self, action: #selector(roundedSliderSwitched(_:)), for: .valueChanged)
         doubleBarSwitch.addTarget(self, action: #selector(doubleBarSwitched(_:)), for: .valueChanged)
         oledSwitch.addTarget(self, action: #selector(oledSwitched(_:)), for: .valueChanged)
-        //searchTopSwitch.addTarget(self, action: #selector(searchTopSwitched(_:)), for: .valueChanged)
+        ratingsInSwitch.addTarget(self, action: #selector(ratingsInSwitched(_:)), for: .valueChanged)
+    }
+    
+    @objc func ratingsInSwitched(_ sender: UISwitch) {
+        GlobalSettings.changeRatingsIn(sender.isOn)
     }
     
     @objc func searchTopSwitched(_ sender: UISwitch) {
@@ -207,101 +212,6 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         timer.invalidate()
     }
     
-//    override func numberOfSections(in tableView: UITableView) -> Int {
-//        return 6
-//    }
-//
-//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        switch section {
-//        case 0:     //Grid
-//            return 3
-//        case 1:     //Appearance
-//            return 5
-//        case 2:     //Ratings
-//            return 2
-//        case 3:     //Lyrics
-//            return 1
-//        case 4:     //Search
-//            return 2
-//        case 5:     //Other
-//            return 2
-//        default:
-//            return 0
-//        }
-//    }
-    
-//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        switch indexPath.section {
-//        case 0:     //Grid
-//            let cell = tableView.dequeueReusableCell(withIdentifier: "switch", for: indexPath) as! SwitchCell
-//            switch indexPath.row {
-//            case 0:
-//                cell.setup(title: "Artists", on: GlobalSettings.artistsGrid)
-//            case 1:
-//                cell.setup(title: "Albums", on: GlobalSettings.albumsGrid)
-//            default:
-//                cell.setup(title: "Playlists", on: GlobalSettings.playlistsGrid)
-//            }
-//            return cell
-//        case 1:     //Appearance
-//            switch indexPath.row {
-//            case 0:
-//                let cell = tableView.dequeueReusableCell(withIdentifier: "detail", for: indexPath) as! DetailCell
-//                cell.setup(title: "App icon", detail: "")
-//                return cell
-//            case 1:
-//                let cell = tableView.dequeueReusableCell(withIdentifier: "detail", for: indexPath) as! DetailCell
-//                cell.setup(title: "Theme", detail: GlobalSettings.theme.rawValue)
-//                return cell
-//            case 2:
-//                let cell = tableView.dequeueReusableCell(withIdentifier: "detail", for: indexPath) as! DetailCell
-//                cell.setup(title: "Miniplayer style", detail: GlobalSettings.popupStyle.rawValue)
-//                return cell
-//            case 3:
-//                let cell = tableView.dequeueReusableCell(withIdentifier: "tint", for: indexPath) as! ColorTintCell
-//                cell.setup(title: "Tint color", color: GlobalSettings.tint.color)
-//                return cell
-//            default:
-//                let cell = tableView.dequeueReusableCell(withIdentifier: "switch", for: indexPath) as! SwitchCell
-//                cell.setup(title: "Rounded now-playing slider", on: GlobalSettings.roundedSlider)
-//                return cell
-//            }
-//        case 2:     //Ratings
-//            switch indexPath.row {
-//            case 0:
-//                let cell = tableView.dequeueReusableCell(withIdentifier: "switch", for: indexPath) as! SwitchCell
-//                cell.setup(title: "Rating mode", on: GlobalSettings.rating)
-//                return cell
-//            default:
-//                let cell = tableView.dequeueReusableCell(withIdentifier: "detail", for: indexPath) as! DetailCell
-//                cell.setup(title: "Setting", detail: "")
-//                return cell
-//            }
-//        case 3:     //Lyrics
-//            let cell = tableView.dequeueReusableCell(withIdentifier: "switch", for: indexPath) as! SwitchCell
-//            cell.setup(title: "Lyrics mode", on: GlobalSettings.lyrics)
-//            return cell
-//        case 4:     //Search
-//            let cell = tableView.dequeueReusableCell(withIdentifier: "detail", for: indexPath) as! DetailCell
-//            cell.setup(title: "Land in", detail: GlobalSettings.deployIn.rawValue)
-//            return cell
-//        case 5:     //Other
-//            switch indexPath.row {
-//            case 0:
-//                let cell = tableView.dequeueReusableCell(withIdentifier: "detail", for: indexPath) as! DetailCell
-//                cell.setup(title: "About", detail: "")
-//                return cell
-//            default:
-//                let cell = tableView.dequeueReusableCell(withIdentifier: "switch", for: indexPath) as!
-//                SwitchCell
-//                cell.setup(title: "Double tap on playing bar", on: GlobalSettings.doubleBar)
-//                return cell
-//            }
-//        default:
-//            return UITableViewCell()
-//        }
-//    }
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let identifier = tableView.cellForRow(at: indexPath)?.reuseIdentifier
             else { return }
@@ -321,7 +231,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         case "tint":
             performSegue(withIdentifier: "colors", sender: nil)
         case "skip":
-            explainSkip()
+            _ = 0
         case "rating":
             explainrating()
         case "ratingset":
@@ -375,7 +285,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         currentStyle.text = GlobalSettings.theme.rawValue
         doubleBarSwitch.isOn = GlobalSettings.doubleBar
         oledSwitch.isOn = GlobalSettings.oled
-        //searchTopSwitch.isOn = GlobalSettings.searchOnTop
+        ratingsInSwitch.isOn = GlobalSettings.ratingsIn
     }
     
     func selfExplanatory() {
@@ -392,8 +302,8 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         present(alert, animated: true, completion: nil)
     }
     
-    func explainSkip() {
-        let alert = UIAlertController(title: "Skip songs? Why?", message: "If enabled, Plum will not play songs automatically that have no rating, but you can still pick a song to play even if it doesn't have rating. It won't skip songs in user created queue", preferredStyle: .alert)
+    func explainRatingsIn() {
+        let alert = UIAlertController(title: "Rating buttons?", message: "Choose whether you're interested in seeing songs' ratings in", preferredStyle: .alert)
         let ok = UIAlertAction(title: "Understood, thanks!", style: .default, handler: nil)
         alert.addAction(ok)
         present(alert, animated: true, completion: nil)

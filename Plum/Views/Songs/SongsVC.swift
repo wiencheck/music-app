@@ -34,11 +34,15 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     let device = GlobalSettings.device
     
     @IBOutlet weak var themeBtn: UIBarButtonItem!
-    @IBOutlet weak var ratingBtn: UIBarButtonItem!
+    //@IBOutlet weak var ratingBtn: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var indexView: TableIndexView!
-    @IBOutlet weak var searchView: UIView!
-    @IBOutlet weak var tool: UIToolbar!
+    //@IBOutlet weak var searchView: UIView!
+    //@IBOutlet weak var tool: UIToolbar!
+    var titleButton: UIButton!
+    var navView: UIView!
+    var searchView: SearchBarContainerView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
@@ -67,6 +71,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             view.bringSubview(toFront: indexView)
         }
         tableView.tableFooterView = UIView(frame: .zero)
+        setTitleButton()
         setTheme()
         print("Songs loaded")
     }
@@ -79,23 +84,36 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         instruct("songs", message: "Swipe left on a song to quickly go to corresponding album or artist page", completion: nil)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        tableView.reloadData()
-        definesPresentationContext = true
-    }
-    
     override func viewWillDisappear(_ animated: Bool) {
         definesPresentationContext = false
     }
     
-    @IBAction func ratingPressed() {
-        GlobalSettings.changeRating(!GlobalSettings.rating)
-        if GlobalSettings.rating {
-            ratingBtn.image = #imageLiteral(resourceName: "star_bar")
-        }else{
-            ratingBtn.image = #imageLiteral(resourceName: "nostar_bar")
-        }
+//    @IBAction func ratingPressed() {
+//        GlobalSettings.changeRating(!GlobalSettings.rating)
+//        if GlobalSettings.rating {
+//            ratingBtn.image = #imageLiteral(resourceName: "star")
+//        }else{
+//            ratingBtn.image = #imageLiteral(resourceName: "no_star")
+//        }
+//        tableView.reloadData()
+//    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+//        if !GlobalSettings.ratingsIn {
+//            ratingBtn.image = nil
+//            ratingBtn.title = ""
+//            ratingBtn.isEnabled = false
+//        }else{
+//            ratingBtn.isEnabled = true
+//            if GlobalSettings.rating {
+//                ratingBtn.image = #imageLiteral(resourceName: "star")
+//            }else{
+//                ratingBtn.image = #imageLiteral(resourceName: "no_star")
+//            }
+//        }
         tableView.reloadData()
+        definesPresentationContext = true
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -263,7 +281,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
                     cell.setup(item: item!)
                     return cell
                 }else {
-                    let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as! QueueActionsCell
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell",  for: indexPath) as! QueueActionsCell
                     cell.delegate = self
                     return cell
                 }
@@ -490,13 +508,13 @@ extension SongsVC {
             let article = objStr.components(separatedBy: " ").first!
             if articles.contains(article) {
                 if objStr.components(separatedBy: " ").count > 1 {
-                    let secondStr = objStr.components(separatedBy: " ")[1]
-                    if result["\(secondStr.uppercased().first!)"] != nil {
-                        result["\(secondStr.uppercased().first!)"]?.append(song)
+                    let secondStr = String(objStr.components(separatedBy: " ")[1].uppercased().first!)
+                    if result["\(secondStr)"] != nil {
+                        result["\(secondStr)"]?.append(song)
                     }else{
-                        result["\(secondStr.uppercased().first!)"] = []
-                        result["\(secondStr.uppercased().first!)"]?.append(song)
-                        indexes.append("\(secondStr.uppercased().first!)")
+                        result["\(secondStr)"] = []
+                        result["\(secondStr)"]?.append(song)
+                        indexes.append("\(secondStr)")
                     }
                 }
             }else{
@@ -528,6 +546,13 @@ extension SongsVC {
                 }
             }
         }
+//        for i in 0 ..< indexes.count {
+//            if indexes[i].rangeOfCharacter(from: .SSet) != nil {
+//                let temp = result[indexes[i]]
+//                result["S"]?.append(contentsOf: temp!)
+//                indexes.remove(at: i)
+//            }
+//        }
         indexes.sort {
             (s1, s2) -> Bool in return s1.localizedStandardCompare(s2) == .orderedAscending
         }
@@ -602,25 +627,13 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchController.searchBar.searchBarStyle = .minimal
         searchController.searchBar.isTranslucent = true
         searchController.searchBar.clipsToBounds = true
-        searchView.frame.size.height = searchController.searchBar.frame.height
-        if searchVisible {
-            searchView.isHidden = false
-            if device == "iPhone X" {
-                heightInset = 140
-            }else{
-                heightInset = 112
-            }
-            searchView.addSubview(searchController.searchBar)
-            let attributes: [NSLayoutAttribute] = [.top, .bottom, . left, .right]
-            NSLayoutConstraint.activate(attributes.map{NSLayoutConstraint(item: self.searchController.searchBar, attribute: $0, relatedBy: .equal, toItem: self.searchView, attribute: $0, multiplier: 1, constant: 0)})
+        searchView = SearchBarContainerView(customSearchBar: searchController.searchBar)
+        searchView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44)
+        if device == "iPhone X" {
+            heightInset = 92
         }else{
-            //searchController.searchBar.backgroundImage = #imageLiteral(resourceName: "gradient_background")
-            searchView.isHidden = true
-            tableView.tableHeaderView = searchController.searchBar
             heightInset = 64
-            tableView.contentOffset.y = -64
         }
-        
         automaticallyAdjustsScrollViewInsets = false
         let bottomInset = 49 + GlobalSettings.bottomInset
         if #available(iOS 11.0, *) {
@@ -631,17 +644,14 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y < -160 {
-            if searchVisible {
-                searchController.searchBar.becomeFirstResponder()
-            }
+        if scrollView.contentOffset.y < -124 {
+            showSearchBar()
         }
         else if scrollView.contentOffset.y > -heightInset + 20 {
             if hideKeyboard {
                 searchController.searchBar.resignFirstResponder()
             }
         }
-        //print(scrollView.contentOffset.y)
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -653,6 +663,8 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         shouldShowResults = false
         tableView.reloadData()
         indexView.isHidden = false
+        navigationItem.titleView = nil
+        navigationItem.titleView = titleButton
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -665,12 +677,12 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
             shouldShowResults = false
         }else{
             shouldShowResults = true
+            searchActiveRow = 0
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces
         let strippedString = searchString!.trimmingCharacters(in: whitespaceCharacterSet)
         let searchItems = strippedString.components(separatedBy: " ") as [String]
         var searchItemsPredicate = [NSPredicate]()
-        
         let songsMatchPredicates: [NSPredicate] = searchItems.map { searchString in
             let titleExpression = NSExpression(forKeyPath: "title")
             let searchStringExpression = NSExpression(forConstantValue: searchString)
@@ -706,15 +718,24 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         tableView.reloadData()
         if filteredSongs.count != 0 {
             hideKeyboard = false
-            //tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
-            tableView.contentOffset.y = -heightInset
+            tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
             hideKeyboard = true
             searchActiveRow = 0
         }
-//        if filteredSongs.count != 0 {
-//            tableView.reloadData()
-//            tableView.contentOffset.y = heightInset
-//        }
+    }
+    
+    func setTitleButton() {
+        titleButton = UIButton(type: .system)
+        titleButton.frame = CGRect(x: 0, y: 0, width: 160, height: 40)
+        titleButton.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
+        let attributedH = NSAttributedString(string: "Search", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium), NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color])
+        titleButton.setAttributedTitle(attributedH, for: .highlighted)
+        navigationItem.titleView = titleButton
+    }
+    
+    @objc func showSearchBar() {
+        navigationItem.titleView = searchView
+        searchController.searchBar.becomeFirstResponder()
     }
     
     func setHeaders() {
@@ -759,21 +780,26 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
     func setTheme() {
         currentTheme = GlobalSettings.theme
         guard let bar = navigationController?.navigationBar else { return }
+        let textField = searchController.searchBar.value(forKey: "searchField") as? UITextField
         switch currentTheme {
         case .light:
             themeBtn.image = #imageLiteral(resourceName: "light_bar")
-            tool.barStyle = .default
+            //tool.barStyle = .default
             bar.barStyle = .default
-            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
+            let attributedN = NSAttributedString(string: "Songs", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium), NSAttributedStringKey.foregroundColor: UIColor.black])
+            titleButton.setAttributedTitle(attributedN, for: .normal)
+            titleButton.tintColor = .black
+            textField?.textColor = .black
         case .dark:
             themeBtn.image = #imageLiteral(resourceName: "dark_bar")
-            tool.barStyle = .blackTranslucent
             bar.barStyle = .blackTranslucent
-            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+            let attributedN = NSAttributedString(string: "Songs", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium), NSAttributedStringKey.foregroundColor: UIColor.white])
+            titleButton.setAttributedTitle(attributedN, for: .normal)
+            titleButton.tintColor = .white
+            textField?.textColor = .white
         default:
-            tool.barStyle = .blackTranslucent
             bar.barStyle = .blackTranslucent
-            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
+            titleButton.tintColor = .white
         }
         tableView.backgroundColor = UIColor.background
         tableView.separatorColor = UIColor.separator

@@ -19,6 +19,7 @@ class AlbumsByVC: UITableViewController {
     let defaults = UserDefaults.standard
     var currentSort: Sort!
     @IBOutlet weak var themeBtn: UIBarButtonItem!
+    var titleButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,13 +27,17 @@ class AlbumsByVC: UITableViewController {
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         //tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
         tableView.backgroundColor = UIColor.lightBackground
+        automaticallyAdjustsScrollViewInsets = false
+        if #available(iOS 11.0, *){
+            tableView.contentInsetAdjustmentBehavior = .never
+        }
         self.tableView.contentInset = UIEdgeInsetsMake(64, 0, 49+GlobalSettings.bottomInset, 0)
         tableView.scrollIndicatorInsets = tableView.contentInset
         tableView.separatorColor = UIColor.lightSeparator
         als = musicQuery.shared.artistAlbumsID(artist: receivedID)
-        title = als.first?.artist
         currentSort = GlobalSettings.artistAlbumsSort
         sort()
+        setTitleButton()
         tableView.tableFooterView = UIView(frame: .zero)
         NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
         updateTheme()
@@ -219,20 +224,30 @@ extension AlbumsByVC { //Sortowanie
         present(alert, animated: true, completion: nil)
     }
     
+    func setTitleButton() {
+        let attributedH = NSAttributedString(string: "Sort", attributes: [NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium)])
+        titleButton = UIButton(type: .system)
+        titleButton.frame = CGRect(x: 0, y: 0, width: 160, height: 40)
+        titleButton.addTarget(self, action: #selector(sortBtnPressed), for: .touchUpInside)
+        titleButton.setAttributedTitle(attributedH, for: .highlighted)
+        navigationItem.titleView = titleButton
+    }
+    
     @objc func updateTheme() {
         guard let bar = navigationController?.navigationBar else { return }
         switch GlobalSettings.theme {
         case .light:
             bar.barStyle = .default
-            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
             themeBtn.image = #imageLiteral(resourceName: "light_bar")
+            let attributedH = NSAttributedString(string: (als.first?.artist)!, attributes: [NSAttributedStringKey.foregroundColor: UIColor.black, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium)])
+            titleButton.setAttributedTitle(attributedH, for: .normal)
         case .dark:
             bar.barStyle = .blackTranslucent
-            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
             themeBtn.image = #imageLiteral(resourceName: "dark_bar")
+            let attributedH = NSAttributedString(string: (als.first?.artist)!, attributes: [NSAttributedStringKey.foregroundColor: UIColor.white, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium)])
+            titleButton.setAttributedTitle(attributedH, for: .normal)
         default:
             bar.barStyle = .blackTranslucent
-            bar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
         }
         bar.tintColor = GlobalSettings.tint.color
         tableView.backgroundColor = UIColor.background

@@ -216,11 +216,17 @@ public func calculateCollectionViewCellSize(itemsPerRow: Int, frame: CGRect) -> 
 
 extension CharacterSet {
     static let latin = CharacterSet.init(charactersIn: "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+    static let ESet = CharacterSet(charactersIn: "EĘÈÉÊËĖĒ")
+    static let ASet = CharacterSet(charactersIn: "AĄÀÁÂÄÆÃÅĀ")
+    static let SSet = CharacterSet(charactersIn: "ŚŠ")
+    static let OSet = CharacterSet(charactersIn: "OÓÔÖÒÕŒØŌ")
 }
 
 extension Notification.Name {
     static let playbackChanged = Notification.Name("playbackChanged")
     static let themeChanged = Notification.Name("themeChanged")
+    static let queueChanged = Notification.Name("queueChanged")
+    static let trackChanged = Notification.Name("trackChanged")
 }
 
 extension UIApplication {   //Open URL

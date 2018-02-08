@@ -27,15 +27,9 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     var skip: Bool!
     var repeating: Bool!
     var player: AVAudioPlayer!
-    //var player1: AVAudioPlayer!
-    //var player2: AVAudioPlayer!
-    //var playerFlag: UInt8!
     @objc var currentItem: MPMediaItem?
-    var previousItem: MPMediaItem?
-    var nextItem: MPMediaItem?
     var wasLoaded: Bool!
     var defQueue = [MPMediaItem]()
-    //var defQ = [Int: MPMediaItem]()
     var defIndex: Int!
     var isUsrQueue: Bool!
     var usrQueue = [MPMediaItem]()
@@ -44,9 +38,6 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     var isShuffle: Bool!
     var isRepeat: Bool!
     var shufQueue = [MPMediaItem]()
-    /*var shufQueueCount: Int!{
-        return defQueueCount
-    }*/
     var shufIndex: Int!
     var defIsAnyAfter: Bool!{
         if(defIndex + 1 == defQueue.count){
@@ -218,6 +209,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
             items[i].index = i
             defQueue.append(items[i])
         }
+        postQueueChanged()
         //defQueue.append(contentsOf: items)
         //defQueueCount = defQueue.count
     }
@@ -231,7 +223,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
             usrQueue.insert(item, at: usrIndex + 1)
         }
         writeQueue()
-        NotificationCenter.default.post(name: Plum.queueChanged, object: nil)
+        postQueueChanged()
     }
     
     func addLast(item: MPMediaItem){
@@ -243,7 +235,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
             usrQueue.append(item)
         }
         writeQueue()
-        NotificationCenter.default.post(name: Plum.queueChanged, object: nil)
+        postQueueChanged()
     }
     
     func next(){
@@ -395,6 +387,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         usrQueue.removeAll()
         usrIndex = 0
         isUsrQueue = false
+        postQueueChanged()
     }
     
     func shuffleCurrent(){
@@ -748,14 +741,18 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     
     func postPlaybackStateChanged() {
         DispatchQueue.main.async {
-            NotificationCenter.default.post(name: Plum.playBackStateChanged, object: nil)
+            NotificationCenter.default.post(name: .playbackChanged, object: nil)
         }
     }
     
     func postTrackChanged() {
         DispatchQueue.main.async {
-            NotificationCenter.default.post(name: Plum.trackChanged, object: nil)
+            NotificationCenter.default.post(name: .trackChanged, object: nil)
         }
+    }
+    
+    func postQueueChanged() {
+        NotificationCenter.default.post(name: .queueChanged, object: nil)
     }
     
     @available(iOS 10.0, *) func postLyrics() {
@@ -792,13 +789,15 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     
     func getCurrentQueue() -> [MPMediaItem] {
         var queue = [MPMediaItem]()
-        if isUsrQueue {
-            queue.append(contentsOf: usrQueue)
-        }
         if isShuffle {
             queue.append(contentsOf: shufQueue)
         }else{
             queue.append(contentsOf: defQueue)
+        }
+        if isUsrQueue {
+            for i in 1 ..< usrQueue.count {
+                queue.insert(usrQueue[i], at: defIndex+i)
+            }
         }
         return queue
     }

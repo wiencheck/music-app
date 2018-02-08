@@ -41,7 +41,7 @@ class ArtistUpVCB: UIViewController {
         tableView.contentInset = UIEdgeInsetsMake(64, 0, 49, 0)
         tableView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 49, 0)
         reload()
-        NotificationCenter.default.addObserver(self, selector: #selector(reload), name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reload), name: .playbackChanged, object: nil)
         separatorColor = tableView.separatorColor
         setColors()
         tableView.tableFooterView = UIView(frame: .zero)
@@ -49,7 +49,7 @@ class ArtistUpVCB: UIViewController {
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "playBackStateChanged"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: .playbackChanged, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
