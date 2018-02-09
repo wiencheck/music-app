@@ -77,7 +77,7 @@ class ColorsVC: UICollectionViewController {
     }
     
     func alert() {
-        let a = UIAlertController(title: "Changing colors?", message: "Please restart the app for all changes to be enabled", preferredStyle: .alert)
+        let a = ColoredAlertController(title: "Changing colors?", message: "Please restart the app for all changes to be enabled", preferredStyle: .alert)
         let ok = UIAlertAction(title: "Ok", style: .default, handler: nil)
         a.addAction(ok)
         present(a, animated: true, completion: nil)

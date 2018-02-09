@@ -28,7 +28,7 @@ class PlaylistsVC: UIViewController {
     @IBOutlet weak var tableIndexView: TableIndexView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionIndexView: CollectionIndexView!
-    @IBOutlet weak var themeBtn: UIBarButtonItem!
+    var themeBtn: UIBarButtonItem!
     var pickedID: MPMediaEntityPersistentID!
     var pickedList: Playlist!
     var gesture: UILongPressGestureRecognizer!
@@ -49,7 +49,6 @@ class PlaylistsVC: UIViewController {
         super.viewDidLoad()
         tabBarController?.delegate = self
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
-        grid = GlobalSettings.playlistsGrid
         setup()
         if !playlists.isEmpty {
             setupDict()
@@ -59,27 +58,40 @@ class PlaylistsVC: UIViewController {
                 configureSearchController()
                 controllerSet = true
             }
-            if grid{
-                setCollection()
-                self.collectionIndexView.indexes = self.indexes
-                self.collectionIndexView.collectionView = self.collectionView
-                self.collectionIndexView.setup()
-                view.bringSubview(toFront: searchView)
-                view.bringSubview(toFront: collectionIndexView)
-            }else{
-                setTable()
-                tableView.tableFooterView = UIView(frame: .zero)
-                tableIndexView.indexes = self.indexes
-                tableIndexView.tableView = self.tableView
-                tableIndexView.setup()
-                view.bringSubview(toFront: searchView)
-                view.bringSubview(toFront: tableIndexView)
-            }
+            reload()
         }
         setTitleButton()
         setTheme()
         NotificationCenter.default.addObserver(self, selector: #selector(setTheme), name: .themeChanged, object: nil)
         print("Playlists loaded")
+    }
+    
+    func reload() {
+        grid = GlobalSettings.playlistsGrid
+        if grid{
+            tableView.isHidden = true
+            collectionView.isHidden = false
+            tableView.delegate = nil
+            tableView.dataSource = nil
+            setCollection()
+            self.collectionIndexView.indexes = self.indexes
+            self.collectionIndexView.collectionView = self.collectionView
+            self.collectionIndexView.setup()
+            view.bringSubview(toFront: searchView)
+            view.bringSubview(toFront: collectionIndexView)
+        }else{
+            tableView.isHidden = false
+            collectionView.isHidden = true
+            collectionView.delegate = nil
+            collectionView.dataSource = nil
+            setTable()
+            tableView.tableFooterView = UIView(frame: .zero)
+            tableIndexView.indexes = self.indexes
+            tableIndexView.tableView = self.tableView
+            tableIndexView.setup()
+            view.bringSubview(toFront: searchView)
+            view.bringSubview(toFront: tableIndexView)
+        }
     }
     
     deinit {
@@ -90,8 +102,7 @@ class PlaylistsVC: UIViewController {
         self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
         self.definesPresentationContext = true
         if grid != GlobalSettings.playlistsGrid{
-            controllerSet = false
-            self.viewDidLoad()
+            self.reload()
         }
     }
     
@@ -560,9 +571,9 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchView = SearchBarContainerView(customSearchBar: searchController.searchBar)
         searchView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44)
         if device == "iPhone X" {
-            heightInset = 102
+            heightInset = 88
         }else{
-            heightInset = 74
+            heightInset = 64
         }
         automaticallyAdjustsScrollViewInsets = false
         let bottomInset = 49 + GlobalSettings.bottomInset
@@ -570,16 +581,17 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
             tableView.contentInsetAdjustmentBehavior = .never
             collectionView.contentInsetAdjustmentBehavior = .never
         }
-        collectionView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
-        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        collectionView.contentInset = UIEdgeInsetsMake(heightInset+10, 0, bottomInset, 0)
+        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset+10, 0, bottomInset, 0)
         tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
         tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y < -124 {
+        print(scrollView.contentOffset.y)
+        if scrollView.contentOffset.y < -heightInset - 104 {
             showSearchBar()
-        }else if scrollView.contentOffset.y > -94 {
+        }else if scrollView.contentOffset.y > -heightInset + 24 {
             if hideKeyboard {
                 searchController.searchBar.resignFirstResponder()
             }
@@ -607,6 +619,7 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
             tableIndexView.isHidden = false
         }
         navigationItem.titleView = nil
+        navigationItem.rightBarButtonItem = themeBtn
         navigationItem.titleView = titleButton
     }
     
@@ -615,16 +628,19 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
     }
     
     func setTitleButton() {
-        titleButton = UIButton(type: .system)
-        titleButton.frame = CGRect(x: 0, y: 0, width: 160, height: 40)
+        titleButton = UIButton(type: .custom)
+        titleButton.frame = CGRect(x: 0, y: 0, width: 180, height: 40)
         titleButton.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
         let attributedH = NSAttributedString(string: "Search", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium), NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color])
         titleButton.setAttributedTitle(attributedH, for: .highlighted)
         navigationItem.titleView = titleButton
+        themeBtn = UIBarButtonItem(image: nil, style: .plain, target: self, action: #selector(themeBtnPressed(_:)))
+        navigationItem.rightBarButtonItem = themeBtn
     }
     
     @objc func showSearchBar() {
         navigationItem.titleView = searchView
+        navigationItem.rightBarButtonItem = nil
         searchController.searchBar.becomeFirstResponder()
     }
     
@@ -654,14 +670,14 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         }
         let finalCompoundPredicate = NSCompoundPredicate(andPredicateWithSubpredicates: songsMatchPredicates)
         
-        
         filteredPlaylists = (musicQuery.shared.playlists.filter { finalCompoundPredicate.evaluate(with: $0) })
         searchCellTypes = Array<Int>(repeating: 0, count: filteredPlaylists.count)
+        let path = IndexPath(row: 0, section: 0)
         if grid {
             collectionView.reloadData()
             if filteredPlaylists.count != 0 {
                 hideKeyboard = false
-                collectionView.contentOffset.y = -heightInset + 6
+                collectionView.scrollToItem(at: path, at: .top, animated: false)
                 hideKeyboard = true
             }
         }else{
@@ -673,7 +689,6 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
             }
         }
     }
-    
 }
 
 extension PlaylistsVC: UICollectionViewDelegateFlowLayout {

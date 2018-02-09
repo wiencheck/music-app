@@ -18,7 +18,7 @@ class AlbumsVC: UIViewController {
     @IBOutlet weak var tableIndexView: TableIndexView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionIndexView: CollectionIndexView!
-    @IBOutlet weak var themeBtn: UIBarButtonItem!
+    var themeBtn: UIBarButtonItem!
 
     var albums = [AlbumB]()
     var indexes = [String]()
@@ -47,32 +47,14 @@ class AlbumsVC: UIViewController {
         super.viewDidLoad()
         tabBarController?.delegate = self
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
-        grid = GlobalSettings.albumsGrid
-        if musicQuery.shared.albumsSet {
-            albums = musicQuery.shared.albums
-        }else{
-            albums = musicQuery.shared.allAlbums()
-        }
+        loadData()
         if !albums.isEmpty {
             setupDict()
             if !controllerSet {
                 configureSearchController()
                 controllerSet = true
             }
-            if grid{
-                setCollection()
-                self.collectionIndexView.indexes = self.indexes
-                self.collectionIndexView.collectionView = self.collectionView
-                self.collectionIndexView.setup()
-                view.bringSubview(toFront: collectionIndexView)
-            }else{
-                setTable()
-                tableIndexView.indexes = self.indexes
-                tableIndexView.tableView = self.tableView
-                tableIndexView.setup()
-                tableView.tableFooterView = UIView(frame: .zero)
-                view.bringSubview(toFront: tableIndexView)
-            }
+            reload()
             //setHeaders()
         }
         NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
@@ -81,10 +63,46 @@ class AlbumsVC: UIViewController {
         print("Albums loaded")
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .themeChanged, object: nil)
+    }
+    
+    private func reload() {
+        grid = GlobalSettings.albumsGrid
+        if grid{
+            tableView.delegate = nil
+            tableView.dataSource = nil
+            tableView.isHidden = true
+            collectionView.isHidden = false
+            tableIndexView.isHidden = true
+            collectionIndexView.isHidden = false
+            setCollection()
+            //view.bringSubview(toFront: collectionIndexView)
+        }else{
+            collectionView.delegate = nil
+            collectionView.dataSource = nil
+            collectionView.isHidden = true
+            tableView.isHidden = false
+            tableIndexView.isHidden = false
+            collectionIndexView.isHidden = true
+            setTable()
+            //view.bringSubview(toFront: tableIndexView)
+            tableView.tableFooterView = UIView(frame: .zero)
+        }
+    }
+    
+    private func loadData() {
+        if musicQuery.shared.albumsSet {
+            albums = musicQuery.shared.albums
+        }else{
+            albums = musicQuery.shared.allAlbums()
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
         if grid != GlobalSettings.albumsGrid{
-            self.viewDidLoad()
+            reload()
         }
         definesPresentationContext = true
     }
@@ -102,20 +120,21 @@ class AlbumsVC: UIViewController {
     func setTable(){
         tableView.delegate = self
         tableView.dataSource = self
-        //tableView.backgroundView = UIImageView(image: #imageLiteral(resourceName: "background_se"))
-        tableView.backgroundColor = UIColor.lightBackground
-        self.view.addSubview(tableView)
+        tableIndexView.tableView = tableView
+        tableIndexView.indexes = indexes
+        tableIndexView.setup()
     }
     
     func setCollection(){
         cellSize = calculateCollectionViewCellSize(itemsPerRow: 3, frame: self.view.frame)
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
-        collectionView.backgroundColor = UIColor.lightBackground
+        collectionIndexView.collectionView = collectionView
+        collectionIndexView.indexes = indexes
+        collectionIndexView.setup()
         for index in indexes {
             cellTypes.append(Array<Int>(repeating: 0, count: (result[index]?.count)!))
         }
-        self.view.addSubview(collectionView)
         let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout
         layout?.sectionHeadersPinToVisibleBounds = true
         layout?.headerReferenceSize = CGSize(width: view.frame.width, height: 27)
@@ -483,7 +502,7 @@ extension AlbumsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchView = SearchBarContainerView(customSearchBar: searchController.searchBar)
         searchView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44)
         if device == "iPhone X" {
-            heightInset = 92
+            heightInset = 88
         }else{
             heightInset = 64
         }
@@ -500,9 +519,9 @@ extension AlbumsVC: UISearchBarDelegate, UISearchResultsUpdating {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y < -124 {
+        if scrollView.contentOffset.y < -heightInset - 104 {
             showSearchBar()
-        }else if scrollView.contentOffset.y > -heightInset + 20 {
+        }else if scrollView.contentOffset.y > -heightInset + 24 {
             if hideKeyboard {
                 searchController.searchBar.resignFirstResponder()
             }
@@ -530,18 +549,22 @@ extension AlbumsVC: UISearchBarDelegate, UISearchResultsUpdating {
         }
         navigationItem.titleView = nil
         navigationItem.titleView = titleButton
+        navigationItem.rightBarButtonItem = themeBtn
     }
     
     func setTitleButton() {
-        titleButton = UIButton(type: .system)
-        titleButton.frame = CGRect(x: 0, y: 0, width: 160, height: 40)
+        titleButton = UIButton(type: .custom)
+        titleButton.frame = CGRect(x: 0, y: 0, width: 180, height: 40)
         titleButton.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
         let attributedH = NSAttributedString(string: "Search", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium), NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color])
         titleButton.setAttributedTitle(attributedH, for: .highlighted)
         navigationItem.titleView = titleButton
+        themeBtn = UIBarButtonItem(image: nil, style: .plain, target: self, action: #selector(themeBtnPressed(_:)))
+        navigationItem.rightBarButtonItem = themeBtn
     }
     
     @objc func showSearchBar() {
+        navigationItem.rightBarButtonItem = nil
         navigationItem.titleView = searchView
         searchController.searchBar.becomeFirstResponder()
     }
@@ -686,7 +709,7 @@ extension AlbumsVC: UICollectionViewDelegateFlowLayout {
         }
     }
     
-    @IBAction func themeBtnPressed(_ sender: UIBarButtonItem) {
+    @objc func themeBtnPressed(_ sender: UIBarButtonItem) {
         if GlobalSettings.theme == .dark {
             GlobalSettings.changeTheme(.light)
         }else{
@@ -725,7 +748,6 @@ extension AlbumsVC: UICollectionViewDelegateFlowLayout {
         tableView.reloadData()
         collectionView.reloadData()
     }
-    
 }
 
 extension AlbumsVC {

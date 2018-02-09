@@ -43,6 +43,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             defaults.set(count+1, forKey: "launchesCount")
             print("Launch number \(count+1)")
             letGo()
+            //GlobalSettings.device = "iPhone X"
         }else{
             defaults.set(1, forKey: "launchesCount")
             hijack()
@@ -352,13 +353,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UISwitch.appearance().onTintColor = GlobalSettings.tint.color
         UITableViewCell.appearance().backgroundColor = UIColor.clear
         let s = UIView()
-        s.backgroundColor = GlobalSettings.tint.color.withAlphaComponent(1)
+        s.backgroundColor = GlobalSettings.tint.color.withAlphaComponent(0.8)
         UITableViewCell.appearance().selectedBackgroundView = s
         UIButton.appearance(whenContainedInInstancesOf: [UISearchBar.self]).setImage(#imageLiteral(resourceName: "xcancel"), for: .normal)
         UIButton.appearance(whenContainedInInstancesOf: [UISearchBar.self]).setTitle("", for: .normal)
     }
     
     func setInitialInstructions() {
+        if defaults.value(forKey: "searchNav") == nil {
+            defaults.set(false, forKey: "searchNav")
+        }
+        if defaults.value(forKey: "groupNav") == nil {
+            defaults.set(false, forKey: "groupNav")
+        }
+        if defaults.value(forKey: "sortNav") == nil {
+            defaults.set(false, forKey: "sortNav")
+        }
         if defaults.value(forKey: "greeting") == nil {
             defaults.set(false, forKey: "greeting")
         }

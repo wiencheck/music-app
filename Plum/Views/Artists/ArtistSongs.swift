@@ -58,7 +58,7 @@ class ArtistSongs: UIViewController {
     }
     
     func setTitleButton() {
-        titleBtn = UIButton(type: .system)
+        titleBtn = UIButton(type: .custom)
         titleBtn.frame = CGRect(x: 0, y: 0, width: 160, height: 40)
         let att = NSAttributedString(string: "Group", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium), NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color])
         titleBtn.setAttributedTitle(att, for: .highlighted)
@@ -72,6 +72,7 @@ class ArtistSongs: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         instruct("artistslider", message: "Slider on the right edge of the screen works even here!", completion: nil)
+        instruct("groupNav", message: "Tap on the title in upper bar to switch grouping style.", completion: nil)
     }
     
     @objc func sortBtnPressed() {
@@ -626,7 +627,7 @@ extension ArtistSongs { //Sortowanie
     }
     
     func presentAlert() {
-        let alert = UIAlertController(title: "Choose sorting method for albums", message: "", preferredStyle: .actionSheet)
+        let alert = ColoredAlertController(title: "Choose sorting method for albums", message: "", preferredStyle: .actionSheet)
         let alpha = UIAlertAction(title: "Alphabetically", style: .default) { _ in
             GlobalSettings.changeArtistAlbumsSort(.alphabetically)
             self.currentSort = .alphabetically

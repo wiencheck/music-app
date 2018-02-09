@@ -91,7 +91,11 @@ import MediaPlayer
         if let img = item.artwork?.image(at: CGSize(width: 80, height: 80)){
             artwork = img
         }else{
-            artwork = #imageLiteral(resourceName: "no_music")
+            if GlobalSettings.theme == .dark {
+                artwork = #imageLiteral(resourceName: "no_now")
+            }else{
+                artwork = #imageLiteral(resourceName: "no_music")
+            }
         }
         artist = item.albumArtist
         manyArtists = false

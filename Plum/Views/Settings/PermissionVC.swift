@@ -13,12 +13,9 @@ import MediaPlayer
     
     var timet: Timer!
     @IBOutlet weak var text: UITextView!
-    @IBOutlet weak var loading: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loading.isHidden = true
-        text.isHidden = false
         timet = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(check), userInfo: nil, repeats: true)
         timet.fire()
     }
@@ -29,8 +26,6 @@ import MediaPlayer
     
     @objc func check() {
         if checkPermissionForMusic() {
-            loading.isHidden = false
-            text.isHidden = true
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             appDelegate.letGo()
             UserDefaults.standard.set(1, forKey: "launchesCount")

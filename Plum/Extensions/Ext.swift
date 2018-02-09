@@ -183,7 +183,7 @@ extension UIView {
 
 extension UIViewController {
     func updatePrompt() {
-        let alert = UIAlertController(title: "This feature requires iOS10.0 or later", message: "To use it, you will have to update your firmware", preferredStyle: .alert)
+        let alert = ColoredAlertController(title: "This feature requires iOS10.0 or later", message: "To use it, you will have to update your firmware", preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
     }
 }

@@ -32,7 +32,11 @@ fileprivate struct ArtistKey {
         if let art = item?.artwork?.image(at: CGSize(width: 80, height: 80)) {
             artwork = art
         }else{
-            artwork = #imageLiteral(resourceName: "no_music")
+            if GlobalSettings.theme == .dark {
+                artwork = #imageLiteral(resourceName: "no_now")
+            }else{
+                artwork = #imageLiteral(resourceName: "no_music")
+            }
         }
         self.songsIn = Collection.items.count
         albumsIn = musicQuery.shared.artistAlbumsID(artist: self.ID).count

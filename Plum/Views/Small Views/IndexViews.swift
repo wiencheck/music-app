@@ -16,7 +16,7 @@ class TableIndexView: UIView {
 
     func setup() {
         self.layer.cornerRadius = 10.0
-        self.backgroundColor = .clear
+        self.backgroundColor = UIColor.indexBackground
         translatesAutoresizingMaskIntoConstraints = false
         var views = [String:UILabel]()
         var verticalLayoutString = "V:|"
@@ -99,7 +99,7 @@ class CollectionIndexView: UIView {
     
     func setup() {
         self.layer.cornerRadius = 10.0
-        self.backgroundColor = .white
+        self.backgroundColor = UIColor.indexBackground
         translatesAutoresizingMaskIntoConstraints = false
         
         var verticalLayoutString = "V:|"

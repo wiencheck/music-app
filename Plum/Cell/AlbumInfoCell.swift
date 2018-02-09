@@ -77,10 +77,11 @@ class AlbumInfoCell: UITableViewCell {
     
     func calcDuration(items: [MPMediaItem]) -> String{
         var duration: TimeInterval = 0
-        for i in 0...items.count-1{
+        for i in 0..<items.count{
             duration = duration + items[i].playbackDuration
         }
-        return duration.calculateFromTimeInterval().minute
+        let minutes = Int(floor(duration/60))
+        return "\(minutes)"
     }
     
     @IBAction func playBtn() {

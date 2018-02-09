@@ -833,7 +833,7 @@ extension EightNowPlayingVC {       //Kolory i UI
         if error != nil {
             print(error!)
         }
-        let alert = UIAlertController(title: "Error", message: "You have to allow notifications for this feature to work. Fix in settings?", preferredStyle: .alert)
+        let alert = ColoredAlertController(title: "Error", message: "You have to allow notifications for this feature to work. Fix in settings?", preferredStyle: .alert)
         let action = UIAlertAction(title: "OK Computer", style: .default, handler: nil)
         alert.addAction(action)
         present(alert, animated: true) {

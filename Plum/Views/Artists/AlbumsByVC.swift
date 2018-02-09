@@ -43,6 +43,10 @@ class AlbumsByVC: UITableViewController {
         updateTheme()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        instruct("sortNav", message: "Tap on the title in upper bar to switch sorting method.", completion: nil)
+    }
+    
     deinit {
         NotificationCenter.default.removeObserver(self, name: .themeChanged, object: nil)
     }
@@ -199,7 +203,7 @@ extension AlbumsByVC { //Sortowanie
     }
     
     func presentAlert() {
-        let alert = UIAlertController(title: "Choose sorting method", message: "", preferredStyle: .actionSheet)
+        let alert = ColoredAlertController(title: "Choose sorting method", message: "", preferredStyle: .actionSheet)
         let alpha = UIAlertAction(title: "Alphabetically", style: .default) { _ in
             GlobalSettings.changeArtistAlbumsSort(.alphabetically)
             self.currentSort = .alphabetically
@@ -226,8 +230,8 @@ extension AlbumsByVC { //Sortowanie
     
     func setTitleButton() {
         let attributedH = NSAttributedString(string: "Sort", attributes: [NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color, NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium)])
-        titleButton = UIButton(type: .system)
-        titleButton.frame = CGRect(x: 0, y: 0, width: 160, height: 40)
+        titleButton = UIButton(type: .custom)
+        titleButton.frame = CGRect(x: 0, y: 0, width: 180, height: 40)
         titleButton.addTarget(self, action: #selector(sortBtnPressed), for: .touchUpInside)
         titleButton.setAttributedTitle(attributedH, for: .highlighted)
         navigationItem.titleView = titleButton

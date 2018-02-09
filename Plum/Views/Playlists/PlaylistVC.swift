@@ -30,8 +30,7 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
     var receivedList: Playlist!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableIndexView: TableIndexView!
-    @IBOutlet weak var themeBtn: UIBarButtonItem!
-    //@IBOutlet weak var ratingBtn: UIBarButtonItem!
+    var themeBtn: UIBarButtonItem!
     var filteredSongs = [MPMediaItem]()
     var shouldShowResults = false
     var heightInset: CGFloat!
@@ -480,7 +479,7 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchView = SearchBarContainerView(customSearchBar: searchController.searchBar)
         searchView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44)
         if device == "iPhone X" {
-            heightInset = 92
+            heightInset = 88
         }else{
             heightInset = 64
         }
@@ -494,9 +493,9 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y < -124 {
+        if scrollView.contentOffset.y < -heightInset - 104 {
             showSearchBar()
-        }else if scrollView.contentOffset.y > -80 {
+        }else if scrollView.contentOffset.y > -heightInset + 24 {
             if hideKeyboard {
                 searchController.searchBar.resignFirstResponder()
             }
@@ -512,20 +511,26 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
         shouldShowResults = false
         tableView.reloadData()
         tableIndexView.isHidden = false
+        navigationItem.rightBarButtonItem = themeBtn
         navigationItem.titleView = titleButton
+        navigationItem.hidesBackButton = false
     }
     
     func setTitleButton() {
-        titleButton = UIButton(type: .system)
-        titleButton.frame = CGRect(x: 0, y: 0, width: 160, height: 40)
+        titleButton = UIButton(type: .custom)
+        titleButton.frame = CGRect(x: 0, y: 0, width: 180, height: 40)
         titleButton.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
         let attributedH = NSAttributedString(string: "Search", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium), NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color])
         titleButton.setAttributedTitle(attributedH, for: .highlighted)
         navigationItem.titleView = titleButton
+        themeBtn = UIBarButtonItem(image: nil, style: .plain, target: self, action: #selector(themeBtnPressed(_:)))
+        navigationItem.rightBarButtonItem = themeBtn
     }
     
     @objc func showSearchBar() {
         navigationItem.titleView = searchView
+        navigationItem.rightBarButtonItem = nil
+        navigationItem.hidesBackButton = true
         searchController.searchBar.becomeFirstResponder()
     }
     

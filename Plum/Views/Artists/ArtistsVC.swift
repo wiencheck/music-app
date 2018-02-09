@@ -21,7 +21,6 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     var activeSearchRow = 0
     var shouldShowResults = false
     var collectionTypes = [[Int]]()
-    var tableTypes = [[Int]]()
     var activeSection = 0
     var activeRow = 0
     var indexes = [String]()
@@ -29,7 +28,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     @IBOutlet weak var collectionIndexView: CollectionIndexView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableIndexView: TableIndexView!
-    @IBOutlet weak var themeBtn: UIBarButtonItem!
+    var themeBtn: UIBarButtonItem!
     
     var pickedID: MPMediaEntityPersistentID!
     var result = [String:[Artist]]()
@@ -53,12 +52,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
         currentTheme = GlobalSettings.theme
-        grid = GlobalSettings.artistsGrid
-        if musicQuery.shared.artistsSet {
-            artists = musicQuery.shared.artists
-        }else{
-            artists = musicQuery.shared.allArtists()
-        }
+        loadData()
         if !artists.isEmpty {
             setupDict()
             searchVisible = true
@@ -66,18 +60,47 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
                 configureSearchController()
                 controllerSet = true
             }
-            if grid{
-                setCollection()
-                view.bringSubview(toFront: collectionIndexView)
-            }else{
-                setTable()
-                view.bringSubview(toFront: tableIndexView)
-                tableView.tableFooterView = UIView(frame: .zero)
-            }
+            reload()
         }
         setTitleButton()
         updateTheme()
         print("Artists loaded")
+    }
+    
+    private func loadData() {
+        if musicQuery.shared.artistsSet {
+            artists = musicQuery.shared.artists
+        }else{
+            artists = musicQuery.shared.allArtists()
+        }
+    }
+    
+    private func reload() {
+        grid = GlobalSettings.artistsGrid
+        if grid{
+            tableView.delegate = nil
+            tableView.dataSource = nil
+            tableView.isHidden = true
+            collectionView.isHidden = false
+            tableIndexView.isHidden = true
+            collectionIndexView.isHidden = false
+            setCollection()
+            //view.bringSubview(toFront: collectionIndexView)
+        }else{
+            collectionView.delegate = nil
+            collectionView.dataSource = nil
+            collectionView.isHidden = true
+            tableView.isHidden = false
+            tableIndexView.isHidden = false
+            collectionIndexView.isHidden = true
+            setTable()
+            //view.bringSubview(toFront: tableIndexView)
+            tableView.tableFooterView = UIView(frame: .zero)
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .themeChanged, object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -87,7 +110,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
         if grid != GlobalSettings.artistsGrid{
-            viewDidLoad()
+            reload()
         }
         if grid {
             collectionView.reloadData()
@@ -104,21 +127,17 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     func setTable(){
         tableView.delegate = self
         tableView.dataSource = self
-        view.addSubview(tableView)
-        for i in 0 ..< tableView.numberOfSections {
-            tableTypes.append(Array<Int>(repeating: 0, count: tableView.numberOfRows(inSection: i)))
-        }
         tableIndexView.indexes = self.indexes
         tableIndexView.tableView = self.tableView
         tableIndexView.setup()
-        self.view.addSubview(tableIndexView)
+        //self.view.addSubview(tableIndexView)
     }
     
     func setCollection(){
         cellSize = calculateCollectionViewCellSize(itemsPerRow: 3, frame: self.view.frame)
         collectionView.delegate = self
         collectionView.dataSource = self
-        self.view.addSubview(collectionView)
+        //self.view.addSubview(collectionView)
         gesture = UILongPressGestureRecognizer(target: self, action: #selector(longPress(_:)))
         gesture.minimumPressDuration = 0.2
         gesture.numberOfTouchesRequired = 1
@@ -131,7 +150,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         collectionIndexView.indexes = self.indexes
         collectionIndexView.collectionView = self.collectionView
         collectionIndexView.setup()
-        self.view.addSubview(collectionIndexView)
+        //self.view.addSubview(collectionIndexView)
     }
     
 }
@@ -630,7 +649,7 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchView = SearchBarContainerView(customSearchBar: searchController.searchBar)
         searchView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44)
         if device == "iPhone X" {
-            heightInset = 92
+            heightInset = 88
         }else{
             heightInset = 64
         }
@@ -647,9 +666,9 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y < -124 {
+        if scrollView.contentOffset.y < -heightInset - 104 {
             showSearchBar()
-        }else if scrollView.contentOffset.y > -heightInset + 20 {
+        }else if scrollView.contentOffset.y > -heightInset + 24 {
             if hideKeyboard {
                 searchController.searchBar.resignFirstResponder()
             }
@@ -678,6 +697,7 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         }
         navigationItem.titleView = nil
         navigationItem.titleView = titleButton
+        navigationItem.rightBarButtonItem = themeBtn
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -685,15 +705,18 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
     }
     
     func setTitleButton() {
-        titleButton = UIButton(type: .system)
-        titleButton.frame = CGRect(x: 0, y: 0, width: 160, height: 40)
+        titleButton = UIButton(type: .custom)
+        titleButton.frame = CGRect(x: 0, y: 0, width: 180, height: 40)
         titleButton.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
         let attributedH = NSAttributedString(string: "Search", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium), NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color])
         titleButton.setAttributedTitle(attributedH, for: .highlighted)
+        themeBtn = UIBarButtonItem(image: nil, style: .plain, target: self, action: #selector(themeBtnPressed(_:)))
+        navigationItem.rightBarButtonItem = themeBtn
         navigationItem.titleView = titleButton
     }
     
     @objc func showSearchBar() {
+        navigationItem.rightBarButtonItem = nil
         navigationItem.titleView = searchView
         searchController.searchBar.becomeFirstResponder()
     }
@@ -831,7 +854,7 @@ extension UIViewController {
     
     func instruct(_ key: String, message: String, completion: (() -> Void)?) {
         if !UserDefaults.standard.bool(forKey: key) {
-            let a = UIAlertController(title: "Pro tip", message: message, preferredStyle: .alert)
+            let a = ColoredAlertController(title: "Pro tip", message: message, preferredStyle: .alert)
             let got = UIAlertAction(title: "Got it", style: .default, handler: { _ in
                 UserDefaults.standard.set(true, forKey: key)
             })

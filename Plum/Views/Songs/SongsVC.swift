@@ -33,12 +33,10 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     var searchVisible: Bool!
     let device = GlobalSettings.device
     
-    @IBOutlet weak var themeBtn: UIBarButtonItem!
+    var themeBtn: UIBarButtonItem!
     //@IBOutlet weak var ratingBtn: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var indexView: TableIndexView!
-    //@IBOutlet weak var searchView: UIView!
-    //@IBOutlet weak var tool: UIToolbar!
     var titleButton: UIButton!
     var navView: UIView!
     var searchView: SearchBarContainerView!
@@ -82,6 +80,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     
     override func viewDidAppear(_ animated: Bool) {
         instruct("songs", message: "Swipe left on a song to quickly go to corresponding album or artist page", completion: nil)
+        instruct("searchNav", message: "Tap on the title in upper bar or scroll behind upper bounds to invoke search bar. Give it a try in different screens as well!", completion: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -630,7 +629,7 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchView = SearchBarContainerView(customSearchBar: searchController.searchBar)
         searchView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44)
         if device == "iPhone X" {
-            heightInset = 92
+            heightInset = 88
         }else{
             heightInset = 64
         }
@@ -644,15 +643,17 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y < -124 {
+        //print(scrollView.contentOffset.y)
+        if scrollView.contentOffset.y < -heightInset - 104 {
             showSearchBar()
         }
-        else if scrollView.contentOffset.y > -heightInset + 20 {
+        else if scrollView.contentOffset.y > -heightInset + 24 {
             if hideKeyboard {
                 searchController.searchBar.resignFirstResponder()
             }
         }
     }
+    
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         tableView.reloadData()
@@ -664,6 +665,7 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         tableView.reloadData()
         indexView.isHidden = false
         navigationItem.titleView = nil
+        navigationItem.rightBarButtonItem = themeBtn
         navigationItem.titleView = titleButton
     }
     
@@ -725,16 +727,19 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
     }
     
     func setTitleButton() {
-        titleButton = UIButton(type: .system)
-        titleButton.frame = CGRect(x: 0, y: 0, width: 160, height: 40)
+        titleButton = UIButton(type: .custom)
+        titleButton.frame = CGRect(x: 0, y: 0, width: 180, height: 40)
         titleButton.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
         let attributedH = NSAttributedString(string: "Search", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium), NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color])
         titleButton.setAttributedTitle(attributedH, for: .highlighted)
         navigationItem.titleView = titleButton
+        themeBtn = UIBarButtonItem(image: nil, style: .plain, target: self, action: #selector(themeBtnPressed(_:)))
+        navigationItem.rightBarButtonItem = themeBtn
     }
     
     @objc func showSearchBar() {
         navigationItem.titleView = searchView
+        navigationItem.rightBarButtonItem = nil
         searchController.searchBar.becomeFirstResponder()
     }
     

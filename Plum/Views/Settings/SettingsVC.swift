@@ -54,6 +54,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     @IBOutlet weak var doubT :UILabel!
     @IBOutlet weak var landI: UILabel!
     @IBOutlet weak var oledL: UILabel!
+    @IBOutlet weak var ratingsInL: UILabel!
     var timer: Timer!
 
     override func viewDidLoad() {
@@ -174,7 +175,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         if error != nil {
             print(error!)
         }
-        let alert = UIAlertController(title: "Error", message: "You have to allow notifications for this feature to work. Fix in settings?", preferredStyle: .alert)
+        let alert = ColoredAlertController(title: "Error", message: "You have to allow notifications for this feature to work. Fix in settings?", preferredStyle: .alert)
         let action = UIAlertAction(title: "OK Computer", style: .default, handler: nil)
         alert.addAction(action)
         present(alert, animated: true) {
@@ -230,8 +231,8 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
             explainMiniPlayer()
         case "tint":
             performSegue(withIdentifier: "colors", sender: nil)
-        case "skip":
-            _ = 0
+        case "ratingsIn":
+            later()
         case "rating":
             explainrating()
         case "ratingset":
@@ -264,7 +265,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         if #available(iOS 10.3, *) {
             performSegue(withIdentifier: "icons", sender: nil)
         }else{
-            let alert = UIAlertController(title: "Available only on iOS 10.3, or later", message: "To use this feature you have to update your software", preferredStyle: .alert)
+            let alert = ColoredAlertController(title: "Available only on iOS 10.3, or later", message: "To use this feature you have to update your software", preferredStyle: .alert)
             present(alert, animated: true, completion: nil)
         }
     }
@@ -289,42 +290,42 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     }
     
     func selfExplanatory() {
-        let alert = UIAlertController(title: "🤔", message: "Well, this is really self-explanatory. Try it and see for yourself!", preferredStyle: .alert)
+        let alert = ColoredAlertController(title: "🤔", message: "Well, this is really self-explanatory. Try it and see for yourself!", preferredStyle: .alert)
         let ok = UIAlertAction(title: "Okay, don't be mad!", style: .default, handler: nil)
         alert.addAction(ok)
         present(alert, animated: true, completion: nil)
     }
     
     func review() {
-        let alert = UIAlertController(title: "", message: "If you enjoy using Plum, please leave a review in the App Store.\nFollow Twitter and Facebook profile for any news regarding Plum's development 😁", preferredStyle: .alert)
+        let alert = ColoredAlertController(title: "", message: "If you enjoy using Plum, please leave a review in the App Store.\nFollow Twitter and Facebook profile for any news regarding Plum's development 😁", preferredStyle: .alert)
         let ok = UIAlertAction(title: "Okay!", style: .default, handler: nil)
         alert.addAction(ok)
         present(alert, animated: true, completion: nil)
     }
     
     func explainRatingsIn() {
-        let alert = UIAlertController(title: "Rating buttons?", message: "Choose whether you're interested in seeing songs' ratings in", preferredStyle: .alert)
+        let alert = ColoredAlertController(title: "Rating buttons?", message: "Choose whether you're interested in seeing songs' ratings in", preferredStyle: .alert)
         let ok = UIAlertAction(title: "Understood, thanks!", style: .default, handler: nil)
         alert.addAction(ok)
         present(alert, animated: true, completion: nil)
     }
     
     func explainLyrics() {
-        let alert = UIAlertController(title: "Lyrics mode? What?", message: "If enabled, you will get lyrics for now playing song delivered right to your lockscreen. And they will change automatically too. It only works with lyrics embedeed in song's tags, Plum does not download lyrics from the internet", preferredStyle: .alert)
+        let alert = ColoredAlertController(title: "Lyrics mode? What?", message: "If enabled, you will get lyrics for now playing song delivered right to your lockscreen. And they will change automatically too. It only works with lyrics embedeed in song's tags, Plum does not download lyrics from the internet", preferredStyle: .alert)
         let ok = UIAlertAction(title: "Understood, thanks!", style: .default, handler: nil)
         alert.addAction(ok)
         present(alert, animated: true, completion: nil)
     }
     
     func explainPlaylistGrid() {
-        let alert = UIAlertController(title: "Playlists grid?", message: "If enabled, playlists view will become a grid instead of default table", preferredStyle: .alert)
+        let alert = ColoredAlertController(title: "Playlists grid?", message: "If enabled, playlists view will become a grid instead of default table", preferredStyle: .alert)
         let ok = UIAlertAction(title: "Understood, thanks!", style: .default, handler: nil)
         alert.addAction(ok)
         present(alert, animated: true, completion: nil)
     }
     
     func explainDeploy() {
-        let alert = UIAlertController(title: "Where do we land, general?", message: "You can choose whether you prefer to start playing an album, artist, or all songs, when starting playback from Spotlight or in-app search screen\nIf there is only one song in chosen destination, Plum will start playing all songs", preferredStyle: .actionSheet)
+        let alert = ColoredAlertController(title: "Where do we land, general?", message: "You can choose whether you prefer to start playing an album, artist, or all songs, when starting playback from Spotlight or in-app search screen\nIf there is only one song in chosen destination, Plum will start playing all songs", preferredStyle: .actionSheet)
         let album = UIAlertAction(title: "Album", style: .default, handler: {(action) in
             GlobalSettings.changeDeploy(Deploy(rawValue: "Album")!)
             self.reload()
@@ -344,14 +345,14 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     }
     
 //    func explainColorFlow(){
-//        let alert = UIAlertController(title: "Colorflow? What does that mean!?", message: "Easy there, ColorFlow is a cool and one of Plum's unique features that changes colors on now playing screen to match current playing song's artwork. And it looks awesome.", preferredStyle: .alert)
+//        let alert = ColoredAlertController(title: "Colorflow? What does that mean!?", message: "Easy there, ColorFlow is a cool and one of Plum's unique features that changes colors on now playing screen to match current playing song's artwork. And it looks awesome.", preferredStyle: .alert)
 //        let ok = UIAlertAction(title: "Understood, thanks!", style: .default, handler: nil)
 //        alert.addAction(ok)
 //        present(alert, animated: true, completion: nil)
 //    }
     
     func explainStyle(){
-        let alert = UIAlertController(title: "Time for decision", message: "Choose preferred theme", preferredStyle: .alert)
+        let alert = ColoredAlertController(title: "Time for decision", message: "Choose preferred theme", preferredStyle: .alert)
         let dark = UIAlertAction(title: "Dark", style: .default, handler: {(action) in
             GlobalSettings.changeTheme(.dark)
             self.reload()
@@ -374,14 +375,14 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     }
     
     func themeAlert() {
-        let a = UIAlertController(title: "Changing theme?", message: "Please restart the app for all changes to be enabled", preferredStyle: .alert)
+        let a = ColoredAlertController(title: "Changing theme?", message: "Please restart the app for all changes to be enabled", preferredStyle: .alert)
         let ok = UIAlertAction(title: "Ok", style: .default, handler: nil)
         a.addAction(ok)
         present(a, animated: true, completion: nil)
     }
     
     func explainMiniPlayer(){
-        let alert = UIAlertController(title: "Time for decision", message: "Classic: iOS 9 music app styleModern: iOS 10 music app style\n\nModern: iOS 10 music app style", preferredStyle: .actionSheet)
+        let alert = ColoredAlertController(title: "Time for decision", message: "Classic: iOS 9 music app styleModern: iOS 10 music app style\n\nModern: iOS 10 music app style", preferredStyle: .actionSheet)
         let dark = UIAlertAction(title: "Modern", style: .default, handler: {(action) in
             let tab = self.tabBarController as! PlumTabBarController
             GlobalSettings.changePopupStyle(.modern)
@@ -400,14 +401,14 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     }
     
     func explainOled() {
-        let alert = UIAlertController(title: "High contrast?", message: "If enabled, background will be purely black, this mode is great for OLED screens like in the iPhone X", preferredStyle: .alert)
+        let alert = ColoredAlertController(title: "High contrast?", message: "If enabled, background will be purely black, this mode is great for OLED screens like in the iPhone X", preferredStyle: .alert)
         let ok = UIAlertAction(title: "Cool!", style: .default, handler: nil)
         alert.addAction(ok)
         present(alert, animated: true, completion: nil)
     }
     
     func explainArtistsGrid(){
-        let alert = UIAlertController(title: "Artists grid?", message: "If enabled, artists view will become a grid instead of default table", preferredStyle: .alert)
+        let alert = ColoredAlertController(title: "Artists grid?", message: "If enabled, artists view will become a grid instead of default table", preferredStyle: .alert)
         let ok = UIAlertAction(title: "Understood, thanks!", style: .default, handler: nil)
         alert.addAction(ok)
         present(alert, animated: true, completion: nil)
@@ -415,7 +416,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     }
     
     func explainAlbumsGrid(){
-        let alert = UIAlertController(title: "Albums grid?", message: "If enabled, albums view will become a grid instead of default table", preferredStyle: .alert)
+        let alert = ColoredAlertController(title: "Albums grid?", message: "If enabled, albums view will become a grid instead of default table", preferredStyle: .alert)
         let ok = UIAlertAction(title: "Understood, thanks!", style: .default, handler: nil)
         alert.addAction(ok)
         present(alert, animated: true, completion: nil)
@@ -423,7 +424,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     }
     
     func explainrating(){
-        let alert = UIAlertController(title: "Rating Mode?", message: "If enabled, you'll see ratings for each song right from the song view and also you will be able to rate current song from Lockscreen/ControlCenter", preferredStyle: .alert)
+        let alert = ColoredAlertController(title: "Rating Mode?", message: "If enabled, you'll see ratings for each song right from the song view and also you will be able to rate current song from Lockscreen/ControlCenter", preferredStyle: .alert)
         let ok = UIAlertAction(title: "Understood, thanks!", style: .default, handler: nil)
         alert.addAction(ok)
         present(alert, animated: true, completion: nil)
@@ -431,7 +432,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     }
     
     func later() {
-        let alert = UIAlertController(title: "😓", message: "Unfortunately this feature is not yet available, it will be enabled in near future!", preferredStyle: .alert)
+        let alert = ColoredAlertController(title: "😓", message: "Unfortunately this feature is not yet available, it will be enabled in near future!", preferredStyle: .alert)
         let ok = UIAlertAction(title: "Can't wait!", style: .default, handler: nil)
         alert.addAction(ok)
         present(alert, animated: true, completion: nil)
@@ -454,6 +455,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         doubT.textColor = UIColor.mainLabel
         landI.textColor = UIColor.mainLabel
         oledL.textColor = UIColor.mainLabel
+        ratingsInL.textColor = UIColor.mainLabel
         tableView.separatorColor = UIColor.separator
         if GlobalSettings.theme == .dark {
             navigationController?.navigationBar.barStyle = .blackTranslucent

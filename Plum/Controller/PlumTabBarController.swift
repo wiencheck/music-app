@@ -11,7 +11,7 @@ public var popupPresented = false
 
 class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     
-    private var popupActive = true
+    private var popupActive = false
     
     var nowPlaying: EightNowPlayingVC!
     let player = Plum.shared

@@ -61,7 +61,11 @@ class SongCell: UITableViewCell {
         if let art = item.artwork {
             artworkView.image = art.image(at: CGSize(width: 30, height: 30))
         }else{
-            artworkView.image = #imageLiteral(resourceName: "no_music")
+            if GlobalSettings.theme == .dark {
+                artworkView.image = #imageLiteral(resourceName: "no_now")
+            }else{
+                artworkView.image = #imageLiteral(resourceName: "no_music")
+            }
         }
         let art = item.albumTitle ?? "Unknown"
         let range = NSRange(location: 0, length: art.count)
