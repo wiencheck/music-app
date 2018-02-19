@@ -44,14 +44,13 @@ struct GlobalSettings{
     static var remote: RemoteCommandManager!
     static let defaults = UserDefaults.standard
     static var rating = false                                       //UI
-    static var full = false                                       //UI
     static var bottomInset: CGFloat!
     static var actions = [Rating]()
     static var device = ""
     static func setDevice(_ t: String) {
         device = t
     }
-    static func changeRating(_ t: Bool, full: Bool = false){
+    static func changeRating(_ t: Bool){
         if lyrics && t {
             if #available(iOS 10.0, *) {
                 changeLyrics(false)
@@ -59,12 +58,9 @@ struct GlobalSettings{
             updateRatings(ratings)
         }
         self.rating = t
-        self.full = full
         if t { actions = ratings }
         remote.switchRatingCommands(t)
-        print("Rating mode is \(rating)")
-        defaults.set(t, forKey: "rating")
-        defaults.set(full, forKey: "fullRating")
+        save(t, key: "rating")
     }
     
     static var ratings = [Rating]()
@@ -74,23 +70,23 @@ struct GlobalSettings{
         for rating in ratings {
             raw.append(rating.rawValue)
         }
-        defaults.set(raw, forKey: "ratings")
+        save(raw, key: "ratings")
     }
     
     static var tint: Color!                                       //UI
     static func changeTint(_ t: Color){
         self.tint = t
-        defaults.set(t.color.components.red, forKey: "tintRed")
-        defaults.set(t.color.components.green, forKey: "tintGreen")
-        defaults.set(t.color.components.blue, forKey: "tintBlue")
-        defaults.set(t.color.components.alpha, forKey: "tintAlpha")
-        defaults.set(t.name, forKey: "tintName")
+        save(t.color.components.red, key: "tintRed")
+        save(t.color.components.green, key: "tintGreen")
+        save(t.color.components.blue, key: "tintBlue")
+        save(t.color.components.alpha, key: "tintAlpha")
+        save(t.name, key: "tintName")
     }
     
     static var theme = Theme.light                                   //UI
     static func changeTheme(_ t: Theme) {
         self.theme = t
-        defaults.set(t.rawValue, forKey: "theme")
+        save(t.rawValue, key: "theme")
         if theme == .dark {
             if oled {
                 UIColor.background = UIColor.black
@@ -118,37 +114,37 @@ struct GlobalSettings{
     static var ratingsIn = true
     static func changeRatingsIn(_ t: Bool){
         ratingsIn = t
-        defaults.set(t, forKey: "ratingsIn")
+        save(t, key: "ratingsIn")
     }
     
     static var blur: Bool = false                                       //UI
     static func changeBlur(_ t: Bool) {
         self.blur = t
-        defaults.set(t, forKey: "blur")
+        save(t, key: "blur")
     }
     
     static var color: Bool = false                                       //UI
     static func changeColor(_ t: Bool) {
         self.color = t
-        defaults.set(t, forKey: "color")
+        save(t, key: "color")
     }
     
     static var scale: Double = 0
     static func changeScale(_ t: Double) {
         scale = t
-        defaults.set(t, forKey: "scale")
+        save(t, key: "scale")
     }
     
     static var artistSort: Sort = .alphabetically
     static func changeArtistSort(_ t: Sort){
         self.artistSort = t
-        UserDefaults.standard.set(t.rawValue, forKey: "artistSort")
+        save(t.rawValue, key: "artistSort")
     }
     
     static var artistAlbumsSort = Sort.alphabetically
     static func changeArtistAlbumsSort(_ t: Sort){
         self.artistAlbumsSort = t
-        UserDefaults.standard.set(t.rawValue, forKey: "artistAlbumsSort")
+        save(t.rawValue, key: "artistAlbumsSort")
     }
     
     static var popupStyle: styles = .classic
@@ -156,23 +152,23 @@ struct GlobalSettings{
         self.popupStyle = t
         if t == .classic {
             self.bottomInset = 40.0
-            defaults.set(false, forKey: "modernPopup")
+            save(false, key: "modernPopup")
         }else {
             self.bottomInset = 64.0
-            defaults.set(true, forKey: "modernPopup")
+            save(true, key: "modernPopup")
         }
     }
     
     static var popupDrag = false
     static func changePopupDrag(_ t: Bool) {
         self.popupDrag = t
-        defaults.set(t, forKey: "popupDrag")
+        save(t, key: "popupDrag")
     }
     
     static var oled = false
     static func changeOled(_ t: Bool) {
         self.oled = t
-        defaults.set(t, forKey: "oled")
+        save(t, key: "oled")
     }
     
 //    static func changeFeedbackContent(which: String, message: String, value: Int) {
@@ -202,12 +198,12 @@ struct GlobalSettings{
     static var deployIn: Deploy = .album
     static func changeDeploy(_ t: Deploy) {
         self.deployIn = t
-        defaults.set(t.rawValue, forKey: "deploy")
+        save(t.rawValue, key: "deploy")
     }
     static var lyrics = false
     @available(iOS 10.0, *) static func changeLyrics(_ t: Bool) {
         if rating && t{
-            changeRating(false, full: self.full)
+            changeRating(false)
         }
         self.lyrics = t
         if t {
@@ -217,36 +213,34 @@ struct GlobalSettings{
             Plum.shared.unRegisterLockNotification()
         }
         self.remote.switchRatingCommands(t)
-        defaults.set(t, forKey: "lyrics")
+        save(t, key: "lyrics")
     }
     static var roundedSlider = false
     static func changeRound(_ t: Bool) {
         roundedSlider = t
-        defaults.set(t, forKey: "roundedSlider")
-    }
-    static var searchOnTop = true
-    static func changeSearchOnTop(_ t: Bool) {
-        searchOnTop = t
-        defaults.set(t, forKey: "searchOnTop")
+        save(roundedSlider, key: "roundedSlider")
     }
     static var doubleBar = true
     static func changeDoubleBar(_ t: Bool) {
         doubleBar = t
-        defaults.set(doubleBar, forKey: "doubleBar")
+        save(doubleBar, key: "doubleBar")
     }
     static var playlistsGrid = false
     static func changePlaylists(grid: Bool) {
         playlistsGrid = grid
-        defaults.set(grid, forKey: "playlistsGrid")
+        save(grid, key: "playlistsGrid")
     }
     static var albumsGrid = false
     static func changeAlbums(grid: Bool) {
         albumsGrid = grid
-        defaults.set(grid, forKey: "albumsGrid")
+        save(grid, key: "albumsGrid")
     }
     static var artistsGrid = false
     static func changeArtists(grid: Bool) {
         artistsGrid = grid
-        defaults.set(grid, forKey: "artistsGrid")
+        save(grid, key: "artistsGrid")
+    }
+    static func save(_ data: Any, key: String) {
+        UserDefaults.standard.set(data, forKey: key)
     }
 }

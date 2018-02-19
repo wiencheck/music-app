@@ -58,6 +58,8 @@ class PlaylistsVC: UIViewController {
                 configureSearchController()
                 controllerSet = true
             }
+            setCollection()
+            setTable()
             reload()
         }
         setTitleButton()
@@ -71,26 +73,15 @@ class PlaylistsVC: UIViewController {
         if grid{
             tableView.isHidden = true
             collectionView.isHidden = false
-            tableView.delegate = nil
-            tableView.dataSource = nil
-            setCollection()
-            self.collectionIndexView.indexes = self.indexes
-            self.collectionIndexView.collectionView = self.collectionView
-            self.collectionIndexView.setup()
-            view.bringSubview(toFront: searchView)
-            view.bringSubview(toFront: collectionIndexView)
+            tableIndexView.isHidden = true
+            collectionIndexView.isHidden = false
+            //setCollection()
         }else{
             tableView.isHidden = false
             collectionView.isHidden = true
-            collectionView.delegate = nil
-            collectionView.dataSource = nil
-            setTable()
-            tableView.tableFooterView = UIView(frame: .zero)
-            tableIndexView.indexes = self.indexes
-            tableIndexView.tableView = self.tableView
-            tableIndexView.setup()
-            view.bringSubview(toFront: searchView)
-            view.bringSubview(toFront: tableIndexView)
+            tableIndexView.isHidden = false
+            collectionIndexView.isHidden = true
+            //setTable()
         }
     }
     
@@ -114,18 +105,22 @@ class PlaylistsVC: UIViewController {
     func setTable(){
         tableView.delegate = self
         tableView.dataSource = self
-        self.view.addSubview(tableView)
+        //self.view.addSubview(tableView)
         tableIndexView.indexes = self.indexes
         tableIndexView.tableView = self.tableView
         tableIndexView.setup()
-        self.view.addSubview(tableIndexView)
+        tableView.tableFooterView = UIView(frame: .zero)
+        tableIndexView.indexes = self.indexes
+        tableIndexView.tableView = self.tableView
+        tableIndexView.setup()
+        //self.view.addSubview(tableIndexView)
     }
     
     func setCollection(){
         cellSize = calculateCollectionViewCellSize(itemsPerRow: 2, frame: self.view.frame)
         collectionView.delegate = self
         collectionView.dataSource = self
-        self.view.addSubview(collectionView)
+        //self.view.addSubview(collectionView)
         correctCollectionSections()
         collectionIndexView.indexes = self.indexes
         collectionIndexView.collectionView = self.collectionView
@@ -134,7 +129,10 @@ class PlaylistsVC: UIViewController {
         gesture.minimumPressDuration = 0.3
         gesture.numberOfTouchesRequired = 1
         collectionView.addGestureRecognizer(gesture)
-        self.view.addSubview(collectionIndexView)
+        self.collectionIndexView.indexes = self.indexes
+        self.collectionIndexView.collectionView = self.collectionView
+        self.collectionIndexView.setup()
+        //self.view.addSubview(collectionIndexView)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -512,13 +510,17 @@ extension PlaylistsVC {
     }
     
     func playNow() {
-        let items = pickedList.items
         if player.isShuffle {
             player.disableShuffle()
         }
-        player.createDefQueue(items: items)
-        player.playFromDefQueue(index: 0, new: true)
-        player.isShuffle = false
+        if pickedList.items.contains(player.currentItem!) && player.isPlayin() {
+            Plum.shared.landInPlaylist(list: self.pickedList, shuffle: false)
+        }else{
+            let items = pickedList.items
+            player.createDefQueue(items: items)
+            player.playFromDefQueue(index: 0, new: true)
+            player.isShuffle = false
+        }
         player.play()
     }
     
@@ -532,11 +534,15 @@ extension PlaylistsVC {
     }
     
     func shuffle() {
-        let items = pickedList.items
-        player.createDefQueue(items: items)
-        player.defIndex = Int(arc4random_uniform(UInt32(items.count)))
-        player.shuffleCurrent()
-        player.playFromShufQueue(index: 0, new: true)
+        if pickedList.items.contains(player.currentItem!) && player.isPlayin() {
+            player.landInPlaylist(list: self.pickedList, shuffle: true)
+        }else{
+            let items = pickedList.items
+            player.createDefQueue(items: items)
+            player.defIndex = Int(arc4random_uniform(UInt32(items.count)))
+            player.shuffleCurrent()
+            player.playFromShufQueue(index: 0, new: true)
+        }
         player.play()
     }
 }

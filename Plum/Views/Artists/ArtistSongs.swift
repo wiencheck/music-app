@@ -206,11 +206,6 @@ extension ArtistSongs: UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath) as! ShuffleCell
             cell.setup(style: .light)
-            if GlobalSettings.theme == .dark {
-                cell.backgroundColor = UIColor.darkTranslucent
-            }else{
-                cell.backgroundColor = UIColor.clear
-            }
             return cell
         }else{
             if sort == .alphabetically {

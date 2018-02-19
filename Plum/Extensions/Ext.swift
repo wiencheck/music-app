@@ -89,6 +89,10 @@ extension IndexPath{
         rowCount += row
         return rowCount
     }
+    
+    func isFirst() -> Bool {
+        return (section == 0 && row == 0)
+    }
 }
 
 public extension UIDevice {

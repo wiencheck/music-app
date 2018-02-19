@@ -47,6 +47,9 @@ class AlbumsVC: UIViewController {
         super.viewDidLoad()
         tabBarController?.delegate = self
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
+        tableIndexView.isHidden = true
+        collectionIndexView.isHidden = true
+        grid = GlobalSettings.albumsGrid
         loadData()
         if !albums.isEmpty {
             setupDict()
@@ -55,6 +58,7 @@ class AlbumsVC: UIViewController {
                 controllerSet = true
             }
             reload()
+            hideTable()
             //setHeaders()
         }
         NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
@@ -69,26 +73,13 @@ class AlbumsVC: UIViewController {
     
     private func reload() {
         grid = GlobalSettings.albumsGrid
-        if grid{
-            tableView.delegate = nil
-            tableView.dataSource = nil
-            tableView.isHidden = true
-            collectionView.isHidden = false
-            tableIndexView.isHidden = true
-            collectionIndexView.isHidden = false
-            setCollection()
-            //view.bringSubview(toFront: collectionIndexView)
-        }else{
-            collectionView.delegate = nil
-            collectionView.dataSource = nil
-            collectionView.isHidden = true
-            tableView.isHidden = false
-            tableIndexView.isHidden = false
-            collectionIndexView.isHidden = true
-            setTable()
-            //view.bringSubview(toFront: tableIndexView)
-            tableView.tableFooterView = UIView(frame: .zero)
-        }
+//        if grid{
+//            setCollection()
+//        }else{
+//            setTable()
+//        }
+        setCollection()
+        setTable()
     }
     
     private func loadData() {
@@ -102,7 +93,9 @@ class AlbumsVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
         if grid != GlobalSettings.albumsGrid{
+            grid = GlobalSettings.albumsGrid
             reload()
+            hideTable()
         }
         definesPresentationContext = true
     }
@@ -123,6 +116,14 @@ class AlbumsVC: UIViewController {
         tableIndexView.tableView = tableView
         tableIndexView.indexes = indexes
         tableIndexView.setup()
+        tableView.tableFooterView = UIView(frame: .zero)
+    }
+    
+    func hideTable() {
+        tableView.isHidden = grid
+        tableIndexView.isHidden = grid
+        collectionView.isHidden = !grid
+        collectionIndexView.isHidden = !grid
     }
     
     func setCollection(){

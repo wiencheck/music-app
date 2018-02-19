@@ -61,6 +61,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
                 controllerSet = true
             }
             reload()
+            hideTable()
         }
         setTitleButton()
         updateTheme()
@@ -77,26 +78,29 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     
     private func reload() {
         grid = GlobalSettings.artistsGrid
-        if grid{
-            tableView.delegate = nil
-            tableView.dataSource = nil
-            tableView.isHidden = true
-            collectionView.isHidden = false
-            tableIndexView.isHidden = true
-            collectionIndexView.isHidden = false
-            setCollection()
-            //view.bringSubview(toFront: collectionIndexView)
-        }else{
-            collectionView.delegate = nil
-            collectionView.dataSource = nil
-            collectionView.isHidden = true
-            tableView.isHidden = false
-            tableIndexView.isHidden = false
-            collectionIndexView.isHidden = true
-            setTable()
-            //view.bringSubview(toFront: tableIndexView)
-            tableView.tableFooterView = UIView(frame: .zero)
-        }
+        setCollection()
+        setTable()
+        tableView.tableFooterView = UIView(frame: .zero)
+//        if grid{
+//            //tableView.delegate = nil
+//            //tableView.dataSource = nil
+//            tableView.isHidden = true
+//            collectionView.isHidden = false
+//            tableIndexView.isHidden = true
+//            collectionIndexView.isHidden = false
+//            setCollection()
+//            //view.bringSubview(toFront: collectionIndexView)
+//        }else{
+//            //collectionView.delegate = nil
+//            //collectionView.dataSource = nil
+//            collectionView.isHidden = true
+//            tableView.isHidden = false
+//            tableIndexView.isHidden = false
+//            collectionIndexView.isHidden = true
+//            setTable()
+//            //view.bringSubview(toFront: tableIndexView)
+//            tableView.tableFooterView = UIView(frame: .zero)
+//        }
     }
     
     deinit {
@@ -110,7 +114,9 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
         if grid != GlobalSettings.artistsGrid{
-            reload()
+            grid = GlobalSettings.artistsGrid
+            //reload()
+            hideTable()
         }
         if grid {
             collectionView.reloadData()
@@ -131,6 +137,13 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         tableIndexView.tableView = self.tableView
         tableIndexView.setup()
         //self.view.addSubview(tableIndexView)
+    }
+    
+    func hideTable() {
+        tableView.isHidden = grid
+        tableIndexView.isHidden = grid
+        collectionView.isHidden = !grid
+        collectionIndexView.isHidden = !grid
     }
     
     func setCollection(){

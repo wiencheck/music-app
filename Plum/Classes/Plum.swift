@@ -536,8 +536,8 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     func loadWithMediaItem(item: MPMediaItem) -> AVItemLoadedStatus{
         if(item.assetURL != nil){
             do{
-                print("Trying to load \(String (describing:item.value(forProperty: MPMediaItemPropertyTitle)))...")
-                player = try AVAudioPlayer(contentsOf: (item.value(forProperty: MPMediaItemPropertyAssetURL))as! URL)
+                print("Trying to load \((item.title)!)...")
+                player = try AVAudioPlayer(contentsOf: item.assetURL!)
                 player.delegate = self
                 player.prepareToPlay()
                 currentItem = item
@@ -594,7 +594,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     }
     
     func landInArtist(_ item: MPMediaItem, new: Bool){
-        var index: Int!
+        var index = 0
         let artist = musicQuery.shared.songsByArtistID(artist: item.albumArtistPersistentID)
         for i in 0 ..< artist.count{
             artist[i].index = i
@@ -610,6 +610,28 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
             self.playFromShufQueue(index: 0, new: new)
         }else{
             self.playFromDefQueue(index: index, new: new)
+        }
+        writeQueue()
+    }
+    
+    func landInPlaylist(list: Playlist, shuffle: Bool) {
+        var index = 0
+        var new = true
+        for i in 0 ..< list.songsIn {
+            list.items[i].index = i
+            if list.items[i].persistentID == currentItem?.persistentID {
+                index = i
+                new = false
+                //break
+            }
+        }
+        defIndex = index
+        createDefQueue(items: list.items)
+        if shuffle{
+            shuffleCurrent()
+            playFromShufQueue(index: 0, new: new)
+        }else{
+            playFromDefQueue(index: index, new: new)
         }
         writeQueue()
     }

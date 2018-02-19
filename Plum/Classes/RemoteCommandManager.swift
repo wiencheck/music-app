@@ -316,7 +316,7 @@ class RemoteCommandManager: NSObject{
     }
     
     @objc func handleStopRatingCommandEvent(){
-        GlobalSettings.changeRating(false, full: GlobalSettings.full)
+        GlobalSettings.changeRating(false)
     }
     
     @objc func handleLyricsCommandEvent() {

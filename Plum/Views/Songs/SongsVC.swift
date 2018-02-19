@@ -55,12 +55,10 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             tableView.delegate = self
             tableView.dataSource = self
             setupDict()
-            //setHeaders()
-            indexes.insert("", at: 0)
-            result[""] = [MPMediaItem()]
             for index in indexes {
                 cellTypes.append(Array<Int>(repeating: 0, count: (result[index]?.count)!))
             }
+            cellTypes[0].append(0)
             indexView.indexes = self.indexes
             indexView.tableView = self.tableView
             indexView.setup()
@@ -119,7 +117,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         if shouldShowResults {
             return 1
         }else{
-            return result.keys.count
+            return indexes.count
         }
     }
     
@@ -127,29 +125,25 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         if shouldShowResults {
             return UIView()
         }else{
-            if section == 0 {
-                return UIView()
+            let index = indexes[section]
+            let v = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 27))
+            v.backgroundColor = .clear
+            let label = UILabel(frame: CGRect(x: 12, y: 5, width: v.frame.width, height: 21))
+            let tool = UIToolbar(frame: v.frame)
+            label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+            if currentTheme == .dark {
+                label.textColor = .white
+                tool.barStyle = .blackTranslucent
             }else{
-                let index = indexes[section]
-                let v = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 27))
-                v.backgroundColor = .clear
-                let label = UILabel(frame: CGRect(x: 12, y: 5, width: v.frame.width, height: 21))
-                let tool = UIToolbar(frame: v.frame)
-                label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-                if currentTheme == .dark {
-                    label.textColor = .white
-                    tool.barStyle = .blackTranslucent
-                }else{
-                    label.textColor = UIColor.gray
-                    tool.barStyle = .default
-                }
-                v.addSubview(tool)
-                label.text = index
-                v.addSubview(label)
-                v.bringSubview(toFront: label)
-                v.clipsToBounds = true
-                return v;
+                label.textColor = UIColor.gray
+                tool.barStyle = .default
             }
+            v.addSubview(tool)
+            label.text = index
+            v.addSubview(label)
+            v.bringSubview(toFront: label)
+            v.clipsToBounds = true
+            return v;
         }
     }
 //    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int){
@@ -167,29 +161,19 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
 //    }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 {
+        if shouldShowResults {
             return 0
         }else{
             return 27
         }
     }
     
-//    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-//        let v = UIView()
-//        v.backgroundColor = UIColor.clear
-//        return v
-//    }
-//
-//    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-//        return 0
-//    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if shouldShowResults {
             return filteredSongs.count
         }else{
             if section == 0 {
-                return 1
+                return (result[indexes[0]]?.count)! + 1
             }else{
                 return (result[indexes[section]]?.count)!
             }
@@ -200,7 +184,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         if shouldShowResults {
             return true
         }else{
-            if indexPath.section == 0 {
+            if indexPath.isFirst() {
                 return false
             }else{
                 return true
@@ -209,6 +193,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        var tmp = 0
         if shouldShowResults {
             let album = UITableViewRowAction(style: .default, title: "Album", handler: {_,path in
                 let item = self.filteredSongs[path.row]
@@ -228,14 +213,16 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             return [album, artist]
         }else{
             let album = UITableViewRowAction(style: .default, title: "Album", handler: {_,path in
-                let item = self.result[self.indexes[path.section]]?[path.row]
+                if path.section == 0 { tmp = 1 }
+                let item = self.result[self.indexes[path.section]]?[path.row-tmp]
                 self.pickedAlbumID = item?.albumPersistentID
                 tableView.setEditing(false, animated: true)
                 self.albumBtn()
             })
             album.backgroundColor = .albumGreen
             let artist = UITableViewRowAction(style: .default, title: "Artist", handler: {_,path in
-                let item = self.result[self.indexes[path.section]]?[path.row]
+                if path.section == 0 { tmp = 1 }
+                let item = self.result[self.indexes[path.section]]?[path.row-tmp]
                 self.pickedArtistID = item?.albumArtistPersistentID
                 self.pickedAlbumID = item?.albumPersistentID
                 tableView.setEditing(false, animated: true)
@@ -260,29 +247,33 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
                 return cell
             }
         }else{
-            if indexPath.section == 0 {
+            if indexPath.isFirst() {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath) as! ShuffleCell
                 cell.setup(style: currentTheme)
-                if GlobalSettings.theme == .dark {
-                    if GlobalSettings.oled {
-                        cell.backgroundColor = UIColor.clear
-                    }else{
-                        cell.backgroundColor = UIColor.darkTranslucent
-                    }
-                }else{
-                    cell.backgroundColor = UIColor.clear
-                }
                 return cell
             }else{
-                if(cellTypes[indexPath.section][indexPath.row] == 0){
-                    let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! SongCell
-                    let item = result[indexes[indexPath.section]]?[indexPath.row]
-                    cell.setup(item: item!)
-                    return cell
-                }else {
-                    let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell",  for: indexPath) as! QueueActionsCell
-                    cell.delegate = self
-                    return cell
+                if indexPath.section == 0 {
+                    if(cellTypes[indexPath.section][indexPath.row] == 0){
+                        let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! SongCell
+                        let item = result[indexes[indexPath.section]]?[indexPath.row-1]
+                        cell.setup(item: item!)
+                        return cell
+                    }else {
+                        let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell",  for: indexPath) as! QueueActionsCell
+                        cell.delegate = self
+                        return cell
+                    }
+                }else{
+                    if(cellTypes[indexPath.section][indexPath.row] == 0){
+                        let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! SongCell
+                        let item = result[indexes[indexPath.section]]?[indexPath.row]
+                        cell.setup(item: item!)
+                        return cell
+                    }else {
+                        let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell",  for: indexPath) as! QueueActionsCell
+                        cell.delegate = self
+                        return cell
+                    }
                 }
             }
         }
@@ -292,7 +283,7 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         if shouldShowResults {
             return 64
         }else{
-            if indexPath.section == 0 {
+            if indexPath.isFirst() {
                 return 44
             }else{
                 return 64
@@ -348,11 +339,11 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
                 cellTypes[activeIndexSection][activeIndexRow] = 0
                 tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .fade)
             }
-            if indexPath.section == 0 {
+            if indexPath.section == 0 && indexPath.row == 0 {
                 shuffleAll()
             }else{
-                absoluteIndex = indexPath.absoluteRow(tableView) - 1
                 activeIndexRow = indexPath.row
+                absoluteIndex = indexPath.absoluteRow(tableView) - 1
                 activeIndexSection = indexPath.section
                 if(cellTypes[activeIndexSection][activeIndexRow] == 0){
                     if(Plum.shared.isPlayin()){

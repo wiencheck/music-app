@@ -36,7 +36,6 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     @IBOutlet weak var doubleBarSwitch: UISwitch!
     @IBOutlet weak var oledSwitch: UISwitch!
     @IBOutlet weak var ratingsInSwitch: UISwitch!
-    //@IBOutlet weak var searchTopSwitch: UISwitch!
     @IBOutlet weak var colorView: UIView!
     @IBOutlet weak var deployLabel: UILabel!
     @IBOutlet weak var artG :UILabel!
@@ -104,10 +103,6 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         GlobalSettings.changeRatingsIn(sender.isOn)
     }
     
-    @objc func searchTopSwitched(_ sender: UISwitch) {
-        GlobalSettings.changeSearchOnTop(sender.isOn)
-    }
-    
     @objc func artistsGrid(_ sender: UISwitch){
         GlobalSettings.changeArtists(grid: sender.isOn)
     }
@@ -141,7 +136,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
             }
             if sender.isOn {
                 ratingSwitch.isOn = false
-                GlobalSettings.changeRating(false, full: GlobalSettings.full)
+                GlobalSettings.changeRating(false)
             }
             GlobalSettings.changeLyrics(sender.isOn)
         }else{
@@ -520,8 +515,8 @@ extension SettingsVC {  //Kontakt/Info
         let createdby = NSMutableAttributedString(string: "Created by ")
         let author = NSMutableAttributedString(string: "Adam Wienconek")
         let plumRange = NSRange(location: 0, length: plum.length)
-        let musicplayerRange = NSRange(location: 0, length: musicplayer.length)
-        let createdbyRange = NSRange(location: 0, length: createdby.length)
+//        let musicplayerRange = NSRange(location: 0, length: musicplayer.length)
+//        let createdbyRange = NSRange(location: 0, length: createdby.length)
         let authorRange = NSRange(location: 0, length: author.length)
         plum.addAttributes([
             NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color,

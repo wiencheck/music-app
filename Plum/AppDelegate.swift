@@ -91,6 +91,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return true
     }
+    
+    
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -267,9 +269,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             GlobalSettings.updateRatings(en)
         }
-        if let fu = defaults.value(forKey: "fullRating") as? Bool {
-            GlobalSettings.full = fu
-        }
         if let alp = defaults.value(forKey: "artistSort") as? String{
             GlobalSettings.changeArtistSort(Sort(rawValue: alp)!)
         }
@@ -331,9 +330,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let roun = defaults.value(forKey: "roundedSlider") as? Bool {
             GlobalSettings.changeRound(roun)
         }
-        if let sea = defaults.value(forKey: "searchOnTop") as? Bool {
-            GlobalSettings.changeSearchOnTop(sea)
-        }
         if let oled = defaults.value(forKey: "oled") as? Bool {
             GlobalSettings.changeOled(oled)
         }
@@ -343,7 +339,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GlobalSettings.changeColor(true)    //do zrobienia ciemny blur
     }
     
-    func setCustomizing() {
+    private func setCustomizing() {
         UITabBar.appearance().tintColor = GlobalSettings.tint.color
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor: UIColor.gray], for: .normal)
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color], for: .selected)
@@ -360,68 +356,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func setInitialInstructions() {
-        if defaults.value(forKey: "searchNav") == nil {
-            defaults.set(false, forKey: "searchNav")
-        }
-        if defaults.value(forKey: "groupNav") == nil {
-            defaults.set(false, forKey: "groupNav")
-        }
-        if defaults.value(forKey: "sortNav") == nil {
-            defaults.set(false, forKey: "sortNav")
-        }
-        if defaults.value(forKey: "greeting") == nil {
-            defaults.set(false, forKey: "greeting")
-        }
-        if defaults.value(forKey: "index") == nil {
-            defaults.set(false, forKey: "index")
-        }
-        if defaults.value(forKey: "list") == nil {
-            defaults.set(false, forKey: "list")
-        }
-        if defaults.value(forKey: "grid") == nil {
-            defaults.set(false, forKey: "grid")
-        }
-        if defaults.value(forKey: "songs") == nil {
-            defaults.set(false, forKey: "songs")
-        }
-        if defaults.value(forKey: "playing") == nil {
-            defaults.set(false, forKey: "playing")
-        }
-        if defaults.value(forKey: "swipe") == nil {
-            defaults.set(false, forKey: "swipe")
-        }
-        if defaults.value(forKey: "add") == nil {
-            defaults.set(false, forKey: "add")
-        }
-        if defaults.value(forKey: "tap") == nil {
-            defaults.set(false, forKey: "tap")
-        }
-        if defaults.value(forKey: "delete") == nil {
-            defaults.set(false, forKey: "delete")
-        }
-        if defaults.value(forKey: "deploy") == nil {
-            defaults.set(false, forKey: "deploy")
-        }
-        if defaults.value(forKey: "lyrics") == nil {
-            defaults.set(false, forKey: "lyrics")
-        }
-        if defaults.value(forKey: "rating") == nil {
-            defaults.set(false, forKey: "rating")
-        }
-        if defaults.value(forKey: "spotlight") == nil {
-            defaults.set(false, forKey: "spotlight")
-        }
-        if defaults.value(forKey: "upslider") == nil {
-            defaults.set(false, forKey: "upslider")
-        }
-        if defaults.value(forKey: "artistslider") == nil {
-            defaults.set(false, forKey: "artistslider")
-        }
-        if defaults.value(forKey: "slider") == nil {
-            defaults.set(false, forKey: "slider")
-        }
-        if defaults.value(forKey: "miniplayer") == nil {
-            defaults.set(false, forKey: "miniplayer")
+        let keysString = "searchNav groupNav sortNav greeting index list grid songs playing swipe add tap delete deploy lyrics rating spotlight upslider artistslider slider miniplayer"
+        let keys = keysString.components(separatedBy: " ")
+        for key in keys {
+            if defaults.value(forKey: key) == nil {
+                defaults.set(false, forKey: key)
+            }
         }
     }
     
@@ -452,4 +392,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
 }
+
+//extension UNUserNotificationCenterDelegate {
+//    
+//    optional func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+//        completionHandler(UNNotificationPresentationOptions.alert)
+//    }
+//    
+//}
 

@@ -35,7 +35,6 @@ class SetRatingsVC: UITableViewController {
                 notActive.append(rating)
             }
         }
-        print(GlobalSettings.full)
         clearsSelectionOnViewWillAppear = true
         tableView.setEditing(true, animated: false)
         tableView.contentInset = UIEdgeInsetsMake(0, 0, 40, 0)
@@ -89,18 +88,8 @@ class SetRatingsVC: UITableViewController {
         }else{
             if indexPath.row == 0 {
                 cell.textLabel?.text = "Ratings in-app and on lockscreen"
-                if GlobalSettings.full {
-                    cell.accessoryType = .checkmark
-                }else{
-                    cell.accessoryType = .none
-                }
             }else{
                 cell.textLabel?.text = "Only in app"
-                if !GlobalSettings.full {
-                    cell.accessoryType = .checkmark
-                }else{
-                    cell.accessoryType = .none
-                }
             }
         }
         return cell
