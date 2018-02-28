@@ -777,9 +777,12 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         currentTheme = GlobalSettings.theme
         guard let bar = navigationController?.navigationBar else { return }
         let textField = searchController.searchBar.value(forKey: "searchField") as? UITextField
+        let background = UIImageView(frame: tableView.bounds)
+        background.contentMode = .scaleToFill
         switch currentTheme {
         case .light:
             themeBtn.image = #imageLiteral(resourceName: "light_bar")
+            background.image = #imageLiteral(resourceName: "gradient_background")
             //tool.barStyle = .default
             bar.barStyle = .default
             let attributedN = NSAttributedString(string: "Songs", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium), NSAttributedStringKey.foregroundColor: UIColor.black])
@@ -789,6 +792,7 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         case .dark:
             themeBtn.image = #imageLiteral(resourceName: "dark_bar")
             bar.barStyle = .blackTranslucent
+            background.image = #imageLiteral(resourceName: "Dark_gradient")
             let attributedN = NSAttributedString(string: "Songs", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium), NSAttributedStringKey.foregroundColor: UIColor.white])
             titleButton.setAttributedTitle(attributedN, for: .normal)
             titleButton.tintColor = .white
@@ -797,6 +801,7 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
             bar.barStyle = .blackTranslucent
             titleButton.tintColor = .white
         }
+        //tableView.backgroundView = background
         tableView.backgroundColor = UIColor.background
         tableView.separatorColor = UIColor.separator
         indexView.backgroundColor = UIColor.indexBackground

@@ -2704,10 +2704,10 @@ SOFTWARE.</string>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O5t-Za-kq0">
-                                        <rect key="frame" x="14" y="28" width="21" height="21"/>
+                                        <rect key="frame" x="14" y="23" width="26" height="26"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="21" id="A5w-lV-lrf"/>
-                                            <constraint firstAttribute="height" constant="21" id="stD-eK-E3Q"/>
+                                            <constraint firstAttribute="width" constant="26" id="A5w-lV-lrf"/>
+                                            <constraint firstAttribute="height" constant="26" id="stD-eK-E3Q"/>
                                         </constraints>
                                         <connections>
                                             <action selector="pickerBtnPressed" destination="mhR-PN-ter" eventType="touchUpInside" id="RKg-e3-7Mf"/>
@@ -6111,6 +6111,80 @@ I will push the new build in a few minutes.</string>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="infoCell" rowHeight="320" id="tdN-oF-Kqy" customClass="PlaylistInfoCell" customModule="Plum" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="198" width="320" height="320"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="tdN-oF-Kqy" id="xbs-De-GtP">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="319.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NKV-cE-jZy">
+                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="319.5"/>
+                                                </imageView>
+                                                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QUU-Lx-U7U">
+                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="319.5"/>
+                                                    <items>
+                                                        <barButtonItem enabled="NO" id="Vkk-2r-ZM4"/>
+                                                    </items>
+                                                </toolbar>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="This playlist has the best songs" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Spn-87-WxP">
+                                                    <rect key="frame" x="123" y="250.5" width="178" height="58.5"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                </textView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12 songs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WNP-Pr-75O">
+                                                    <rect key="frame" x="123" y="234" width="178" height="14.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Playlist Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EFI-wX-HHH">
+                                                    <rect key="frame" x="123" y="211" width="178" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LiM-pH-czq">
+                                                    <rect key="frame" x="15" y="211" width="98" height="98"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="98" id="Fd5-sf-EuF"/>
+                                                        <constraint firstAttribute="height" constant="98" id="d2n-lx-bZF"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Spn-87-WxP" firstAttribute="top" secondItem="WNP-Pr-75O" secondAttribute="bottom" constant="2" id="0Mh-hv-LzE"/>
+                                                <constraint firstItem="QUU-Lx-U7U" firstAttribute="width" secondItem="xbs-De-GtP" secondAttribute="width" id="J7t-HV-xvQ"/>
+                                                <constraint firstItem="EFI-wX-HHH" firstAttribute="leading" secondItem="LiM-pH-czq" secondAttribute="trailing" constant="10" id="KQb-TA-T1w"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="EFI-wX-HHH" secondAttribute="trailing" constant="4" id="KcK-Q1-N7e"/>
+                                                <constraint firstItem="WNP-Pr-75O" firstAttribute="top" secondItem="EFI-wX-HHH" secondAttribute="bottom" constant="2" id="Lre-DO-blY"/>
+                                                <constraint firstItem="EFI-wX-HHH" firstAttribute="top" secondItem="LiM-pH-czq" secondAttribute="top" id="Ove-uW-ufa"/>
+                                                <constraint firstItem="QUU-Lx-U7U" firstAttribute="centerY" secondItem="xbs-De-GtP" secondAttribute="centerY" id="Tnu-fb-O0t"/>
+                                                <constraint firstItem="NKV-cE-jZy" firstAttribute="width" secondItem="xbs-De-GtP" secondAttribute="width" id="Tqv-ow-4Xq"/>
+                                                <constraint firstItem="QUU-Lx-U7U" firstAttribute="height" secondItem="xbs-De-GtP" secondAttribute="height" id="ZTr-tN-Ujp"/>
+                                                <constraint firstItem="WNP-Pr-75O" firstAttribute="leading" secondItem="EFI-wX-HHH" secondAttribute="leading" id="am4-OS-C3m"/>
+                                                <constraint firstItem="NKV-cE-jZy" firstAttribute="centerX" secondItem="xbs-De-GtP" secondAttribute="centerX" id="bo8-sd-mhA"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="LiM-pH-czq" secondAttribute="bottom" id="eNB-xG-J1h"/>
+                                                <constraint firstItem="QUU-Lx-U7U" firstAttribute="centerX" secondItem="xbs-De-GtP" secondAttribute="centerX" id="elS-nw-zAk"/>
+                                                <constraint firstItem="Spn-87-WxP" firstAttribute="bottom" secondItem="xbs-De-GtP" secondAttribute="bottomMargin" id="fXu-Fn-jX5"/>
+                                                <constraint firstItem="Spn-87-WxP" firstAttribute="trailing" secondItem="EFI-wX-HHH" secondAttribute="trailing" id="gmf-ZX-egV"/>
+                                                <constraint firstItem="Spn-87-WxP" firstAttribute="leading" secondItem="EFI-wX-HHH" secondAttribute="leading" id="jsz-ex-Qhk"/>
+                                                <constraint firstItem="LiM-pH-czq" firstAttribute="leading" secondItem="xbs-De-GtP" secondAttribute="leadingMargin" id="k9Y-8s-mWy"/>
+                                                <constraint firstItem="NKV-cE-jZy" firstAttribute="height" secondItem="xbs-De-GtP" secondAttribute="height" id="u8d-bN-uuF"/>
+                                                <constraint firstItem="NKV-cE-jZy" firstAttribute="centerY" secondItem="xbs-De-GtP" secondAttribute="centerY" id="vxN-sR-oSR"/>
+                                                <constraint firstItem="WNP-Pr-75O" firstAttribute="trailing" secondItem="EFI-wX-HHH" secondAttribute="trailing" id="w9v-6c-ggb"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="artwork" destination="LiM-pH-czq" id="wpP-mO-IhK"/>
+                                            <outlet property="backgroundImage" destination="NKV-cE-jZy" id="Rhj-Qt-rPA"/>
+                                            <outlet property="detailLabel" destination="WNP-Pr-75O" id="TdH-Kt-Gf6"/>
+                                            <outlet property="mainLabel" destination="EFI-wX-HHH" id="pSO-1e-kYY"/>
+                                            <outlet property="textView" destination="Spn-87-WxP" id="fIn-o3-kQj"/>
+                                            <outlet property="toolbar" destination="QUU-Lx-U7U" id="wbH-M1-R3H"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </prototypes>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CJs-jX-kTO" customClass="TableIndexView" customModule="Plum" customModuleProvider="target">
@@ -6120,13 +6194,25 @@ I will push the new build in a few minutes.</string>
                                     <constraint firstAttribute="width" constant="40" id="nse-EX-8J7"/>
                                 </constraints>
                             </view>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PCN-Xa-i62">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="Cak-Gx-XZG"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem enabled="NO" id="1by-Wz-uxy"/>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="wgF-PA-wdY" secondAttribute="bottom" id="8qC-GZ-aQy"/>
                             <constraint firstItem="igS-Nc-SWa" firstAttribute="top" secondItem="CJs-jX-kTO" secondAttribute="bottom" constant="10" id="LPx-2p-2Yn"/>
                             <constraint firstAttribute="trailing" secondItem="CJs-jX-kTO" secondAttribute="trailing" id="ScJ-B5-KWy"/>
+                            <constraint firstItem="PCN-Xa-i62" firstAttribute="leading" secondItem="sVI-N1-xDZ" secondAttribute="leading" id="VPI-uE-Yno"/>
                             <constraint firstItem="wgF-PA-wdY" firstAttribute="top" secondItem="sVI-N1-xDZ" secondAttribute="top" id="b2I-7e-Ip0"/>
+                            <constraint firstItem="PCN-Xa-i62" firstAttribute="top" secondItem="sVI-N1-xDZ" secondAttribute="top" id="mzH-yj-Gfh"/>
+                            <constraint firstAttribute="trailing" secondItem="PCN-Xa-i62" secondAttribute="trailing" id="nee-eF-yHl"/>
                             <constraint firstItem="CJs-jX-kTO" firstAttribute="top" secondItem="AGQ-T9-hou" secondAttribute="bottom" constant="10" id="pa7-Ap-Gia"/>
                             <constraint firstAttribute="trailing" secondItem="wgF-PA-wdY" secondAttribute="trailing" id="qck-S8-VPo"/>
                             <constraint firstItem="wgF-PA-wdY" firstAttribute="leading" secondItem="sVI-N1-xDZ" secondAttribute="leading" id="woB-iF-6X9"/>
@@ -6136,6 +6222,7 @@ I will push the new build in a few minutes.</string>
                         <barButtonItem key="backBarButtonItem" title=" " id="Jjb-3t-xeJ"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="navBarBlurBackground" destination="PCN-Xa-i62" id="UEM-ki-KyN"/>
                         <outlet property="tableIndexView" destination="CJs-jX-kTO" id="WUL-XZ-lb0"/>
                         <outlet property="tableView" destination="wgF-PA-wdY" id="Ycl-t2-7rE"/>
                         <segue destination="O5b-aR-CcB" kind="show" identifier="album" id="LCY-3G-uHV"/>
@@ -6319,7 +6406,7 @@ I will push the new build in a few minutes.</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="FjZ-8D-iAU"/>
-        <segue reference="SrT-cb-STQ"/>
-        <segue reference="yuS-dr-Z4q"/>
+        <segue reference="LCY-3G-uHV"/>
+        <segue reference="uGV-fK-q4R"/>
     </inferredMetricsTieBreakers>
 </document>

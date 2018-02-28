@@ -940,9 +940,10 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     
     func addTodayObservers() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleTodayRatingNotification(_:)), name: Notification.Name(rawValue: "ratingToday"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleTodayQueueNotification(_:)), name: Notification.Name(rawValue: "queueToday"), object: nil)
     }
     
-    @objc func handleTodayRatingNotification(_ notification: NSNotification) {
+    @objc func handleTodayRatingNotification(_ notification: Notification) {
         if let rat = notification.userInfo?["rating"] as? Int {
             rateItem(rating: rat)
         }
@@ -950,6 +951,15 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     
     func removeTodayObservers() {
         NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "ratingToday"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name(rawValue: "queueToday"), object: nil)
+    }
+    
+    @objc func handleTodayQueueNotification(_ notification: Notification) {
+        if let skip = notification.userInfo?["skip"] as? Int {
+            print("Skipping \(skip) items")
+        }
+        print("skipperino")
+        pause()
     }
 }
 

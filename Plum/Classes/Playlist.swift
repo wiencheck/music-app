@@ -21,6 +21,7 @@ import MediaPlayer
  }*/
 
 @objcMembers class Playlist: NSObject {
+    let playlist: MPMediaPlaylist
     let items: [MPMediaItem]
     let ID: MPMediaEntityPersistentID
     let name: String
@@ -31,6 +32,7 @@ import MediaPlayer
     var isFolder: Bool
     var isChild: Bool
     var parentID: UInt64
+    var userDescription: String
     
     /*init(items: [MPMediaItem], id: MPMediaEntityPersistentID, name: String, songs: Int, image: UIImage?, folder: Bool, child: Bool, parent: UInt64) {
      self.items = items
@@ -87,6 +89,7 @@ import MediaPlayer
      }*/
     
     init(collection: MPMediaPlaylist){
+        playlist = collection
         items = collection.items
         ID = collection.persistentID
         if let n = collection.value(forProperty: MPMediaPlaylistPropertyName) as? String{
@@ -120,6 +123,11 @@ import MediaPlayer
             isChild = true
         }else{
             isChild = false
+        }
+        if let desc = collection.descriptionText {
+            userDescription = desc
+        }else{
+            userDescription = ""
         }
         print("name: \(name)\nfolder: \(isFolder)\nchild: \(isChild)\nparent: \(parentID)\nid: \(ID)\n\n")
     }

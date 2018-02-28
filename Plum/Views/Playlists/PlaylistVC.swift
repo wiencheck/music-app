@@ -26,11 +26,12 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
     var receivedID: MPMediaEntityPersistentID!
     var pickedAlbumID: MPMediaEntityPersistentID!
     var pickedArtistID: MPMediaEntityPersistentID!
-    var playlist: Playlist!
     var receivedList: Playlist!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableIndexView: TableIndexView!
-    var themeBtn: UIBarButtonItem!
+    @IBOutlet weak var navBarBlurBackground: UIToolbar!
+    var tmpSearchBtn = UIButton()
+    var themeBtn = UIBarButtonItem()
     var filteredSongs = [MPMediaItem]()
     var shouldShowResults = false
     var heightInset: CGFloat!
@@ -38,20 +39,35 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
     let device = GlobalSettings.device
     var titleButton: UIButton!
     var searchView: SearchBarContainerView!
+    //var navBarBackground: UIView!
+    private var _alpha: CGFloat = 0
+    var alpha: CGFloat {    //alpha: what will appear after scroll, 1-alpha is what appears at launch
+        get { return _alpha }
+        set { if newValue > 1 {
+            _alpha = 1
+        }else if newValue < 0 {
+            _alpha = 0
+        }else{
+            _alpha = newValue
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBarController?.delegate = self
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
-        navigationItem.title = receivedList.name
+        //navBarBackground = navigationController?.navigationBar.subviews.first
+        //navigationItem.title = receivedList.name
         setTable()
         configureSearchController()
         view.bringSubview(toFront: tableIndexView)
-        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         tableView.tableFooterView = UIView(frame: .zero)
+        setHeaderView()
         setTitleButton()
         updateTheme()
+        //navBarBackground.alpha = alpha
     }
     
     deinit {
@@ -60,25 +76,34 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         definesPresentationContext = false
+        navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        navigationController?.navigationBar.shadowImage = nil
+        //navBarBackground.alpha = 1.0
     }
     
     override func viewDidAppear(_ animated: Bool) {
         definesPresentationContext = true
-        tableView.reloadData()
+        //navBarBackground.alpha = alpha
     }
     
-//    @IBAction func ratingPressed() {
-//        GlobalSettings.changeRating(!GlobalSettings.rating)
-//        if GlobalSettings.rating {
-//            ratingBtn.image = #imageLiteral(resourceName: "star")
-//        }else{
-//            ratingBtn.image = #imageLiteral(resourceName: "no_star")
-//        }
-//        tableView.reloadData()
-//    }
+    override func viewWillLayoutSubviews() {
+        //navBarBackground.alpha = alpha
+    }
+//
+    override func viewDidLayoutSubviews() {
+        //navBarBackground.alpha = alpha
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        alpha = (tableView.contentOffset.y-200) / 100
+        navBarBlurBackground.alpha = alpha
+        titleButton.titleLabel?.alpha = alpha
+//        if alpha < 0.1 {
+//            navigationItem.title = ""
+//        }
 //        if !GlobalSettings.ratingsIn {
 //            ratingBtn.image = nil
 //            ratingBtn.title = ""
@@ -94,8 +119,23 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
         tableView.reloadData()
     }
     
+    func setHeaderView() {
+        let header = tableView.dequeueReusableCell(withIdentifier: "infoCell") as! PlaylistInfoCell
+        header.setup(list: receivedList)
+        tableView.tableHeaderView = header.contentView
+    }
+    
+    //    @IBAction func ratingPressed() {
+    //        GlobalSettings.changeRating(!GlobalSettings.rating)
+    //        if GlobalSettings.rating {
+    //            ratingBtn.image = #imageLiteral(resourceName: "star")
+    //        }else{
+    //            ratingBtn.image = #imageLiteral(resourceName: "no_star")
+    //        }
+    //        tableView.reloadData()
+    //    }
+    
     func setTable(){
-        //self.tableView.backgroundView = UIImageView.init(image: #imageLiteral(resourceName: "background_se"))
         self.tableView.backgroundColor = UIColor.lightBackground
         tableView.delegate = self
         tableView.dataSource = self
@@ -389,6 +429,8 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
         }
     }
     
+    
+    
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         if shouldShowResults {
             cellTypesSearch[activeIndexRow] = 0
@@ -488,14 +530,21 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
         if #available(iOS 11.0, *) {
             tableView.contentInsetAdjustmentBehavior = .never
         }
-        tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        tableView.contentInset = UIEdgeInsetsMake(heightInset-200, 0, bottomInset, 0)
         tableView.scrollIndicatorInsets = tableView.contentInset
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        alpha = (scrollView.contentOffset.y-200) / 100
+        if !shouldShowResults {
+            navBarBlurBackground.alpha = alpha
+            tmpSearchBtn.alpha = 1-alpha
+            titleButton?.titleLabel?.alpha = alpha
+        }
         if scrollView.contentOffset.y < -heightInset - 104 {
             showSearchBar()
-        }else if scrollView.contentOffset.y > -heightInset + 24 {
+        }
+        else if scrollView.contentOffset.y > -heightInset + 24 {
             if hideKeyboard {
                 searchController.searchBar.resignFirstResponder()
             }
@@ -509,25 +558,38 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         shouldShowResults = false
+        setHeaderView()
         tableView.reloadData()
         tableIndexView.isHidden = false
         navigationItem.rightBarButtonItem = themeBtn
         navigationItem.titleView = titleButton
         navigationItem.hidesBackButton = false
+        navBarBlurBackground.alpha = alpha
+        titleButton.titleLabel?.alpha = alpha
+        tmpSearchBtn.alpha = 1-alpha
+        tableView.contentInset = UIEdgeInsetsMake(heightInset-200, 0, GlobalSettings.bottomInset, 0)
     }
     
     func setTitleButton() {
         titleButton = UIButton(type: .custom)
         titleButton.frame = CGRect(x: 0, y: 0, width: 180, height: 40)
         titleButton.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
-        let attributedH = NSAttributedString(string: "Search", attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium), NSAttributedStringKey.foregroundColor: GlobalSettings.tint.color])
-        titleButton.setAttributedTitle(attributedH, for: .highlighted)
+        titleButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .medium)
+        titleButton.setTitleColor(GlobalSettings.tint.color, for: .highlighted)
+        titleButton.setTitle(receivedList.name, for: .normal)
+        titleButton.setTitle("Search", for: .highlighted)
         navigationItem.titleView = titleButton
         themeBtn = UIBarButtonItem(image: nil, style: .plain, target: self, action: #selector(themeBtnPressed(_:)))
+        tmpSearchBtn = UIButton(frame: (navigationItem.titleView?.bounds)!)
+        tmpSearchBtn.setImage(#imageLiteral(resourceName: "tab_search"), for: .normal)
+        tmpSearchBtn.tintColor = GlobalSettings.tint.color
+        tmpSearchBtn.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
+        navigationItem.titleView?.addSubview(tmpSearchBtn)
         navigationItem.rightBarButtonItem = themeBtn
     }
     
     @objc func showSearchBar() {
+        navBarBlurBackground.alpha = 1.0
         navigationItem.titleView = searchView
         navigationItem.rightBarButtonItem = nil
         navigationItem.hidesBackButton = true
@@ -558,6 +620,9 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
 //            activeIndexSection = 0
             searchRow = 0
             self.tableView.separatorStyle = .singleLine
+            tableView.tableHeaderView = nil
+            navBarBlurBackground.alpha = 1.0
+            tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, GlobalSettings.bottomInset, 0)
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces
         let strippedString = searchString!.trimmingCharacters(in: whitespaceCharacterSet)
@@ -618,15 +683,11 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
         guard let bar = navigationController?.navigationBar else { return }
         switch GlobalSettings.theme {
         case .light:
-            bar.barStyle = .default
-            let attributedN = NSAttributedString(string: receivedList.name, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium), NSAttributedStringKey.foregroundColor: UIColor.black])
-            titleButton.setAttributedTitle(attributedN, for: .normal)
+            navBarBlurBackground.barStyle = .default
             themeBtn.image = #imageLiteral(resourceName: "light_bar")
             textField?.textColor = .black
         case .dark:
-            bar.barStyle = .blackTranslucent
-            let attributedN = NSAttributedString(string: receivedList.name, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium), NSAttributedStringKey.foregroundColor: UIColor.white])
-            titleButton.setAttributedTitle(attributedN, for: .normal)
+            navBarBlurBackground.barStyle = .blackTranslucent
             themeBtn.image = #imageLiteral(resourceName: "dark_bar")
             textField?.textColor = .white
         default:
@@ -634,7 +695,10 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
             let attributedN = NSAttributedString(string: receivedList.name, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: .medium), NSAttributedStringKey.foregroundColor: UIColor.black])
             titleButton.setAttributedTitle(attributedN, for: .normal)
         }
+        titleButton.setTitleColor(UIColor.mainLabel, for: .normal)
+        tmpSearchBtn.tintColor = GlobalSettings.tint.color
         bar.tintColor = GlobalSettings.tint.color
+        setHeaderView()
         tableView.reloadData()
     }
     

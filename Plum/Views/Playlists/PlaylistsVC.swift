@@ -534,7 +534,7 @@ extension PlaylistsVC {
     }
     
     func shuffle() {
-        if pickedList.items.contains(player.currentItem!) && player.isPlayin() {
+        if player.isPlayin() {
             player.landInPlaylist(list: self.pickedList, shuffle: true)
         }else{
             let items = pickedList.items
