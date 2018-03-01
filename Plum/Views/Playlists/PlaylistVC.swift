@@ -67,6 +67,11 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
         setHeaderView()
         setTitleButton()
         updateTheme()
+        if GlobalSettings.device == "iPhone X" {
+            navBarBlurBackground.heightAnchor.constraint(equalToConstant: 88).isActive = true
+        }else{
+            navBarBlurBackground.heightAnchor.constraint(equalToConstant: 64).isActive = true
+        }
         //navBarBackground.alpha = alpha
     }
     
@@ -136,7 +141,6 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
     //    }
     
     func setTable(){
-        self.tableView.backgroundColor = UIColor.lightBackground
         tableView.delegate = self
         tableView.dataSource = self
         songs = receivedList.items
@@ -144,6 +148,7 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
         var iterator = 0
         for index in indexes{
             cellTypes[iterator] = []
+            if iterator == 0 { cellTypes[0]?.append(0) }
             for _ in 0 ..< (result[index]?.count)!{
                 cellTypes[iterator]?.append(0)
             }
@@ -174,7 +179,11 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
         if shouldShowResults {
             return filteredSongs.count
         }else{
-            return (result[indexes[section]]?.count)!
+            var tmp = 0
+            if section == 0 {
+                tmp = 1
+            }
+            return (result[indexes[section]]?.count)! + tmp
         }
     }
     
@@ -191,14 +200,18 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
                 return cell
             }
         }else{
-            if indexPath.section == 0 {
+            if indexPath.section == 0 && indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath) as! ShuffleCell
                 cell.setup(style: .light)
                 return cell
             }else{
+                var tmp = 0
+                if indexPath.section == 0 {
+                    tmp = 1
+                }
                 if(cellTypes[indexPath.section]?[indexPath.row] == 0){
                     let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! SongCell
-                    let item = result[indexes[indexPath.section]]?[indexPath.row]
+                    let item = result[indexes[indexPath.section]]?[indexPath.row - tmp]
                     cell.setup(item: item!)
                     cell.backgroundColor = .clear
                     return cell
@@ -216,7 +229,7 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
         if shouldShowResults {
             return 64
         }else{
-            if indexPath.section == 0 {
+            if indexPath.section == 0 && indexPath.row == 0 {
                 return 44
             }else{
                 return 64
@@ -255,9 +268,11 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
                 tableView.reloadRows(at: [IndexPath(row: activeIndexRow, section: activeIndexSection)], with: .fade)
             }
             
-            if indexPath.section == 0 {
+            if indexPath.section == 0 && indexPath.row == 0 {
                 shuffleAll()
             }else{
+                var tmp = 0
+                if indexPath.section == 0 { tmp = 1 }
                 absoluteIndex = indexPath.absoluteRow(tableView) - 1
                 activeIndexRow = indexPath.row
                 activeIndexSection = indexPath.section
@@ -372,7 +387,7 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
         if shouldShowResults {
             return true
         }else{
-            if indexPath.section == 0 {
+            if indexPath.section == 0 && indexPath.row == 0 {
                 return false
             }else{
                 return true
@@ -400,14 +415,18 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
             return [album, artist]
         }else{
             let album = UITableViewRowAction(style: .default, title: "Album", handler: {_,path in
-                let item = self.result[self.indexes[path.section]]?[path.row]
+                var tmp = 0
+                if path.section == 0 { tmp = 1 }
+                let item = self.result[self.indexes[path.section]]?[path.row-tmp]
                 self.pickedAlbumID = item?.albumPersistentID
                 tableView.setEditing(false, animated: true)
                 self.albumBtn()
             })
             album.backgroundColor = .albumGreen
             let artist = UITableViewRowAction(style: .default, title: "Artist", handler: {_,path in
-                let item = self.result[self.indexes[path.section]]?[path.row]
+                var tmp = 0
+                if path.section == 0 { tmp = 1 }
+                let item = self.result[self.indexes[path.section]]?[path.row-tmp]
                 self.pickedArtistID = item?.albumArtistPersistentID
                 self.pickedAlbumID = item?.albumPersistentID
                 tableView.setEditing(false, animated: true)
@@ -452,9 +471,9 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
     
     func setup(){
         let bcount = receivedList.songsIn
-        indexes.append(" - ")
-        indexesInt.append(0)
-        result[" - "] = [MPMediaItem()]
+//        indexes.append(" - ")
+//        indexesInt.append(0)
+//        result[" - "] = [MPMediaItem()]
         if bcount > 36 {
             let difference: Int = bcount / 12
             var index = difference
@@ -466,7 +485,7 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
                 index += difference
             }
             var stoppedAt = 0
-            for i in 1 ..< indexes.count {
+            for i in 0 ..< indexes.count {
                 result[indexes[i]] = []
                 while stoppedAt < bcount {
                     result[indexes[i]]?.append(songs[stoppedAt])
@@ -581,7 +600,8 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
         navigationItem.titleView = titleButton
         themeBtn = UIBarButtonItem(image: nil, style: .plain, target: self, action: #selector(themeBtnPressed(_:)))
         tmpSearchBtn = UIButton(frame: (navigationItem.titleView?.bounds)!)
-        tmpSearchBtn.setImage(#imageLiteral(resourceName: "tab_search"), for: .normal)
+        let size = CGSize(width: 22, height: 22)
+        tmpSearchBtn.setImage(#imageLiteral(resourceName: "tab_search").imageScaled(toFit: size).withRenderingMode(.alwaysTemplate), for: .normal)
         tmpSearchBtn.tintColor = GlobalSettings.tint.color
         tmpSearchBtn.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
         navigationItem.titleView?.addSubview(tmpSearchBtn)

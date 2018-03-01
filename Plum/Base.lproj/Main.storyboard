@@ -698,8 +698,8 @@
             <objects>
                 <viewController id="DwD-4M-o7H" customClass="ScaleVC" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="dOw-6T-3qL"/>
-                        <viewControllerLayoutGuide type="bottom" id="tqP-OF-zYM"/>
+                        <viewControllerLayoutGuide type="top" id="7HY-3R-ec4"/>
+                        <viewControllerLayoutGuide type="bottom" id="x6g-nM-Vc9"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="H2a-AA-D6t">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -778,17 +778,17 @@
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="b8c-OG-IOW" firstAttribute="top" secondItem="rBR-di-WOu" secondAttribute="bottom" constant="28" id="Bs3-Mb-yk7"/>
-                            <constraint firstItem="tqP-OF-zYM" firstAttribute="top" secondItem="cmo-aJ-yg8" secondAttribute="bottom" constant="106" id="Dna-DE-ySF"/>
+                            <constraint firstItem="x6g-nM-Vc9" firstAttribute="top" secondItem="cmo-aJ-yg8" secondAttribute="bottom" constant="106" id="Dna-DE-ySF"/>
                             <constraint firstItem="qqF-tq-Uk4" firstAttribute="leading" secondItem="H2a-AA-D6t" secondAttribute="leadingMargin" constant="24" id="Hrq-iu-BDF"/>
-                            <constraint firstItem="rBR-di-WOu" firstAttribute="top" secondItem="dOw-6T-3qL" secondAttribute="bottom" id="Lcf-wG-D2J"/>
+                            <constraint firstItem="rBR-di-WOu" firstAttribute="top" secondItem="7HY-3R-ec4" secondAttribute="bottom" id="Lcf-wG-D2J"/>
                             <constraint firstAttribute="trailingMargin" secondItem="cmo-aJ-yg8" secondAttribute="trailing" constant="24" id="MT4-d9-4IO"/>
                             <constraint firstAttribute="trailingMargin" secondItem="b8c-OG-IOW" secondAttribute="trailing" constant="24" id="Ob0-vY-JWu"/>
                             <constraint firstItem="cmo-aJ-yg8" firstAttribute="top" secondItem="b8c-OG-IOW" secondAttribute="bottom" constant="31" id="RTD-Kb-dY7"/>
-                            <constraint firstItem="AKI-6Y-Y3H" firstAttribute="top" secondItem="dOw-6T-3qL" secondAttribute="bottom" constant="113" id="Wl2-gB-qaY"/>
+                            <constraint firstItem="AKI-6Y-Y3H" firstAttribute="top" secondItem="7HY-3R-ec4" secondAttribute="bottom" constant="113" id="Wl2-gB-qaY"/>
                             <constraint firstItem="qqF-tq-Uk4" firstAttribute="top" secondItem="rBR-di-WOu" secondAttribute="bottom" constant="28" id="ZKH-PR-KU8"/>
                             <constraint firstItem="rBR-di-WOu" firstAttribute="leading" secondItem="ZvL-Bw-VmL" secondAttribute="trailing" constant="8" id="fsl-4x-qyE"/>
                             <constraint firstItem="rBR-di-WOu" firstAttribute="centerX" secondItem="H2a-AA-D6t" secondAttribute="centerX" id="scW-aj-SaR"/>
-                            <constraint firstItem="ZvL-Bw-VmL" firstAttribute="top" secondItem="dOw-6T-3qL" secondAttribute="bottom" constant="113" id="tPU-0w-jJz"/>
+                            <constraint firstItem="ZvL-Bw-VmL" firstAttribute="top" secondItem="7HY-3R-ec4" secondAttribute="bottom" constant="113" id="tPU-0w-jJz"/>
                             <constraint firstItem="AKI-6Y-Y3H" firstAttribute="leading" secondItem="rBR-di-WOu" secondAttribute="trailing" constant="8" id="xPC-zI-On3"/>
                         </constraints>
                     </view>
@@ -989,8 +989,8 @@ SOFTWARE.</string>
             <objects>
                 <viewController id="rGm-n0-Pf5" customClass="IconsVC" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="nIi-79-ZzB"/>
-                        <viewControllerLayoutGuide type="bottom" id="Bwv-Ji-xJF"/>
+                        <viewControllerLayoutGuide type="top" id="pa9-TY-kQm"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ias-if-RcO"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="mUF-YY-3tJ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -1081,7 +1081,7 @@ SOFTWARE.</string>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="JoH-gV-vZf" firstAttribute="top" secondItem="ble-DX-qKA" secondAttribute="bottom" constant="20" id="NJI-vV-BK5"/>
-                            <constraint firstItem="ble-DX-qKA" firstAttribute="top" secondItem="nIi-79-ZzB" secondAttribute="bottom" id="QWK-PH-I1d"/>
+                            <constraint firstItem="ble-DX-qKA" firstAttribute="top" secondItem="pa9-TY-kQm" secondAttribute="bottom" id="QWK-PH-I1d"/>
                             <constraint firstItem="JoH-gV-vZf" firstAttribute="trailing" secondItem="mUF-YY-3tJ" secondAttribute="trailingMargin" id="WRD-v8-BcG"/>
                             <constraint firstAttribute="trailing" secondItem="ble-DX-qKA" secondAttribute="trailing" id="dEE-2p-YqO"/>
                             <constraint firstItem="ble-DX-qKA" firstAttribute="leading" secondItem="mUF-YY-3tJ" secondAttribute="leading" id="jRu-Mb-cmq"/>
@@ -1169,8 +1169,8 @@ SOFTWARE.</string>
             <objects>
                 <viewController title="Search" automaticallyAdjustsScrollViewInsets="NO" id="fje-en-lJC" customClass="SearchVC" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="ftr-zT-0aE"/>
-                        <viewControllerLayoutGuide type="bottom" id="tWD-Ae-Keb"/>
+                        <viewControllerLayoutGuide type="top" id="VFK-vw-yoA"/>
+                        <viewControllerLayoutGuide type="bottom" id="Fvy-FY-bcv"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="z1d-Nh-Evb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -1395,7 +1395,7 @@ SOFTWARE.</string>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="kiH-cb-BkB" firstAttribute="top" secondItem="ftr-zT-0aE" secondAttribute="bottom" id="5tQ-Da-iKE"/>
+                            <constraint firstItem="kiH-cb-BkB" firstAttribute="top" secondItem="VFK-vw-yoA" secondAttribute="bottom" id="5tQ-Da-iKE"/>
                             <constraint firstItem="WaN-8v-PFc" firstAttribute="top" secondItem="z1d-Nh-Evb" secondAttribute="top" id="AHV-5d-M8W"/>
                             <constraint firstAttribute="bottom" secondItem="WaN-8v-PFc" secondAttribute="bottom" id="Std-c3-a9i"/>
                             <constraint firstItem="WaN-8v-PFc" firstAttribute="leading" secondItem="z1d-Nh-Evb" secondAttribute="leading" id="eCT-lg-tYp"/>
@@ -1431,8 +1431,8 @@ SOFTWARE.</string>
             <objects>
                 <viewController title="Songs" automaticallyAdjustsScrollViewInsets="NO" id="0U7-7i-GxC" customClass="SongsVC" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="p4L-1T-VN9"/>
-                        <viewControllerLayoutGuide type="bottom" id="NW6-nA-cnP"/>
+                        <viewControllerLayoutGuide type="top" id="pxV-Qi-xjG"/>
+                        <viewControllerLayoutGuide type="bottom" id="ym0-7G-oeF"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Jye-uf-iaF">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -1627,11 +1627,11 @@ SOFTWARE.</string>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="Aiz-RW-8Cf" secondAttribute="bottom" id="GXr-Ks-A6y"/>
                             <constraint firstItem="Aiz-RW-8Cf" firstAttribute="top" secondItem="Jye-uf-iaF" secondAttribute="top" id="KBa-3D-bRq"/>
-                            <constraint firstItem="NW6-nA-cnP" firstAttribute="top" secondItem="alO-IS-L7N" secondAttribute="bottom" constant="6" id="MlE-z7-SJK"/>
+                            <constraint firstItem="ym0-7G-oeF" firstAttribute="top" secondItem="alO-IS-L7N" secondAttribute="bottom" constant="6" id="MlE-z7-SJK"/>
                             <constraint firstAttribute="trailing" secondItem="Aiz-RW-8Cf" secondAttribute="trailing" id="dfI-gh-iaz"/>
                             <constraint firstItem="Aiz-RW-8Cf" firstAttribute="leading" secondItem="Jye-uf-iaF" secondAttribute="leading" id="ogy-r7-Jd1"/>
                             <constraint firstAttribute="trailing" secondItem="alO-IS-L7N" secondAttribute="trailing" id="vDY-0g-mZ7"/>
-                            <constraint firstItem="alO-IS-L7N" firstAttribute="top" secondItem="p4L-1T-VN9" secondAttribute="bottom" constant="2" id="vcg-pN-JD6"/>
+                            <constraint firstItem="alO-IS-L7N" firstAttribute="top" secondItem="pxV-Qi-xjG" secondAttribute="bottom" constant="2" id="vcg-pN-JD6"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" tag="4" title="Songs" image="tab_songs" id="VHL-1H-Ust"/>
@@ -1751,8 +1751,8 @@ SOFTWARE.</string>
             <objects>
                 <viewController title="ArtistSongs" automaticallyAdjustsScrollViewInsets="NO" id="Mzv-cc-r99" customClass="ArtistSongs" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="tTS-6Z-WHi"/>
-                        <viewControllerLayoutGuide type="bottom" id="zeQ-0M-qEe"/>
+                        <viewControllerLayoutGuide type="top" id="2eN-cF-6Pz"/>
+                        <viewControllerLayoutGuide type="bottom" id="dqX-Jr-PL2"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="dhn-aL-5Xi">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -2195,13 +2195,13 @@ SOFTWARE.</string>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="NPL-WV-1cd" firstAttribute="leading" secondItem="dhn-aL-5Xi" secondAttribute="leading" id="7dp-5G-Yjc"/>
-                            <constraint firstItem="1fI-A7-OFg" firstAttribute="top" secondItem="tTS-6Z-WHi" secondAttribute="bottom" constant="10" id="Jfq-W4-fWg"/>
-                            <constraint firstItem="zeQ-0M-qEe" firstAttribute="top" secondItem="1fI-A7-OFg" secondAttribute="bottom" constant="10" id="N5q-Zk-24M"/>
+                            <constraint firstItem="1fI-A7-OFg" firstAttribute="top" secondItem="2eN-cF-6Pz" secondAttribute="bottom" constant="10" id="Jfq-W4-fWg"/>
+                            <constraint firstItem="dqX-Jr-PL2" firstAttribute="top" secondItem="1fI-A7-OFg" secondAttribute="bottom" constant="10" id="N5q-Zk-24M"/>
                             <constraint firstAttribute="trailing" secondItem="NPL-WV-1cd" secondAttribute="trailing" id="QDI-Aa-Hd7"/>
                             <constraint firstAttribute="trailing" secondItem="1fI-A7-OFg" secondAttribute="trailing" id="WUu-vK-eGx"/>
                             <constraint firstAttribute="bottom" secondItem="NPL-WV-1cd" secondAttribute="bottom" id="XBV-gD-xj0"/>
                             <constraint firstItem="GHa-r8-mEQ" firstAttribute="top" secondItem="dhn-aL-5Xi" secondAttribute="top" constant="74" id="fXA-Gl-IEo"/>
-                            <constraint firstItem="zeQ-0M-qEe" firstAttribute="top" secondItem="GHa-r8-mEQ" secondAttribute="bottom" constant="10" id="sgE-4m-rwb"/>
+                            <constraint firstItem="dqX-Jr-PL2" firstAttribute="top" secondItem="GHa-r8-mEQ" secondAttribute="bottom" constant="10" id="sgE-4m-rwb"/>
                             <constraint firstAttribute="trailing" secondItem="GHa-r8-mEQ" secondAttribute="trailing" id="ue2-73-Q2Z"/>
                             <constraint firstItem="NPL-WV-1cd" firstAttribute="top" secondItem="dhn-aL-5Xi" secondAttribute="top" id="xaQ-fa-FDw"/>
                         </constraints>
@@ -2603,8 +2603,8 @@ SOFTWARE.</string>
             <objects>
                 <viewController storyboardIdentifier="eight_se" title="eight_se" hidesBottomBarWhenPushed="YES" id="mhR-PN-ter" customClass="EightNowPlayingVC" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="VS3-uK-HC8"/>
-                        <viewControllerLayoutGuide type="bottom" id="mtA-3f-Qpe"/>
+                        <viewControllerLayoutGuide type="top" id="SJU-qb-cgG"/>
+                        <viewControllerLayoutGuide type="bottom" id="hfw-dv-fg3"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="5Oh-Ka-Tnp">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -2914,7 +2914,7 @@ I will push the new build in a few minutes.</string>
                             <constraint firstItem="k0p-8C-CUI" firstAttribute="leading" secondItem="5Oh-Ka-Tnp" secondAttribute="leading" constant="3" id="Jhf-u5-nxZ"/>
                             <constraint firstItem="HsT-F6-cUw" firstAttribute="top" secondItem="S1m-tk-j5M" secondAttribute="bottom" id="N0r-sF-GOH"/>
                             <constraint firstItem="1rc-sd-IRz" firstAttribute="leading" secondItem="LYG-ZI-2Pv" secondAttribute="trailing" constant="6" id="S8y-5I-MkG"/>
-                            <constraint firstItem="mtA-3f-Qpe" firstAttribute="top" secondItem="fsy-i5-bCI" secondAttribute="bottom" constant="2" id="T3K-DT-KpX"/>
+                            <constraint firstItem="hfw-dv-fg3" firstAttribute="top" secondItem="fsy-i5-bCI" secondAttribute="bottom" constant="2" id="T3K-DT-KpX"/>
                             <constraint firstItem="1rc-sd-IRz" firstAttribute="top" secondItem="FJj-8i-9gq" secondAttribute="bottom" constant="11" id="UhH-k2-3w0"/>
                             <constraint firstAttribute="trailing" secondItem="rkv-QP-kNV" secondAttribute="trailing" id="YI0-bq-UC1"/>
                             <constraint firstItem="nk7-6h-gfk" firstAttribute="centerX" secondItem="FJj-8i-9gq" secondAttribute="centerX" id="Z0q-7O-iw8"/>
@@ -2983,8 +2983,8 @@ I will push the new build in a few minutes.</string>
             <objects>
                 <viewController storyboardIdentifier="nine_se" title="nine_se" id="qz6-QF-Ek3" customClass="NineNPVC" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="pFD-jK-ywK"/>
-                        <viewControllerLayoutGuide type="bottom" id="U0u-AW-9t6"/>
+                        <viewControllerLayoutGuide type="top" id="3lJ-X1-Y24"/>
+                        <viewControllerLayoutGuide type="bottom" id="kZi-Il-nbo"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="pzq-Os-RLA">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -3092,11 +3092,11 @@ I will push the new build in a few minutes.</string>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="yby-Mq-lKs" firstAttribute="top" secondItem="KAb-Zf-kbt" secondAttribute="bottom" constant="52" id="3Fu-BM-b6d"/>
-                            <constraint firstItem="U0u-AW-9t6" firstAttribute="top" secondItem="v6f-t9-f1N" secondAttribute="bottom" constant="99" id="Ggq-Yx-UL7"/>
-                            <constraint firstItem="U0u-AW-9t6" firstAttribute="top" secondItem="hlg-gb-u5X" secondAttribute="bottom" constant="85" id="Gp9-4E-JZt"/>
+                            <constraint firstItem="kZi-Il-nbo" firstAttribute="top" secondItem="v6f-t9-f1N" secondAttribute="bottom" constant="99" id="Ggq-Yx-UL7"/>
+                            <constraint firstItem="kZi-Il-nbo" firstAttribute="top" secondItem="hlg-gb-u5X" secondAttribute="bottom" constant="85" id="Gp9-4E-JZt"/>
                             <constraint firstAttribute="trailingMargin" secondItem="yby-Mq-lKs" secondAttribute="trailing" constant="10" id="MU3-en-e1H"/>
                             <constraint firstItem="yby-Mq-lKs" firstAttribute="leading" secondItem="pzq-Os-RLA" secondAttribute="leadingMargin" constant="10" id="Prh-xd-qCk"/>
-                            <constraint firstItem="U0u-AW-9t6" firstAttribute="top" secondItem="Jdd-pZ-0gf" secondAttribute="bottom" constant="104" id="Zff-g6-O9g"/>
+                            <constraint firstItem="kZi-Il-nbo" firstAttribute="top" secondItem="Jdd-pZ-0gf" secondAttribute="bottom" constant="104" id="Zff-g6-O9g"/>
                             <constraint firstItem="KAb-Zf-kbt" firstAttribute="leading" secondItem="pzq-Os-RLA" secondAttribute="leading" id="inx-3h-0Dm"/>
                             <constraint firstAttribute="trailing" secondItem="v6f-t9-f1N" secondAttribute="trailing" constant="9" id="lMd-00-fQO"/>
                             <constraint firstItem="KAb-Zf-kbt" firstAttribute="top" secondItem="pzq-Os-RLA" secondAttribute="top" id="lUh-9F-FhX"/>
@@ -3122,8 +3122,8 @@ I will push the new build in a few minutes.</string>
             <objects>
                 <viewController storyboardIdentifier="eight_6" title="eight_6" id="IvZ-Yj-xXh" customClass="EightNowPlayingVC" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="TMM-4p-5zn"/>
-                        <viewControllerLayoutGuide type="bottom" id="0Au-PJ-IKV"/>
+                        <viewControllerLayoutGuide type="top" id="Z5l-UM-hOs"/>
+                        <viewControllerLayoutGuide type="bottom" id="g4y-lL-4sB"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="s9W-sO-yHQ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -3443,8 +3443,8 @@ I will push the new build in a few minutes.</string>
                             <constraint firstItem="g0o-TB-amd" firstAttribute="leading" secondItem="6Sg-Xa-AZe" secondAttribute="trailing" constant="8" id="GTq-RW-86h"/>
                             <constraint firstAttribute="trailing" secondItem="04Z-Im-BSF" secondAttribute="trailing" constant="2" id="GrP-wb-0XU"/>
                             <constraint firstAttribute="trailing" secondItem="bfo-d1-pGp" secondAttribute="trailing" id="Ijp-XF-0ds"/>
-                            <constraint firstItem="0Au-PJ-IKV" firstAttribute="top" secondItem="KZB-a4-dqM" secondAttribute="bottom" constant="4" id="Jhx-0A-l1g"/>
-                            <constraint firstItem="0Au-PJ-IKV" firstAttribute="top" secondItem="OXt-Wa-ig4" secondAttribute="bottom" constant="4" id="KMH-NX-Krc"/>
+                            <constraint firstItem="g4y-lL-4sB" firstAttribute="top" secondItem="KZB-a4-dqM" secondAttribute="bottom" constant="4" id="Jhx-0A-l1g"/>
+                            <constraint firstItem="g4y-lL-4sB" firstAttribute="top" secondItem="OXt-Wa-ig4" secondAttribute="bottom" constant="4" id="KMH-NX-Krc"/>
                             <constraint firstItem="bfo-d1-pGp" firstAttribute="top" secondItem="s9W-sO-yHQ" secondAttribute="top" id="Kjk-V7-tV4"/>
                             <constraint firstItem="04Z-Im-BSF" firstAttribute="top" secondItem="6Sg-Xa-AZe" secondAttribute="bottom" constant="10" id="M0e-Ee-BlX"/>
                             <constraint firstItem="nPG-11-nZv" firstAttribute="leading" secondItem="s9W-sO-yHQ" secondAttribute="leading" id="NyM-RQ-YbL"/>
@@ -3515,8 +3515,8 @@ I will push the new build in a few minutes.</string>
             <objects>
                 <viewController storyboardIdentifier="eight_6plus" title="eight_6plus" id="L8L-BD-eso" customClass="EightNowPlayingVC" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="wet-oH-lQ0"/>
-                        <viewControllerLayoutGuide type="bottom" id="7kf-z6-E2a"/>
+                        <viewControllerLayoutGuide type="top" id="ndZ-qC-buI"/>
+                        <viewControllerLayoutGuide type="bottom" id="jrb-qM-64e"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="WAP-7o-vPH">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -3835,7 +3835,7 @@ I will push the new build in a few minutes.</string>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="RBz-71-WaX" secondAttribute="trailing" id="39k-Q8-kUa"/>
-                            <constraint firstItem="7kf-z6-E2a" firstAttribute="top" secondItem="1Gn-j0-48d" secondAttribute="bottom" constant="4" id="4kT-Pk-cfg"/>
+                            <constraint firstItem="jrb-qM-64e" firstAttribute="top" secondItem="1Gn-j0-48d" secondAttribute="bottom" constant="4" id="4kT-Pk-cfg"/>
                             <constraint firstItem="L5K-R0-uz0" firstAttribute="top" secondItem="X2o-vZ-AgA" secondAttribute="bottom" constant="8" id="4uz-Sd-9D0"/>
                             <constraint firstItem="jbj-2v-9QU" firstAttribute="leading" secondItem="WAP-7o-vPH" secondAttribute="leading" constant="4" id="5IC-1O-abh"/>
                             <constraint firstItem="e99-ye-XjZ" firstAttribute="top" secondItem="MUM-Sa-CJA" secondAttribute="bottom" constant="26" id="5xY-RA-9lQ"/>
@@ -3913,8 +3913,8 @@ I will push the new build in a few minutes.</string>
             <objects>
                 <viewController storyboardIdentifier="eight_x" title="eight_x" id="Ybm-I0-4pD" customClass="EightNowPlayingVC" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="k1h-AT-rLX"/>
-                        <viewControllerLayoutGuide type="bottom" id="XSx-CJ-QdW"/>
+                        <viewControllerLayoutGuide type="top" id="3m5-BR-tWT"/>
+                        <viewControllerLayoutGuide type="bottom" id="SEe-M9-NLb"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8BU-xj-5gd">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -4240,11 +4240,11 @@ I will push the new build in a few minutes.</string>
                             <constraint firstItem="AJg-bN-008" firstAttribute="top" secondItem="8BU-xj-5gd" secondAttribute="top" id="1sk-GB-aRb"/>
                             <constraint firstItem="Pmh-7W-vxC" firstAttribute="top" secondItem="6QW-CO-Xf6" secondAttribute="bottom" constant="18" id="22A-6h-wQj"/>
                             <constraint firstItem="1cP-Ot-MXA" firstAttribute="top" secondItem="ogo-6G-hH3" secondAttribute="bottom" constant="16" id="3i3-Xf-JeF"/>
-                            <constraint firstItem="XSx-CJ-QdW" firstAttribute="top" secondItem="JSw-tK-dn4" secondAttribute="bottom" constant="22" id="6Bs-Xp-wZJ"/>
+                            <constraint firstItem="SEe-M9-NLb" firstAttribute="top" secondItem="JSw-tK-dn4" secondAttribute="bottom" constant="22" id="6Bs-Xp-wZJ"/>
                             <constraint firstItem="Pmh-7W-vxC" firstAttribute="leading" secondItem="8BU-xj-5gd" secondAttribute="leading" constant="2" id="99D-Bi-cQC"/>
                             <constraint firstItem="ogo-6G-hH3" firstAttribute="leading" secondItem="8BU-xj-5gd" secondAttribute="leading" constant="2" id="AaA-7f-CUQ"/>
                             <constraint firstItem="6QW-CO-Xf6" firstAttribute="leading" secondItem="Lbu-cH-RGp" secondAttribute="trailing" constant="8" id="Cah-uj-K4Z"/>
-                            <constraint firstItem="XSx-CJ-QdW" firstAttribute="top" secondItem="jVl-B7-sn8" secondAttribute="bottom" constant="22" id="GV6-Q0-j3g"/>
+                            <constraint firstItem="SEe-M9-NLb" firstAttribute="top" secondItem="jVl-B7-sn8" secondAttribute="bottom" constant="22" id="GV6-Q0-j3g"/>
                             <constraint firstAttribute="trailing" secondItem="jVl-B7-sn8" secondAttribute="trailing" constant="7" id="JDH-jC-h1W"/>
                             <constraint firstItem="Lbu-cH-RGp" firstAttribute="leading" secondItem="8BU-xj-5gd" secondAttribute="leading" id="KDS-1B-R3k"/>
                             <constraint firstAttribute="trailing" secondItem="4vD-x2-p01" secondAttribute="trailing" id="LWL-dz-U1j"/>
@@ -4314,8 +4314,8 @@ I will push the new build in a few minutes.</string>
             <objects>
                 <viewController title="UpNext" automaticallyAdjustsScrollViewInsets="NO" id="JFZ-Pw-iWO" customClass="QueueVC" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="C42-ix-vOW"/>
-                        <viewControllerLayoutGuide type="bottom" id="pqk-YE-TCD"/>
+                        <viewControllerLayoutGuide type="top" id="SXS-0z-Fqi"/>
+                        <viewControllerLayoutGuide type="bottom" id="GLA-cI-cov"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="wfA-XJ-evU">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -4477,8 +4477,8 @@ I will push the new build in a few minutes.</string>
             <objects>
                 <viewController title="AlbumUp" automaticallyAdjustsScrollViewInsets="NO" id="iom-mG-mvn" customClass="AlbumUpVC" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="XDT-G8-olk"/>
-                        <viewControllerLayoutGuide type="bottom" id="Xbs-HB-UJ0"/>
+                        <viewControllerLayoutGuide type="top" id="d7q-Df-a8h"/>
+                        <viewControllerLayoutGuide type="bottom" id="CAq-XE-8eI"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="MpR-pM-39z">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -4717,8 +4717,8 @@ I will push the new build in a few minutes.</string>
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="dQw-Ml-Zsz" customClass="ArtistUpVCB" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="ALd-TL-JwH"/>
-                        <viewControllerLayoutGuide type="bottom" id="dL6-lt-FMi"/>
+                        <viewControllerLayoutGuide type="top" id="etk-Ri-0Pb"/>
+                        <viewControllerLayoutGuide type="bottom" id="Quz-dG-h5N"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="age-ep-O0X">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -4935,7 +4935,7 @@ I will push the new build in a few minutes.</string>
                             <constraint firstAttribute="bottom" secondItem="CIa-fU-VW9" secondAttribute="bottom" id="SEv-D2-rbf"/>
                             <constraint firstAttribute="trailing" secondItem="CIa-fU-VW9" secondAttribute="trailing" id="dve-cw-Zzl"/>
                             <constraint firstItem="CIa-fU-VW9" firstAttribute="leading" secondItem="age-ep-O0X" secondAttribute="leading" id="hgj-Lc-XFK"/>
-                            <constraint firstItem="dL6-lt-FMi" firstAttribute="top" secondItem="nLi-CZ-ImR" secondAttribute="bottom" constant="10" id="n3R-eH-nMS"/>
+                            <constraint firstItem="Quz-dG-h5N" firstAttribute="top" secondItem="nLi-CZ-ImR" secondAttribute="bottom" constant="10" id="n3R-eH-nMS"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Artist" image="tab_guitar" id="2TC-fA-qvN"/>
@@ -4957,8 +4957,8 @@ I will push the new build in a few minutes.</string>
             <objects>
                 <viewController id="c5S-xX-XtE" customClass="DummyVC" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="YRz-Ik-lgg"/>
-                        <viewControllerLayoutGuide type="bottom" id="JAq-c9-Pzd"/>
+                        <viewControllerLayoutGuide type="top" id="ahC-ca-s21"/>
+                        <viewControllerLayoutGuide type="bottom" id="RXU-Y7-1st"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="4Li-gB-c97">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -4997,8 +4997,8 @@ I will push the new build in a few minutes.</string>
             <objects>
                 <viewController storyboardIdentifier="perm" title="permissionVC" id="vT4-wa-bno" customClass="PermissionVC" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="PM5-80-QJ1"/>
-                        <viewControllerLayoutGuide type="bottom" id="QiN-wz-ofL"/>
+                        <viewControllerLayoutGuide type="top" id="fjT-oX-POa"/>
+                        <viewControllerLayoutGuide type="bottom" id="bVm-7E-hqr"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="JeS-nA-gTN">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -5058,9 +5058,9 @@ I will push the new build in a few minutes.</string>
                             <constraint firstItem="PuL-KR-d1W" firstAttribute="leading" secondItem="JeS-nA-gTN" secondAttribute="leadingMargin" constant="16" id="a4Y-UM-kF5"/>
                             <constraint firstItem="sal-kZ-kTg" firstAttribute="leading" secondItem="JeS-nA-gTN" secondAttribute="leadingMargin" constant="73" id="fm4-rg-0Je"/>
                             <constraint firstItem="F3j-Xy-F2J" firstAttribute="top" secondItem="PuL-KR-d1W" secondAttribute="bottom" constant="22" id="gD6-h3-uI9"/>
-                            <constraint firstItem="QiN-wz-ofL" firstAttribute="top" secondItem="LFN-C4-0rw" secondAttribute="bottom" id="mar-py-0Fd"/>
+                            <constraint firstItem="bVm-7E-hqr" firstAttribute="top" secondItem="LFN-C4-0rw" secondAttribute="bottom" id="mar-py-0Fd"/>
                             <constraint firstItem="LFN-C4-0rw" firstAttribute="leading" secondItem="JeS-nA-gTN" secondAttribute="leading" id="uCE-hi-iUQ"/>
-                            <constraint firstItem="sal-kZ-kTg" firstAttribute="top" secondItem="PM5-80-QJ1" secondAttribute="bottom" constant="45" id="xqU-sC-p7D"/>
+                            <constraint firstItem="sal-kZ-kTg" firstAttribute="top" secondItem="fjT-oX-POa" secondAttribute="bottom" constant="45" id="xqU-sC-p7D"/>
                             <constraint firstAttribute="trailingMargin" secondItem="F3j-Xy-F2J" secondAttribute="trailing" constant="78" id="z7W-7f-3Gj"/>
                         </constraints>
                     </view>
@@ -5120,8 +5120,8 @@ I will push the new build in a few minutes.</string>
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="FOt-Hq-IVd" customClass="AlbumsVC" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="uIe-yL-AG1"/>
-                        <viewControllerLayoutGuide type="bottom" id="fag-51-C1W"/>
+                        <viewControllerLayoutGuide type="top" id="bxw-9C-xAb"/>
+                        <viewControllerLayoutGuide type="bottom" id="R37-61-u8A"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="5lt-nH-bLh">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -5336,15 +5336,15 @@ I will push the new build in a few minutes.</string>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="A8o-Ym-83r" secondAttribute="trailing" id="4VT-QV-WdY"/>
-                            <constraint firstItem="8ts-oL-rOf" firstAttribute="top" secondItem="uIe-yL-AG1" secondAttribute="bottom" constant="10" id="BMI-RD-Bpv"/>
-                            <constraint firstItem="fag-51-C1W" firstAttribute="top" secondItem="GFy-Gk-tEH" secondAttribute="bottom" constant="10" id="Byi-WW-LHd"/>
-                            <constraint firstItem="GFy-Gk-tEH" firstAttribute="top" secondItem="uIe-yL-AG1" secondAttribute="bottom" constant="10" id="ENN-MQ-g0t"/>
+                            <constraint firstItem="8ts-oL-rOf" firstAttribute="top" secondItem="bxw-9C-xAb" secondAttribute="bottom" constant="10" id="BMI-RD-Bpv"/>
+                            <constraint firstItem="R37-61-u8A" firstAttribute="top" secondItem="GFy-Gk-tEH" secondAttribute="bottom" constant="10" id="Byi-WW-LHd"/>
+                            <constraint firstItem="GFy-Gk-tEH" firstAttribute="top" secondItem="bxw-9C-xAb" secondAttribute="bottom" constant="10" id="ENN-MQ-g0t"/>
                             <constraint firstItem="XQM-35-a8d" firstAttribute="leading" secondItem="5lt-nH-bLh" secondAttribute="leading" id="GOv-W6-bhP"/>
                             <constraint firstAttribute="trailing" secondItem="GFy-Gk-tEH" secondAttribute="trailing" id="I45-q7-Emv"/>
                             <constraint firstItem="XQM-35-a8d" firstAttribute="top" secondItem="5lt-nH-bLh" secondAttribute="top" id="JQH-Ho-DF1"/>
                             <constraint firstAttribute="bottom" secondItem="A8o-Ym-83r" secondAttribute="bottom" id="TIx-PG-cdp"/>
                             <constraint firstItem="A8o-Ym-83r" firstAttribute="top" secondItem="5lt-nH-bLh" secondAttribute="top" id="VIN-Dv-0ZR"/>
-                            <constraint firstItem="fag-51-C1W" firstAttribute="top" secondItem="8ts-oL-rOf" secondAttribute="bottom" constant="10" id="imJ-Sz-eAU"/>
+                            <constraint firstItem="R37-61-u8A" firstAttribute="top" secondItem="8ts-oL-rOf" secondAttribute="bottom" constant="10" id="imJ-Sz-eAU"/>
                             <constraint firstItem="A8o-Ym-83r" firstAttribute="leading" secondItem="5lt-nH-bLh" secondAttribute="leading" id="pQh-6U-UD0"/>
                             <constraint firstAttribute="trailing" secondItem="XQM-35-a8d" secondAttribute="trailing" id="rWK-Ju-KBD"/>
                             <constraint firstAttribute="bottom" secondItem="XQM-35-a8d" secondAttribute="bottom" id="uT1-F9-NQ7"/>
@@ -5372,8 +5372,8 @@ I will push the new build in a few minutes.</string>
             <objects>
                 <viewController title="Aritsts" automaticallyAdjustsScrollViewInsets="NO" id="evX-Ku-ETv" userLabel="Artists" customClass="ArtistsVC" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="JmO-Kp-pCK"/>
-                        <viewControllerLayoutGuide type="bottom" id="OLc-Wp-n0o"/>
+                        <viewControllerLayoutGuide type="top" id="9cy-EO-3lF"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ytb-gQ-ASL"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="s3Y-2v-Hq4">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -5587,18 +5587,18 @@ I will push the new build in a few minutes.</string>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="wyJ-xZ-gty" secondAttribute="bottom" id="4R0-Bi-ywr"/>
-                            <constraint firstItem="OLc-Wp-n0o" firstAttribute="top" secondItem="w8H-Hw-z20" secondAttribute="bottom" constant="10" id="5Et-vi-nZc"/>
+                            <constraint firstItem="Ytb-gQ-ASL" firstAttribute="top" secondItem="w8H-Hw-z20" secondAttribute="bottom" constant="10" id="5Et-vi-nZc"/>
                             <constraint firstItem="wyJ-xZ-gty" firstAttribute="top" secondItem="s3Y-2v-Hq4" secondAttribute="top" id="Bne-Ch-VFQ"/>
                             <constraint firstAttribute="trailing" secondItem="u4E-gz-Vk9" secondAttribute="trailing" id="Dgt-CU-NPo"/>
-                            <constraint firstItem="zMg-Tt-FlO" firstAttribute="top" secondItem="JmO-Kp-pCK" secondAttribute="bottom" constant="10" id="J75-XK-Y8m"/>
+                            <constraint firstItem="zMg-Tt-FlO" firstAttribute="top" secondItem="9cy-EO-3lF" secondAttribute="bottom" constant="10" id="J75-XK-Y8m"/>
                             <constraint firstAttribute="bottom" secondItem="u4E-gz-Vk9" secondAttribute="bottom" id="Jew-tN-T7m"/>
                             <constraint firstItem="u4E-gz-Vk9" firstAttribute="top" secondItem="s3Y-2v-Hq4" secondAttribute="top" id="L8N-8a-ERv"/>
-                            <constraint firstItem="w8H-Hw-z20" firstAttribute="top" secondItem="JmO-Kp-pCK" secondAttribute="bottom" constant="10" id="OZA-Mx-vWG"/>
+                            <constraint firstItem="w8H-Hw-z20" firstAttribute="top" secondItem="9cy-EO-3lF" secondAttribute="bottom" constant="10" id="OZA-Mx-vWG"/>
                             <constraint firstAttribute="trailing" secondItem="zMg-Tt-FlO" secondAttribute="trailing" id="VyI-ze-KCb"/>
                             <constraint firstAttribute="trailing" secondItem="wyJ-xZ-gty" secondAttribute="trailing" id="YPw-LU-eAp"/>
                             <constraint firstAttribute="trailing" secondItem="w8H-Hw-z20" secondAttribute="trailing" id="Z2C-4E-E7C"/>
                             <constraint firstItem="u4E-gz-Vk9" firstAttribute="leading" secondItem="s3Y-2v-Hq4" secondAttribute="leading" id="ggN-v2-ecp"/>
-                            <constraint firstItem="OLc-Wp-n0o" firstAttribute="top" secondItem="zMg-Tt-FlO" secondAttribute="bottom" constant="10" id="uh6-sZ-vs7"/>
+                            <constraint firstItem="Ytb-gQ-ASL" firstAttribute="top" secondItem="zMg-Tt-FlO" secondAttribute="bottom" constant="10" id="uh6-sZ-vs7"/>
                             <constraint firstItem="wyJ-xZ-gty" firstAttribute="leading" secondItem="s3Y-2v-Hq4" secondAttribute="leading" id="ymH-ro-Swx"/>
                         </constraints>
                     </view>
@@ -5684,8 +5684,8 @@ I will push the new build in a few minutes.</string>
             <objects>
                 <viewController title="Playlists" automaticallyAdjustsScrollViewInsets="NO" id="Idp-nk-ma0" customClass="PlaylistsVC" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="ppN-9G-0oV"/>
-                        <viewControllerLayoutGuide type="bottom" id="oTy-Mi-bq3"/>
+                        <viewControllerLayoutGuide type="top" id="gTb-4s-kO7"/>
+                        <viewControllerLayoutGuide type="bottom" id="I6s-NB-MiA"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="yAd-Z4-YYA">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -5899,15 +5899,15 @@ I will push the new build in a few minutes.</string>
                             <constraint firstAttribute="trailing" secondItem="QS8-dg-1mN" secondAttribute="trailing" id="2BX-xu-QqH"/>
                             <constraint firstItem="zDc-at-bwM" firstAttribute="leading" secondItem="yAd-Z4-YYA" secondAttribute="leading" id="9sA-nT-Ea7"/>
                             <constraint firstItem="XZa-pZ-rEU" firstAttribute="leading" secondItem="yAd-Z4-YYA" secondAttribute="leading" id="BiJ-Vy-If0"/>
-                            <constraint firstItem="oTy-Mi-bq3" firstAttribute="top" secondItem="MJY-1m-vgY" secondAttribute="bottom" constant="10" id="CI8-A7-MCu"/>
-                            <constraint firstItem="MJY-1m-vgY" firstAttribute="top" secondItem="ppN-9G-0oV" secondAttribute="bottom" constant="10" id="GDr-T6-opM"/>
+                            <constraint firstItem="I6s-NB-MiA" firstAttribute="top" secondItem="MJY-1m-vgY" secondAttribute="bottom" constant="10" id="CI8-A7-MCu"/>
+                            <constraint firstItem="MJY-1m-vgY" firstAttribute="top" secondItem="gTb-4s-kO7" secondAttribute="bottom" constant="10" id="GDr-T6-opM"/>
                             <constraint firstItem="XZa-pZ-rEU" firstAttribute="top" secondItem="yAd-Z4-YYA" secondAttribute="top" id="S8g-Ll-27I"/>
                             <constraint firstAttribute="trailing" secondItem="MJY-1m-vgY" secondAttribute="trailing" id="VEO-Fg-uPP"/>
                             <constraint firstAttribute="bottom" secondItem="XZa-pZ-rEU" secondAttribute="bottom" id="bAO-vu-lrG"/>
                             <constraint firstAttribute="trailing" secondItem="XZa-pZ-rEU" secondAttribute="trailing" id="bfX-hz-uDY"/>
                             <constraint firstItem="zDc-at-bwM" firstAttribute="top" secondItem="yAd-Z4-YYA" secondAttribute="top" id="hIY-3d-VBe"/>
-                            <constraint firstItem="oTy-Mi-bq3" firstAttribute="top" secondItem="QS8-dg-1mN" secondAttribute="bottom" constant="10" id="nMq-ah-0Ik"/>
-                            <constraint firstItem="QS8-dg-1mN" firstAttribute="top" secondItem="ppN-9G-0oV" secondAttribute="bottom" constant="10" id="ooL-ZT-c12"/>
+                            <constraint firstItem="I6s-NB-MiA" firstAttribute="top" secondItem="QS8-dg-1mN" secondAttribute="bottom" constant="10" id="nMq-ah-0Ik"/>
+                            <constraint firstItem="QS8-dg-1mN" firstAttribute="top" secondItem="gTb-4s-kO7" secondAttribute="bottom" constant="10" id="ooL-ZT-c12"/>
                             <constraint firstAttribute="trailing" secondItem="zDc-at-bwM" secondAttribute="trailing" id="qDg-kb-8eD"/>
                             <constraint firstAttribute="bottom" secondItem="zDc-at-bwM" secondAttribute="bottom" id="yO1-kZ-IMw"/>
                         </constraints>
@@ -5935,8 +5935,8 @@ I will push the new build in a few minutes.</string>
             <objects>
                 <viewController title="Playlist" automaticallyAdjustsScrollViewInsets="NO" id="3n3-F7-SRO" customClass="PlaylistVC" customModule="Plum" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="AGQ-T9-hou"/>
-                        <viewControllerLayoutGuide type="bottom" id="igS-Nc-SWa"/>
+                        <viewControllerLayoutGuide type="top" id="7YZ-pH-J66"/>
+                        <viewControllerLayoutGuide type="bottom" id="Hbq-Le-xic"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="sVI-N1-xDZ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -6195,10 +6195,7 @@ I will push the new build in a few minutes.</string>
                                 </constraints>
                             </view>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PCN-Xa-i62">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="64" id="Cak-Gx-XZG"/>
-                                </constraints>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <items>
                                     <barButtonItem enabled="NO" id="1by-Wz-uxy"/>
                                 </items>
@@ -6206,14 +6203,14 @@ I will push the new build in a few minutes.</string>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="PCN-Xa-i62" firstAttribute="leading" secondItem="sVI-N1-xDZ" secondAttribute="leading" id="1Zd-cG-bg6"/>
                             <constraint firstAttribute="bottom" secondItem="wgF-PA-wdY" secondAttribute="bottom" id="8qC-GZ-aQy"/>
-                            <constraint firstItem="igS-Nc-SWa" firstAttribute="top" secondItem="CJs-jX-kTO" secondAttribute="bottom" constant="10" id="LPx-2p-2Yn"/>
+                            <constraint firstItem="Hbq-Le-xic" firstAttribute="top" secondItem="CJs-jX-kTO" secondAttribute="bottom" constant="10" id="LPx-2p-2Yn"/>
+                            <constraint firstAttribute="trailing" secondItem="PCN-Xa-i62" secondAttribute="trailing" id="RPj-jI-rfQ"/>
                             <constraint firstAttribute="trailing" secondItem="CJs-jX-kTO" secondAttribute="trailing" id="ScJ-B5-KWy"/>
-                            <constraint firstItem="PCN-Xa-i62" firstAttribute="leading" secondItem="sVI-N1-xDZ" secondAttribute="leading" id="VPI-uE-Yno"/>
+                            <constraint firstItem="PCN-Xa-i62" firstAttribute="top" secondItem="sVI-N1-xDZ" secondAttribute="top" id="Uar-CD-Okv"/>
                             <constraint firstItem="wgF-PA-wdY" firstAttribute="top" secondItem="sVI-N1-xDZ" secondAttribute="top" id="b2I-7e-Ip0"/>
-                            <constraint firstItem="PCN-Xa-i62" firstAttribute="top" secondItem="sVI-N1-xDZ" secondAttribute="top" id="mzH-yj-Gfh"/>
-                            <constraint firstAttribute="trailing" secondItem="PCN-Xa-i62" secondAttribute="trailing" id="nee-eF-yHl"/>
-                            <constraint firstItem="CJs-jX-kTO" firstAttribute="top" secondItem="AGQ-T9-hou" secondAttribute="bottom" constant="10" id="pa7-Ap-Gia"/>
+                            <constraint firstItem="CJs-jX-kTO" firstAttribute="top" secondItem="7YZ-pH-J66" secondAttribute="bottom" constant="10" id="pa7-Ap-Gia"/>
                             <constraint firstAttribute="trailing" secondItem="wgF-PA-wdY" secondAttribute="trailing" id="qck-S8-VPo"/>
                             <constraint firstItem="wgF-PA-wdY" firstAttribute="leading" secondItem="sVI-N1-xDZ" secondAttribute="leading" id="woB-iF-6X9"/>
                         </constraints>
@@ -6323,8 +6320,8 @@ I will push the new build in a few minutes.</string>
             <objects>
                 <viewController title="Tutorial" id="iS0-cO-iYi" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="54x-53-1cK"/>
-                        <viewControllerLayoutGuide type="bottom" id="4D1-Hg-08Q"/>
+                        <viewControllerLayoutGuide type="top" id="SNp-T0-7Oc"/>
+                        <viewControllerLayoutGuide type="bottom" id="l0Y-09-sZC"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ODi-QV-5PS">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
