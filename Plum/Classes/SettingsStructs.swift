@@ -90,12 +90,13 @@ struct GlobalSettings{
         if theme == .dark {
             if oled {
                 UIColor.background = UIColor.black
+                UIColor.separator = UIColor.darkSeparator.withAlphaComponent(0.5)
             }else{
                 UIColor.background = UIColor.darkBackground
+                UIColor.separator = UIColor.darkSeparator
             }
             UIColor.mainLabel = UIColor.white
             UIColor.detailLabel = UIColor.lightGray
-            UIColor.separator = UIColor.darkSeparator
             UIColor.indexBackground = UIColor.black
             UIStatusBarStyle.themed = UIStatusBarStyle.lightContent
             UITextField.appearance().keyboardAppearance = .dark
@@ -242,5 +243,11 @@ struct GlobalSettings{
     }
     static func save(_ data: Any, key: String) {
         UserDefaults.standard.set(data, forKey: key)
+    }
+    static var trial = true
+    static func changeTrial(_ t: Bool) {
+        trial = t
+        NotificationCenter.default.post(name: .unlockChanged, object: nil, userInfo: ["state": trial])
+        save(trial, key: "lite")
     }
 }

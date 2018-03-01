@@ -809,3 +809,23 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
     }
     
 }
+
+extension SongsVC {     //Responding to in-app purchase events
+    
+    func registerTrialObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleUnlockChangedNotification(_:)), name: .unlockChanged, object: nil)
+    }
+    
+    func unregisterTrialObserver() {
+        NotificationCenter.default.removeObserver(self, name: .unlockChanged, object: nil)
+    }
+    
+    @objc func handleUnlockChangedNotification(_ notifiaction: Notification) {
+        if let state = notifiaction.userInfo!["state"] as? Bool {
+            themeBtn.isEnabled = state
+            updateTheme()
+            titleButton.isEnabled = state
+        }
+    }
+    
+}

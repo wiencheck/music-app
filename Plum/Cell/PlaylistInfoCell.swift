@@ -22,6 +22,7 @@ class PlaylistInfoCell: UITableViewCell {
         textView.textContainer.lineFragmentPadding = 0
         mainLabel.textColor = UIColor.mainLabel
         detailLabel.textColor = UIColor.detailLabel
+        textView.textColor = UIColor.detailLabel
         artwork.image = list.image
         textView.text = list.userDescription
         mainLabel.text = list.name
@@ -31,7 +32,7 @@ class PlaylistInfoCell: UITableViewCell {
         }else{
             toolbar.barStyle = .default
         }
-        detailLabel.text = "\(list.songsIn) songs"
+        detailLabel.text = "\(list.songsIn) songs, \(list.albumsIn) albums"
     }
 
     override func awakeFromNib() {

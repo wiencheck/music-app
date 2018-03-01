@@ -586,7 +586,7 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
         navBarBlurBackground.alpha = alpha
         titleButton.titleLabel?.alpha = alpha
         tmpSearchBtn.alpha = 1-alpha
-        tableView.contentInset = UIEdgeInsetsMake(heightInset-200, 0, GlobalSettings.bottomInset, 0)
+        tableView.contentInset = UIEdgeInsetsMake(heightInset-200, 0, GlobalSettings.bottomInset+49, 0)
     }
     
     func setTitleButton() {
@@ -599,9 +599,12 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
         titleButton.setTitle("Search", for: .highlighted)
         navigationItem.titleView = titleButton
         themeBtn = UIBarButtonItem(image: nil, style: .plain, target: self, action: #selector(themeBtnPressed(_:)))
-        tmpSearchBtn = UIButton(frame: (navigationItem.titleView?.bounds)!)
+        //let rect = CGRect(x: <#T##CGFloat#>, y: <#T##CGFloat#>, width: <#T##CGFloat#>, height: <#T##CGFloat#>)
+        tmpSearchBtn = UIButton(frame: titleButton.bounds)
+        //tmpSearchBtn.imageView?.contentMode = .scaleToFill
         let size = CGSize(width: 22, height: 22)
         tmpSearchBtn.setImage(#imageLiteral(resourceName: "tab_search").imageScaled(toFit: size).withRenderingMode(.alwaysTemplate), for: .normal)
+        tmpSearchBtn.translatesAutoresizingMaskIntoConstraints = true
         tmpSearchBtn.tintColor = GlobalSettings.tint.color
         tmpSearchBtn.addTarget(self, action: #selector(showSearchBar), for: .touchUpInside)
         navigationItem.titleView?.addSubview(tmpSearchBtn)
@@ -642,7 +645,7 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
             self.tableView.separatorStyle = .singleLine
             tableView.tableHeaderView = nil
             navBarBlurBackground.alpha = 1.0
-            tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, GlobalSettings.bottomInset, 0)
+            tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, GlobalSettings.bottomInset+49, 0)
         }
         let whitespaceCharacterSet = CharacterSet.whitespaces
         let strippedString = searchString!.trimmingCharacters(in: whitespaceCharacterSet)

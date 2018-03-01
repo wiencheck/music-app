@@ -254,6 +254,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: "ratingsIn") == nil {
             defaults.set(true, forKey: "ratingsIn")
         }
+        if defaults.value(forKey: "purchased") == nil {
+            defaults.set(false, forKey: "purchased")
+        }
     }
     
     func readSettings(){
@@ -336,6 +339,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let inR = defaults.value(forKey: "ratingsIn") as? Bool {
             GlobalSettings.changeRatingsIn(inR)
         }
+        if let pur = defaults.value(forKey: "purchased") as? Bool {
+            GlobalSettings.changeTrial(pur)
+        }
         GlobalSettings.changeColor(true)    //do zrobienia ciemny blur
     }
     
@@ -369,13 +375,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if GlobalSettings.theme == .dark {
             if GlobalSettings.oled {
                 UIColor.background = UIColor.black
+                UIColor.separator = UIColor.darkSeparator.withAlphaComponent(0.4)
             }else{
                 UIColor.background = UIColor.darkBackground
+                UIColor.separator = UIColor.darkSeparator
             }
             UIStatusBarStyle.themed = UIStatusBarStyle.lightContent
             UIColor.mainLabel = UIColor.white
             UIColor.detailLabel = UIColor.lightGray
-            UIColor.separator = UIColor.darkSeparator
             UIColor.indexBackground = UIColor.black
         }else{
             UIColor.mainLabel = UIColor.black

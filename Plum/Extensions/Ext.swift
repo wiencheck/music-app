@@ -231,6 +231,7 @@ extension Notification.Name {
     static let themeChanged = Notification.Name("themeChanged")
     static let queueChanged = Notification.Name("queueChanged")
     static let trackChanged = Notification.Name("trackChanged")
+    static let unlockChanged = Notification.Name("unlockChanged")
 }
 
 extension UIApplication {   //Open URL
