@@ -9,11 +9,10 @@ import UIKit
 import MediaPlayer
 import UserNotifications
 
-class EightNowPlayingVC: UIViewController {
+class EightNowPlayingVC: NowPlayingViewController {
     
     var scale: Double!
     
-    var tab: PlumTabBarController!
     let player = Plum.shared
     //var finger: CGPoint = CGPoint(x: 0, y: 0)
     //@IBOutlet weak var volView: UIView!
@@ -45,7 +44,6 @@ class EightNowPlayingVC: UIViewController {
     @IBOutlet weak var repBtn: UIButton!
     @IBOutlet weak var lyricsButton: UIButton!
     @IBOutlet weak var ratingButton: UIButton!
-    @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var mpVolView: MPVolumeView!
     var shoudlChangeBar = false
     var viewActive = false
@@ -610,7 +608,6 @@ extension EightNowPlayingVC {       //Kolory i UI
         lyricsButton.layer.cornerRadius = 3
         upNextBtn.setImage(#imageLiteral(resourceName: "Ulist_icon"), for: .normal)
         upNextBtn.imageView?.contentMode = .scaleAspectFit
-        
     }
     
     func setColors() {
@@ -624,7 +621,6 @@ extension EightNowPlayingVC {       //Kolory i UI
     func color(){
         colors = image.getColors(scaleDownSize: CGSize(width: scale, height: scale))
         lyricsTextView.tintColor = colors.primaryColor
-        view.backgroundColor = colors.backgroundColor
         view.backgroundColor = colors.backgroundColor
         self.titleLabel.textColor = colors.primaryColor
         self.detailLabel.textColor = colors.detailColor
@@ -805,16 +801,6 @@ extension EightNowPlayingVC {       //Kolory i UI
         }
         slider.setMinimumTrackImage(#imageLiteral(resourceName: "track").tintPictogram(with: min), for: .normal)
         slider.setMaximumTrackImage(#imageLiteral(resourceName: "track").tintPictogram(with: max), for: .normal)
-    }
-    
-    @objc func didEnterBackground() {
-        NotificationCenter.default.removeObserver(self, name: .playbackChanged, object: nil)
-        timer.invalidate()
-    }
-    
-    @objc func didBecomeActive() {
-        NotificationCenter.default.addObserver(self, selector: #selector(updateUI), name: Notification.Name(rawValue: "playBackStateChanged"), object: nil)
-        timer.fire()
     }
     
     func askNotification() {

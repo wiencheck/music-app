@@ -34,12 +34,10 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     var result = [String:[Artist]]()
     var artists: [Artist]!
     var gesture: UILongPressGestureRecognizer!
-    var headers: [UIView]!
-    var heightInset: CGFloat!
-    var controllerSet = false
+    var headers = [UIView]()
+    var heightInset: CGFloat = 0
     var hideKeyboard = false
     var currentTheme: Theme!
-    var searchVisible: Bool!
     var cellSize = CGSize()
     var roundedCorners = false
     let device = GlobalSettings.device
@@ -55,17 +53,14 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         loadData()
         if !artists.isEmpty {
             setupDict()
-            searchVisible = true
-            if !controllerSet {
-                configureSearchController()
-                controllerSet = true
-            }
             reload()
             hideTable()
         }
+        configureSearchController()
         setTitleButton()
         updateTheme()
         print("Artists loaded")
+        tableView.scrollToRow(at: .topRow, at: .top, animated: false)
     }
     
     private func loadData() {
@@ -163,6 +158,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         collectionIndexView.indexes = self.indexes
         collectionIndexView.collectionView = self.collectionView
         collectionIndexView.setup()
+        collectionView.scrollToItem(at: .topRow, at: .top, animated: false)
         //self.view.addSubview(collectionIndexView)
     }
     

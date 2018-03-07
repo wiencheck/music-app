@@ -13,7 +13,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     private var popupActive = false
     
-    var nowPlaying: EightNowPlayingVC!
+    var nowPlaying: NowPlayingViewController!
     let player = Plum.shared
     var timer: Timer!
     var playBackBtn: UIBarButtonItem!
@@ -78,7 +78,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     func emptyPopup() {
         let story = UIStoryboard.init(name: "Main", bundle: nil)
-        nowPlaying = story.instantiateViewController(withIdentifier: identifier) as! EightNowPlayingVC
+        nowPlaying = story.instantiateViewController(withIdentifier: identifier) as! NowPlayingViewController
         nowPlaying.tab = self
         self.presentPopupBar(withContentViewController: nowPlaying, animated: true, completion: nil)
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
@@ -92,7 +92,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     @objc func updatePopup() {
         if !popupPresented {
             let story = UIStoryboard.init(name: "Main", bundle: nil)
-            nowPlaying = story.instantiateViewController(withIdentifier: identifier) as! EightNowPlayingVC
+            nowPlaying = story.instantiateViewController(withIdentifier: identifier) as! NowPlayingViewController
             nowPlaying.tab = self
             self.presentPopupBar(withContentViewController: nowPlaying, animated: true, completion: nil)
             popupPresented = true
@@ -196,19 +196,22 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     func setIdentifier() -> String{
         let device = GlobalSettings.device
+        var _identifier = ""
+        _identifier = "eight"
         if device == "iPhone 5" || device == "iPhone 5s" || device == "iPhone 5c" || device == "iPhone SE" || device == "iPod Touch 6" {
-            return "eight_se"
+            _identifier += "_se"
         }else if device == "iPhone 6" || device == "iPhone 6s" || device == "iPhone 7" || device == "iPhone 8" {
-            return "eight_6"
+            _identifier += "_6"
         }else if device == "iPhone 6 Plus" || device == "iPhone 6s Plus" || device == "iPhone 7 Plus" || device == "iPhone 8 Plus" {
-            return "eight_6plus"
+            _identifier += "_6plus"
         }else if device == "iPhone X" {
-            return "eight_x"
+            _identifier += "_x"
         }else if device.contains("iPad"){
-            return "eight_se"
+            _identifier += "_se"
         }else{
-            return "eight_6plus"
+            _identifier += "_6plus"
         }
+        return _identifier
     }
     
 }

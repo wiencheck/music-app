@@ -9,21 +9,22 @@
 import UIKit
 import MediaPlayer
 
-class NineNPVC: UIViewController {
+class NineNPVC: NowPlayingViewController {
     
-    var tab: UITabBarController!    //Controller managing LNPopup
     let player = Plum.shared
     var items = [MPMediaItem]()
     var mediaPicker: MPMediaPickerController!
     var pickedID: MPMediaEntityPersistentID!
     
     //
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var artworkView: UIImageView!
     @IBOutlet weak var lyricsTextView :UITextView!
     
     //Labels
     @IBOutlet weak var titleLabel :UILabel!
     @IBOutlet weak var detailLabel :UILabel!
+    @IBOutlet weak var elapsedLabel: UILabel!
+    @IBOutlet weak var remainingLabel: UILabel!
     
     //Buttons
     @IBOutlet weak var playbackBtn :UIButton!
@@ -31,20 +32,29 @@ class NineNPVC: UIViewController {
     @IBOutlet weak var prevBtn :UIButton!
     @IBOutlet weak var shufBtn :UIButton!
     @IBOutlet weak var repBtn :UIButton!
+    @IBOutlet weak var addNextBtn: UIButton!
+    @IBOutlet weak var upNextBtn: UIButton!
+    @IBOutlet weak var lyricsButton: UIButton!
+    @IBOutlet weak var ratingButton: UIButton!
+    @IBOutlet weak var timeSlider: UISlider!
+    @IBOutlet weak var minVolImg: UIImageView!
+    @IBOutlet weak var maxVolImg: UIImageView!
+    var timer: Timer!
+    var shouldUpdateSlider = true
+    var interval: TimeInterval = 0.05
+    
     
     var lightStyle: Bool! = false
     var cellSize: CGSize!
-    var currentIndex = 0
-    var previousIndex = 0
-    var usrCurrentIndex = 0
     var currentItem: MPMediaItem! { get { return player.currentItem } }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshData), name: .queueChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateUI), name: .trackChanged, object: nil)
-        //NotificationCenter.default.addObserver(self, selector: #selector(scrollToCurrent), name: .playbackChanged, object: nil)
-        setupCollection()
+        NotificationCenter.default.addObserver(self, selector: #selector(updatePlaybackBtn), name: .playbackChanged, object: nil)
+        setSlider()
+        //setImages()
+        timer.fire()
     }
     
     deinit {
@@ -53,57 +63,75 @@ class NineNPVC: UIViewController {
         //NotificationCenter.default.removeObserver(self, name: .playbackChanged, object: nil)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        scrollToCurrent()
-    }
-    
-    func setupCollection() {
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.scrollDirection = .horizontal
-        }
-        let width = view.frame.width
-        cellSize = CGSize(width: width, height: width)
-        collectionView.isPagingEnabled = true
-        collectionView.isScrollEnabled = true
-        collectionView.allowsSelection = false
-        collectionView.showsHorizontalScrollIndicator = false
-    }
-    
-    @objc func refreshData() {
-        items = player.getCurrentQueue()
-        print("Refresh data")
-        collectionView.reloadData()
-    }
-    
-    @objc func scrollToCurrent() {
-        print("Scroll to current")
-        var row = 0
-        if player.isUsrQueue {
-            row = player.defIndex + player.usrIndex
+    @objc func updatePlaybackBtn() {
+        if player.isPlayin() {
+            playbackBtn.setImage(#imageLiteral(resourceName: "pause-butt"), for: .normal)
         }else{
-            row = player.defIndex
+            playbackBtn.setImage(#imageLiteral(resourceName: "play-butt"), for: .normal)
         }
-        let path = IndexPath(row: row, section: 0)
-        collectionView.scrollToItem(at: path, at: .left, animated: true)
-        let offset = collectionView.contentOffset.x
-        currentIndex = Int(offset / cellSize.width)
-        previousIndex = currentIndex
     }
     
     @objc func updateUI() {
-        print("Update UI")
-        print(currentItem.title)
+        let artsize = CGSize(width: view.frame.width, height: view.frame.width)
+        if let art = currentItem.artwork?.image(at: artsize) {
+            artworkView.image = art
+        }else{
+            artworkView.image = #imageLiteral(resourceName: "no_now")
+        }
         refreshLabels()
     }
     
     @objc func refreshLabels() {
         titleLabel.text = currentItem.title
+        detailLabel.text = (currentItem.albumArtist ?? "Unknown artist") + " - " + (currentItem.albumTitle ?? "Unknown album")
         //detailLabel.text = "\(currentItem.albumArtist) - \(currentItem.albumTitle)"
     }
     
+    @objc func updateTimes(){
+        elapsedLabel.text = "\(player.calculateFromTimeInterval(TimeInterval(timeSlider.value)).minute):\(player.calculateFromTimeInterval(TimeInterval(timeSlider.value)).second)"
+        remainingLabel.text = "-\(player.calculateFromTimeInterval(TimeInterval(timeSlider.maximumValue - timeSlider.value)).minute):\(player.calculateFromTimeInterval(TimeInterval(timeSlider.maximumValue - timeSlider.value)).second)"
+        if(!timeSlider.isTracking){
+            shouldUpdateSlider = true
+        }else{
+            shouldUpdateSlider = false
+        }
+        if shouldUpdateSlider{
+            timeSlider.value = Float(player.player.currentTime)
+        }
+    }
     
+    @objc func scrubAudio(){
+        shouldUpdateSlider = false
+        player.player.currentTime = TimeInterval(timeSlider.value)
+    }
+    
+    func setImages() {
+        prevBtn.setImage(#imageLiteral(resourceName: "prev-butt"), for: .normal)
+        nextBtn.setImage(#imageLiteral(resourceName: "next-butt"), for: .normal)
+        addNextBtn.setImage(#imageLiteral(resourceName: "add").imageScaled(toFit: CGSize(width: 21, height: 21)).withRenderingMode(.alwaysTemplate), for: .normal)
+        // 10 18 18 18
+        let min = #imageLiteral(resourceName: "zeroVol").imageScaled(toFit: CGSize(width: 10, height: 18))
+        let max = #imageLiteral(resourceName: "maxVol").imageScaled(toFit: CGSize(width: 18, height: 18))
+        minVolImg.image = min?.withRenderingMode(.alwaysTemplate)
+        maxVolImg.image = max?.withRenderingMode(.alwaysTemplate)
+        if player.isPlayin() {
+            playbackBtn.setImage(#imageLiteral(resourceName: "pause-butt"), for: .normal)
+        }else{
+            playbackBtn.setImage(#imageLiteral(resourceName: "play-butt"), for: .normal)
+        }
+        ratingButton.clipsToBounds = true
+        lyricsButton.clipsToBounds = true
+        ratingButton.layer.cornerRadius = 3
+        lyricsButton.layer.cornerRadius = 3
+        upNextBtn.setImage(#imageLiteral(resourceName: "Ulist_icon"), for: .normal)
+        upNextBtn.imageView?.contentMode = .scaleAspectFit
+    }
+    
+    func setSlider(){
+        timeSlider.addTarget(self, action: #selector(NineNPVC.scrubAudio), for: .valueChanged)
+        timer = Timer.scheduledTimer(timeInterval: interval, target: self, selector: #selector(NineNPVC.updateTimes), userInfo: nil, repeats: true)
+        timeSlider.isContinuous = false
+    }
 
 }
 
@@ -121,133 +149,14 @@ extension NineNPVC {    //@IBActions
     }
     
     @IBAction func next() {
-        if currentIndex == items.count-1 {                      //If last
-            let path = IndexPath(row: 0, section: 0)
-            if items[0].albumTitle == items[currentIndex].albumTitle {
-                collectionView.scrollToItem(at: path, at: .left, animated: false)
-            }else{
-                collectionView.scrollToItem(at: path, at: .left, animated: true)
-            }
-            currentIndex = 0
-        }else{                                                  //Normal
-            let path = IndexPath(row: currentIndex+1, section: 0)
-            if items[currentIndex+1].albumTitle == items[currentIndex].albumTitle {
-                collectionView.scrollToItem(at: path, at: .left, animated: false)
-            }else{
-                collectionView.scrollToItem(at: path, at: .left, animated: true)
-            }
-            currentIndex += 1
-        }
-        refreshLabels()
-        //refresh()
-        print("current = \(currentIndex)")
-        print("previous = \(previousIndex)")
         player.next()
         player.play()
-        previousIndex = currentIndex
     }
     
     @IBAction func prev() {
-        if currentIndex == 0 {
-            let path = IndexPath(row: items.count-1, section: 0)
-            if items[items.count-1].albumTitle == items[currentIndex].albumTitle {
-                collectionView.scrollToItem(at: path, at: .left, animated: false)
-            }else{
-                collectionView.scrollToItem(at: path, at: .left, animated: true)
-            }
-            currentIndex = items.count-1
-        }else{
-            let path = IndexPath(row: currentIndex-1, section: 0)
-            if items[currentIndex-1].albumTitle == items[currentIndex].albumTitle {
-                collectionView.scrollToItem(at: path, at: .left, animated: false)
-            }else{
-                collectionView.scrollToItem(at: path, at: .left, animated: true)
-            }
-            currentIndex -= 1
-        }
         //refreshLabels()
         player.prev()
         player.play()
-        previousIndex = currentIndex
-    }
-    
-}
-
-extension NineNPVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return items.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! NowPlayingCell
-        if let art = items[indexPath.row].artwork?.image(at: cellSize) {
-            cell.artwork.image = art
-        }else{
-            cell.artwork.image = #imageLiteral(resourceName: "no_now")
-        }
-        return cell
-    }
-    
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let offset = scrollView.contentOffset.x
-        currentIndex = Int(offset / cellSize.width)
-        print("current = \(currentIndex)")
-        print("previous = \(previousIndex)")
-        if currentIndex != previousIndex {
-            if currentIndex > previousIndex {
-                let roznica = currentIndex-previousIndex
-                print("roznica = \(roznica)")
-                for _ in 0..<roznica {
-                    player.next()
-                }
-            }else{
-                let roznica = previousIndex-currentIndex
-                print("roznica = \(roznica)")
-                for _ in 0..<roznica {
-                    player.player.currentTime = 0.0
-                    player.prev()
-                }
-            }
-        }
-//        if currentIndex != previousIndex {
-//            if player.isUsrQueue && player.usrIsAnyAfter {
-////                if currentIndex > previousIndex {
-////                    usrCurrentIndex += 1
-////                }else{
-////                    usrCurrentIndex -= 1
-////                }
-//                usrCurrentIndex = player.usrIndex+1
-//                player.playFromUsrQueue(index: currentIndex-player.defIndex)
-//                if !player.usrIsAnyAfter { player.clearQueue() }
-//            }else{
-//                currentIndex -= usrCurrentIndex
-//                //usrCurrentIndex = 0
-//                if player.isShuffle {
-//                    player.playFromShufQueue(index: currentIndex, new: true)
-//                }else{
-//                    player.playFromDefQueue(index: currentIndex, new: true)
-//                }
-//            }
-//            player.play()
-//            refreshLabels()
-//        }
-        player.play()
-        refreshLabels()
-        previousIndex = currentIndex
-        //Enable drag-down gesture
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        //Disable drag-down gesture
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return cellSize
     }
     
 }

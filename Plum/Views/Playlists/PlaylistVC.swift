@@ -599,7 +599,7 @@ extension PlaylistVC: UISearchBarDelegate, UISearchResultsUpdating {
         titleButton.setTitle("Search", for: .highlighted)
         navigationItem.titleView = titleButton
         themeBtn = UIBarButtonItem(image: nil, style: .plain, target: self, action: #selector(themeBtnPressed(_:)))
-        //let rect = CGRect(x: <#T##CGFloat#>, y: <#T##CGFloat#>, width: <#T##CGFloat#>, height: <#T##CGFloat#>)
+        //let rect = CGRect(x: titleButton.frame.midX-15, y: titleButton.frame.minY, width: 30, height: titleButton.frame.height)
         tmpSearchBtn = UIButton(frame: titleButton.bounds)
         //tmpSearchBtn.imageView?.contentMode = .scaleToFill
         let size = CGSize(width: 22, height: 22)

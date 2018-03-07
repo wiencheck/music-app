@@ -37,7 +37,6 @@ class PlaylistsVC: UIViewController {
     var shouldShowResults = false
     var headers: [UIView]!
     var heightInset: CGFloat!
-    var controllerSet = false
     var pickedName: String!
     var hideKeyboard = false
     var cellSize = CGSize()
@@ -53,19 +52,16 @@ class PlaylistsVC: UIViewController {
         if !playlists.isEmpty {
             setupDict()
             indexes.sort { $0 < $1 }
-            //setHeaders()
-            if !controllerSet {
-                configureSearchController()
-                controllerSet = true
-            }
             setCollection()
             setTable()
             reload()
         }
+        configureSearchController()
         setTitleButton()
         setTheme()
         NotificationCenter.default.addObserver(self, selector: #selector(setTheme), name: .themeChanged, object: nil)
         print("Playlists loaded")
+        tableView.scrollToFirstRow(animated: false)
     }
     
     func reload() {
@@ -113,6 +109,7 @@ class PlaylistsVC: UIViewController {
         tableIndexView.indexes = self.indexes
         tableIndexView.tableView = self.tableView
         tableIndexView.setup()
+        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         //self.view.addSubview(tableIndexView)
     }
     
@@ -132,6 +129,7 @@ class PlaylistsVC: UIViewController {
         self.collectionIndexView.indexes = self.indexes
         self.collectionIndexView.collectionView = self.collectionView
         self.collectionIndexView.setup()
+        collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         //self.view.addSubview(collectionIndexView)
     }
     

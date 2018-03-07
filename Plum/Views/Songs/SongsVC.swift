@@ -30,7 +30,6 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
     var heightInset: CGFloat!
     var hideKeyboard = false
     var currentTheme: Theme!
-    var searchVisible: Bool!
     let device = GlobalSettings.device
     
     var themeBtn: UIBarButtonItem!
@@ -62,13 +61,13 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             indexView.indexes = self.indexes
             indexView.tableView = self.tableView
             indexView.setup()
-            searchVisible = true
-            configureSearchController()
             view.bringSubview(toFront: indexView)
         }
         tableView.tableFooterView = UIView(frame: .zero)
+        configureSearchController()
         setTitleButton()
         setTheme()
+        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         print("Songs loaded")
     }
     

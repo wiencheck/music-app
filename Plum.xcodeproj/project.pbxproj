@@ -102,7 +102,6 @@
 		385C6B0B2017645E00F432C5 /* rose_border@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 385C6AEF2017645D00F432C5 /* rose_border@2x.png */; };
 		385C6B0C2017645E00F432C5 /* purple_border@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 385C6AF02017645D00F432C5 /* purple_border@3x.png */; };
 		3862783720485AA100D9CC5F /* PurchaseVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3862783620485AA100D9CC5F /* PurchaseVC.swift */; };
-		3862783920485AF600D9CC5F /* IAPHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3862783820485AF600D9CC5F /* IAPHandler.swift */; };
 		386B22752000D77100C5DCC9 /* BigSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386B22742000D77100C5DCC9 /* BigSlider.swift */; };
 		386B89F1202B81E90025E02A /* SearchBarContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386B89F0202B81E90025E02A /* SearchBarContainerView.swift */; };
 		386CD58D1F6FC3560075EFD9 /* artistAlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 386CD58C1F6FC3560075EFD9 /* artistAlbumCell.swift */; };
@@ -116,6 +115,7 @@
 		3878D5011FD7F91500A6C42B /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3878D4FF1FD7F91500A6C42B /* MainInterface.storyboard */; };
 		3878D5051FD7F91500A6C42B /* PlumWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3878D4F91FD7F91500A6C42B /* PlumWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		387C76B11FDD539300F4964E /* UpNextTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 387C76B01FDD539300F4964E /* UpNextTabBarController.swift */; };
+		3882DBF3204ED7A500638AF3 /* NowPlayingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3882DBF2204ED7A500638AF3 /* NowPlayingViewController.swift */; };
 		388A601A1FF28015009C5381 /* DummyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388A60191FF28014009C5381 /* DummyVC.swift */; };
 		388E6829201218BD00FDCD49 /* NowPlayingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388E6828201218BD00FDCD49 /* NowPlayingCell.swift */; };
 		389333AE1FDDC118004A071B /* UIImage+ProportionalFill.m in Sources */ = {isa = PBXBuildFile; fileRef = 389333AC1FDDC118004A071B /* UIImage+ProportionalFill.m */; };
@@ -283,7 +283,6 @@
 		385C6AEF2017645D00F432C5 /* rose_border@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "rose_border@2x.png"; sourceTree = "<group>"; };
 		385C6AF02017645D00F432C5 /* purple_border@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "purple_border@3x.png"; sourceTree = "<group>"; };
 		3862783620485AA100D9CC5F /* PurchaseVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseVC.swift; sourceTree = "<group>"; };
-		3862783820485AF600D9CC5F /* IAPHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPHandler.swift; sourceTree = "<group>"; };
 		386B22742000D77100C5DCC9 /* BigSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigSlider.swift; sourceTree = "<group>"; };
 		386B89F0202B81E90025E02A /* SearchBarContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarContainerView.swift; sourceTree = "<group>"; };
 		386CD58C1F6FC3560075EFD9 /* artistAlbumCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = artistAlbumCell.swift; sourceTree = "<group>"; };
@@ -298,6 +297,7 @@
 		3878D5001FD7F91500A6C42B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		3878D5021FD7F91500A6C42B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		387C76B01FDD539300F4964E /* UpNextTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpNextTabBarController.swift; sourceTree = "<group>"; };
+		3882DBF2204ED7A500638AF3 /* NowPlayingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingViewController.swift; sourceTree = "<group>"; };
 		388A60191FF28014009C5381 /* DummyVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DummyVC.swift; sourceTree = "<group>"; };
 		388E6828201218BD00FDCD49 /* NowPlayingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingCell.swift; sourceTree = "<group>"; };
 		389333A91FDDC117004A071B /* Plum-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Plum-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -529,6 +529,7 @@
 				384BCD4F1F96140600D8ECFD /* PlumTabBarController.swift */,
 				387C76B01FDD539300F4964E /* UpNextTabBarController.swift */,
 				389859EC1FDDB89700E54E55 /* PlumVolumeView.swift */,
+				3882DBF2204ED7A500638AF3 /* NowPlayingViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -559,7 +560,6 @@
 				38AF9C781F2F72A800FA73B8 /* Plum.swift */,
 				384F9BF01F7A647D0053E22C /* RemoteCommandManager.swift */,
 				3858254E1FA33A2800697186 /* SettingsStructs.swift */,
-				3862783820485AF600D9CC5F /* IAPHandler.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -888,7 +888,6 @@
 				3803CD541FBB5B1A009F5EA8 /* SearchCell.swift in Sources */,
 				38121EA31FA0856400C2A3BD /* AlbumsCollectionCell.swift in Sources */,
 				38E729521F2F422900F35780 /* SongCell.swift in Sources */,
-				3862783920485AF600D9CC5F /* IAPHandler.swift in Sources */,
 				38FFA1381F83DD950079FF4B /* ArtistCell.swift in Sources */,
 				386CD58D1F6FC3560075EFD9 /* artistAlbumCell.swift in Sources */,
 				38D142571FB367CF003F08F5 /* SearchHeader.swift in Sources */,
@@ -905,6 +904,7 @@
 				38C83D5D1FDBFBD600C7D94E /* ArtistSongs.swift in Sources */,
 				38E98BC31F70177200D29FB4 /* Ext.swift in Sources */,
 				38AF9C791F2F72A800FA73B8 /* Plum.swift in Sources */,
+				3882DBF3204ED7A500638AF3 /* NowPlayingViewController.swift in Sources */,
 				3858254F1FA33A2800697186 /* SettingsStructs.swift in Sources */,
 				38C4BCAA1F94BAF700DABE81 /* CollectionViewCell.swift in Sources */,
 				38CC1A151F9CAEA500B2AA8D /* IndexViews.swift in Sources */,

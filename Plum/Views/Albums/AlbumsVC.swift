@@ -33,9 +33,8 @@ class AlbumsVC: UIViewController {
     var filteredAlbums = [AlbumB]()
     var cellTypesSearch = [Int]()
     var shouldShowResults = false
-    var headers: [UIView]!
-    var heightInset: CGFloat!
-    var controllerSet = false
+    var headers = [UIView]()
+    var heightInset: CGFloat = 0
     var hideKeyboard = false
     var currentTheme = Theme.light
     var cellSize = CGSize()
@@ -53,18 +52,16 @@ class AlbumsVC: UIViewController {
         loadData()
         if !albums.isEmpty {
             setupDict()
-            if !controllerSet {
-                configureSearchController()
-                controllerSet = true
-            }
             reload()
             hideTable()
             //setHeaders()
         }
         NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
+        configureSearchController()
         setTitleButton()
         updateTheme()
         print("Albums loaded")
+        tableView.scrollToRow(at: .topRow, at: .top, animated: false)
     }
     
     deinit {
@@ -94,7 +91,7 @@ class AlbumsVC: UIViewController {
         self.tabBarController?.tabBar.tintColor = GlobalSettings.tint.color
         if grid != GlobalSettings.albumsGrid{
             grid = GlobalSettings.albumsGrid
-            reload()
+            //reload()
             hideTable()
         }
         definesPresentationContext = true
@@ -143,6 +140,7 @@ class AlbumsVC: UIViewController {
         gesture.minimumPressDuration = 0.2
         gesture.numberOfTouchesRequired = 1
         collectionView.addGestureRecognizer(gesture)
+        collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

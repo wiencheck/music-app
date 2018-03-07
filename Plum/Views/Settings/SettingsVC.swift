@@ -238,6 +238,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
             performSegue(withIdentifier: "lyricsSettings", sender: nil)
         case "artist":
             explainArtistsGrid()
+            //performSegue(withIdentifier: "purchase", sender: nil)
         case "album":
             explainAlbumsGrid()
         case "playlist":

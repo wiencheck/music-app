@@ -93,6 +93,8 @@ extension IndexPath{
     func isFirst() -> Bool {
         return (section == 0 && row == 0)
     }
+    
+    static let topRow = IndexPath(row: 0, section: 0)
 }
 
 public extension UIDevice {
@@ -243,6 +245,12 @@ extension UIApplication {   //Open URL
                 return
             }
         }
+    }
+}
+
+extension UITableView {
+    func scrollToFirstRow(animated: Bool) {
+        scrollToRow(at: IndexPath(row:0, section: 0), at: .top, animated: animated)
     }
 }
 

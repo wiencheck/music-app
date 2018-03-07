@@ -98,8 +98,6 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     static let previousTrackNotification = Notification.Name("previousTrackNotification")
     static let nextTrackNotification = Notification.Name("nextTrackNotification")
     static let playBackStateChanged = Notification.Name("playBackStateChanged")
-    static let queueChanged = Notification.Name("queueChanged")
-    static let trackChanged = Notification.Name("trackChanged")
     var shouldResumeAfterInterruption = false
     var timeObserverToken: Any?
     var timer: Timer!
@@ -210,8 +208,17 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
             defQueue.append(items[i])
         }
         postQueueChanged()
-        //defQueue.append(contentsOf: items)
-        //defQueueCount = defQueue.count
+    }
+    
+    func createShufQueue(items: [MPMediaItem]){
+        clearQueue()
+        defQueue.removeAll()
+        for i in 0 ..< items.count{
+            items[i].index = i
+            defQueue.append(items[i])
+        }
+        shuffleCurrent()
+        postQueueChanged()
     }
     
     func addNext(item: MPMediaItem){
@@ -401,6 +408,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
             (shufQueue[0], shufQueue[defIndex]) = (shufQueue[defIndex], shufQueue[0])
         }
         shufQueue.shuffle()
+        postQueueChanged()
         writeQueue()
     }
 
@@ -449,13 +457,9 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     var currentIndex: Int {
         get {
             var index = 0
-            if(isShuffle){
-                index = shufIndex
-            }else if(isUsrQueue){
-                index = usrIndex
-            }else if(!isShuffle){
-                index = defIndex
-            }
+            if isShuffle { index = shufIndex }
+            else { index = defIndex }
+            if isUsrQueue { index += usrIndex }
             return index
         }
     }
