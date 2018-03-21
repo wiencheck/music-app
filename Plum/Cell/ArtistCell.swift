@@ -14,14 +14,6 @@ class ArtistCell: UITableViewCell {
     @IBOutlet weak var artistImage: UIImageView!
     @IBOutlet weak var artistLabel: UILabel!
     @IBOutlet weak var detailLabel: UILabel!
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
     
     func setup(artist: Artist){
         let albumsCount = artist.albumsIn

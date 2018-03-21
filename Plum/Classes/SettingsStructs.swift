@@ -52,9 +52,7 @@ struct GlobalSettings{
     }
     static func changeRating(_ t: Bool){
         if lyrics && t {
-            if #available(iOS 10.0, *) {
-                changeLyrics(false)
-            }
+            changeLyrics(false)
             updateRatings(ratings)
         }
         self.rating = t
@@ -202,7 +200,7 @@ struct GlobalSettings{
         save(t.rawValue, key: "deploy")
     }
     static var lyrics = false
-    @available(iOS 10.0, *) static func changeLyrics(_ t: Bool) {
+    static func changeLyrics(_ t: Bool) {
         if rating && t{
             changeRating(false)
         }

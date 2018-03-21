@@ -320,20 +320,16 @@ class RemoteCommandManager: NSObject{
     }
     
     @objc func handleLyricsCommandEvent() {
-        if #available(iOS 10.0, *) {
-            let tmp = player.shouldPost
-            player.shouldPost = true
-            player.postLyrics()
-            player.shouldPost = tmp
-        }
+        let tmp = player.shouldPost
+        player.shouldPost = true
+        player.postLyrics()
+        player.shouldPost = tmp
     }
     
     @objc func handleStopLyricsCommandEvent() {
-        if #available(iOS 10.0, *) {
-            player.shouldPost = false
-            GlobalSettings.changeLyrics(false)
-            player.removeLyrics()
-        }
+        player.shouldPost = false
+        GlobalSettings.changeLyrics(false)
+        player.removeLyrics()
     }
     
     @objc func handlePreviousLyricsCommandEvent() {

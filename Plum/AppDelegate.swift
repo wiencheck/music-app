@@ -22,30 +22,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var query: musicQuery!
     var auth: Bool?
     var s: UIStoryboard!
-    var defaults: UserDefaults!
+    var defaults = UserDefaults.standard
     var rating: Bool!
     let widget = NCWidgetController.widgetController()
     var ratingDisplayed = false
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        defaults = UserDefaults.standard
         if let _ = MPMediaQuery.songs().items {
             widget.setHasContent(true, forWidgetWithBundleIdentifier: "com.wiencheck.plum.upnext")
-            let count = defaults.integer(forKey: "launchesCount")
-            if count % 3 == 0 {
-                if #available(iOS 10.3, *){
-                    let shortestTime: UInt32 = 5
-                    let longestTime: UInt32 = 10
-                    guard let timeInterval = TimeInterval(exactly: arc4random_uniform(longestTime - shortestTime) + shortestTime) else { return true }
-                    Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(requestReview), userInfo: nil, repeats: false)
-                }
-            }
-            defaults.set(count+1, forKey: "launchesCount")
-            print("Launch number \(count+1)")
+            requestReview()
             letGo()
             //GlobalSettings.device = "iPhone X"
         }else{
-            defaults.set(1, forKey: "launchesCount")
             hijack()
         }
         return true
@@ -102,18 +90,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        if #available(iOS 10.0, *) {
-            if GlobalSettings.lyrics && Plum.shared.player.rate != 0.0 {
-                Plum.shared.postLyrics()
-            }
+        if GlobalSettings.lyrics && Plum.shared.player.rate != 0.0 {
+            Plum.shared.postLyrics()
         }
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        if #available(iOS 10.0, *) {
-            Plum.shared.removeLyrics()
-        }
+        Plum.shared.removeLyrics()
         Plum.shared.shouldPost = false
     }
 
@@ -125,9 +109,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        if #available(iOS 10.0, *) {
-            Plum.shared.removeLyrics()
-        }
+        Plum.shared.removeLyrics()
         widget.setHasContent(false, forWidgetWithBundleIdentifier: "com.wiencheck.plum.upnext")
     }
 
@@ -174,6 +156,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func setInitialSettings(){
+        defaults.set(1, forKey: "launchesCount")
         if defaults.value(forKey: "device") == nil {
             defaults.set(UIDevice.current.modelName, forKey: "device")
         }
@@ -317,9 +300,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.bool(forKey: "rating") {
             GlobalSettings.changeRating(defaults.bool(forKey: "rating"))
         }else if defaults.bool(forKey: "lyrics") {
-            if #available(iOS 10.0, *) {
-                GlobalSettings.changeLyrics(defaults.bool(forKey: "lyrics"))
-            }
+            GlobalSettings.changeLyrics(defaults.bool(forKey: "lyrics"))
         }
         if let alg = defaults.value(forKey: "albumsGrid") as? Bool {
             GlobalSettings.changeAlbums(grid: alg)
@@ -395,7 +376,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     @available(iOS 10.3, *) @objc func requestReview() {
-        SKStoreReviewController.requestReview()
+        let count = defaults.integer(forKey: "launchesCount")
+        if count % 3 == 0 {
+            if #available(iOS 10.3, *){
+                let shortestTime: UInt32 = 5
+                let longestTime: UInt32 = 10
+                guard let timeInterval = TimeInterval(exactly: arc4random_uniform(longestTime - shortestTime) + shortestTime) else { return true }
+                Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(SKStoreReviewController.requestReview), userInfo: nil, repeats: false)
+            }
+        }
+        defaults.set(count+1, forKey: "launchesCount")
     }
     
 }

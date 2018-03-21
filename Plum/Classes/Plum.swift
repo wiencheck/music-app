@@ -426,9 +426,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
                 print("player is already playing")
             }
         }
-        if #available(iOS 10.0, *) {
-            if shouldPost && GlobalSettings.lyrics { postLyrics() }
-        }
+        if shouldPost && GlobalSettings.lyrics { postLyrics() }
     }
     
     func pause(){
@@ -762,7 +760,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         writeQueue()
     }
     
-    @available(iOS 10.0, *) func registerforDeviceLockNotification() {
+    func registerforDeviceLockNotification() {
         //Screen lock notifications
         CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),     //center
             Unmanaged.passUnretained(self).toOpaque(),     // observer
@@ -778,7 +776,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
             .deliverImmediately)
     }
     
-    @available(iOS 10.0, *) func unRegisterLockNotification() {
+    func unRegisterLockNotification() {
         CFNotificationCenterRemoveObserver(CFNotificationCenterGetLocalCenter(),
                                            Unmanaged.passUnretained(self).toOpaque(),
                                            nil,
@@ -789,14 +787,11 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         guard let lockState = cfName?.rawValue as String? else {
             return
         }
-        
         let catcher = Unmanaged<Plum>.fromOpaque(UnsafeRawPointer(OpaquePointer(cfObserver)!)).takeUnretainedValue()
-        if #available(iOS 10.0, *) {
-            catcher.displayStatusChanged(lockState)
-        }
+        catcher.displayStatusChanged(lockState)
     }
     
-    @available(iOS 10.0, *) private func displayStatusChanged(_ lockState: String) {
+    private func displayStatusChanged(_ lockState: String) {
         if (lockState == "com.apple.springboard.lockcomplete") {
             if GlobalSettings.lyrics {
                 shouldPost = true
@@ -823,7 +818,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         NotificationCenter.default.post(name: .queueChanged, object: nil)
     }
     
-    @available(iOS 10.0, *) func postLyrics() {
+    func postLyrics() {
         if currentItem != nil && shouldPost && player.isPlaying {
             let content = UNMutableNotificationContent()
             let ass = AVAsset(url: (currentItem?.assetURL)!)
@@ -850,7 +845,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         }
     }
     
-    @available(iOS 10.0, *) func removeLyrics() {
+    func removeLyrics() {
         UNUserNotificationCenter.current().removeDeliveredNotifications(withIdentifiers: ["lyricsOnLS"])
         lyricsPosted = false
     }

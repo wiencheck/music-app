@@ -17,11 +17,6 @@ class ArtistUpCell: UITableViewCell {
     @IBOutlet weak var artwork: UIImageView!
     @IBOutlet weak var duration: UILabel!
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
     func setup(item: MPMediaItem){
         self.title.text = item.title
         self.album.text = item.albumTitle ?? "Unknown Album"

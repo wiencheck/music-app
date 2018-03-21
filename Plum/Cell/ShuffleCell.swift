@@ -12,21 +12,11 @@ class ShuffleCell: UITableViewCell {
     
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var icon: UIImageView!
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
     
     func setup(style: Theme) {
         label.textColor = UIColor.mainLabel
         label.text = "Shuffle"
         icon.image = #imageLiteral(resourceName: "shuffle")
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
 
 }
