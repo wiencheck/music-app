@@ -15,17 +15,6 @@ class SongCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var artAlLabel: UILabel!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-    
     func setup(item: MPMediaItem){
         titleLabel.text = item.title
         titleLabel.textColor = UIColor.mainLabel
@@ -81,13 +70,5 @@ class SongCell: UITableViewCell {
         }
         artAlLabel.attributedText = nart
     }
-    
-    /*func editString(artAl: String, artistLetters: Int, albumLetters: Int) -> NSMutableAttributedString{
-        var editedArtAl: NSMutableAttributedString
-        let range = NSRange(location: artistLetters, length: albumLetters)
-        editedArtAl = NSMutableAttributedString(string: artAl)
-        editedArtAl.addAttribute(NSAttributedStringKey.foregroundColor, value: UIColor.gray, range: range)
-        return editedArtAl
-    }*/
 
 }

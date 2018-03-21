@@ -16,17 +16,6 @@ class QueueCell: UITableViewCell {
     @IBOutlet weak var artwork: UIImageView!
     var tapCallback: ((QueueCell) -> ())?
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-    
     func addTap(){
         if self.gestureRecognizers == nil{
             let gesture = UITapGestureRecognizer(target: self, action: #selector(artworkTap(_:)))
@@ -45,20 +34,6 @@ class QueueCell: UITableViewCell {
         self.title.text = item.title
         if GlobalSettings.rating {
             self.artist.text = "\(item.artist ?? "Unknown artist") - \(item.labelFromRating())"
-            /*switch item.rating {
-            case 1:
-                self.artist.text = "\(item.artist ?? "Unknown artist") - ★☆☆☆☆"
-            case 2:
-                self.artist.text = "\(item.artist ?? "Unknown artist") - ★★☆☆☆"
-            case 3:
-                self.artist.text = "\(item.artist ?? "Unknown artist") - ★★★☆☆"
-            case 4:
-                self.artist.text = "\(item.artist ?? "Unknown artist") - ★★★★☆"
-            case 5:
-                self.artist.text = "\(item.artist ?? "Unknown artist") - ★★★★★"
-            default:
-                self.artist.text = "\(item.artist ?? "Unknown artist")"
-            }*/
         }else{
             self.artist.text = item.artist ?? "Unknown artist"
         }
