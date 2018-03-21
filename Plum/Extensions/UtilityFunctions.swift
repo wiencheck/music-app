@@ -33,4 +33,8 @@ public func calculateCollectionViewCellSize(itemsPerRow: Int, frame: CGRect, dev
     }
 }
 
+public func setStatusBar(style: UIStatusBarStyle) {
+    UIApplication.shared.statusBarStyle = style
+}
+
 

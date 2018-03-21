@@ -160,7 +160,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     func setCollection(){
-        cellSize = calculateCollectionViewCellSize(itemsPerRow: 3, frame: self.view.frame)
+        cellSize = calculateCollectionViewCellSize(itemsPerRow: 3, frame: self.view.frame, device: GlobalSettings.device)
         collectionView.delegate = self
         collectionView.dataSource = self
         //self.view.addSubview(collectionView)

@@ -271,8 +271,8 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
             if indexPath.section == 0 && indexPath.row == 0 {
                 shuffleAll()
             }else{
-                var tmp = 0
-                if indexPath.section == 0 { tmp = 1 }
+//                var tmp = 0
+//                if indexPath.section == 0 { tmp = 1 }
                 absoluteIndex = indexPath.absoluteRow(tableView) - 1
                 activeIndexRow = indexPath.row
                 activeIndexSection = indexPath.section

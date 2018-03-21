@@ -18,7 +18,7 @@ class PurchaseVC: UIViewController {
                 let receipt = try Data(contentsOf: url)
                 let json = try JSONSerialization.jsonObject(with: receipt, options: []) as? [String: String]
                 let version = json!["original_application_version"]
-                print(version)
+                print(String(describing: version))
             }catch let err {
                 print(err)
             }
