@@ -14,10 +14,5 @@ class ColoredAlertController: UIAlertController {
         super.viewWillLayoutSubviews()
         self.view.tintColor = GlobalSettings.tint.color
     }
-    
-    init(color: UIColor) {
-        super.init()
-        self.view.tintColor = color
-    }
 
 }

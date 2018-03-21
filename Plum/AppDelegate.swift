@@ -30,8 +30,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         if let _ = MPMediaQuery.songs().items {
             widget.setHasContent(true, forWidgetWithBundleIdentifier: "com.wiencheck.plum.upnext")
-            requestReview()
+            if #available(iOS 10.3, *) {
+                requestReview()
+            }
             letGo()
+            //UIApplication.shared.isStatusBarHidden = false
             //GlobalSettings.device = "iPhone X"
         }else{
             hijack()
@@ -378,12 +381,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     @available(iOS 10.3, *) @objc func requestReview() {
         let count = defaults.integer(forKey: "launchesCount")
         if count % 3 == 0 {
-            if #available(iOS 10.3, *){
-                let shortestTime: UInt32 = 5
-                let longestTime: UInt32 = 10
-                guard let timeInterval = TimeInterval(exactly: arc4random_uniform(longestTime - shortestTime) + shortestTime) else { return true }
-                Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(SKStoreReviewController.requestReview), userInfo: nil, repeats: false)
-            }
+            let shortestTime: UInt32 = 5
+            let longestTime: UInt32 = 10
+            guard let timeInterval = TimeInterval(exactly: arc4random_uniform(longestTime - shortestTime) + shortestTime) else { return }
+            Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(SKStoreReviewController.requestReview), userInfo: nil, repeats: false)
         }
         defaults.set(count+1, forKey: "launchesCount")
     }

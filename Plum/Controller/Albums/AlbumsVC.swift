@@ -143,7 +143,7 @@ class AlbumsVC: UIViewController {
     }
     
     func setCollection(){
-        cellSize = calculateCollectionViewCellSize(itemsPerRow: 3, frame: self.view.frame)
+        cellSize = calculateCollectionViewCellSize(itemsPerRow: 3, frame: self.view.frame, device: GlobalSettings.device)
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         collectionIndexView.collectionView = collectionView

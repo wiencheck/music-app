@@ -16,4 +16,5 @@ extension UIStatusBarStyle {
             UIApplication.shared.statusBarStyle = newValue
         }
     }
+    static var themed = UIStatusBarStyle.default
 }

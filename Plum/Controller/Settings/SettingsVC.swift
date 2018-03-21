@@ -137,7 +137,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
             }
             GlobalSettings.changeLyrics(sender.isOn)
         }else{
-            updatePrompt()
+            GlobalSettings.changeLyrics(sender.isOn)
         }
     }
     

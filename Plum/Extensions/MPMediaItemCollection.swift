@@ -9,14 +9,15 @@
 import Foundation
 import MediaPlayer
 
-extension MPMediaItemCollection{
-    var duration: String!{
-        get{
-            var tmp: TimeInterval = 0
-            for i in 0...self.count{
-                tmp = tmp + items[i].playbackDuration
-            }
-            return objc_getAssociatedObject(tmp.calculateFromTimeInterval(), &xoAssociationKey) as? String
-        }
-    }
-}
+//extension MPMediaItemCollection{
+//    var duration: String!{
+//        get{
+//            var tmp: TimeInterval = 0
+//            for i in 0...self.count{
+//                tmp = tmp + items[i].playbackDuration
+//            }
+//            return objc_getAssociatedObject(tmp.calculateFromTimeInterval(), &xoAssociationKey) as? String
+//        }
+//    }
+//}
+

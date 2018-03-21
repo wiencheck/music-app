@@ -287,8 +287,8 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
     
     @objc func updateTheme() {
         if color {
-            guard let art = songs.first!.artwork?.image(at: CGSize(width: 300, height: 300)) else{return}
-            let colors = art.getColors()
+            guard let art = songs.first!.artwork?.image(at: CGSize(width: 300, height: 300)) else { return }
+            let _ = art.getColors()
             
         }else{
             if GlobalSettings.theme == .dark {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="eQB-2H-vsz">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="NfQ-YD-GoL">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -9,57 +9,40 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Stay tuned-->
-        <scene sceneID="EHf-IW-A2E">
+        <!--View Controller-->
+        <scene sceneID="JLE-is-7u4">
             <objects>
-                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                <viewController id="NfQ-YD-GoL" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Llm-lL-Icb"/>
-                        <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
+                        <viewControllerLayoutGuide type="top" id="TX3-IU-gVP"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ay0-x2-kNy"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                    <view key="view" contentMode="scaleToFill" id="FiN-0i-uph">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tabBar contentMode="scaleToFill" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="UbL-R5-4by">
-                                <rect key="frame" x="0.0" y="618" width="375" height="49"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <items>
-                                    <tabBarItem title="Loading..." id="E44-bA-RB1"/>
-                                </items>
-                            </tabBar>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash" translatesAutoresizingMaskIntoConstraints="NO" id="rF4-tY-AZp">
+                                <rect key="frame" x="97" y="243.5" width="180" height="180"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="180" id="6Sj-P6-ZaK"/>
+                                    <constraint firstAttribute="height" constant="180" id="hsf-qQ-i3u"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.21173727510000001" green="0.21178042890000001" blue="0.21173459289999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="UbL-R5-4by" secondAttribute="trailing" id="9yI-0q-G1L"/>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="UbL-R5-4by" secondAttribute="bottom" id="pBg-oe-CgN"/>
-                            <constraint firstItem="UbL-R5-4by" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="wT8-Zw-rz7"/>
+                            <constraint firstItem="rF4-tY-AZp" firstAttribute="centerY" secondItem="FiN-0i-uph" secondAttribute="centerY" id="GTf-WY-usT"/>
+                            <constraint firstItem="rF4-tY-AZp" firstAttribute="centerX" secondItem="FiN-0i-uph" secondAttribute="centerX" id="TWu-wY-DeW"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Stay tuned" id="k8V-4y-4vq"/>
+                    <navigationItem key="navigationItem" id="Eam-iO-ASO"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gNk-4j-IIB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="304.80000000000001" y="373.76311844077964"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="ujX-pd-5fm">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="eQB-2H-vsz" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" prompted="NO"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="wnO-zT-3S3">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="01J-lp-oVM" kind="relationship" relationship="rootViewController" id="weF-Gp-rM8"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="noc-xg-lvv" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-214" y="374"/>
+            <point key="canvasLocation" x="645.60000000000002" y="373.76311844077964"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="splash" width="1000" height="1000"/>
+    </resources>
 </document>
