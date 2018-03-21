@@ -14,6 +14,11 @@ import AVKit
 import UserNotifications
 import NotificationCenter
 
+enum PlaybackMode {
+    case shuffled
+    case normal
+}
+
 public class Plum: NSObject, AVAudioPlayerDelegate{
     static let shared = Plum()
     let infoCC = MPNowPlayingInfoCenter.default()
@@ -30,11 +35,18 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     @objc var currentItem: MPMediaItem?
     var wasLoaded: Bool!
     var defQueue = [MPMediaItem]()
-    var defIndex: Int!
+    var defIndex = 0
     var isUsrQueue: Bool!
     var usrQueue = [MPMediaItem]()
     var userQueueIndex: Int!
     var usrIndex: Int!
+    var usrCount = 0
+    var usrStartIndex = 0
+    var usrEndIndex: Int {
+        get{
+            return usrStartIndex + usrCount
+        }
+    }
     var isShuffle: Bool!
     var isRepeat: Bool!
     var shufQueue = [MPMediaItem]()
@@ -233,6 +245,18 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         postQueueChanged()
     }
     
+    func addNextB(item: MPMediaItem){
+        isUsrQueue = true
+        if isShuffle {
+            shufQueue.insert(item, at: shufIndex + 1)
+        }else{
+            defQueue.insert(item, at: defIndex + 1)
+        }
+        usrCount += 1
+        writeQueue()
+        postQueueChanged()
+    }
+    
     func addLast(item: MPMediaItem){
         if(!isUsrQueue){
             isUsrQueue = true
@@ -241,6 +265,17 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         }else{
             usrQueue.append(item)
         }
+        writeQueue()
+        postQueueChanged()
+    }
+    
+    func addLastB(item: MPMediaItem){
+        if isShuffle {
+            shufQueue.append(item)
+        }else{
+            defQueue.append(item)
+        }
+        isUsrQueue = true
         writeQueue()
         postQueueChanged()
     }
@@ -289,6 +324,26 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         //postTrackChanged()
     }
     
+    func nextB() {
+        timer.invalidate()
+        if isShuffle {
+            if shufIsAnyAfter {
+                playFromShufQueue(index: shufIndex+1, new: true)
+            }else{
+                playFromShufQueue(index: 0, new: true)
+            }
+            if shufIndex > usrEndIndex {
+                
+            }
+        }else{
+            if defIsAnyAfter {
+                playFromDefQueue(index: defIndex+1, new: true)
+            }else{
+                playFromDefQueue(index: 0, new: true)
+            }
+        }
+    }
+    
     func prev(){
         timer.invalidate()
         if(player.currentTime < 3){
@@ -318,6 +373,28 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
             //postTrackChanged()
         }
         else{
+            player.currentTime = 0.0
+            MPNowPlayingInfoCenter.default().nowPlayingInfo![MPNowPlayingInfoPropertyElapsedPlaybackTime] = 0.0
+        }
+    }
+    
+    func prevB() {
+        timer.invalidate()
+        if player.currentTime < 3.0 {
+            if isShuffle {
+                if shufIsAnyBefore {
+                    playFromShufQueue(index: shufIndex-1, new: true)
+                }else{
+                    playFromShufQueue(index: shufQueue.count-1, new: true)
+                }
+            }else{
+                if defIsAnyBefore {
+                    playFromDefQueue(index: defIndex-1, new: true)
+                }else{
+                    playFromDefQueue(index: defQueue.count-1, new: true)
+                }
+            }
+        }else{
             player.currentTime = 0.0
             MPNowPlayingInfoCenter.default().nowPlayingInfo![MPNowPlayingInfoPropertyElapsedPlaybackTime] = 0.0
         }
@@ -411,11 +488,35 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         postQueueChanged()
         writeQueue()
     }
+    
+    func shuffleCurrentB() {
+        var userQueue = [MPMediaItem]()
+        shufQueue.removeAll()
+        shufQueue = defQueue
+        if usrCount > 0 {
+            for i in defIndex+1 ..< defIndex+usrCount {
+                userQueue.append(defQueue[i])
+            }
+            for _ in defIndex+1 ..< defIndex+usrCount { shufQueue.remove(at: defIndex+1) }
+        }
+        /* Removing user songs from shuffle Queue because we want them to stay untouched, so we will place them in the same position after shuffling */
+        if defIndex != 0 {
+            (shufQueue[0], shufQueue[defIndex]) = (shufQueue[defIndex], shufQueue[0])
+        }
+        shufQueue.shuffle()
+        shufIndex = 0
+        for i in (0 ..< usrCount).reversed() {
+            shufQueue.insert(userQueue[i], at: shufIndex+1)
+        }
+        isShuffle = true
+        postQueueChanged()
+        writeQueue()
+    }
 
     func disableShuffle(){
         isShuffle = false
         shufIndex = 0
-        defIndex = currentItem?.index
+        defIndex = (currentItem?.index)!
         shufQueue.removeAll()
         writeQueue()
     }
@@ -659,65 +760,6 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
             self.playFromDefQueue(index: index, new: new)
         }
         writeQueue()
-    }
-    
-    func setNextPrev() -> (prev: MPMediaItem?, next: MPMediaItem?){
-        var prev: MPMediaItem?
-        var next: MPMediaItem?
-        
-        if isUsrQueue{
-            if usrQueue[usrIndex-1].assetURL != nil{
-                prev = usrQueue[usrIndex-1]
-            }else{
-                if isShuffle{
-                    if shufQueue[shufIndex-1].assetURL != nil{
-                        prev = shufQueue[shufIndex-1]
-                    }else{
-                        prev = nil
-                    }
-                }else{
-                    if defQueue[defIndex-1].assetURL != nil{
-                        prev = defQueue[defIndex-1]
-                    }else{
-                        prev = nil
-                    }
-                }
-            }
-            if usrQueue[usrIndex+1].assetURL != nil{
-                next = usrQueue[usrIndex+1]
-            }else{
-                if isShuffle{
-                    if shufQueue[shufIndex+1].assetURL != nil{
-                        next = shufQueue[shufIndex+1]
-                    }else{
-                        next = nil
-                    }
-                }else{
-                    if defQueue[defIndex+1].assetURL != nil{
-                        next = defQueue[defIndex+1]
-                    }else{
-                        next = nil
-                    }
-                }
-            }
-        }else{
-            if isShuffle{
-                if shufQueue[shufIndex-1].assetURL != nil{
-                    prev = shufQueue[shufIndex-1]
-                }
-                if shufQueue[shufIndex+1].assetURL != nil{
-                    next = shufQueue[shufIndex+1]
-                }
-            }else{
-                if defQueue[defIndex-1].assetURL != nil{
-                    prev = defQueue[defIndex-1]
-                }
-                if defQueue[defIndex+1].assetURL != nil{
-                    next = defQueue[defIndex+1]
-                }
-            }
-        }
-        return (prev, next)
     }
     
     @available(iOS 10.0, *) func registerforDeviceLockNotification() {

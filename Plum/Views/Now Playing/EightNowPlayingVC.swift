@@ -146,7 +146,12 @@ class EightNowPlayingVC: NowPlayingViewController {
         }
     }
     
-    
+    @IBAction func ratingHeld() {
+        let settings = storyboard?.instantiateViewController(withIdentifier: "ratingSettings")
+        settings?.modalPresentationStyle = .overCurrentContext
+        settings?.modalTransitionStyle = .flipHorizontal
+        present(settings!, animated: true, completion: nil)
+    }
     
     @IBAction func lyricsModePressed() {
         if #available(iOS 10.0, *) {

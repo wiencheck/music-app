@@ -44,12 +44,14 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
         tabBarController?.delegate = self
+        setInsets()
         if musicQuery.shared.songsSet{
             songs = musicQuery.shared.songs
         }else{
             songs = musicQuery.shared.allSongs()
         }
         //songs.append(contentsOf: musicQuery.shared.allPodcasts())
+        tableView.tableFooterView = UIView(frame: .zero)
         if !songs.isEmpty {
             tableView.delegate = self
             tableView.dataSource = self
@@ -62,12 +64,11 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
             indexView.tableView = self.tableView
             indexView.setup()
             view.bringSubview(toFront: indexView)
+            //tableView.scrollToFirstRow(animated: false)
         }
-        tableView.tableFooterView = UIView(frame: .zero)
         configureSearchController()
         setTitleButton()
         setTheme()
-        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         print("Songs loaded")
     }
     
@@ -110,6 +111,21 @@ class SongsVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIG
 //        }
         tableView.reloadData()
         definesPresentationContext = true
+    }
+    
+    func setInsets() {
+        if device == "iPhone X" {
+            heightInset = 88
+        }else{
+            heightInset = 64
+        }
+        automaticallyAdjustsScrollViewInsets = false
+        let bottomInset = 49 + GlobalSettings.bottomInset
+        if #available(iOS 11.0, *) {
+            tableView.contentInsetAdjustmentBehavior = .never
+        }
+        tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        tableView.scrollIndicatorInsets = tableView.contentInset
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -618,18 +634,6 @@ extension SongsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchController.searchBar.clipsToBounds = true
         searchView = SearchBarContainerView(customSearchBar: searchController.searchBar)
         searchView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44)
-        if device == "iPhone X" {
-            heightInset = 88
-        }else{
-            heightInset = 64
-        }
-        automaticallyAdjustsScrollViewInsets = false
-        let bottomInset = 49 + GlobalSettings.bottomInset
-        if #available(iOS 11.0, *) {
-            tableView.contentInsetAdjustmentBehavior = .never
-        }
-        tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
-        tableView.scrollIndicatorInsets = tableView.contentInset
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

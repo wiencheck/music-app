@@ -50,6 +50,7 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
         NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
         currentTheme = GlobalSettings.theme
+        setInsets()
         loadData()
         if !artists.isEmpty {
             setupDict()
@@ -60,7 +61,6 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         setTitleButton()
         updateTheme()
         print("Artists loaded")
-        tableView.scrollToRow(at: .topRow, at: .top, animated: false)
     }
     
     private func loadData() {
@@ -96,6 +96,24 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
 //            //view.bringSubview(toFront: tableIndexView)
 //            tableView.tableFooterView = UIView(frame: .zero)
 //        }
+    }
+    
+    func setInsets() {
+        if device == "iPhone X" {
+            heightInset = 88
+        }else{
+            heightInset = 64
+        }
+        automaticallyAdjustsScrollViewInsets = false
+        let bottomInset = 49 + GlobalSettings.bottomInset
+        if #available(iOS 11.0, *) {
+            tableView.contentInsetAdjustmentBehavior = .never
+            collectionView.contentInsetAdjustmentBehavior = .never
+        }
+        collectionView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
     }
     
     deinit {
@@ -155,6 +173,8 @@ class ArtistsVC: UIViewController, UIGestureRecognizerDelegate {
         }
         let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout
         layout?.sectionHeadersPinToVisibleBounds = true
+        layout?.headerReferenceSize = CGSize(width: view.frame.width, height: 27)
+        layout?.sectionInset = UIEdgeInsetsMake(10, 6, 10, 6)
         collectionIndexView.indexes = self.indexes
         collectionIndexView.collectionView = self.collectionView
         collectionIndexView.setup()
@@ -657,21 +677,6 @@ extension ArtistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchController.searchBar.isTranslucent = true
         searchView = SearchBarContainerView(customSearchBar: searchController.searchBar)
         searchView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44)
-        if device == "iPhone X" {
-            heightInset = 88
-        }else{
-            heightInset = 64
-        }
-        automaticallyAdjustsScrollViewInsets = false
-        let bottomInset = 49 + GlobalSettings.bottomInset
-        if #available(iOS 11.0, *) {
-            tableView.contentInsetAdjustmentBehavior = .never
-            collectionView.contentInsetAdjustmentBehavior = .never
-        }
-        collectionView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
-        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
-        tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
-        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

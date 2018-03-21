@@ -11,10 +11,20 @@ import StoreKit
 
 class PurchaseVC: UIViewController {
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        if let url = Bundle.main.appStoreReceiptURL {
+            do {
+                let receipt = try Data(contentsOf: url)
+                let json = try JSONSerialization.jsonObject(with: receipt, options: []) as? [String: String]
+                let version = json!["original_application_version"]
+                print(version)
+            }catch let err {
+                print(err)
+            }
+        }else{
+            print("No receipt URL found!")
+        }
         // Do any additional setup after loading the view.
     }
 
@@ -23,13 +33,13 @@ class PurchaseVC: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func purchasePressed() {
-        checkUserBoughtApp()
-    }
+//    @IBAction func purchasePressed() {
+//        checkUserBoughtApp()
+//    }
 
 }
 
-extension PurchaseVC: SKRequestDelegate {  //IAP stuff
+/*extension PurchaseVC: SKRequestDelegate {  //IAP stuff
     
     func checkUserBoughtApp() {
         let appUrl = Bundle.main.appStoreReceiptURL
@@ -55,4 +65,4 @@ extension PurchaseVC: SKRequestDelegate {  //IAP stuff
         print(error)
     }
     
-}
+}*/

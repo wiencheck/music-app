@@ -49,6 +49,7 @@ class AlbumsVC: UIViewController {
         tableIndexView.isHidden = true
         collectionIndexView.isHidden = true
         grid = GlobalSettings.albumsGrid
+        setInsets()
         loadData()
         if !albums.isEmpty {
             setupDict()
@@ -56,12 +57,12 @@ class AlbumsVC: UIViewController {
             hideTable()
             //setHeaders()
         }
-        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
         configureSearchController()
         setTitleButton()
         updateTheme()
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
+
         print("Albums loaded")
-        tableView.scrollToRow(at: .topRow, at: .top, animated: false)
     }
     
     deinit {
@@ -85,6 +86,24 @@ class AlbumsVC: UIViewController {
         }else{
             albums = musicQuery.shared.allAlbums()
         }
+    }
+    
+    func setInsets() {
+        if device == "iPhone X" {
+            heightInset = 88
+        }else{
+            heightInset = 64
+        }
+        automaticallyAdjustsScrollViewInsets = false
+        let bottomInset = 49 + GlobalSettings.bottomInset
+        if #available(iOS 11.0, *) {
+            tableView.contentInsetAdjustmentBehavior = .never
+            collectionView.contentInsetAdjustmentBehavior = .never
+        }
+        collectionView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -136,6 +155,7 @@ class AlbumsVC: UIViewController {
         let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout
         layout?.sectionHeadersPinToVisibleBounds = true
         layout?.headerReferenceSize = CGSize(width: view.frame.width, height: 27)
+        layout?.sectionInset = UIEdgeInsetsMake(10, 6, 10, 6)
         gesture = UILongPressGestureRecognizer(target: self, action: #selector(longPress(_:)))
         gesture.minimumPressDuration = 0.2
         gesture.numberOfTouchesRequired = 1
@@ -500,21 +520,6 @@ extension AlbumsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchController.searchBar.isTranslucent = true
         searchView = SearchBarContainerView(customSearchBar: searchController.searchBar)
         searchView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44)
-        if device == "iPhone X" {
-            heightInset = 88
-        }else{
-            heightInset = 64
-        }
-        automaticallyAdjustsScrollViewInsets = false
-        let bottomInset = 49 + GlobalSettings.bottomInset
-        if #available(iOS 11.0, *) {
-            tableView.contentInsetAdjustmentBehavior = .never
-            collectionView.contentInsetAdjustmentBehavior = .never
-        }
-        collectionView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
-        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
-        tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
-        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

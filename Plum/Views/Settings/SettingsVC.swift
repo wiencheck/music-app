@@ -54,6 +54,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     @IBOutlet weak var landI: UILabel!
     @IBOutlet weak var oledL: UILabel!
     @IBOutlet weak var ratingsInL: UILabel!
+    @IBOutlet weak var receiptL: UILabel!
     var timer: Timer!
 
     override func viewDidLoad() {
@@ -251,6 +252,8 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
             icons()
         case "info":
             review()
+        case "receipt":
+            checkBoughtVersion()
         default:
             selfExplanatory()
         }
@@ -470,6 +473,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         storeBtn.tintColor = GlobalSettings.tint.color
         authorLabel.textColor = UIColor.mainLabel
         appNameLabel.textColor = UIColor.mainLabel
+        receiptL.textColor = UIColor.mainLabel
         attributedInfo()
     }
     
@@ -589,6 +593,31 @@ extension SettingsVC {  //Kontakt/Info
     func openStore() {
         let store = URL(string: "https://itunes.apple.com/us/app/plum-music-player/id1331897871?mt=8")
         UIApplication.shared.open(store!, options: [:], completionHandler: nil)
+    }
+    
+    func checkBoughtVersion() {
+        var _title = ""
+        var message = ""
+        if let url = Bundle.main.appStoreReceiptURL {
+            do {
+                let receipt = try Data(contentsOf: url)
+                let json = try JSONSerialization.jsonObject(with: receipt, options: []) as? [String: String]
+                guard let version = json!["original_application_version"] else { return }
+                _title = version
+                message = "Thanks for buying Plum!"
+            }catch let err {
+                print(err)
+                _title = "Error"
+                message = "Could not find App Store receipt"
+            }
+        }else{
+            _title = "Error"
+            message = "Could not find App Store receipt"
+        }
+        let alert = ColoredAlertController(title: _title, message: message, preferredStyle: .alert)
+        let ok = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
+        alert.addAction(ok)
+        present(alert, animated: true, completion: nil)
     }
     
 }

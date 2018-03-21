@@ -48,6 +48,7 @@ class PlaylistsVC: UIViewController {
         super.viewDidLoad()
         tabBarController?.delegate = self
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
+        setInsets()
         setup()
         if !playlists.isEmpty {
             setupDict()
@@ -61,7 +62,6 @@ class PlaylistsVC: UIViewController {
         setTheme()
         NotificationCenter.default.addObserver(self, selector: #selector(setTheme), name: .themeChanged, object: nil)
         print("Playlists loaded")
-        tableView.scrollToFirstRow(animated: false)
     }
     
     func reload() {
@@ -79,6 +79,24 @@ class PlaylistsVC: UIViewController {
             collectionIndexView.isHidden = true
             //setTable()
         }
+    }
+    
+    func setInsets() {
+        if device == "iPhone X" {
+            heightInset = 88
+        }else{
+            heightInset = 64
+        }
+        automaticallyAdjustsScrollViewInsets = false
+        let bottomInset = 49 + GlobalSettings.bottomInset
+        if #available(iOS 11.0, *) {
+            tableView.contentInsetAdjustmentBehavior = .never
+            collectionView.contentInsetAdjustmentBehavior = .never
+        }
+        collectionView.contentInset = UIEdgeInsetsMake(heightInset+10, 0, bottomInset, 0)
+        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset+10, 0, bottomInset, 0)
+        tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
     }
     
     deinit {
@@ -126,6 +144,10 @@ class PlaylistsVC: UIViewController {
         gesture.minimumPressDuration = 0.3
         gesture.numberOfTouchesRequired = 1
         collectionView.addGestureRecognizer(gesture)
+        let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout
+        layout?.sectionHeadersPinToVisibleBounds = true
+        //layout?.headerReferenceSize = CGSize(width: view.frame.width, height: 27)
+        layout?.sectionInset = UIEdgeInsetsMake(6, 6, 10, 6)
         self.collectionIndexView.indexes = self.indexes
         self.collectionIndexView.collectionView = self.collectionView
         self.collectionIndexView.setup()
@@ -574,21 +596,6 @@ extension PlaylistsVC: UISearchBarDelegate, UISearchResultsUpdating {
         searchController.searchBar.isTranslucent = true
         searchView = SearchBarContainerView(customSearchBar: searchController.searchBar)
         searchView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44)
-        if device == "iPhone X" {
-            heightInset = 88
-        }else{
-            heightInset = 64
-        }
-        automaticallyAdjustsScrollViewInsets = false
-        let bottomInset = 49 + GlobalSettings.bottomInset
-        if #available(iOS 11.0, *) {
-            tableView.contentInsetAdjustmentBehavior = .never
-            collectionView.contentInsetAdjustmentBehavior = .never
-        }
-        collectionView.contentInset = UIEdgeInsetsMake(heightInset+10, 0, bottomInset, 0)
-        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset+10, 0, bottomInset, 0)
-        tableView.contentInset = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
-        tableView.scrollIndicatorInsets = UIEdgeInsetsMake(heightInset, 0, bottomInset, 0)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

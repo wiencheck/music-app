@@ -220,7 +220,7 @@ extension QueueVC: UITableViewDelegate, UITableViewDataSource {     //TableView 
                 }else{
                     help = player.defIndex - (tableView.numberOfRows(inSection: 0) - fromIndexPath.row) - 1
                     player.defQueue.remove(at: help)
-                    player.defIndex! -= 1
+                    player.defIndex -= 1
                 }
             }else if fromIndexPath.section == 2 {
                 if player.isShuffle {
