@@ -72,7 +72,6 @@ class PlaylistVC: UIViewController, UIGestureRecognizerDelegate {
         }else{
             navBarBlurBackground.heightAnchor.constraint(equalToConstant: 64).isActive = true
         }
-        //navBarBackground.alpha = alpha
     }
     
     deinit {
@@ -192,17 +191,20 @@ extension PlaylistVC: UITableViewDelegate, UITableViewDataSource, QueueCellDeleg
             if cellTypesSearch[indexPath.row] != 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as! QueueActionsCell
                 cell.delegate = self
+                cell.backgroundColor = .clear
                 return cell
             }else{
                 let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! SongCell
                 let item = filteredSongs[indexPath.row]
                 cell.setup(item: item)
+                cell.backgroundColor = .clear
                 return cell
             }
         }else{
             if indexPath.section == 0 && indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath) as! ShuffleCell
                 cell.setup(style: .light)
+                cell.backgroundColor = .clear
                 return cell
             }else{
                 var tmp = 0
@@ -738,3 +740,25 @@ extension PlaylistVC: UITabBarControllerDelegate {
         }
     }
 }
+
+/* Handle purchase events */
+//extension PlaylistVC {
+//    
+//    func registerTrialObserver() {
+//        NotificationCenter.default.addObserver(self, selector: #selector(handleUnlockChangedNotification(_:)), name: .unlockChanged, object: nil)
+//    }
+//    
+//    func unregisterTrialObserver() {
+//        NotificationCenter.default.removeObserver(self, name: .unlockChanged, object: nil)
+//    }
+//    
+//    @objc func handleUnlockChangedNotification(_ sender: Notification) {
+//        shouldUnlockFeatures(GlobalSettings.unlock)
+//    }
+//    
+//    func shouldUnlockFeatures(_ should: Bool) {
+//        themeBtn.isEnabled = should
+//        updateTheme()
+//    }
+//}
+

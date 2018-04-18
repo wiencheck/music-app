@@ -92,6 +92,7 @@ class SetRatingsVC: UITableViewController {
                 cell.textLabel?.text = "Only in app"
             }
         }
+        cell.backgroundColor = .clear
         return cell
     }
     

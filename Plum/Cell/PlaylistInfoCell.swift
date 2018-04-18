@@ -15,7 +15,7 @@ class PlaylistInfoCell: UITableViewCell {
     @IBOutlet weak var mainLabel: UILabel!
     @IBOutlet weak var detailLabel: UILabel!
     @IBOutlet weak var toolbar: UIToolbar!
-    @IBOutlet weak var backgroundImage: UIImageView!
+    @IBOutlet weak var backgroundImage: FadedImageView!
     
     func setup(list: Playlist) {
         textView.textContainerInset = .zero
@@ -33,6 +33,22 @@ class PlaylistInfoCell: UITableViewCell {
             toolbar.barStyle = .default
         }
         detailLabel.text = "\(list.songsIn) songs, \(list.albumsIn) albums"
+    }
+    
+    func setup(album: AlbumB) {
+        mainLabel.textColor = UIColor.mainLabel
+        detailLabel.textColor = UIColor.detailLabel
+        textView.textColor = UIColor.detailLabel
+        artwork.image = album.artwork ?? #imageLiteral(resourceName: "no_music")
+        textView.text = ""
+        mainLabel.text = album.name
+        backgroundImage.image = album.artwork ?? #imageLiteral(resourceName: "no_now")
+        if GlobalSettings.theme == .dark {
+            toolbar.barStyle = .blackTranslucent
+        }else{
+            toolbar.barStyle = .default
+        }
+        detailLabel.text = "\(album.year), \(album.songsIn) songs"
     }
     
 }

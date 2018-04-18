@@ -28,13 +28,15 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
     var mainLabel: UIColor!
     var detailLabel: UIColor!
     @IBOutlet weak var themeBtn: UIBarButtonItem!
+    var colors: UIImageColors!
     //@IBOutlet var ratingBtn: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tabBarController?.delegate = self
+        automaticallyAdjustsScrollViewInsets = false
         self.navigationController?.navigationBar.tintColor = GlobalSettings.tint.color
-        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, GlobalSettings.bottomInset, 0)
+        self.tableView.contentInset = UIEdgeInsetsMake(-200, 0, GlobalSettings.bottomInset, 0)
         tableView.scrollIndicatorInsets = tableView.contentInset
         NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
         tableView.delaysContentTouches = false
@@ -50,7 +52,10 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
         }
         title = album.artist
         tableView.tableFooterView = UIView(frame: .zero)
+        colors = album.artwork?.getColors(scaleDownSize: CGSize(width: 20, height: 20))
         updateTheme()
+        setBackgroundImage()
+        setHeaderView()
     }
     
 //    @IBAction func ratingPressed() {
@@ -98,39 +103,47 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
             let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath) as! ShuffleCell
             cell.setup(style: .light)
             cell.label.textColor = UIColor.mainLabel
+            cell.backgroundColor = .clear
             return cell
         }else{
             if album.manyArtists{
                 absoluteIndex = indexPath.absoluteRow(tableView) - 1
                 if(cellTypes[absoluteIndex] == 0){
-                    let cell = tableView.dequeueReusableCell(withIdentifier: "extendedSongCell", for: indexPath) as? SongInAlbumCell
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "extendedSongCell", for: indexPath) as! SongInAlbumCell
                     let item = songs[absoluteIndex]
                     if(item != player.currentItem){
-                        cell?.setupA(item: item)
+                        cell.setupA(item: item)
                     }else{
-                        cell?.setupA(item: item)
+                        cell.setupA(item: item)
                     }
-                    return cell!
+                    cell.backgroundColor = .clear
+                    return cell
                 }else {
-                    let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as? QueueActionsCell
-                    cell?.delegate = self
-                    return cell!
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as! QueueActionsCell
+                    cell.delegate = self
+                    cell.backgroundColor = .clear
+                    return cell
                 }
             }else{
                 absoluteIndex = indexPath.absoluteRow(tableView)-1
                 if(cellTypes[absoluteIndex] == 0){
-                    let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as? SongInAlbumCell
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! SongInAlbumCell
                     let item = songs[absoluteIndex]
                     if(item != player.currentItem){
-                        cell?.setup(item: item)
+                        cell.setup(item: item)
                     }else{
-                        cell?.setup(item: item)
+                        cell.setup(item: item)
                     }
-                    return cell!
+                    cell.backgroundColor = .clear
+                    cell.titleLabel.textColor = colors.primaryColor
+                    cell.durationLabel.textColor = colors.primaryColor
+                    cell.artistLabel?.textColor = colors.detailColor
+                    return cell
                 }else {
-                    let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as? QueueActionsCell
-                    cell?.delegate = self
-                    return cell!
+                    let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as! QueueActionsCell
+                    cell.delegate = self
+                    cell.backgroundColor = .clear
+                    return cell
                 }
             }
         }
@@ -155,19 +168,38 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
         Plum.shared.play()
     }
     
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header = tableView.dequeueReusableCell(withIdentifier: "infoCell") as! AlbumInfoCell
-        header.setup(album: album, play: true)
-        header.delegate = self
-        header.backgroundColor = UIColor.background
-        for current in header.subviews {
-            if current .isKind(of: UIScrollView.self) {
-                (current as! UIScrollView).delaysContentTouches = false
-            }
-        }
-        let v = header.contentView
-        //v.addBottomBorderWithColor(color: UIColor.separator, width: 0.5, x: 14)
-        return v
+//    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        let header = tableView.dequeueReusableCell(withIdentifier: "infoCell") as! AlbumInfoCell
+//        header.setup(album: album, play: true)
+//        header.delegate = self
+//        header.backgroundColor = UIColor.background
+//        for current in header.subviews {
+//            if current .isKind(of: UIScrollView.self) {
+//                (current as! UIScrollView).delaysContentTouches = false
+//            }
+//        }
+//        let v = header.contentView
+//        //v.addBottomBorderWithColor(color: UIColor.separator, width: 0.5, x: 14)
+//        return v
+//
+////        let header = tableView.dequeueReusableCell(withIdentifier: "infoCellM") as! PlaylistInfoCell
+////        header.setup(album: album)
+////        return header.contentView
+//    }
+    
+    func setHeaderView() {
+        let header = tableView.dequeueReusableCell(withIdentifier: "infoCellM") as! PlaylistInfoCell
+        header.setup(album: album)
+        tableView.tableHeaderView = header.contentView
+    }
+    
+    func setBackgroundImage() {
+        let background = UIView(frame: tableView.frame)
+        background.backgroundColor = colors.backgroundColor
+        let blur = UIVisualEffectView(frame: tableView.frame)
+        blur.effect = UIBlurEffect(style: .dark)
+        background.addSubview(blur)
+        tableView.backgroundView = background
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -214,9 +246,9 @@ class AlbumVC: UITableViewController, QueueCellDelegate, UIGestureRecognizerDele
         }
     }
     
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 112
-    }
+//    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//        return 112
+//    }
     
     func cell(_ cell: QueueActionsCell, action: SongAction) {
         switch action {
@@ -319,3 +351,25 @@ extension AlbumVC: UITabBarControllerDelegate {
         }
     }
 }
+
+/* Handle purchase events */
+//extension AlbumVC {
+//
+//    func registerTrialObserver() {
+//        NotificationCenter.default.addObserver(self, selector: #selector(handleUnlockChangedNotification(_:)), name: .unlockChanged, object: nil)
+//    }
+//
+//    func unregisterTrialObserver() {
+//        NotificationCenter.default.removeObserver(self, name: .unlockChanged, object: nil)
+//    }
+//
+//    @objc func handleUnlockChangedNotification(_ sender: Notification) {
+//        shouldUnlockFeatures(GlobalSettings.unlock)
+//    }
+//
+//    func shouldUnlockFeatures(_ should: Bool) {
+//        themeBtn.isEnabled = should
+//        updateTheme()
+//    }
+//}
+

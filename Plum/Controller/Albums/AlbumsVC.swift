@@ -830,3 +830,26 @@ extension AlbumsVC {
         }
     }
 }
+
+/* Handle purchase events */
+//extension AlbumsVC {
+//
+//    func registerTrialObserver() {
+//        NotificationCenter.default.addObserver(self, selector: #selector(handleUnlockChangedNotification(_:)), name: .unlockChanged, object: nil)
+//    }
+//
+//    func unregisterTrialObserver() {
+//        NotificationCenter.default.removeObserver(self, name: .unlockChanged, object: nil)
+//    }
+//
+//    @objc func handleUnlockChangedNotification(_ sender: Notification) {
+//        shouldUnlockFeatures(GlobalSettings.unlock)
+//    }
+//
+//    func shouldUnlockFeatures(_ should: Bool) {
+//        themeBtn.isEnabled = should
+//        updateTheme()
+//        grid = GlobalSettings.albumsGrid
+//        hideTable()
+//    }
+//}

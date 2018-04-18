@@ -11,5 +11,6 @@ import UIKit
 class NowPlayingViewController: UIViewController {
     
     var tab: PlumTabBarController!
+    let player = Plum.shared
     
 }

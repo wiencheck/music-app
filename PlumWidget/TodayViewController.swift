@@ -52,12 +52,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, UITableViewDeleg
             preferredContentSize = maxSize
         }
     }
-    
-    func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
-        updateData()
-        completionHandler(NCUpdateResult.newData)
-    }
-    
+        
     @objc func updateData() {
         if let defaults = UserDefaults.init(suiteName: "group.adw.Plum") {
             if let yea = defaults.value(forKey: "currentYear") as? String {
@@ -96,6 +91,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, UITableViewDeleg
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! QueueCellLite
         cell.setup(_title: items[indexPath.row + 1][0], _artist: items[indexPath.row + 1][1])
+        cell.backgroundColor = .clear
         return cell
     }
     

@@ -206,11 +206,13 @@ extension PlaylistsVC: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "playlistCell", for: indexPath) as! ArtistCell
             let item = filteredPlaylists[indexPath.row]
             cell.setup(list: item)
+            cell.backgroundColor = .clear
             return cell
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "playlistCell", for: indexPath) as! ArtistCell
             let item = result[indexes[indexPath.section]]?[indexPath.row]
             cell.setup(list: item!)
+            cell.backgroundColor = .clear
             return cell
         }
     }
@@ -533,9 +535,16 @@ extension PlaylistsVC {
         if player.isShuffle {
             player.disableShuffle()
         }
-        if pickedList.items.contains(player.currentItem!) && player.isPlayin() {
-            Plum.shared.landInPlaylist(list: self.pickedList, shuffle: false)
-        }else{
+        if player.isPlayin() {
+            if pickedList.items.contains(player.currentItem!) {
+                Plum.shared.landInPlaylist(list: self.pickedList, shuffle: false)
+            }else{
+                let items = pickedList.items
+                player.createDefQueue(items: items)
+                player.playFromDefQueue(index: 0, new: true)
+                player.isShuffle = false
+            }
+        } else{
             let items = pickedList.items
             player.createDefQueue(items: items)
             player.playFromDefQueue(index: 0, new: true)
@@ -798,3 +807,27 @@ extension PlaylistsVC: UICollectionViewDelegateFlowLayout {
     }
     
 }
+
+/* Handle purchase events */
+//extension PlaylistsVC {
+//
+//    func registerTrialObserver() {
+//        NotificationCenter.default.addObserver(self, selector: #selector(handleUnlockChangedNotification(_:)), name: .unlockChanged, object: nil)
+//    }
+//
+//    func unregisterTrialObserver() {
+//        NotificationCenter.default.removeObserver(self, name: .unlockChanged, object: nil)
+//    }
+//
+//    @objc func handleUnlockChangedNotification(_ sender: Notification) {
+//        shouldUnlockFeatures(GlobalSettings.unlock)
+//    }
+//
+//    func shouldUnlockFeatures(_ should: Bool) {
+//        themeBtn.isEnabled = should
+//        setTheme()
+//        grid = GlobalSettings.playlistsGrid
+//        reload()
+//    }
+//}
+

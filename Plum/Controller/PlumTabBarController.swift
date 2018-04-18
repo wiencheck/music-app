@@ -11,7 +11,7 @@ public var popupPresented = false
 
 class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     
-    private var popupActive = false
+    private var popupActive = true
     
     var nowPlaying: NowPlayingViewController!
     let player = Plum.shared
@@ -28,7 +28,7 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(updatePopup), name: .playbackChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
         nextBtn = UIBarButtonItem(barButtonSystemItem: .fastForward, target: self, action: #selector(nextBtnPressed))
-        identifier = setIdentifier()
+        setIdentifier()
         setPopup()
         emptyPopup()
         updateTheme()
@@ -40,12 +40,10 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
                     UserDefaults.standard.set(c, forKey: "count")
                     musicQuery.shared.removeAllFromSpotlight()
                     musicQuery.shared.addToSpotlight()
-                    self.instruct("spotlight", message: "Spinning wheel in status bar means that Plum is indexing all your songs and playlists so you will be able to search them from Spotlight\nIf you can't see any results be sure to enable Plum in Spotlight settings and launch indexing from the settings", completion: nil)
                 }
             }else{
                 UserDefaults.standard.set(musicQuery.shared.songs.count, forKey: "count")
                 musicQuery.shared.removeAllFromSpotlight()
-                self.instruct("spotlight", message: "Spinning wheel in status bar means that Plum is indexing all your songs and playlists so you will be able to search them from Spotlight\nIf you can't see any results be sure to enable Plum in Spotlight settings and launch indexing from the settings", completion: nil)
                 musicQuery.shared.addToSpotlight()
             }
         }
@@ -90,17 +88,10 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
     }
     
     @objc func updatePopup() {
-        if !popupPresented {
-            let story = UIStoryboard.init(name: "Main", bundle: nil)
-            nowPlaying = story.instantiateViewController(withIdentifier: identifier) as! NowPlayingViewController
-            nowPlaying.tab = self
-            self.presentPopupBar(withContentViewController: nowPlaying, animated: true, completion: nil)
-            popupPresented = true
-        }
         if popupPresented {
             if Plum.shared.currentItem == nil {
                 dismissPopupBar(animated: true, completion: {popupPresented = false})
-            }else{
+            } else {
                 nowPlaying.popupItem.title = player.currentItem?.title ?? "Unknown title"
                 nowPlaying.popupItem.subtitle = player.currentItem?.artist ?? "Unknown artist"
                 if !player.isPlayin(){
@@ -113,8 +104,17 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
                 nowPlaying.popupItem.image = player.currentItem?.artwork?.image(at: CGSize(width: 30, height: 30))
                 self.popupBar.isUserInteractionEnabled = true
             }
+        } else {
+            setPopupViewController()
         }
-        
+    }
+    
+    func setPopupViewController() {
+        let story = UIStoryboard.init(name: "Main", bundle: nil)
+        nowPlaying = story.instantiateViewController(withIdentifier: identifier) as! NowPlayingViewController
+        nowPlaying.tab = self
+        self.presentPopupBar(withContentViewController: nowPlaying, animated: true, completion: nil)
+        popupPresented = true
     }
     
     @objc func playback() {
@@ -194,10 +194,10 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
         
     }
     
-    func setIdentifier() -> String{
+    func setIdentifier(){
         let device = GlobalSettings.device
         var _identifier = ""
-        _identifier = "eight"
+        _identifier = GlobalSettings.nowPlayingIdentifier
         if device == "iPhone 5" || device == "iPhone 5s" || device == "iPhone 5c" || device == "iPhone SE" || device == "iPod Touch 6" {
             _identifier += "_se"
         }else if device == "iPhone 6" || device == "iPhone 6s" || device == "iPhone 7" || device == "iPhone 8" {
@@ -206,12 +206,12 @@ class PlumTabBarController: UITabBarController, UITabBarControllerDelegate {
             _identifier += "_6plus"
         }else if device == "iPhone X" {
             _identifier += "_x"
-        }else if device.contains("iPad"){
+        }else if device.contains("iPad") {
             _identifier += "_se"
         }else{
-            _identifier += "_6plus"
+            _identifier += "_se"
         }
-        return _identifier
+        identifier = _identifier
     }
     
 }

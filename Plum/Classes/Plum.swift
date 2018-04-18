@@ -530,9 +530,9 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
     func labelString(type: String) -> String{
         switch type {
         case "title":
-            return currentItem?.title ?? "Unkown title"
+            return currentItem!.title ?? "Unknown title"
         case "detail":
-            return "\(currentItem?.artist ?? "Unknown artist") - \(currentItem?.albumTitle ?? "Unknown album")"
+            return "\(currentItem!.artist ?? "Unknown artist") - \(currentItem!.albumTitle ?? "Unknown album")"
         case "out of":
             if(!isShuffle){
                 if(!isUsrQueue){
@@ -584,7 +584,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         do{
             try player = AVAudioPlayer(contentsOf: url)
             player.delegate = self
-        }catch let error{
+        } catch let error{
             print("Nie udalo sie zainicjalizowac \(error)")
         }
     }
@@ -597,7 +597,7 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         infoCC.nowPlayingInfo = nil
         var rating = ""
         let item = currentItem
-        for _ in 0 ..< (item?.rating)!{
+        for _ in 0 ..< (item?.rating)! {
             rating.append("*")
         }
         var nowPlayingInfo = infoCC.nowPlayingInfo ?? [String: Any]()
@@ -630,9 +630,9 @@ public class Plum: NSObject, AVAudioPlayerDelegate{
         nowPlayingInfo[MPMediaItemPropertyArtwork] = item?.artwork
         infoCC.nowPlayingInfo = nowPlayingInfo
         if player.rate == 0.0{
-         state = .paused
+            state = .paused
          }else{
-         state = .playing
+            state = .playing
          }
     }
     

@@ -27,7 +27,6 @@ class AlbumUpVC: UIViewController, UIGestureRecognizerDelegate{
     var fxView: UIVisualEffectView!
     var statusBarStyle: UIStatusBarStyle!
     var separatorColor: UIColor!
-    var settings = UpNextSettings()
     var toScroll = IndexPath(row: 0, section: 0)
 
     override func viewDidLoad() {

@@ -94,11 +94,13 @@ class AlbumsByVC: UITableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "allSongsCell", for: indexPath)
             cell.textLabel?.text = "All songs"
             cell.textLabel?.textColor = UIColor.mainLabel
+            cell.backgroundColor = .clear
             return cell
         }else{
-            let cell = tableView.dequeueReusableCell(withIdentifier: "albumCell", for: indexPath) as? AlbumCell
-            cell?.setupArtist(album: als[indexPath.row - 1])
-            return cell!
+            let cell = tableView.dequeueReusableCell(withIdentifier: "albumCell", for: indexPath) as! AlbumCell
+            cell.setupArtist(album: als[indexPath.row - 1])
+            cell.backgroundColor = .clear
+            return cell
         }
     }
     
@@ -267,3 +269,25 @@ extension AlbumsByVC { //Sortowanie
         }
     }
 }
+
+/* Handle purchase events */
+//extension AlbumsByVC {
+//
+//    func registerTrialObserver() {
+//        NotificationCenter.default.addObserver(self, selector: #selector(handleUnlockChangedNotification(_:)), name: .unlockChanged, object: nil)
+//    }
+//
+//    func unregisterTrialObserver() {
+//        NotificationCenter.default.removeObserver(self, name: .unlockChanged, object: nil)
+//    }
+//
+//    @objc func handleUnlockChangedNotification(_ sender: Notification) {
+//        shouldUnlockFeatures(GlobalSettings.unlock)
+//    }
+//
+//    func shouldUnlockFeatures(_ should: Bool) {
+//        themeBtn.isEnabled = should
+//        updateTheme()
+//    }
+//}
+

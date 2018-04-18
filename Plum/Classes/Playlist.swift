@@ -129,7 +129,7 @@ import MediaPlayer
         }else{
             userDescription = ""
         }
-        print("name: \(name)\nfolder: \(isFolder)\nchild: \(isChild)\nparent: \(parentID)\nid: \(ID)\n\n")
+        //print("name: \(name)\nfolder: \(isFolder)\nchild: \(isChild)\nparent: \(parentID)\nid: \(ID)\n\n")
     }
     
     //MARK: NSCoding

@@ -11,7 +11,6 @@ import MediaPlayer
 
 class NineNPVC: NowPlayingViewController {
     
-    let player = Plum.shared
     var items = [MPMediaItem]()
     var mediaPicker: MPMediaPickerController!
     var pickedID: MPMediaEntityPersistentID!

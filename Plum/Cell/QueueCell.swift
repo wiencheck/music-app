@@ -39,13 +39,5 @@ class QueueCell: UITableViewCell {
         }
         self.artwork.image = item.artwork?.image(at: artwork.bounds.size) ?? UIImage(named: "no_music.jpg")
     }
-    
-    func redText(){
-        self.textLabel?.textColor = .red
-    }
-    
-    func blackText(){
-        self.textLabel?.textColor = .black
-    }
 
 }

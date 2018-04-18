@@ -13,10 +13,6 @@ class EightNowPlayingVC: NowPlayingViewController {
     
     var scale: Double!
     
-    let player = Plum.shared
-    //var finger: CGPoint = CGPoint(x: 0, y: 0)
-    //@IBOutlet weak var volView: UIView!
-    //var mpVolView: MPVolumeView!
     @IBOutlet weak var artworkImage: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var detailLabel: UILabel!
@@ -37,7 +33,7 @@ class EightNowPlayingVC: NowPlayingViewController {
     @IBOutlet weak var ratingsView: UIView!
     @IBOutlet weak var titleView: UIView!
     @IBOutlet weak var ratingLabel: UILabel!
-    @IBOutlet weak var lyricsTextView: UITextView!
+    @IBOutlet weak var lyricsTextView: FadedTextView!
     @IBOutlet weak var lyricsView: UIView!
     @IBOutlet weak var shufView: UIView!
     @IBOutlet weak var repView: UIView!
@@ -65,8 +61,6 @@ class EightNowPlayingVC: NowPlayingViewController {
     deinit{
         NotificationCenter.default.removeObserver(self, name: .trackChanged, object: nil)
         NotificationCenter.default.removeObserver(self, name: .playbackChanged, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         timer.invalidate()
     }
     
@@ -100,6 +94,7 @@ class EightNowPlayingVC: NowPlayingViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(updateUI), name: .trackChanged, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateUI), name: .playbackChanged, object: nil)
         timer.fire()
+   //     NotificationCenter.default.addObserver(self, selector: #selector(wirelessRouteChanged), name: Notification.Name.MPVolumeViewWirelessRoutesAvailableDidChange, object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -129,6 +124,14 @@ class EightNowPlayingVC: NowPlayingViewController {
         //        }
         updateUI()
         //setColors()
+    }
+    
+    @objc func wirelessRouteChanged() {
+        if mpVolView.areWirelessRoutesAvailable {
+            mpVolView.showsRouteButton = true
+        } else {
+            mpVolView.showsRouteButton = false
+        }
     }
     
     @IBAction func presentQueue(_ sender: Any){
@@ -215,34 +218,11 @@ class EightNowPlayingVC: NowPlayingViewController {
 extension EightNowPlayingVC: UIGestureRecognizerDelegate {
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-//        if lyricsTextView.isDragging {
-//            return false
-//        }else{
-//            return true
-//        }
         return false
     }
     
-//    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-//        tab.popupContentView.popupInteractionGestureRecognizer.isEnabled = true
-//    }
-//
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        tab.popupContentView.popupInteractionGestureRecognizer.isEnabled = false
-//    }
-    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let location = touches.first?.location(in: view)
-        //finger = location!
-//        if finger.y >= artworkImage.frame.maxY {
-//            if tab.popupContentView.popupInteractionGestureRecognizer.isEnabled {
-//                tab.popupContentView.popupInteractionGestureRecognizer.isEnabled = false
-//            }
-//        }else{
-//            if !tab.popupContentView.popupInteractionGestureRecognizer.isEnabled {
-//                tab.popupContentView.popupInteractionGestureRecognizer.isEnabled = true
-//            }
-//        }
         if tab.popupContentView.popupInteractionGestureRecognizer.isEnabled {
             if location!.y >= artworkImage.frame.maxY || timeSlider.frame.contains(location!) {
                 tab.popupContentView.popupInteractionGestureRecognizer.isEnabled = false
@@ -475,7 +455,11 @@ extension EightNowPlayingVC: UITextViewDelegate {
     func setVolumeView(){
         //mpVolView = MPVolumeView.init(frame: volView.bounds)
         mpVolView.showsVolumeSlider = true
-        mpVolView.showsRouteButton = false
+        if mpVolView.areWirelessRoutesAvailable {
+            mpVolView.showsRouteButton = true
+        } else {
+            mpVolView.showsRouteButton = false
+        }
         //volView.addSubview(mpVolView)
     }
     

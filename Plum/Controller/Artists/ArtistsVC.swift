@@ -293,9 +293,11 @@ extension ArtistsVC: UITableViewDelegate, UITableViewDataSource{    //Table
         let cell = tableView.dequeueReusableCell(withIdentifier: "artistCell", for: indexPath) as! ArtistCell
         if shouldShowResults {
             cell.setup(artist: filteredArtists[indexPath.row])
+            cell.backgroundColor = .clear
             return cell
         }else{
             cell.setup(artist: result[indexes[indexPath.section]]![indexPath.row])
+            cell.backgroundColor = .clear
             return cell
         }
     }
@@ -864,20 +866,26 @@ extension ArtistsVC: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension UIViewController {
-    
-    func instruct(_ key: String, message: String, completion: (() -> Void)?) {
-        if !UserDefaults.standard.bool(forKey: key) {
-            let a = ColoredAlertController(title: "Pro tip", message: message, preferredStyle: .alert)
-            let got = UIAlertAction(title: "Got it", style: .default, handler: { _ in
-                UserDefaults.standard.set(true, forKey: key)
-            })
-            let remind = UIAlertAction(title: "Remind me", style: .default, handler: { _ in
-                UserDefaults.standard.set(false, forKey: key)
-            })
-            a.addAction(got)
-            a.addAction(remind)
-            present(a, animated: true, completion: completion)
-        }
-    }
-}
+/* Handle purchase events */
+//extension ArtistsVC {
+//
+//    func registerTrialObserver() {
+//        NotificationCenter.default.addObserver(self, selector: #selector(handleUnlockChangedNotification(_:)), name: .unlockChanged, object: nil)
+//    }
+//
+//    func unregisterTrialObserver() {
+//        NotificationCenter.default.removeObserver(self, name: .unlockChanged, object: nil)
+//    }
+//
+//    @objc func handleUnlockChangedNotification(_ sender: Notification) {
+//        shouldUnlockFeatures(GlobalSettings.unlock)
+//    }
+//
+//    func shouldUnlockFeatures(_ should: Bool) {
+//        themeBtn.isEnabled = should
+//        updateTheme()
+//        grid = GlobalSettings.artistsGrid
+//        hideTable()
+//    }
+//}
+

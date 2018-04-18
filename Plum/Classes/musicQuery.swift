@@ -248,7 +248,7 @@ class musicQuery{
                 attributeSet.thumbnailData = artworkData
                 let searchableItem = CSSearchableItem(uniqueIdentifier: "list \(list.ID)", domainIdentifier: "com.adw.plum", attributeSet: attributeSet)
                 searchableItems.append(searchableItem)
-                print("progress = \(self.spotlightProgress)")
+                //print("progress = \(self.spotlightProgress)")
                 self.spotlightProgress = i / tmp
                 i += 1.0
             }

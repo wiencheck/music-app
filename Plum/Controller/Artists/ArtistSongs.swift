@@ -206,6 +206,7 @@ extension ArtistSongs: UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath) as! ShuffleCell
             cell.setup(style: .light)
+            cell.backgroundColor = .clear
             return cell
         }else{
             if sort == .alphabetically {
@@ -213,16 +214,19 @@ extension ArtistSongs: UITableViewDelegate, UITableViewDataSource {
                     let cell = tableView.dequeueReusableCell(withIdentifier: "songCell", for: indexPath) as! SongCell
                     let item = result[indexes[indexPath.section-1]]?[indexPath.row]
                     cell.setup(item: item!)
+                    cell.backgroundColor = .clear
                     return cell
                 }else{
                     let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as! QueueActionsCell
                     cell.delegate = self
+                    cell.backgroundColor = .clear
                     return cell
                 }
             }else{
                 if indexPath.row == 0 {
                     let cell = tableView.dequeueReusableCell(withIdentifier: "shuffleCell", for: indexPath) as! ShuffleCell
                     cell.setup(style: .light)
+                    cell.backgroundColor = .clear
                     return cell
                 }else{
                     if typesAlbums[indexPath.section][indexPath.row-1] == 0 {
@@ -230,16 +234,19 @@ extension ArtistSongs: UITableViewDelegate, UITableViewDataSource {
                             let cell = tableView.dequeueReusableCell(withIdentifier: "extendedSongCell", for: indexPath) as! SongInAlbumCell
                             let item = result[indexes[indexPath.section]]?[indexPath.row-1]
                             cell.setupA(item: item!)
+                            cell.backgroundColor = .clear
                             return cell
                         }else{
                             let cell = tableView.dequeueReusableCell(withIdentifier: "albumSongCell", for: indexPath) as! SongInAlbumCell
                             let item = result[indexes[indexPath.section]]?[indexPath.row-1]
                             cell.setup(item: item!)
+                            cell.backgroundColor = .clear
                             return cell
                         }
                     }else{
                         let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as! QueueActionsCell
                         cell.delegate = self
+                        cell.backgroundColor = .clear
                         return cell
                     }
                 }
@@ -683,4 +690,25 @@ extension ArtistSongs { //Sortowanie
     }
     
 }
+
+/* Handle purchase events */
+//extension ArtistSongs {
+//
+//    func registerTrialObserver() {
+//        NotificationCenter.default.addObserver(self, selector: #selector(handleUnlockChangedNotification(_:)), name: .unlockChanged, object: nil)
+//    }
+//
+//    func unregisterTrialObserver() {
+//        NotificationCenter.default.removeObserver(self, name: .unlockChanged, object: nil)
+//    }
+//
+//    @objc func handleUnlockChangedNotification(_ sender: Notification) {
+//        shouldUnlockFeatures(GlobalSettings.unlock)
+//    }
+//
+//    func shouldUnlockFeatures(_ should: Bool) {
+//        themeBtn.isEnabled = should
+//        updateTheme()
+//    }
+//}
 

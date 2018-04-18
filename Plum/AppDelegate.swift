@@ -26,15 +26,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var rating: Bool!
     let widget = NCWidgetController.widgetController()
     var ratingDisplayed = false
+    var trialTimer: Timer?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         if let _ = MPMediaQuery.songs().items {
-            widget.setHasContent(true, forWidgetWithBundleIdentifier: "com.wiencheck.plum.upnext")
             if #available(iOS 10.3, *) {
                 requestReview()
             }
             letGo()
-            //UIApplication.shared.isStatusBarHidden = false
+//            let should = false
+//            if should {
+//                let domain = Bundle.main.bundleIdentifier!
+//                UserDefaults.standard.removePersistentDomain(forName: domain)
+//                UserDefaults.standard.synchronize()
+//                print(Array(UserDefaults.standard.dictionaryRepresentation().keys).count)
+//            }
             //GlobalSettings.device = "iPhone X"
         }else{
             hijack()
@@ -82,36 +88,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return true
     }
-    
-    
-
-    func applicationWillResignActive(_ application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-    }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         if GlobalSettings.lyrics && Plum.shared.player.rate != 0.0 {
             Plum.shared.postLyrics()
         }
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
         Plum.shared.removeLyrics()
         Plum.shared.shouldPost = false
-    }
-
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        
     }
     
 
     func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         Plum.shared.removeLyrics()
         widget.setHasContent(false, forWidgetWithBundleIdentifier: "com.wiencheck.plum.upnext")
     }
@@ -135,6 +125,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         setCustomizing()
         setInitialInstructions()
         setColors()
+//        GlobalSettings.purchased = true
+//        GlobalSettings.changeUnlock(true)
+        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
         let initialViewController = storyboard.instantiateViewController(withIdentifier: "plumTab")
@@ -158,10 +151,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func setInitialSettings(){
+    func setInitialSettings() {
         defaults.set(1, forKey: "launchesCount")
         if defaults.value(forKey: "device") == nil {
             defaults.set(UIDevice.current.modelName, forKey: "device")
+        }
+        if defaults.value(forKey: "nowPlayingIdentifier") == nil {
+            defaults.set("eight", forKey: "nowPlayingIdentifier")
         }
         if defaults.value(forKey: "colorFlow") == nil{
             defaults.set(true, forKey: "colorFlow")
@@ -170,10 +166,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             defaults.set(false, forKey: "blur")
         }
         if defaults.value(forKey: "tintName") == nil{
-            defaults.set("Plum purple", forKey: "tintName")
-            defaults.set(0.21, forKey: "tintRed")
-            defaults.set(0.24, forKey: "tintGreen")
-            defaults.set(0.61, forKey: "tintBlue")
+            defaults.set("Apple Red", forKey: "tintName")
+            defaults.set(1.0, forKey: "tintRed")
+            defaults.set(0.180392156862745, forKey: "tintGreen")
+            defaults.set(0.333333333333333, forKey: "tintBlue")
             defaults.set(1.0, forKey: "tintAlpha")
         }
         if defaults.value(forKey: "artistsGrid") == nil{
@@ -202,7 +198,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             defaults.set(false, forKey: "lyrics")
         }
         if defaults.value(forKey: "theme") == nil {
-            defaults.set("Light", forKey: "theme")
+            defaults.set("Dark", forKey: "theme")
         }
         if defaults.value(forKey: "deploy") == nil {
             defaults.set("Album", forKey: "deploy")
@@ -240,8 +236,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if defaults.value(forKey: "ratingsIn") == nil {
             defaults.set(true, forKey: "ratingsIn")
         }
-        if defaults.value(forKey: "purchased") == nil {
-            defaults.set(false, forKey: "purchased")
+//        if defaults.value(forKey: "unlock") == nil {
+//            defaults.set(true, forKey: "unlock")
+//        }
+//        if defaults.value(forKey: "purchased") == nil {
+//            defaults.set(false, forKey: "purchased")
+//        }
+        if defaults.value(forKey: "trialTime") == nil {
+            defaults.set(0, forKey: "trialTime")
         }
     }
     
@@ -249,6 +251,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let dev = defaults.string(forKey: "device") {
             print("Reading device: \(dev)")
             GlobalSettings.setDevice(dev)
+        }
+        if let np = defaults.string(forKey: "nowPlayingIdentifier") {
+            GlobalSettings.changeNowPlaying(identifier: np)
         }
         if let rats = defaults.array(forKey: "ratings") as? [String] {
             print("Ratingi = \(rats)")
@@ -323,9 +328,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let inR = defaults.value(forKey: "ratingsIn") as? Bool {
             GlobalSettings.changeRatingsIn(inR)
         }
-        if let pur = defaults.value(forKey: "purchased") as? Bool {
-            GlobalSettings.changeTrial(pur)
-        }
         GlobalSettings.changeColor(true)    //do zrobienia ciemny blur
     }
     
@@ -337,7 +339,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
         UISwitch.appearance().tintColor = GlobalSettings.tint.color
         UISwitch.appearance().onTintColor = GlobalSettings.tint.color
-        UITableViewCell.appearance().backgroundColor = UIColor.clear
         let s = UIView()
         s.backgroundColor = GlobalSettings.tint.color.withAlphaComponent(0.8)
         UITableViewCell.appearance().selectedBackgroundView = s
@@ -367,7 +368,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UIStatusBarStyle.themed = UIStatusBarStyle.lightContent
             UIColor.mainLabel = UIColor.white
             UIColor.detailLabel = UIColor.lightGray
-            UIColor.indexBackground = UIColor.black
+            UIColor.indexBackground = UIColor(red: 0.129411764705882, green: 0.129411764705882, blue: 0.129411764705882, alpha: 1.0)
         }else{
             UIColor.mainLabel = UIColor.black
             UIColor.detailLabel = UIColor.gray
@@ -388,14 +389,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         defaults.set(count+1, forKey: "launchesCount")
     }
-    
+
 }
-
-//extension UNUserNotificationCenterDelegate {
-//    
-//    optional func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-//        completionHandler(UNNotificationPresentationOptions.alert)
-//    }
-//    
-//}
-

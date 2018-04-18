@@ -9,8 +9,11 @@
 import UIKit
 import MediaPlayer
 import UserNotifications
+import StoreKit
 
 class SettingsVC: UITableViewController, MySpotlightDelegate {
+    
+    let receiptURL = Bundle.main.appStoreReceiptURL
     
     //Info/kontakt
     @IBOutlet weak var appNameLabel: UILabel!
@@ -54,7 +57,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
     @IBOutlet weak var landI: UILabel!
     @IBOutlet weak var oledL: UILabel!
     @IBOutlet weak var ratingsInL: UILabel!
-    @IBOutlet weak var receiptL: UILabel!
+    @IBOutlet weak var purchaseL: UILabel!
     var timer: Timer!
 
     override func viewDidLoad() {
@@ -68,7 +71,6 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         tableView.contentInset = UIEdgeInsetsMake(64, 0, GlobalSettings.bottomInset, 0)
         spotlightButton.alpha = 1.0
         progressBar.alpha = 0.0
-        handleSwitches()
         reload()
         setVersion()
         NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
@@ -83,40 +85,23 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         reload()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        UITableViewCell.appearance().backgroundColor = .clear
-        UILabel.appearance().tintColor = nil
-    }
-    
-    func handleSwitches(){
-        artistsGridSwitch.addTarget(self, action: #selector(artistsGrid(_:)), for: .valueChanged)
-        albumsGridSwitch.addTarget(self, action: #selector(albumsGrid(_:)), for: .valueChanged)
-        playlistsGridSwitch.addTarget(self, action: #selector(playlistsGrid(_:)), for: .valueChanged)
-        ratingSwitch.addTarget(self, action: #selector(rating(_:)), for: .valueChanged)
-        lyricsSwitch.addTarget(self, action: #selector(lyricsSwitched(_:)), for: .valueChanged)
-        roundSwitch.addTarget(self, action: #selector(roundedSliderSwitched(_:)), for: .valueChanged)
-        doubleBarSwitch.addTarget(self, action: #selector(doubleBarSwitched(_:)), for: .valueChanged)
-        oledSwitch.addTarget(self, action: #selector(oledSwitched(_:)), for: .valueChanged)
-        ratingsInSwitch.addTarget(self, action: #selector(ratingsInSwitched(_:)), for: .valueChanged)
-    }
-    
-    @objc func ratingsInSwitched(_ sender: UISwitch) {
+    @IBAction func ratingsInSwitched(_ sender: UISwitch) {
         GlobalSettings.changeRatingsIn(sender.isOn)
     }
     
-    @objc func artistsGrid(_ sender: UISwitch){
+    @IBAction func artistsGrid(_ sender: UISwitch){
         GlobalSettings.changeArtists(grid: sender.isOn)
     }
     
-    @objc func albumsGrid(_ sender: UISwitch){
+    @IBAction func albumsGrid(_ sender: UISwitch){
         GlobalSettings.changeAlbums(grid: sender.isOn)
     }
     
-    @objc func playlistsGrid(_ sender: UISwitch){
+    @IBAction func playlistsGrid(_ sender: UISwitch){
         GlobalSettings.changePlaylists(grid: sender.isOn)
     }
     
-    @objc func rating(_ sender: UISwitch){
+    @IBAction func rating(_ sender: UISwitch){
         if sender.isOn {
             lyricsSwitch.isOn = false
             GlobalSettings.changeLyrics(false)
@@ -124,7 +109,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         GlobalSettings.changeRating(sender.isOn)
     }
     
-    @objc func lyricsSwitched(_ sender: UISwitch) {
+    @IBAction func lyricsSwitched(_ sender: UISwitch) {
         if sender.isOn{
             UNUserNotificationCenter.current().requestAuthorization(options: [.alert], completionHandler: { enabled, error in
                 if !enabled {
@@ -141,11 +126,11 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         }
     }
     
-    @objc func roundedSliderSwitched(_ sender: UISwitch) {
+    @IBAction func roundedSliderSwitched(_ sender: UISwitch) {
         GlobalSettings.changeRound(sender.isOn)
     }
     
-    @objc func doubleBarSwitched(_ sender: UISwitch) {
+    @IBAction func doubleBarSwitched(_ sender: UISwitch) {
         GlobalSettings.changeDoubleBar(sender.isOn)
         let tab = self.tabBarController as! PlumTabBarController
         if sender.isOn {
@@ -156,7 +141,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         tab.setPopup()
     }
     
-    @objc func oledSwitched(_ sender: UISwitch) {
+    @IBAction func oledSwitched(_ sender: UISwitch) {
         GlobalSettings.changeOled(sender.isOn)
         GlobalSettings.changeTheme(GlobalSettings.theme)
         updateTheme()
@@ -219,6 +204,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
             explainOled()
         case "about":
             performSegue(withIdentifier: "about", sender: nil)
+            //getAppReceipt()
         case "miniplayer":
             explainMiniPlayer()
         case "tint":
@@ -235,7 +221,6 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
             performSegue(withIdentifier: "lyricsSettings", sender: nil)
         case "artist":
             explainArtistsGrid()
-            //performSegue(withIdentifier: "purchase", sender: nil)
         case "album":
             explainAlbumsGrid()
         case "playlist":
@@ -248,8 +233,10 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
             icons()
         case "info":
             review()
-        case "receipt":
-            checkBoughtVersion()
+        case "purchase":
+            showPurchaseScreen()
+        case "faces":
+            performSegue(withIdentifier: "faces", sender: nil)
         default:
             selfExplanatory()
         }
@@ -281,6 +268,14 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         doubleBarSwitch.isOn = GlobalSettings.doubleBar
         oledSwitch.isOn = GlobalSettings.oled
         ratingsInSwitch.isOn = GlobalSettings.ratingsIn
+        //shouldUnlockFeatures(GlobalSettings.unlock)
+    }
+    
+    func fullVersionPrompt() {
+        let alert = ColoredAlertController(title: "Money money", message: "This feature isn't available in free version, please consider buying the Pro version", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(ok)
+        present(alert, animated: true, completion: nil)
     }
     
     func selfExplanatory() {
@@ -468,7 +463,7 @@ class SettingsVC: UITableViewController, MySpotlightDelegate {
         storeBtn.tintColor = GlobalSettings.tint.color
         authorLabel.textColor = UIColor.mainLabel
         appNameLabel.textColor = UIColor.mainLabel
-        receiptL.textColor = UIColor.mainLabel
+        //purchaseL.textColor = UIColor.mainLabel
         attributedInfo()
     }
     
@@ -590,29 +585,25 @@ extension SettingsVC {  //Kontakt/Info
         UIApplication.shared.open(store!, options: [:], completionHandler: nil)
     }
     
-    func checkBoughtVersion() {
-        var _title = ""
-        var message = ""
-        if let url = Bundle.main.appStoreReceiptURL {
-            do {
-                let receipt = try Data(contentsOf: url)
-                let json = try JSONSerialization.jsonObject(with: receipt, options: []) as? [String: String]
-                guard let version = json!["original_application_version"] else { return }
-                _title = version
-                message = "Thanks for buying Plum!"
-            }catch let err {
-                print(err)
-                _title = "Error"
-                message = "Could not find App Store receipt"
-            }
-        }else{
-            _title = "Error"
-            message = "Could not find App Store receipt"
+    func showPurchaseScreen() {
+        if let purchaseVC = storyboard?.instantiateViewController(withIdentifier: "purchaseVC") {
+            purchaseVC.modalTransitionStyle = .coverVertical
+            purchaseVC.modalPresentationStyle = .overFullScreen
+            present(purchaseVC, animated: true, completion: nil)
         }
-        let alert = ColoredAlertController(title: _title, message: message, preferredStyle: .alert)
-        let ok = UIAlertAction(title: "Dismiss", style: .cancel, handler: nil)
-        alert.addAction(ok)
-        present(alert, animated: true, completion: nil)
     }
     
 }
+
+/* Handle purchase events */
+//extension SettingsVC {
+//    
+//    func shouldUnlockFeatures(_ should: Bool) {
+//        albumsGridSwitch.isEnabled = should
+//        artistsGridSwitch.isEnabled = should
+//        playlistsGridSwitch.isEnabled = should
+//        reload()
+//        updateTheme()
+//    }
+//}
+

@@ -9,13 +9,6 @@
 import UIKit
 import MediaPlayer
 
-struct UpNextSettings {
-    var alwaysLight = false
-    var alwaysBlack = false
-    var adaptiveTableView = false
-    var upperBarColored = false
-}
-
 public enum Sort: String {
     case alphabetically = "alphabetically"
     case album = "album"
@@ -95,7 +88,7 @@ struct GlobalSettings{
             }
             UIColor.mainLabel = UIColor.white
             UIColor.detailLabel = UIColor.lightGray
-            UIColor.indexBackground = UIColor.black
+            UIColor.indexBackground = UIColor(red: 0.129411764705882, green: 0.129411764705882, blue: 0.129411764705882, alpha: 1.0)
             UIStatusBarStyle.themed = UIStatusBarStyle.lightContent
             UITextField.appearance().keyboardAppearance = .dark
         }else{
@@ -242,10 +235,21 @@ struct GlobalSettings{
     static func save(_ data: Any, key: String) {
         UserDefaults.standard.set(data, forKey: key)
     }
-    static var trial = true
-    static func changeTrial(_ t: Bool) {
-        trial = t
-        NotificationCenter.default.post(name: .unlockChanged, object: nil, userInfo: ["state": trial])
-        save(trial, key: "lite")
+    static var nowPlayingIdentifier = ""
+    static func changeNowPlaying(identifier: String) {
+        nowPlayingIdentifier = identifier
+        save(nowPlayingIdentifier, key: "nowPlayingIdentifier")
     }
+//    static var unlock = true                          //Full features during trial and after purchase
+//    static func changeUnlock(_ t: Bool) {
+//        unlock = t
+//        NotificationCenter.default.post(name: .unlockChanged, object: nil, userInfo: ["unlock": unlock])
+//        save(unlock, key: "unlock")
+//    }
+//    static var purchased = false
+//    static func changePurchased(_ t: Bool) {
+//        purchased = t
+//
+//        save(purchased, key: "purchased")
+//    }
 }

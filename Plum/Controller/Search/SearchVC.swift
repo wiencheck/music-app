@@ -237,22 +237,26 @@ class SearchVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UI
                 cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SearchCell
                 cell.setup(artist: filteredArtists![indexPath.row])
                 cell.accessoryType = .disclosureIndicator
+                cell.backgroundColor = .clear
                 return cell
             }else if indexPath.section == 1 && filteredAlbums?.count != 0 {
                 cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SearchCell
                 cell.setup(album: filteredAlbums![indexPath.row])
                 cell.accessoryType = .disclosureIndicator
+                cell.backgroundColor = .clear
                 return cell
             }else if indexPath.section == 2 && filteredSongs?.count != 0 {
                 if cellTypes[indexPath.row] != 0 {
                     let cell = tableView.dequeueReusableCell(withIdentifier: "queueCell", for: indexPath) as! QueueActionsCell
                     cell.delegate = self
                     cell.accessoryType = .none
+                    cell.backgroundColor = .clear
                     return cell
                 }else{
                     let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! SearchCell
                     cell.setup(song: filteredSongs![indexPath.row])
                     cell.accessoryType = .none
+                    cell.backgroundColor = .clear
                     return cell
                 }
             }else {
